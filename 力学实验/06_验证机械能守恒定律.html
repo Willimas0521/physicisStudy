@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 验证机械能守恒定律</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 6 关 · 共 9 关</span>
+  </div>
+  <h1>验证机械能守恒定律</h1>
+  <div class="tag">自由落体</div>
+  <div class="imgbox"><img src="../力学实验_images/energy_cons_real.png" alt=""><div class="imgcap">图1：验证机械能守恒定律装置（重锤 + 打点计时器 + 纸带）</div></div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>【专题】验证机械能守恒定律的 4 种常用方案</b><br>
+机械能守恒的本质：<b>ΔE<sub>k</sub> = |ΔE<sub>p</sub>|</b>，即动能增加量等于重力势能减少量（质量 m 通常可约去）。不同方案的区别只在<b>如何测速度 v</b> 和<b>如何测高度 h</b>。
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0">
+<b>方案一：自由落体 + 打点计时器（最经典）</b>【图1】<br>
+· 装置：铁架台（带铁夹）、打点计时器、纸带、重锤、刻度尺、交流电源（50 Hz）<br>
+· 原理：mgh = ½mv² → <b>gh = ½v²</b>，验证某点 gh<sub>n</sub> ≈ ½vₙ²<br>
+· 测速：v<sub>n</sub> = (h<sub>n+1</sub> − h<sub>n−1</sub>)/(2T)<br>
+· 图像法：作 <b>v²–h 图像</b>，应为过原点直线，<b>斜率 = 2g</b><br>
+· 关键：<b>不需要测质量 m</b>；必须<b>先接通电源再释放纸带</b>；打点计时器竖直、限位孔在同一竖直线
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0">
+<b>方案二：单摆（圆周运动）+ 光电门</b>【图2】<br>
+· 装置：铁架台、细线、小钢球、光电门（置于<b>最低点</b>）、游标卡尺<br>
+· 原理：小球从偏离竖直线某高度 h 处<b>静止释放</b>，到最低点：mgh = ½mv²<br>
+· 测速：v = d/Δt（d 为小球直径，Δt 为挡光时间）<br>
+· 关键：光电门光速须对准<b>小球球心经过的位置</b>（最低点）；细线质量与阻力忽略；从静止释放（初速为 0）
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0">
+<b>方案三：气垫导轨 + 光电门（斜面下滑）</b><br>
+· 装置：气垫导轨（一端垫高）、滑块、遮光片、两个光电门、刻度尺<br>
+· 原理：滑块沿倾斜导轨下滑，高度下降 h：mgh = ½mv₂² − ½mv₁²<br>
+· 测速：两光电门分别测 v₁ = d/Δt₁、v₂ = d/Δt₂；h = L·sinθ（L 为两光电门间距，θ 为导轨倾角）<br>
+· 关键：气垫把摩擦降到极低；需测（或已知）导轨倾角；遮光片宽度 d 要小
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0">
+<b>方案四：平抛运动</b><br>
+· 装置：斜槽（末端切线水平）、小钢球、白纸、复写纸、刻度尺<br>
+· 原理：½mv₀² + mgh = ½mv²，即验证末动能增量等于势能减少量<br>
+· 测速：由平抛规律，水平 x = vt，竖直 y = ½gt²，联立求 v₀ 与落地速度 v<br>
+· 关键：斜槽末端<b>切线必须水平</b>；小球每次从<b>同一位置由静止释放</b>；用重锤线确定坐标原点
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0">
+<b>📌 通用误差分析：</b>由于空气阻力、纸带与限位孔摩擦、光电门测的是平均速度（非瞬时）等，实测 <b>ΔE<sub>k</sub> 通常略小于 |ΔE<sub>p</sub>|</b>（相对误差 η = (E<sub>p</sub> − E<sub>k</sub>)/E<sub>p</sub> × 100%），一般 η &lt; 6% 即可认为守恒。</div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <div class="imgbox"><img src="../力学实验_images/energy_cons_real2.png" alt=""><div class="imgcap">图2：单摆 + 光电门验证机械能守恒装置</div></div><div class="imgbox"><img src="../力学实验_images/energy_cons_airtrack.png" alt=""><div class="imgcap">图3：气垫导轨 + 光电门验证机械能守恒装置</div></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p><b>（2025·河南·高考真题）</b>实验小组利用图1所示装置验证机械能守恒定律。可选用的器材有：交流电源（频率 50Hz）、铁架台、电子天平、重锤、打点计时器、纸带、刻度尺等。</p>
+<p><b>(1)</b> 下列所给实验步骤中，有4个是完成实验必需且正确的，把它们选择出来并按实验顺序排列：________（填步骤前面的序号）<br>
+①先接通电源，打点计时器开始打点，然后再释放纸带<br>
+②先释放纸带，然后再接通电源，打点计时器开始打点<br>
+③用电子天平称量重锤的质量<br>
+④将纸带下端固定在重锤上，穿过打点计时器的限位孔，用手捏住纸带上端<br>
+⑤在纸带上选取一段，用刻度尺测量该段内各点到起点的距离，记录分析数据<br>
+⑥关闭电源，取下纸带</p>
+<p><b>(2)</b> 图2所示是纸带上连续打出的五个点A、B、C、D、E到起点的距离。则打出B点时重锤下落的速度大小为________ m/s（保留3位有效数字）。</p>
+<p style="text-align:center"><img src="../力学实验_images/energy_fig2.png" alt="图2" style="max-width:100%;background:#fff;padding:8px;border-radius:8px"><br><span style="color:var(--sub);font-size:12px">图2：纸带上 A～E 点到起点距离</span></p>
+<p><b>(3)</b> 纸带上各点与起点间的距离即为重锤下落高度 h，计算相应的重锤下落速度 v，并绘制图3所示的 v²–h 关系图像。理论上，若机械能守恒，图中直线应________（填“通过”或“不通过”）原点且斜率为________（用重力加速度大小 g 表示）。由图3得直线的斜率 k = ________（保留3位有效数字）。</p>
+<p style="text-align:center"><img src="../力学实验_images/energy_fig3.png" alt="图3" style="max-width:100%;background:#fff;padding:8px;border-radius:8px"><br><span style="color:var(--sub);font-size:12px">图3：v²–h 关系图像</span></p>
+<p><b>(4)</b> 定义单次测量的相对误差 η = (Ep − Ek) / Ep × 100%，其中 Ep 是重锤重力势能的减小量，Ek 是其动能增加量，则实验相对误差为 η = ________ × 100%（用字母 k 和 g 表示）；当地重力加速度大小取 g = 9.80 m/s²，则 η = ________ %（保留2位有效数字），若 η &lt; 6%，可认为在实验误差允许的范围内机械能守恒。</p>
+<p class="ans"><b>【答案】</b> (1) ④①⑥⑤ &nbsp;&nbsp; (2) 1.79 &nbsp;&nbsp; (3) 通过 / 2g / 18.6 &nbsp;&nbsp; (4) (2g−k)/(2g) × 100% / 5.1</p>
+<details style="margin-top:10px"><summary style="cursor:pointer;color:var(--accent)">▸ 查看详解</summary>
+<div style="padding:10px 14px;background:var(--card2);border-radius:8px;margin-top:8px;font-size:13px">
+<p><b>（1）</b>实验步骤：④ → ① → ⑥ → ⑤。由 mgh = ½mv² 知 m 可约掉，不必用电子天平（步骤③错误）；必须先接通电源再释放（②错误）。</p>
+<p><b>（2）</b>T = 1/f = 0.02 s；中间时刻速度等于平均速度：v<sub>B</sub> = h<sub>AC</sub>/(2T) = (0.2034 − 0.1320)/0.04 ≈ 1.79 m/s。</p>
+<p><b>（3）</b>由 mgh = ½mv² 得 v² = 2g·h，故直线通过原点，斜率 = 2g；由图3，k = (5.0−1.0)/(0.265−0.05) ≈ 18.6。</p>
+<p><b>（4）</b>η = (mgh − ½mv²)/(mgh) × 100% = (2g − k)/(2g) × 100%；代入 g = 9.80、k = 18.6 得 η ≈ 5.1% &lt; 6%，符合守恒。</p>
+</div></details></div>
+  <div class="nav">
+    <a class="prev" href="05_探究平抛运动规律.html">← 探究平抛运动规律</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="07_探究动能定理.html">探究动能定理 →</a>
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "验证机械能守恒时，是否需要测量重物质量？", "o": ["必须测", "不需要，m 可约去", "只测相对质量", "视情况"], "a": 1, "e": "mgh=½mv² 中 m 两边约去，只需验证 gh=½v²，故不必测质量。这是四种方案的共同点。"}, {"q": "用打点计时器做自由落体实验，第 n 点的瞬时速度应取？", "o": ["√(2ghₙ)", "(hₙ₊₁−hₙ₋₁)/(2T)", "hₙ/T", "2hₙ/T"], "a": 1, "e": "用纸带前后两段求平均速度，避免直接用 gh=½v²（那正是要验证的结论，不能当已知用）。"}, {"q": "下列实验中，能够验证机械能守恒定律的有？（多选思路：选最全面的）", "o": ["只有自由落体 + 打点计时器", "自由落体、单摆+光电门、气垫导轨、平抛都可以", "只有用打点计时器的方案", "只有涉及弹簧的方案"], "a": 1, "e": "只要能测出速度 v 和下落高度 h，就能验证 ΔE_k = |ΔE_p|。自由落体+打点计时器、单摆+光电门、气垫导轨+光电门、平抛运动都是课本/高考认可的合法方案。"}, {"q": "实验结果显示动能增量略小于势能减少量，原因是？", "o": ["空气阻力和纸带摩擦", "质量测错", "公式错误", "计时器太快"], "a": 0, "e": "存在阻力做负功，使机械能有少量损失，故 ΔE_k 略小于 |ΔE_p|，属正常误差。"}, {"q": "用气垫导轨（如图3）验证机械能守恒定律，正确的实验步骤顺序是？且验证关系式为？", "o": ["步骤：E→A→C→B→D；验证 m₂gl = ½(m₁+m₂)(d/Δt)²", "步骤：A→B→C→D→E；验证 m₁gl = ½m₂(d/Δt)²", "步骤：A→E→B→C→D；验证 m₁gl = ½(m₁+m₂)(d/Δt)²", "步骤：B→A→E→C→D；验证 (m₁+m₂)gl = ½m₂(d/Δt)²"], "a": 0, "e": "正确顺序：先 A 调水平 → E 测质量（不需用砝码）→ B 测遮光条宽 d → C 测距离 l → D 释放测 Δt。对系统（滑块+托盘+砝码）：势能减少量 = m₁gl（砝码下降 l），动能增加量 = ½(m₁+m₂)v²（v = d/Δt）。注意：若只考虑砝码 m₁ 减少的重力势能与系统整体增加的动能，则验证 m₁gl = ½(m₁+m₂)(d/Δt)²；若仅以滑块 m₂ 为研究对象，则 ½m₂v² = m₁gl（因砝码失重力势能转化为系统动能）。题目条件不同时写法略有差异。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

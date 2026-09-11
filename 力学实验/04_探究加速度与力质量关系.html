@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 探究加速度与力、质量关系</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 4 关 · 共 9 关</span>
+  </div>
+  <h1>探究加速度与力、质量关系</h1>
+  <div class="tag">控制变量</div>
+  <div class="imgbox"><img src="../力学实验_images/a_F_m_setup.png" alt=""><div class="imgcap">图甲：探究加速度与力、质量关系装置（打点计时器 + 小车 + 轨道 + 槽码）</div></div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>核心原理：</b>牛顿第二定律 a = F/m。<br>
+<b>控制变量法：</b>① 质量 m 不变，改变拉力 F，得 a∝F；② 拉力 F 不变，改变质量 m，得 a∝1/m。<br>
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>平衡摩擦力（常考点①）：</b>调整轨道（长木板）的<b>倾斜度</b>，使小车<b>刚好不受牵引</b>（不挂砝码/托盘）时，能<b>拖动纸带沿轨道做匀速运动</b>（纸带上的点间距均匀），此时重力沿斜面的分力恰好平衡阻力。判断标准：轻推小车，纸带上打出的点<b>间距大致相等</b>。<br>
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>图像：</b>作 a–F 图（过原点直线）和 a–1/m 图（过原点直线）；若未平衡摩擦，a–F 图在 F 轴上有正截距；若平衡过度（垫太高），a–F 图在 a 轴上有正截距。<br>
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>用光电门测瞬时速度（常考点②）：</b>将两光电门安装在长直轨道上，选择宽度为 d 的遮光片固定在小车上，调整轨道倾角，用跨过定滑轮的细线将小车与托盘及砝码相连。小车通过光电门时：v ≈ d/Δt。<br>
+<b>遮光片宽度选择：</b>应选用<b>较窄</b>的遮光片（如 d = 1.00 cm，而不是 5.00 cm）。因为小车在做<b>加速运动</b>，遮光片越宽，Δt 内速度变化越大，d/Δt 就越偏离该点的<b>瞬时速度</b>（测得的是平均速度），误差越大。宽度越小越接近瞬时速度。<br>
+<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>力传感器直接测拉力（常考点③）：</b>把力传感器安装在小车上可直接测绳的拉力 T，能避免"槽码重力近似"带来的系统误差。设小车（含传感器）总质量 M、槽码质量 m，对槽码：mg−T=ma；对小车：T=Ma，联立得 <b>T = Mmg/(M+m) = mg/(1+m/M)</b>，故 <b>T 总小于 mg</b>，且 m 越大（越不满足 m≪M），T 与 mg 的差异越大。用"槽码重力 mg 当合力"与"传感器示数 T 当合力"对比时，槽码质量越大差异越大。如 M=210 g、m 取 5/10/20/40 g，<b>m=40 g 时差异最大</b>。</div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（2023·新课标）探究加速度与力、质量关系，平衡摩擦后，保持小车质量不变，增挂钩码改变拉力 F，测得多组 a、F。作出的 a–F 图像应为____；若作出的图像在 F 轴上有截距，说明____。</p><p class='ans'>答案：过原点的倾斜直线；未完全平衡摩擦力（或摩擦力未被完全抵消）。</p></div>
+  <div class="nav">
+    <a class="prev" href="03_验证力的平行四边形定则.html">← 验证力的平行四边形定则</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="05_探究平抛运动规律.html">探究平抛运动规律 →</a>
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "探究 a 与 F 关系时，应控制什么不变？", "o": ["拉力 F", "小车质量 m", "位移", "时间"], "a": 1, "e": "控制变量：研究 a 与 F 关系时保持质量 m 不变。"}, {"q": "平衡摩擦力的正确做法是？", "o": ["把轨道一端垫高，使小车不挂牵引时能拖动纸带做匀速运动", "加大砝码质量", "降低打点计时器电压", "把轨道放平即可"], "a": 0, "e": "调整轨道倾斜度，使小车刚好不受牵引时能拖动纸带沿轨道做匀速运动（纸带上点距均匀），即重力沿斜面分力刚好抵消阻力。"}, {"q": "若未平衡摩擦，a–F 图像会怎样？", "o": ["过原点", "不过原点、横轴（F 轴）有正截距", "竖直", "无规律"], "a": 1, "e": "未平衡摩擦时，需 F 超过某临界值小车才加速，a–F 图在 F 轴上有正截距；若垫得过高，则 a 轴上有正截距。"}, {"q": "用光电门测小车瞬时速度，遮光片宽度应选？", "o": ["越宽越好", "较窄的（如 1.00 cm），因为小车在加速", "任意宽度都行", "与宽度无关"], "a": 1, "e": "小车做加速运动，遮光片越宽，Δ t 内速度变化越大，d/Δt 越偏离瞬时速度（实为平均速度）。选窄遮光片（如 1.00 cm）误差小、更准确。"}, {"q": "力传感器装在小车上（小车含传感器总质量 M=210 g），平衡阻力后槽码质量 m 依次取 5 g、10 g、20 g、40 g。比较“槽码重力 mg 作合力”与“传感器示数 T 作合力”，差异最大时槽码质量为？", "o": ["5 g", "10 g", "20 g", "40 g"], "a": 3, "e": "对槽码 mg−T=ma，对小车 T=Ma，得 T = Mmg/(M+m) = mg/(1+m/M)，T 总小于 mg；m 越大差异越大，故 m=40 g 时两种合力差异最大。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

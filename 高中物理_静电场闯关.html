@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 静电场闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        /* 概念型公式（纯文本/流程图，不走 MathJax） */
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>⚡ 高考物理 · 静电场闯关</h1>
+    <p>库仑定律 · 电场强度 · 电势与电势差 · 电容器 · 带电粒子运动 — 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<!-- 左侧竖版悬浮导航 -->
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 考点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部静电场关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理静电场专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+/* lv: 所属关卡序号(0起)  module: 所属模块 */
+const KNOW = {
+    "coulomb":   { name: "库仑定律 F = kq₁q₂/r²", lv: 0, module: "库仑定律", desc: "真空中点电荷间的静电力，方向沿连线，同号相斥异号相吸" },
+    "charge":    { name: "电荷守恒定律", lv: 0, module: "库仑定律", desc: "起电过程电荷总量守恒，不创生不消灭" },
+    "efield":    { name: "电场强度 E = F/q", lv: 1, module: "电场强度", desc: "描述电场强弱与方向的矢量，由电场本身决定，与检验电荷无关" },
+    "efield-point": { name: "点电荷场强 E = kQ/r²", lv: 1, module: "电场强度", desc: "正电荷场强背离 +Q，负电荷场强指向 -Q" },
+    "superpos":  { name: "场强叠加原理", lv: 1, module: "电场强度", desc: "合场强等于各场强的矢量和（平行四边形定则）" },
+    "fieldline": { name: "电场线", lv: 2, module: "电场线", desc: "疏密表强弱、切线表方向、不相交、起正止负不闭合" },
+    "ep":        { name: "电势能 Ep = qφ", lv: 3, module: "电势与电势能", desc: "电场力做正功电势能减小，做负功电势能增大" },
+    "potential": { name: "电势 φ = Ep/q", lv: 3, module: "电势与电势能", desc: "标量有正负，沿电场线方向电势降低" },
+    "work":      { name: "电场力做功 W = qU", lv: 4, module: "电场力做功", desc: "电场力做功与路径无关，只与初末位置电势差有关" },
+    "voltage":   { name: "电势差 UAB = φA - φB", lv: 4, module: "电场力做功", desc: "电势差与零势点选取无关，是绝对量" },
+    "UEd":       { name: "匀强电场 U = Ed", lv: 5, module: "电势差与场强", desc: "沿场强方向的距离，d 为两点沿场强方向的投影距离" },
+    "equipot":   { name: "等势面", lv: 5, module: "电势差与场强", desc: "等势面上各点电势相等，等势面与电场线垂直" },
+    "cap":       { name: "电容器 C = Q/U", lv: 6, module: "电容器", desc: "电容描述电容器容纳电荷的本领，由本身结构决定" },
+    "pcap":      { name: "平行板 C = εS/4πkd", lv: 6, module: "电容器", desc: "与正对面积、介电常数成正比，与板间距成反比" },
+    "static":    { name: "静电平衡", lv: 6, module: "静电平衡", desc: "内部场强处处为零，导体为等势体，表面为等势面" },
+    "acc":       { name: "电场加速 qU = ½mv²", lv: 7, module: "带电粒子运动", desc: "静电力做功等于动能变化，常用于直线加速" },
+    "deflect":   { name: "电场偏转（类平抛）", lv: 7, module: "带电粒子运动", desc: "垂直电场入射做类平抛，分解为匀速 + 匀加速" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+    {
+        badge: "库仑定律 · 考点01",
+        title: "库仑定律",
+        intro: "静电力是电荷间的基本相互作用，一切电场问题都从这里出发。",
+        formulas: [
+            { t: "📐 库仑定律", f: "$$F = k\\dfrac{q_1q_2}{r^2}$$", note: "单位 N；k = 9×10⁹ N·m²/C²（静电力常量）。适用于真空中点电荷。" },
+            { t: "🔍 方向判断", f: "<span class='term-chip good'>同号相斥</span><span class='term-op'>/</span><span class='term-chip warn'>异号相吸</span><span class='term-op'>→</span><span class='term-chip'>沿连线方向</span>", note: "库仑力方向始终在两点电荷的连线上。" },
+            { t: "🔋 电荷守恒", f: "$$q_1 + q_2 + \\cdots = \\text{常量}$$", note: "摩擦起电、接触起电、感应起电都不创造也不消灭电荷，只是电荷的转移。" }
+        ],
+        example: {
+            q: "真空中两个点电荷，电荷量分别为 2×10⁻⁸ C 和 4×10⁻⁸ C，相距 0.2 m，求它们之间的静电力大小。",
+            steps: [
+                "由库仑定律：$F = k\\dfrac{q_1q_2}{r^2} = 9\\times10^9 \\times \\dfrac{2\\times10^{-8}\\times4\\times10^{-8}}{0.2^2}$",
+                "$F = 9\\times10^9 \\times \\dfrac{8\\times10^{-16}}{4\\times10^{-2}} = 9\\times10^9 \\times 2\\times10^{-14}$",
+                "$F = 1.8\\times10^{-4}\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "两个带电量均为 q 的点电荷相距 r，库仑力大小为 F。若两电荷的电荷量均变为 2q、距离变为 2r，库仑力大小为？",
+                opts: ["F/4", "F/2", "F", "4F"],
+                answer: 2,
+                explain: "$F' = k\\dfrac{(2q)(2q)}{(2r)^2} = k\\dfrac{4q^2}{4r^2} = F$，距离加倍与电荷量都加倍恰好抵消。"
+            },
+            {
+                q: "关于库仑定律，下列说法正确的是？",
+                opts: [
+                    "库仑定律适用于任意两个带电体",
+                    "库仑力的方向一定在两点电荷的连线上",
+                    "只有电荷量很小的电荷才能被看成点电荷",
+                    "库仑力与万有引力是同一种力"
+                ],
+                answer: 1,
+                explain: "库仑定律只适用于真空中点电荷（形状、大小可忽略）；能否看成点电荷取决于距离远大于自身尺寸，而非电荷量大小；库仑力是电磁力，与万有引力不同。"
+            }
+        ]
+    },
+    {
+        badge: "电场强度 · 考点02",
+        title: "电场强度",
+        intro: "电场强度描述电场的强弱与方向，是电场的核心性质量。",
+        formulas: [
+            { t: "⚡ 定义式", f: "$$E = \\dfrac{F}{q}$$", note: "单位 N/C 或 V/m。E 由电场本身决定，与检验电荷 q 及受力 F 无关（q 为试探电荷）。" },
+            { t: "📐 点电荷场强", f: "$$E = k\\dfrac{Q}{r^2}$$", note: "Q 为场源电荷。正电荷的场强方向背离 +Q，负电荷的场强方向指向 -Q。" },
+            { t: "🔢 场强叠加", f: "$$\\vec E = \\vec E_1 + \\vec E_2 + \\cdots$$", note: "场强是矢量，多个场源在某点的场强按平行四边形定则（同一直线直接加减）合成。" }
+        ],
+        example: {
+            q: "真空中场源电荷 Q = 2×10⁻⁹ C，求距离它 0.3 m 处的电场强度大小。",
+            steps: [
+                "由点电荷场强公式：$E = k\\dfrac{Q}{r^2} = 9\\times10^9 \\times \\dfrac{2\\times10^{-9}}{0.3^2}$",
+                "$E = 9\\times10^9 \\times \\dfrac{2\\times10^{-9}}{9\\times10^{-2}} = 200\\ \\text{N/C}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于电场强度 E = F/q，下列说法正确的是？",
+                opts: [
+                    "E 与电场力 F 成正比，与检验电荷 q 成反比",
+                    "E 与检验电荷无关，由电场本身决定",
+                    "点电荷产生的场强随距离增大而线性减小",
+                    "电场强度方向与正电荷在该点受力方向相反"
+                ],
+                answer: 1,
+                explain: "E = F/q 是定义式而非决定式，E 由电场本身决定；点电荷场强 E = kQ/r² 随距离平方反比减小；场强方向与正电荷受力方向相同。"
+            },
+            {
+                q: "电场中某点放入 q = 2×10⁻⁶ C 的正检验电荷，受到 4×10⁻³ N 的电场力，则该点电场强度大小为？",
+                opts: ["500 N/C", "1000 N/C", "2000 N/C", "4000 N/C"],
+                answer: 2,
+                explain: "$E = \\dfrac{F}{q} = \\dfrac{4\\times10^{-3}}{2\\times10^{-6}} = 2000\\ \\text{N/C}$。若拿走检验电荷，该点场强不变。"
+            }
+        ]
+    },
+    {
+        badge: "电场线 · 考点03",
+        title: "电场线与典型电场",
+        intro: "电场线是描述电场的'地图'，画图能力与看图能力同样重要。",
+        formulas: [
+            { t: "🗺 电场线性质", f: "<span class='term-chip'>疏密表强弱</span><span class='term-op'>＋</span><span class='term-chip'>切线表方向</span><span class='term-op'>＋</span><span class='term-chip warn'>不相交</span><span class='term-op'>＋</span><span class='term-chip'>不闭合</span>", note: "电场线从正电荷（或无穷远）出发，终止于负电荷（或无穷远）。" },
+            { t: "🔴 点电荷电场", f: "<span class='term-chip good'>正电荷</span><span class='term-op'>→</span><span class='term-chip'>向外辐射</span><span class='term-op'>，</span><span class='term-chip warn'>负电荷</span><span class='term-op'>→</span><span class='term-chip'>向内会聚</span>", note: "离点电荷越近电场线越密，场强越大。" },
+            { t: "▦ 匀强电场", f: "<span class='term-chip dark'>平行等距直线</span><span class='term-op'>→</span><span class='term-chip'>场强处处相同</span>", note: "匀强电场中各点场强大小、方向均相同，常见于两平行金属板之间。" }
+        ],
+        example: {
+            q: "辨析：①电场线是电荷的运动轨迹；②电场线是真实存在的曲线；③电场线可以相交。上述说法哪些是错误的？",
+            steps: [
+                "① 错误：只有带电粒子初速度为零（或沿电场线方向）且只受电场力时，运动轨迹才可能与电场线重合，不能笼统地说电场线是轨迹",
+                "② 错误：电场线是假想的辅助线，并非真实存在",
+                "③ 错误：若电场线相交，交点处场强方向就有两个，与场强唯一性矛盾，故不相交"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于电场线，下列说法正确的是？",
+                opts: [
+                    "电场线是客观存在的曲线",
+                    "电场线不相交，疏密程度表示场强大小",
+                    "电场线是闭合曲线",
+                    "电场线就是带电粒子的运动轨迹"
+                ],
+                answer: 1,
+                explain: "电场线是假想曲线，从正电荷出发终止于负电荷、不闭合；疏密表示场强大小，切线表示场强方向；仅在特殊情况下电场线才与轨迹重合。"
+            },
+            {
+                q: "两等量异种点电荷 +Q 与 -Q 连线的中垂线上（远离中点处），电场强度的方向是？",
+                opts: [
+                    "沿连线指向正电荷",
+                    "垂直于连线，指向负电荷一侧",
+                    "中垂线上各点场强为零",
+                    "方向无法确定"
+                ],
+                answer: 1,
+                explain: "等量异种电荷连线的中垂线上，各点场强方向都垂直于连线、指向负电荷一侧（距中点越远场强越小）。注意这与等量同种电荷（中垂线上场强沿连线方向）不同。"
+            }
+        ]
+    },
+    {
+        badge: "电势与电势能 · 考点04",
+        title: "电势与电势能",
+        intro: "电势能是电荷在电场中具有的'势'，电势则是场的标量描述，正负很关键。",
+        formulas: [
+            { t: "🔋 电势能", f: "$$E_p = q\\varphi$$", note: "电势能是标量、相对量，与零势能点选取有关；正负反映能量大小。" },
+            { t: "📊 电势", f: "$$\\varphi = \\dfrac{E_p}{q}$$", note: "电势是标量，有正负，沿电场线方向电势逐渐降低。" },
+            { t: "🔄 变化规律", f: "<span class='term-chip good'>电场力做正功</span><span class='term-op'>→</span><span class='term-chip'>电势能减小</span><span class='term-op'>；</span><span class='term-chip warn'>做负功</span><span class='term-op'>→</span><span class='term-chip'>电势能增大</span>", note: "类似于重力做正功、重力势能减小。" }
+        ],
+        example: {
+            q: "电场中 A 点的电势 φA = 100 V，把 q = -2×10⁻⁶ C 的负电荷放在 A 点，它的电势能是多少？",
+            steps: [
+                "由 $E_p = q\\varphi$：$E_p = (-2\\times10^{-6}) \\times 100$",
+                "$E_p = -2\\times10^{-4}\\ \\text{J}$",
+                "负号表示负电荷在正电势处的电势能为负（若把负电荷移到电势更低处，电势能反而增大）"
+            ]
+        },
+        challenges: [
+            {
+                q: "正电荷在电场中从高电势位置移到低电势位置，它的电势能将？",
+                opts: ["增大", "减小", "不变", "无法判断"],
+                answer: 1,
+                explain: "对正电荷 $E_p = q\\varphi$，q > 0，φ 减小则 Ep 减小。规律：正电荷顺着电场线移动电势能减小，逆着增大；负电荷恰好相反。"
+            },
+            {
+                q: "关于电势，下列说法正确的是？",
+                opts: [
+                    "电势是矢量，有大小也有方向",
+                    "电势是标量，但有正负，其值与零势点选取有关",
+                    "电势就是电势能",
+                    "电势的大小与放入的电荷量成正比"
+                ],
+                answer: 1,
+                explain: "电势 φ = Ep/q 是标量，有正负；电势与零势点选取有关，而电势差与零势点无关；电势是场的属性，与放入电荷无关。"
+            }
+        ]
+    },
+    {
+        badge: "电场力做功 · 考点05",
+        title: "电场力做功与电势差",
+        intro: "电场力做功是能量转化的量度，而电势差是做功多少的简洁表述。",
+        formulas: [
+            { t: "⚡ 做功公式", f: "$$W = qU_{AB}$$", note: "电场力做的功等于电荷量与初末位置电势差的乘积，与路径无关。" },
+            { t: "📐 电势差定义", f: "$$U_{AB} = \\varphi_A - \\varphi_B = \\dfrac{W_{AB}}{q}$$", note: "电势差是标量，是绝对量，与零势点选取无关。" },
+            { t: "🔋 做功与电势能", f: "$$W_{AB} = E_{pA} - E_{pB}$$", note: "电场力做正功 W>0，电势能减少；做负功 W<0，电势能增加。" }
+        ],
+        example: {
+            q: "匀强电场中 A、B 两点的电势差 UAB = 200 V，把 q = 3×10⁻⁶ C 的正电荷从 A 移到 B，电场力做了多少功？",
+            steps: [
+                "由 $W = qU_{AB}$：$W = 3\\times10^{-6} \\times 200$",
+                "$W = 6\\times10^{-4}\\ \\text{J}$",
+                "W > 0，说明电场力做正功，电势能减少了 6×10⁻⁴ J"
+            ]
+        },
+        challenges: [
+            {
+                q: "电场力对电荷做了 -4×10⁻⁶ J 的功（做负功），则电荷的电势能变化是？",
+                opts: ["增加 4×10⁻⁶ J", "减少 4×10⁻⁶ J", "不变", "无法确定"],
+                answer: 0,
+                explain: "电场力做负功时电势能增加，增加量等于克服电场力做的功，即增加 4×10⁻⁶ J。"
+            },
+            {
+                q: "关于电势差 UAB = φA - φB，下列说法正确的是？",
+                opts: [
+                    "电势差与零势点的选取有关",
+                    "电势差是矢量，有方向",
+                    "电势差与零势点选取无关，只由电场中 A、B 两点位置决定",
+                    "电势差的大小由移动电荷的电荷量决定"
+                ],
+                answer: 2,
+                explain: "UAB = φA - φB，两点的电势同时升高或降低相同的量，差值不变，故电势差与零势点选取无关；电势差是标量，由电场本身决定。"
+            }
+        ]
+    },
+    {
+        badge: "电势差与场强 · 考点06",
+        title: "匀强电场 U = Ed",
+        intro: "匀强电场中，电势差与场强定量关联，等势面把两者形象地连在一起。",
+        formulas: [
+            { t: "📐 基本关系", f: "$$U = Ed$$", note: "d 为两点沿电场线方向的距离；若两点连线与场强方向成 θ 角，则 d = L·cosθ。" },
+            { t: "⚡ 场强另一单位", f: "$$E = \\dfrac{U}{d}$$", note: "单位 V/m，与 N/C 等价。这也是测量匀强电场场强的常用公式。" },
+            { t: "◼ 等势面", f: "<span class='term-chip'>等势面与电场线垂直</span><span class='term-op'>；</span><span class='term-chip'>等差等势面越密</span><span class='term-op'>→</span><span class='term-chip warn'>场强越大</span>", note: "等势面上移动电荷电场力不做功；沿电场线方向电势降低最快。" }
+        ],
+        example: {
+            q: "匀强电场场强 E = 100 N/C，A、B 两点沿场强方向相距 0.2 m，求 A、B 间电势差（A 在下游高压侧）。",
+            steps: [
+                "由 $U = Ed$：$U = 100 \\times 0.2$",
+                "$U = 20\\ \\text{V}$",
+                "沿电场线方向电势降低，故高电势端与低电势端电势差为 20 V"
+            ]
+        },
+        challenges: [
+            {
+                q: "在匀强电场中，沿电场线方向每前进 1 cm 电势降低 10 V，则该匀强电场的场强大小为？",
+                opts: ["100 V/m", "500 V/m", "1000 V/m", "10000 V/m"],
+                answer: 2,
+                explain: "$E = \\dfrac{U}{d} = \\dfrac{10}{0.01} = 1000\\ \\text{V/m}$。注意把 1 cm 换算成 0.01 m。"
+            },
+            {
+                q: "关于等势面，下列说法正确的是？",
+                opts: [
+                    "等势面与电场线平行",
+                    "等势面上各点电势相等，等势面与电场线垂直",
+                    "等势面上的电场强度一定为零",
+                    "等差等势面的疏密不能反映场强大小"
+                ],
+                answer: 1,
+                explain: "等势面上移动电荷电场力不做功，故等势面必与电场线垂直；等势面上场强不一定为零（如匀强电场的等势面）；等差等势面越密场强越大。"
+            }
+        ]
+    },
+    {
+        badge: "电容器 · 考点07",
+        title: "静电平衡与电容器",
+        intro: "静电平衡揭示导体在电场中的稳定态，电容器则是'储存电场能'的元件。",
+        formulas: [
+            { t: "⚖ 静电平衡", f: "<span class='term-chip good'>内部场强为零</span><span class='term-op'>＋</span><span class='term-chip'>导体为等势体</span><span class='term-op'>＋</span><span class='term-chip'>表面场强垂直表面</span>", note: "静电平衡时电荷只分布在导体外表面，内部无电场，这是静电屏蔽的基础。" },
+            { t: "🧲 电容定义", f: "$$C = \\dfrac{Q}{U}$$", note: "单位法拉 F（1 F = 1 C/V）。C 由电容器本身结构决定，与 Q、U 无关。" },
+            { t: "📐 平行板电容", f: "$$C = \\dfrac{\\varepsilon S}{4\\pi kd}$$", note: "与正对面积 S、介电常数 ε 成正比，与板间距 d 成反比。" }
+        ],
+        example: {
+            q: "一个电容器，电容 C = 5×10⁻⁶ F，充电后两板间电压为 100 V，求电容器所带的电荷量。",
+            steps: [
+                "由 $C = \\dfrac{Q}{U}$ 得 $Q = CU$",
+                "$Q = 5\\times10^{-6} \\times 100 = 5\\times10^{-4}\\ \\text{C}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于达到静电平衡的导体，下列说法正确的是？",
+                opts: [
+                    "导体内部场强不为零",
+                    "导体内部场强处处为零，且整个导体是等势体",
+                    "感应电荷一定均匀分布在导体表面",
+                    "导体表面的场强方向与表面平行"
+                ],
+                answer: 1,
+                explain: "静电平衡时内部场强处处为零，导体是等势体、表面是等势面；表面电荷分布与曲率有关（尖端密集），表面场强垂直表面。"
+            },
+            {
+                q: "平行板电容器充电后与电源断开，将两板间距增大，下列说法正确的是？",
+                opts: [
+                    "电容增大，两板间电压减小",
+                    "电容减小，两板间电压增大",
+                    "电容和电压都不变",
+                    "电荷量增大，电压不变"
+                ],
+                answer: 1,
+                explain: "与电源断开后 Q 不变；d 增大 → C = εS/4πkd 减小 → U = Q/C 增大（板间场强 E = U/d = Q/(εS/4πk)·1/d 由电荷面密度决定，此处 E 不变）。若始终连着电源，则 U 不变、Q 减小。"
+            }
+        ]
+    },
+    {
+        badge: "带电粒子运动 · 考点08",
+        title: "带电粒子在电场中的运动",
+        intro: "电场力使带电粒子加速或偏转，加速看能量、偏转看运动分解。",
+        formulas: [
+            { t: "🚀 电场加速", f: "$$qU = \\dfrac{1}{2}mv^2 - \\dfrac{1}{2}mv_0^2$$", note: "初速度为零时 $v = \\sqrt{\\dfrac{2qU}{m}}$，末速度只取决于荷质比与电压。" },
+            { t: "📐 电场偏转（类平抛）", f: "$$y = \\dfrac{qUL^2}{2mdv_0^2},\\qquad \\tan\\theta = \\dfrac{qUL}{mdv_0^2}$$", note: "垂直电场线入射，水平匀速、竖直匀加速，运动轨迹是抛物线。" },
+            { t: "🔄 处理方法", f: "<span class='term-chip dark'>分解运动</span><span class='term-op'>→</span><span class='term-chip dark'>水平匀速</span><span class='term-op'>＋</span><span class='term-chip dark'>竖直匀加速</span><span class='term-op'>→</span><span class='term-chip'>a = qE/m</span>", note: "不计重力时，竖直方向加速度 a = qU/(md)，运动时间 t = L/v₀。" }
+        ],
+        example: {
+            q: "电子（m = 9.1×10⁻³¹ kg，e = 1.6×10⁻¹⁹ C）从静止开始经 U = 1000 V 的电压加速，求电子的末速度大小。",
+            steps: [
+                "由动能定理：$eU = \\dfrac{1}{2}mv^2$",
+                "$v = \\sqrt{\\dfrac{2eU}{m}} = \\sqrt{\\dfrac{2\\times1.6\\times10^{-19}\\times1000}{9.1\\times10^{-31}}}$",
+                "$v \\approx \\sqrt{3.5\\times10^{14}} \\approx 1.9\\times10^{7}\\ \\text{m/s}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "初速度为零的带电粒子经同一加速电压 U 加速后，末速度大小取决于粒子的？",
+                opts: [
+                    "电荷量",
+                    "质量",
+                    "荷质比 q/m",
+                    "电荷的种类"
+                ],
+                answer: 2,
+                explain: "由 $v = \\sqrt{2qU/m}$ 可知末速度只取决于荷质比 q/m 和加速电压 U；电荷种类只影响加速方向（正负电荷受电场力方向相反）。"
+            },
+            {
+                q: "带电粒子垂直电场方向射入匀强电场（不计重力），它的运动轨迹是？",
+                opts: ["直线", "抛物线", "圆弧", "椭圆"],
+                answer: 1,
+                explain: "垂直电场线入射时，水平方向匀速直线、竖直方向匀加速直线，两个方向合成即类平抛运动，轨迹为抛物线。"
+            }
+        ]
+    },
+    {
+        badge: "图象专题 · 考点09",
+        title: "静电场中的图象问题",
+        intro: "φ-x 图与 E-x 图是高考高频信息题，抓住'斜率'与'面积'两个关键词。",
+        formulas: [
+            { t: "📈 φ-x 图象", f: "<span class='term-chip'>斜率</span><span class='term-op'>→</span><span class='term-chip'>场强 E</span><span class='term-op'>（</span><span class='term-chip'>E = -Δφ/Δx</span><span class='term-op'>）</span>", note: "斜率绝对值越大场强越大；斜率为零处场强为零（如场源电荷位置、平衡点）。" },
+            { t: "📊 E-x 图象", f: "<span class='term-chip'>面积</span><span class='term-op'>→</span><span class='term-chip'>电势差 U</span><span class='term-op'>（</span><span class='term-chip'>ΔU = E·Δx</span><span class='term-op'>）</span>", note: "E-x 图与 x 轴围成的面积表示电势差，注意正负号代表高低。" },
+            { t: "🧠 核心方法", f: "<span class='term-chip dark'>看图 → 定场强/电势 → 判力 → 判运动 → 判能量</span>", note: "图象题五步法：先定性判断场强分布，再分析受力与运动，最后用能量观点检验。" }
+        ],
+        example: {
+            q: "某电场沿 x 轴方向的 φ-x 图象在 x₁ 处斜率最大、x₂ 处斜率为零。判断：场强最大的位置与场强为零的位置分别在哪里？",
+            steps: [
+                "φ-x 图象的斜率代表场强 E（E = -Δφ/Δx，取绝对值）",
+                "x₁ 处斜率绝对值最大 → 场强最大",
+                "x₂ 处斜率为零 → 该处场强为零"
+            ]
+        },
+        challenges: [
+            {
+                q: "在 φ-x 图象中，某点切线斜率（绝对值）越大，说明该点？",
+                opts: ["电势越高", "场强越大", "电势能越大", "电场力越大"],
+                answer: 1,
+                explain: "φ-x 图象斜率的绝对值表示场强大小（E = |Δφ/Δx|），切线越陡场强越大；斜率正负表示场强方向（沿 x 正方向为负）。"
+            },
+            {
+                q: "在 E-x 图象中，图象与 x 轴围成的'面积'（含正负）表示的是？",
+                opts: ["电势差 U", "电场强度 E", "电势能 Ep", "电场力做功的功率"],
+                answer: 0,
+                explain: "由 U = E·Δx，E-x 图与 x 轴围成的面积表示两点间的电势差，面积正负反映哪端电势高。"
+            }
+        ]
+    },
+    {
+        badge: "综合实战 · 考点10",
+        title: "静电场综合与真题演练",
+        intro: "把库仑定律、场强叠加、电势分析、带电粒子运动串起来，是高考压轴题最爱考的综合场景。",
+        formulas: [
+            { t: "📋 解题主线", f: "<span class='term-chip dark'>定场源 → 算场强</span><span class='term-op'>→</span><span class='term-chip dark'>分电势</span><span class='term-op'>→</span><span class='term-chip dark'>判做功</span><span class='term-op'>→</span><span class='term-chip dark'>算运动</span><span class='term-op'>→</span><span class='term-chip dark'>验能量</span>", note: "先明确谁产生场，再逐步分析场强、电势、力与运动。" },
+            { t: "🔢 场强叠加计算", f: "$$E = \\sum E_i\\ (\\text{矢量合成})", note: "多个场源在同一点的场强按平行四边形定则合成；在同一直线上则直接代数加减。" },
+            { t: "🏆 综合列式", f: "$$qU = \\dfrac{1}{2}mv^2 \\\\ y = \\dfrac{1}{2}\\cdot\\dfrac{qU_2}{md}\\cdot\\left(\\dfrac{L}{v_0}\\right)^2$$", note: "加速 + 偏转两步走，先能量后分解，是电场综合题的标准套路。" }
+        ],
+        example: {
+            q: "真空中两点电荷 +Q 与 -Q 相距 2d，求它们连线中点处的合场强大小和方向。",
+            steps: [
+                "中点距每个电荷均为 d：$E_1 = k\\dfrac{Q}{d^2}$（背离 +Q），$E_2 = k\\dfrac{Q}{d^2}$（指向 -Q）",
+                "两场强方向相同（都指向 -Q），直接相加",
+                "$E = E_1 + E_2 = 2k\\dfrac{Q}{d^2}$，方向指向 -Q"
+            ]
+        },
+        challenges: [
+            {
+                q: "两个等量异种点电荷 +Q 与 -Q 相距 2d，连线中点处合场强大小为？",
+                opts: ["0", "kQ/d²", "2kQ/d²", "4kQ/d²"],
+                answer: 2,
+                explain: "中点处两个点电荷产生的场强大小均为 kQ/d²、方向都指向 -Q，同向叠加：E = 2kQ/d²。"
+            },
+            {
+                exam: true,
+                q: "（真题 · 复合考点）一带正电的粒子以初速度 v₀ 垂直射入竖直方向的匀强电场（极板间电压 U、板长 L、间距 d），恰好能从下板边缘射出。现保持其它条件不变，仅将加速前的初速度 v₀ 增大为 2v₀，则粒子射出电场时的竖直偏转量 y 将如何变化？",
+                opts: [
+                    "增大为原来的 4 倍",
+                    "不变",
+                    "减小为原来的 1/4",
+                    "增大为原来的 2 倍"
+                ],
+                answer: 2,
+                explain: "偏转量 $y = \\dfrac{qUL^2}{2mdv_0^2}$，与 v₀² 成反比。v₀ 增大为 2v₀，y 变为原来的 1/4。水平速度越大，粒子在电场中停留时间越短，竖直方向积累的位移越小。",
+                points: [
+                    { step: "明确带电粒子垂直入射匀强电场做类平抛运动", k: "deflect" },
+                    { step: "水平方向匀速：t = L/v₀，速度增大则时间缩短", k: "deflect" },
+                    { step: "竖直方向匀加速：y = ½at² = qUL²/(2mdv₀²)", k: "efield" },
+                    { step: "由公式知 y ∝ 1/v₀²，v₀ 加倍则 y 变为 1/4", k: "deflect" }
+                ]
+            },
+            {
+                exam: true,
+                q: "（压轴题 · 复合考点）一电子经电压 U₁ 加速后水平射入两块水平放置、板间距为 d 的平行金属板间（板间电压 U₂、板长 L），恰好从极板边缘射出，已知电子比荷为 e/m。则偏转量 y 与加速电压 U₁ 的关系是？",
+                opts: [
+                    "y 与 U₁ 成正比",
+                    "y 与 U₁ 成反比",
+                    "y 与 U₁ 的平方成正比",
+                    "y 与 U₁ 无关"
+                ],
+                answer: 1,
+                explain: "先加速：$\\dfrac{1}{2}mv_0^2 = eU_1$，得 $v_0 = \\sqrt{2eU_1/m}$；再偏转：$y = \\dfrac{1}{2}\\cdot\\dfrac{eU_2}{md}\\cdot\\left(\\dfrac{L}{v_0}\\right)^2 = \\dfrac{eU_2L^2}{2mdv_0^2} = \\dfrac{U_2L^2}{4U_1d}$。可见 y 与 U₁ 成反比，与 U₂ 成正比——增大加速电压能显著减小偏转量。",
+                points: [
+                    { step: "加速电场：eU₁ = ½mv₀²，求进入偏转场的初速度", k: "acc" },
+                    { step: "偏转电场中水平匀速 t = L/v₀", k: "deflect" },
+                    { step: "竖直方向 a = eU₂/(md)，偏转量 y = ½at²", k: "efield" },
+                    { step: "联立得 y = U₂L²/(4U₁d)，判断正反比关系", k: "UEd" }
+                ]
+            }
+        ]
+    }
+];
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+const LEVEL_COUNT = LEVELS.length;
+// 总题数 = 所有关卡 challenges 数量之和
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    // 导航按钮（考点编号 + 标题）
+    const navBtn = document.createElement('button');
+    navBtn.innerHTML = `<span class="nav-no">考点${String(i+1).padStart(2,'0')}</span><span class="nav-name">${lv.title}</span>`;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    // 关卡卡片
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    // 公式区（含 $ 的走 MathJax，纯概念文本用标签卡片样式）
+    lv.formulas.forEach(f => {
+        const isMath = f.f.indexOf('$') !== -1;
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            ${isMath
+                ? `<div class="formula">${f.f}</div>`
+                : `<div class="formula-text">${f.f}</div>`}
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    // 例题
+    html += `<div class="example">
+        <div class="q">💡 例题</div>`;
+    lv.example.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+    html += `</div>`;
+
+    // 闯关答题（支持多题）
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        const ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    // 真题知识点溯源（支持复合考点：跨关/跨模块引用全局知识点库）
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">考点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    // 记忆要点
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    // 关卡切换按钮
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===LEVEL_COUNT-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+// 动态插入的公式统一交给 MathJax 排版
+if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise();
+}
+
+// 选项点击
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        // 取消同组选中
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+
+// 为每道题绑定提交
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    // 找到该题所属关卡与挑战数据
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65+correct);
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+// 根据关卡内所有题的作答情况更新关卡状态
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => answered[li+'_'+k] && document.querySelector(`.opt[data-i="${li}_${k}"][data-j="${c.answer}"]`)?.classList.contains('correct'));
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= LEVEL_COUNT) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 初始高亮导航
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="nav.js"></script>
+</body>
+</html>

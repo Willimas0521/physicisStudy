@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 磁聚焦与磁发散</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+        .header { background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%); color: white; padding: 50px 20px; text-align: center; box-shadow: 0 4px 20px rgba(30,60,114,0.3); }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5; }
+        .card h2 { color: #1e3c72; font-size: 1.6em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px; }
+        .card h2 .num { background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8em; flex-shrink: 0; }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula { background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px; padding: 18px 20px; margin: 12px 0; font-size: 1.15em; color: #1a2a3a; text-align: center; overflow-x: auto; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point { background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .warn { background: #fff3e0; border-left: 4px solid #ff9800; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .danger { background: #ffebee; border-left: 4px solid #e74c3c; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; vertical-align: top; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        td.rowname { font-weight: 600; color: #1e3c72; white-space: nowrap; background: #f8fafc; width: 90px; }
+        .figure { text-align: center; margin: 16px 0; }
+        .figure img { max-width: 100%; border: 1px solid #e3e8ee; border-radius: 10px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+        .figure figcaption { color: #7f8c8d; font-size: 0.9em; margin-top: 8px; }
+        .fig-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; align-items: flex-start; }
+        .fig-row .figure { flex: 1 1 280px; max-width: 700px; margin: 0; }
+        .example { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px 20px; margin: 15px 0; border-radius: 6px; }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .nav { position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100; background: rgba(30,60,114,0.96); backdrop-filter: blur(10px); border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22); max-height: calc(100vh - 140px); overflow-y: auto; }
+        .nav .nav-title { color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px; padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px; }
+        .nav a { display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em; padding: 7px 10px; border-radius: 6px; transition: background 0.25s; border-left: 3px solid transparent; }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .compare { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
+        .compare .box { border-radius: 12px; padding: 18px 16px; }
+        .compare .box.fs { background: #ede7f6; border-left: 4px solid #7e57c2; }
+        .compare .box.fs h4 { color: #5e35b1; margin-bottom: 8px; font-size: 1.1em; }
+        .compare .box.py { background: #fff8e1; border-left: 4px solid #f9a825; }
+        .compare .box.py h4 { color: #f57f17; margin-bottom: 8px; font-size: 1.1em; }
+        .compare .box ul { padding-left: 20px; margin: 0; color: #34495e; }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .summary-box { background: linear-gradient(135deg, #fff3e0 0%, #fffde7 100%); border-left: 5px solid #ff9800; padding: 14px 20px; margin: 14px 0; border-radius: 8px; }
+        .summary-box b { color: #e65100; }
+        .rhombus-tag { display: inline-block; background: #f3e5f5; color: #6a1b9a; padding: 3px 12px; border-radius: 14px; font-weight: 600; font-size: 0.92em; margin: 0 4px; }
+.anim-wrap { background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px; padding: 18px; margin: 16px 0; text-align: center; }
+.anim-wrap canvas { background: #fff; border-radius: 8px; border: 1px solid #e3e8ee; max-width: 100%; display: block; margin: 0 auto; }
+.anim-controls { margin: 12px 0 6px; }
+.anim-controls button { background: #3a7bd5; color: white; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px; }
+.anim-controls button:hover { background: #2a5298; }
+.anim-controls button.mode-on { background: #2e7d32; }
+.anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+.anim-readout b { color: #1e3c72; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0; display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+            .compare { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 磁聚焦与磁发散</h1>
+    <p>高中物理 · 带电粒子在圆形有界磁场中的会聚与发散模型</p>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">模型定义</a>
+    <a href="#jujiao">一、磁聚焦</a>
+    <a href="#fasang">二、磁发散</a>
+    <a href="#method">解题方法</a>
+    <a href="#example">典型例题</a>
+    <a href="#anim">动画演示</a>
+    <a href="#compare">对比总结</a>
+    </nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 模型定义 -->
+<div class="card" id="overview">
+    <h2><span class="num">★</span>模型定义：圆形磁场中的会聚与发散</h2>
+    <p>当带电粒子在<span class="highlight">圆形有界磁场</span>中运动，且<span class="highlight">轨迹圆半径 = 磁场圆半径</span>（$r=R$）时，会出现两种典型的几何对称现象：<b>磁聚焦</b>与<b>磁发散</b>。</p>
+    <div class="compare">
+        <div class="box fs">
+            <h4>图甲 · 磁聚焦（会聚）</h4>
+            <ul>
+                <li>大量同种带正电粒子，<b>速度大小相同</b>，<b>水平平行入射</b>到圆形磁场区域；</li>
+                <li>若 $r=R$，所有粒子将<span class="highlight">从磁场圆的最低点 $B$ 点会聚射出</span>。</li>
+            </ul>
+        </div>
+        <div class="box py">
+            <h4>图乙 · 磁发散（发散）</h4>
+            <ul>
+                <li>从磁场圆上 $P$ 点有大量带正电粒子，<b>速度大小相同</b>、<b>方向不同</b>射入磁场；</li>
+                <li>若 $r=R$，所有粒子<span class="highlight">沿同一方向（水平）平行射出</span>。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="fig-row">
+        <figure class="figure">
+            <img src="磁场_images/mq_jujiao.png" alt="磁聚焦：平行入射粒子会聚于B点">
+            <figcaption>图甲 · 磁聚焦：平行入射→$B$ 点会聚</figcaption>
+        </figure>
+        <figure class="figure">
+            <img src="磁场_images/mq_fasang.png" alt="磁发散：同点不同方向入射→平行射出">
+            <figcaption>图乙 · 磁发散：$P$ 点各方向入射→水平射出</figcaption>
+        </figure>
+    </div>
+    <div class="summary-box">
+        <b>📌 共同前提：</b>轨迹圆半径 $r=\dfrac{mv}{qB}$ 必须等于磁场圆半径 $R$，否则会聚点/射出方向会偏离。这是磁聚焦与磁发散模型成立的<b>几何根基</b>。
+    </div>
+</div>
+
+<!-- 一、磁聚焦 -->
+<div class="card" id="jujiao">
+    <h2><span class="num">1</span>磁聚焦（会聚）</h2>
+    <h3>【模型定义】</h3>
+    <table>
+        <tr><th style="width:90px;">项目</th><th>内容</th></tr>
+        <tr>
+            <td class="rowname">适用条件</td>
+            <td>大量同种带正电粒子，<b>速度大小相等</b>，<b>水平平行入射</b>到圆形有界磁场区域；磁场方向<b>垂直纸面向外</b>，粒子源位于磁场圆左侧。</td>
+        </tr>
+        <tr>
+            <td class="rowname">前提条件</td>
+            <td>轨迹圆半径 $r=\dfrac{mv}{qB}$ <b>等于</b>磁场圆半径 $R$。</td>
+        </tr>
+        <tr>
+            <td class="rowname">几何结论</td>
+            <td>所有粒子从入射点 $A$ 出发，最终在圆形磁场的<span class="highlight">最低点 $B$ 会聚</span>射出。</td>
+        </tr>
+        <tr>
+            <td class="rowname">证明要点</td>
+            <td>四边形 $OAO'B$ 为<span class="rhombus-tag">菱形</span>（$OA=O'B=r=R$，$OO'=AB=R$），故 $OB\parallel AO'$，方向竖直向下，与所有入射方向的弦切角无关。</td>
+        </tr>
+    </table>
+    <div class="key-point">
+        <b>【要点点拨】</b>
+        <ul style="padding-left:24px; margin-top:6px;">
+            <li>粒子沿水平方向从 $A$ 点入射，经过磁场后轨迹在最低点 $B$ 离开磁场区域；</li>
+            <li>不论粒子入射速度大小是否完全相同，只要满足 $r=R$，<b>会聚点 $B$ 唯一</b>；</li>
+            <li>这是 <b>"速度选择 + 几何聚焦"</b> 双重作用的典型应用（与速度选择器、质谱仪并称磁场三大仪器模型）。</li>
+        </ul>
+    </div>
+    <div class="example">
+        <div class="q">【例1】如图甲所示，一圆形有界磁场（半径 $R$，方向垂直纸面向外）左侧，一粒子源在 $A$ 点沿水平方向发射速度大小均为 $v$ 的质子（质量 $m$、电荷量 $q$）。要使所有质子在磁场中会聚于最低点 $B$，求所需磁感应强度 $B$。</div>
+        <div class="a">
+            <div class="step">解：会聚条件是轨迹圆半径 $r$ 等于磁场圆半径 $R$，即 $r=R=\dfrac{mv}{qB}$。</div>
+            <div class="step">解得 $B=\dfrac{mv}{qR}$。</div>
+            <div class="step">此时所有质子从最低点 $B$ 会聚，会聚点的射出方向竖直向下。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 二、磁发散 -->
+<div class="card" id="fasang">
+    <h2><span class="num">2</span>磁发散（发散）</h2>
+    <h3>【模型定义】</h3>
+    <table>
+        <tr><th style="width:90px;">项目</th><th>内容</th></tr>
+        <tr>
+            <td class="rowname">适用条件</td>
+            <td>圆形有界磁场（半径 $R$，垂直纸面向里），从磁场圆上最高点 $P$ 有大量同种带正电粒子，<b>速度大小相等</b>、<b>方向不同</b>射入；不计重力。</td>
+        </tr>
+        <tr>
+            <td class="rowname">前提条件</td>
+            <td>轨迹圆半径 $r=\dfrac{mv}{qB}$ <b>等于</b>磁场圆半径 $R$。</td>
+        </tr>
+        <tr>
+            <td class="rowname">几何结论</td>
+            <td>所有粒子射出磁场时，<span class="highlight">速度方向相同（均沿水平方向）</span>—— 平行射出。</td>
+        </tr>
+        <tr>
+            <td class="rowname">证明要点</td>
+            <td>每个粒子的运动轨迹圆心 $O_i$ 与磁场圆心 $O$、入射点 $P$、出射点构成<span class="rhombus-tag">菱形</span>，由几何关系 $O_iP\parallel O_i$(出射点)，推出出射速度方向均与 $PO$ 平行（即水平）。</td>
+        </tr>
+    </table>
+    <div class="key-point">
+        <b>【要点点拨】</b>
+        <ul style="padding-left:24px; margin-top:6px;">
+            <li>$O_1A、O_2B、O_3C$ 等出射点弦的中垂线均平行于 $PO$；</li>
+            <li>由于 $r=R$，<b>出射速度方向始终水平</b>，与入射方向无关；</li>
+            <li>形象理解：磁场像一个"方向过滤镜"，把 $P$ 点所有方向入射的粒子"梳"成同一方向射出。</li>
+        </ul>
+    </div>
+    <div class="example">
+        <div class="q">【例2】如图乙所示，一圆形有界磁场区域（半径 $R$）的圆心为 $O$，从最高点 $P$ 处沿任意方向射入速度大小均为 $v$ 的正粒子（质量 $m$、电荷量 $q$）。若粒子射出磁场时方向均水平向右，求所需磁感应强度 $B$ 及粒子在磁场中运动的最长时间。</div>
+        <div class="a">
+            <div class="step">解：发散条件 $r=R$，由 $r=\dfrac{mv}{qB}=R$ 得 $B=\dfrac{mv}{qR}$。</div>
+            <div class="step">由于 $r=R$，入射方向与 $PO$ 所成最大夹角为 $90°$（水平射入时偏转角最大），对应圆心角 $\theta_{\max}=180°$。</div>
+            <div class="step">运动时间 $t=\dfrac{\theta_{\max}}{2\pi}\cdot T=\dfrac{T}{2}=\dfrac{\pi m}{qB}=\dfrac{\pi R}{v}$。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 解题方法 -->
+<div class="card" id="method">
+    <h2><span class="num">3</span>解题方法：构筑菱形 + 双圆几何</h2>
+    <p>磁聚焦与磁发散模型的核心技巧是 <span class="rhombus-tag">菱形构造</span>，关键步骤如下：</p>
+    <table>
+        <tr><th style="width:90px;">步骤</th><th>操作要点</th></tr>
+        <tr>
+            <td class="rowname">① 前提</td>
+            <td>先确认<span class="highlight">轨迹圆半径 = 磁场圆半径</span>（$r=R$）—— 这是所有几何结论成立的前提。</td>
+        </tr>
+        <tr>
+            <td class="rowname">② 画双圆</td>
+            <td>在同一图中画出<b>磁场圆</b>和粒子的<b>轨迹圆</b>，两圆等大，标注圆心 $O$（磁场圆心）和 $O'$（轨迹圆心）。</td>
+        </tr>
+        <tr>
+            <td class="rowname">③ 找四边形</td>
+            <td>确定四个关键点：<b>入射点 $P$</b>、<b>出射点</b>、<b>磁场圆心 $O$</b>、<b>轨迹圆心 $O'$</b>。由 $OP=OO'=O'$(出射)$=R$ 得<span class="rhombus-tag">菱形</span>结构。</td>
+        </tr>
+        <tr>
+            <td class="rowname">④ 定方向</td>
+            <td>利用菱形对边平行的性质：磁场圆心与入射点的连线平行于轨迹圆心与出射点的连线；<br>由此推出<b>出射速度方向</b>（必垂直于 $O'$(出射)$，即沿 $O$(出射) 切线方向）。</td>
+        </tr>
+        <tr>
+            <td class="rowname">⑤ 求半径</td>
+            <td>由 $r=\dfrac{mv}{qB}$ 联立已知量求 $B$；反之亦可由 $B$、$v$ 求 $r$，再判断会聚点位置或射出方向。</td>
+        </tr>
+    </table>
+    <div class="warn">
+        <b>⚠ 易错提醒：</b>
+        <ul style="padding-left:24px; margin-top:6px;">
+            <li>$r\neq R$ 时，菱形变成一般平行四边形，<b>出射方向不再平行</b>，会聚点也不再唯一；</li>
+            <li>必须区分粒子带电正负（决定偏转方向，影响轨迹在磁场圆内的位置——图甲中磁场向<b>外</b>，正电荷向上偏转；图乙中磁场向<b>里</b>，正电荷先向内偏转再转出）；</li>
+            <li>不计重力是题设默认条件，不要画蛇添足。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 典型例题 -->
+<div class="card" id="example">
+    <h2><span class="num">4</span>典型例题</h2>
+    <h3>【综合题】</h3>
+    <div class="example">
+        <div class="q">真空中有一圆形有界匀强磁场区域（半径 $R$，磁感应强度 $B$，方向垂直纸面向外），磁场圆心为 $O$。一带正电粒子（质量 $m$、电荷量 $q$）从磁场圆左侧 $A$ 点沿水平方向入射，速度大小 $v=\dfrac{qBR}{m}$。<br>（1）求粒子在磁场中的轨迹半径 $r$，并说明其与 $R$ 的关系；<br>（2）定性画出粒子的运动轨迹；<br>（3）求粒子射出磁场时距 $A$ 点的距离。</div>
+        <div class="a">
+            <div class="step">（1）由 $r=\dfrac{mv}{qB}=\dfrac{m\cdot \frac{qBR}{m}}{qB}=R$，得 $r=R$。即轨迹圆半径恰好等于磁场圆半径。</div>
+            <div class="step">（2）粒子轨迹：以 $A$ 为弦的另一端对应圆心 $O'$，$OO'=AB=R$，$OA=O'B=R$，构成菱形 $OAOB'$——轨迹为四分之一圆弧从 $A$ 弯曲到磁场圆最低点 $B$。</div>
+            <div class="step">（3）由菱形对边平行：$AB=OO'=R$，故 $A$、$B$ 间距为 $R$。射出点 $B$ 距 $A$ 点的距离为 $R$，方向竖直向下（典型磁聚焦模型）。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 对比总结 -->
+<div class="card" id="compare">
+    <h2><span class="num">5</span>对比总结：磁聚焦 vs 磁发散</h2>
+    <table>
+        <tr>
+            <th style="width:90px;">对比项</th>
+            <th>磁聚焦（甲）</th>
+            <th>磁发散（乙）</th>
+        </tr>
+        <tr>
+            <td class="rowname">入射方式</td>
+            <td>从一点 $A$ <b>平行入射</b></td>
+            <td>从一点 $P$ <b>多方向入射</b></td>
+        </tr>
+        <tr>
+            <td class="rowname">出射特点</td>
+            <td>从<b>同一点 $B$</b> 射出（会聚）</td>
+            <td>沿<b>同一方向</b>射出（平行）</td>
+        </tr>
+        <tr>
+            <td class="rowname">前提条件</td>
+            <td>$r=R$</td>
+            <td>$r=R$</td>
+        </tr>
+        <tr>
+            <td class="rowname">几何核心</td>
+            <td>菱形 $OAO'B$</td>
+            <td>多个菱形 $POO_iA_i$</td>
+        </tr>
+        <tr>
+            <td class="rowname">典型应用</td>
+            <td>质谱仪、速度选择器</td>
+            <td>束流整形、平行粒子束生成</td>
+        </tr>
+        <tr>
+            <td class="rowname">磁场方向</td>
+            <td>由纸面向<b>外</b>（正电荷向上偏转）</td>
+            <td>由纸面向<b>里</b>（正电荷向内偏转）</td>
+        </tr>
+    </table>
+    <div class="key-point">
+        <b>📌 一句话总结：</b>磁聚焦是"平行进 → 同点出"，磁发散是"同点进 → 平行出"。两者互为对偶，都建立在 <span class="highlight">$r=R$ 的菱形几何</span>上。
+    </div>
+</div>
+
+<!-- 动画演示 -->
+<div class="card" id="anim">
+    <h2><span class="num">▶</span>动画演示：会聚与发散的几何</h2>
+    <p>选择模式，观察带电粒子在 <b>圆形磁场</b>（蓝圆，半径 $R$）中的运动。所有轨迹圆半径均取 $r=R$。</p>
+    <div class="anim-wrap">
+        <canvas id="mfdCanvas" width="600" height="440"></canvas>
+        <div class="anim-controls">
+            <button id="btnJu" class="mode-on" onclick="mfdSetMode('ju')">磁聚焦（平行入 → 会聚 $B$）</button>
+            <button id="btnFa" onclick="mfdSetMode('fa')">磁发散（同点入 → 平行出）</button>
+            <button id="btnPlay" onclick="mfdToggle()">⏸ 暂停</button>
+        </div>
+        <div class="anim-readout" id="mfdReadout"></div>
+    </div>
+    <div class="key-point">
+        <b>【观察提示】</b>菱形构造：磁场圆心 $O$、轨迹圆心 $O'$、入射点、出射点四点构成<span class="rhombus-tag">菱形</span>，对边平行 → 出射方向唯一。
+    </div>
+</div>
+
+<div class="footer">
+    © 高中物理 · 磁场专题 · 磁聚焦与磁发散
+</div>
+
+</div>
+
+<script>
+/* 高亮当前目录项 */
+(function () {
+    var links = document.querySelectorAll('.nav a');
+    function update() {
+        var hash = location.hash || '#overview';
+        links.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === hash);
+        });
+    }
+    window.addEventListener('hashchange', update);
+    update();
+})();
+</script>
+
+<script>
+/* 动画：磁聚焦 / 磁发散（$r=R$ 菱形几何） */
+var mfdMode = 'ju', mfdT = 0, mfdPlaying = true;
+(function () {
+    var cv = document.getElementById('mfdCanvas'), ctx = cv.getContext('2d');
+    var W = cv.width, H = cv.height;
+    var cx = W / 2, cy = H / 2 - 6, R = Math.min(W, H) * 0.30;
+    var O = { x: cx, y: cy };
+    var B = { x: cx, y: cy + R };                 // 最低点（磁聚焦会聚点）
+    var P = { x: cx, y: cy - R };                 // 最高点（磁发散入射点）
+    var KL = { x: cx - R * Math.sqrt(3) / 2, y: cy - R / 2 }, KR = { x: cx + R * Math.sqrt(3) / 2, y: cy - R / 2 }; // 轨迹圆心
+    var EL = { x: cx - R * Math.sqrt(3) / 2, y: cy + R / 2 }, ER = { x: cx + R * Math.sqrt(3) / 2, y: cy + R / 2 }; // 出射点
+    var COL = ['#e74c3c', '#2980b9', '#27ae60', '#8e44ad', '#e67e22', '#16a085'];
+
+    function arcPts(C, Rr, a0, a1, n) {
+        var pts = [], da = a1 - a0;
+        while (da > Math.PI) da -= 2 * Math.PI;
+        while (da < -Math.PI) da += 2 * Math.PI;
+        for (var i = 0; i <= n; i++) { var a = a0 + da * i / n; pts.push({ x: C.x + Rr * Math.cos(a), y: C.y + Rr * Math.sin(a) }); }
+        return pts;
+    }
+    function arrow(x1, y1, x2, y2, color, lw) {
+        var head = 9, a = Math.atan2(y2 - y1, x2 - x1);
+        ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = lw || 2.5;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - head * Math.cos(a - Math.PI / 6), y2 - head * Math.sin(a - Math.PI / 6));
+        ctx.lineTo(x2 - head * Math.cos(a + Math.PI / 6), y2 - head * Math.sin(a + Math.PI / 6));
+        ctx.closePath(); ctx.fill();
+    }
+    function field() {
+        ctx.font = '13px sans-serif';
+        for (var gx = 28; gx < W; gx += 46) {
+            for (var gy = 28; gy < H; gy += 46) {
+                ctx.fillStyle = '#aab'; ctx.fillText(mfdMode === 'ju' ? '·' : '×', gx, gy);
+            }
+        }
+    }
+    function dot(c, r, color, dashed, lw) {
+        ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+        ctx.strokeStyle = color; ctx.lineWidth = lw || 1.6; ctx.setLineDash(dashed ? [6, 5] : []); ctx.stroke(); ctx.setLineDash([]);
+        ctx.beginPath(); ctx.arc(c.x, c.y, 3, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+    }
+    function label(t, x, y, color) { ctx.fillStyle = color || '#2c3e50'; ctx.font = 'bold 14px sans-serif'; ctx.fillText(t, x, y); }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H); field();
+        dot(O, R, '#1e3c72', false, 2.2); label('O', cx - 6, cy + 4, '#1e3c72');
+        var prog = mfdT % 1;
+        if (mfdMode === 'ju') {
+            label('B', B.x - 4, B.y + 20, '#5e35b1');
+            for (var k = 0; k < 5; k++) {
+                var alpha = Math.PI * (0.60 + 0.045 * k);
+                var A = { x: cx + R * Math.cos(alpha), y: cy + R * Math.sin(alpha) };
+                var O2 = { x: A.x, y: A.y + R };
+                var a0 = -Math.PI / 2, a1 = Math.atan2(cy - A.y, cx - A.x);
+                var pts = arcPts(O2, R, a0, a1, 60);
+                dot(O2, R, COL[k % COL.length], true, 1.2);
+                ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+                for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+                ctx.strokeStyle = COL[k % COL.length]; ctx.lineWidth = 2; ctx.stroke();
+                arrow(A.x - 34, A.y, A.x - 4, A.y, '#e74c3c', 2);            // 水平入射
+                arrow(B.x, B.y - 2, B.x, B.y + 22, COL[k % COL.length], 2); // 会聚射出
+                var idx = Math.min(pts.length - 1, Math.floor(prog * (pts.length - 1)));
+                ctx.beginPath(); ctx.arc(pts[idx].x, pts[idx].y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = COL[k % COL.length]; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+                label('A', A.x - 16, A.y - 8, '#34495e');
+            }
+        } else {
+            label('P', P.x - 14, P.y - 10, '#f57f17');
+            label('E', EL.x - 14, EL.y + 22, '#00695c'); label('E', ER.x + 6, ER.y + 22, '#00695c');
+            var arcs = [[KL, EL, -Math.PI / 6, Math.PI / 2, '#00695c'], [KR, ER, -5 * Math.PI / 6, Math.PI / 2, '#e67e22']];
+            for (var j = 0; j < arcs.length; j++) {
+                var C = arcs[j][0], E2 = arcs[j][1], a0 = arcs[j][2], a1 = arcs[j][3], col = arcs[j][4];
+                dot(C, R, col, true, 1.2);
+                var pts = arcPts(C, R, a0, a1, 60);
+                ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+                for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+                ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+                arrow(E2.x, E2.y, E2.x + 26, E2.y, col, 2);                 // 水平射出
+                var idx = Math.min(pts.length - 1, Math.floor(prog * (pts.length - 1)));
+                ctx.beginPath(); ctx.arc(pts[idx].x, pts[idx].y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = col; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+            }
+            var dirs = [[-0.5, -1], [0, -1], [0.5, -1], [-0.85, -0.5], [0.85, -0.5]];
+            for (var d = 0; d < dirs.length; d++) {
+                var s = Math.sqrt(dirs[d][0] * dirs[d][0] + dirs[d][1] * dirs[d][1]);
+                var ux = dirs[d][0] / s, uy = dirs[d][1] / s;
+                arrow(P.x - ux * 32, P.y - uy * 32, P.x - ux * 7, P.y - uy * 7, '#e74c3c', 1.8);
+            }
+            label('P', P.x - 14, P.y - 10, '#f57f17');
+        }
+    }
+    function updateReadout() {
+        var el = document.getElementById('mfdReadout');
+        el.innerHTML = mfdMode === 'ju'
+            ? '平行入射的粒子轨迹圆半径均取 $r=R$，各轨迹圆心在入射点正下方。由菱形 $OAO\'B$ 知 $OB \\parallel AO\'$（竖直），所有粒子<b>会聚于最低点 $B$</b>。'
+            : '从同一点 $P$ 各方向入射，轨迹圆半径均取 $r=R$。由菱形 $POO\'E$ 知 $O\'E \\parallel PO$（竖直），故出射速度<b>均水平平行射出</b>。';
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(function () { });
+    }
+    window.mfdSetMode = function (m) {
+        mfdMode = m; mfdT = 0;
+        document.getElementById('btnJu').classList.toggle('mode-on', m === 'ju');
+        document.getElementById('btnFa').classList.toggle('mode-on', m === 'fa');
+        updateReadout();
+    };
+    window.mfdToggle = function () {
+        mfdPlaying = !mfdPlaying;
+        document.getElementById('btnPlay').textContent = mfdPlaying ? '⏸ 暂停' : '▶ 播放';
+    };
+    function loop() { if (mfdPlaying) mfdT += 0.006; draw(); requestAnimationFrame(loop); }
+    updateReadout();
+    loop();
+})();
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

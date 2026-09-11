@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 专题导航</title>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:24px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+h1{font-size:26px;text-align:center;margin-bottom:4px}
+.sub{text-align:center;color:var(--sub);font-size:13px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-decoration:none;color:var(--txt);transition:.2s;display:block}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.card .no{font-size:11px;color:var(--sub)}
+.card .ttl{font-size:15px;font-weight:700;margin:4px 0 6px}
+.card .tag{display:inline-block;font-size:11px;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 8px}
+.backlinks{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.backlinks a{color:var(--accent);text-decoration:none;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:8px 16px;background:var(--card)}
+.backlinks a:hover{border-color:var(--accent)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 0}
+/* 知识脉络 */
+.know{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px}
+.khead{font-size:15px;font-weight:700;color:var(--accent2);margin-bottom:12px}
+.kstep{padding:10px 0 10px 16px;border-left:2px solid var(--line);margin-left:6px}
+.kstep:last-child{border-left-color:transparent;padding-bottom:2px}
+.kno{display:inline-block;font-size:11px;font-weight:700;border-radius:20px;padding:1px 9px;margin-bottom:6px}
+.k1{background:var(--accent2);color:#eef2f7}
+.k2{background:var(--accent);color:#fff}
+.k3{background:#7c5cff;color:#eef2f7}
+.know p{font-size:13.5px;margin-bottom:6px}
+.know p b{color:var(--accent2)}
+.know .knote{color:var(--sub);font-size:12.5px;margin-bottom:7px}
+.know .formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:0 7px}
+.klinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.klinks a{font-size:12.5px;color:var(--txt);text-decoration:none;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:4px 10px;transition:.2s}
+.klinks a:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.card .meta{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:12px;color:var(--sub)}
+.card .stars{letter-spacing:1px;color:var(--warn)}
+.card .time{color:var(--accent2);font-weight:600}
+.tip{background:var(--card);border:1px dashed var(--accent);border-radius:10px;padding:10px 14px;margin:0 0 16px;font-size:13px;color:var(--sub)}
+.tip b{color:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../index.html">← 返回高中物理首页</a>
+    <a href="../高考物理_电学实验闯关.html">闯关总页 →</a>
+  </div>
+  <h1>⚡ 电学实验专题</h1>
+  <div class="sub">高考电学实验全收录 · 电表改装为核心 · 共 14 个实验，点击进入</div>
+  <div class="know">
+    <div class="khead">🧭 知识脉络 · 从伏安法到电表改装</div>
+
+    <div class="kstep">
+      <div class="kno k1">起点</div>
+      <p><b>伏安法</b>是最基本的实验方法：用<b>电流表</b>串在电路中测电流 <span class="formula">I</span>，用<b>电压表</b>并在待测元件两端测电压 <span class="formula">U</span>，再由 <span class="formula">R = U / I</span> 求电阻。一句话：<b>一块电流表 + 一块电压表，就是全部起点。</b></p>
+      <p class="knote">这一个方法直接撑起了高考的四个实验：</p>
+      <div class="klinks">
+        <a href="05_伏安法测电阻.html">📏 测电阻（内接 / 外接）</a>
+        <a href="10_测量金属丝电阻率.html">🧵 测电阻丝的电阻率</a>
+        <a href="09_描绘小灯泡伏安特性曲线.html">💡 描绘小灯泡伏安特性曲线</a>
+        <a href="08_测定电源电动势和内阻.html">🔋 测量电源电动势和内阻</a>
+      </div>
+    </div>
+
+    <div class="kstep">
+      <div class="kno k2">进化</div>
+      <p>在此基础上开始进化：<b>如果实验器材缺一个电流表，或缺一个电压表，怎么办？</b></p>
+      <p>答案之一：用<b>安安法</b>或<b>伏伏法</b>，把已知内阻的电表“兼职”成另一种表；也可以用<b>等效替代法</b>，用电阻箱直接替换待测电阻，使电路效果相同。点击进入 <a href="12_安安法与伏伏法测电阻.html" style="color:var(--accent);text-decoration:none;font-weight:700;">🔄 安安法 · 伏伏法 · 等效法</a>。</p>
+      <p>答案之二：<b>自己造一块表</b> —— 这就引出了<b>电表的改装</b>：给表头 G 串（或并）上一个定值电阻，把它变成你需要的那块表。<br>
+      · 串大电阻<b>分压</b> → 造出<b>电压表</b>；<br>
+      · 并小电阻<b>分流</b> → 造出<b>大量程电流表</b>。</p>
+      <p class="knote">对应关卡：第 1 ~ 3 关（认识表头、改装电压表、改装电流表）+ 第 4 关（半偏法先测出表头内阻）。测不了的量，就先用改装补上。</p>
+      <div class="klinks">
+        <a href="01_认识表头G改装基础.html">🎛️ 认识表头 G</a>
+        <a href="02_改装成电压表.html">🔗 改装成电压表</a>
+        <a href="03_改装成大量程电流表.html">🔀 改装成电流表</a>
+        <a href="04_半偏法测表头内阻.html">🎯 半偏法测内阻</a>
+      </div>
+    </div>
+
+    <div class="kstep">
+      <div class="kno k3">根基</div>
+      <p><b>电表改装，改装的是表头。</b>表头指针之所以会偏转，本质上是<b>通电线圈在磁场中受到安培力的作用</b>：电流越大，安培力越大，指针<b>偏转越多</b>。</p>
+      <p>所以表头的一切都围绕"电流"展开：<br>
+      · <b>满偏电流 I<sub>g</sub></b>：偏转到满刻度所需的电流，只有<b>几十 ~ 几百 μA</b>；<br>
+      · <b>内阻 R<sub>g</sub></b>：线圈自身的电阻，一般<b>几十欧姆</b>；<br>
+      · <b>满偏电压 U<sub>g</sub> = I<sub>g</sub>·R<sub>g</sub></b>：通常只有<b>毫伏级</b>。</p>
+      <p class="knote">表头能承受的电流和电压都极小，这正是它必须被"改装"才能上考场的根本原因。</p>
+    </div>
+  </div>
+  <div class="tip">📌 <b>推荐学习顺序</b>：先攻克电表改装四关（①表头 → ②电压表 → ③电流表 → ④半偏法测内阻），这是全模块根基；再回到伏安法应用（⑤测电阻 → ⑥限流/分压 → ⑦多用电表 → ⑧测电源 → ⑨小灯泡 → ⑩金属丝电阻率 → ⑪电桥），然后学习⑫安安法·伏伏法·等效法等缺表替代方法，最后深入⑬⑭电表改装子专题（模型学习 + 基础巩固 + 拔高练习）。卡片上的 ⭐ 表示难度，用时为建议精做时长。</div>
+  <div class="grid">
+    <a class="card" href="01_认识表头G改装基础.html"><div class="no">第 1 关 · 1 / 14</div><div class="ttl">认识表头 G（改装基础）</div><div class="tag">Ig · Rg · Ug</div><div class="meta"><span class="stars">⭐</span><span class="time">约 8 分钟</span></div></a>
+    <a class="card" href="02_改装成电压表.html"><div class="no">第 2 关 · 2 / 14</div><div class="ttl">改装成电压表（串联分压）</div><div class="tag">R=(n−1)Rg</div><div class="meta"><span class="stars">⭐⭐</span><span class="time">约 12 分钟</span></div></a>
+    <a class="card" href="03_改装成大量程电流表.html"><div class="no">第 3 关 · 3 / 14</div><div class="ttl">改装成大量程电流表（并联分流）</div><div class="tag">R=Rg/(n−1)</div><div class="meta"><span class="stars">⭐⭐</span><span class="time">约 12 分钟</span></div></a>
+    <a class="card" href="04_半偏法测表头内阻.html"><div class="no">第 4 关 · 4 / 14</div><div class="ttl">半偏法测表头内阻</div><div class="tag">误差分析</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 15 分钟</span></div></a>
+    <a class="card" href="05_伏安法测电阻.html"><div class="no">第 5 关 · 5 / 14</div><div class="ttl">伏安法测电阻（内接/外接）</div><div class="tag">内外接判断</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 18 分钟</span></div></a>
+    <a class="card" href="06_滑动变阻器限流分压.html"><div class="no">第 6 关 · 6 / 14</div><div class="ttl">滑动变阻器：限流 vs 分压</div><div class="tag">电路设计</div><div class="meta"><span class="stars">⭐⭐</span><span class="time">约 12 分钟</span></div></a>
+    <a class="card" href="07_多用电表欧姆表.html"><div class="no">第 7 关 · 7 / 14</div><div class="ttl">多用电表（欧姆表）</div><div class="tag">调零 · 中值电阻</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 18 分钟</span></div></a>
+    <a class="card" href="08_测定电源电动势和内阻.html"><div class="no">第 8 关 · 8 / 14</div><div class="ttl">测定电源电动势和内阻</div><div class="tag">U−I 图像</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 18 分钟</span></div></a>
+    <a class="card" href="09_描绘小灯泡伏安特性曲线.html"><div class="no">第 9 关 · 9 / 14</div><div class="ttl">描绘小灯泡伏安特性曲线</div><div class="tag">分压 + 外接</div><div class="meta"><span class="stars">⭐⭐</span><span class="time">约 14 分钟</span></div></a>
+    <a class="card" href="10_测量金属丝电阻率.html"><div class="no">第 10 关 · 10 / 14</div><div class="ttl">测量金属丝的电阻率</div><div class="tag">螺旋测微器 · 读数</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 16 分钟</span></div></a>
+    <a class="card" href="11_电桥测电阻.html"><div class="no">第 11 关 · 11 / 14</div><div class="ttl">电桥法测电阻（惠斯通电桥）</div><div class="tag">桥路平衡 · 高精度</div><div class="meta"><span class="stars">⭐⭐⭐⭐</span><span class="time">约 20 分钟</span></div></a>
+    <a class="card" href="12_安安法与伏伏法测电阻.html"><div class="no">第 12 关 · 12 / 14</div><div class="ttl">安安法、伏伏法与等效法测电阻</div><div class="tag">缺表替代 · 等效替代</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 18 分钟</span></div></a>
+    <a class="card" href="电表的改装（一）/index.html"><div class="no">第 13 关 · 13 / 14</div><div class="ttl">电表的改装（一）</div><div class="tag">电流表 · 电压表改装</div><div class="meta"><span class="stars">⭐⭐</span><span class="time">约 130 分钟</span></div></a>
+    <a class="card" href="电表的改装（二）/index.html"><div class="no">第 14 关 · 14 / 14</div><div class="ttl">电表的改装（二）</div><div class="tag">欧姆表 · 多用电表</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 140 分钟</span></div></a>
+  </div>
+
+  <div class="backlinks">
+    <a href="../高考物理_电学实验闯关.html">🎮 闯关模式（带进度保存）</a>
+    <a href="../力学实验/index.html">🧪 力学实验专题</a>
+  </div>
+  <div class="footer">每个实验独立成页，含原理（内嵌电路图）、闯关练习与高考真题</div>
+</div>
+<script src="../nav.js"></script>
+</body>
+</html>

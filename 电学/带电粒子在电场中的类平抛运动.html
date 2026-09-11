@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>带电粒子在电场中的类平抛运动 · 静电场闯关</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        /* 概念型公式（纯文本/流程图，不走 MathJax） */
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    
+.level-nav a {
+  width: 100%; text-align: left; background: #f0f4f8; color: #34495e;
+  border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5; border-radius: 8px;
+  padding: 8px 12px; cursor: pointer; font-size: 0.86em; transition: all 0.25s;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; text-decoration: none;
+}
+.level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+.level-nav a.active { background: #fff3cd; color: #5d4037; border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25); }
+.level-nav a.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+.level-nav a.done.active { background: #fff3cd; }
+.btn.disabled { opacity: 0.4; pointer-events: none; }
+
+.method-card { background:#fff; border-radius:14px; padding:22px; margin:20px 0; box-shadow:0 3px 14px rgba(0,0,0,0.07); border-left:5px solid #3a7bd5; }
+.method-card h2 { color:#1e3c72; font-size:1.35em; margin-bottom:12px; }
+.method-card h3 { color:#2a5298; font-size:1.1em; margin:16px 0 8px; }
+.method-card p, .method-card li { color:#2c3e50; line-height:1.8; }
+.method-card ul { padding-left:22px; }
+.method-card li { margin-bottom:8px; }
+figure { margin:16px 0; text-align:center; }
+figure img { max-width:100%; border:1px solid #e0e6ed; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.06); background:#fff; }
+figcaption { color:#5a6b7c; font-size:0.9em; margin-top:8px; }
+.conclusion { background:#f0f6ff; border-left:4px solid #3a7bd5; padding:12px 16px; margin:12px 0; border-radius:0 10px 10px 0; }
+.conclusion strong { color:#1e3c72; }
+</style>
+</head>
+<body>
+<div class="header"><h1>🏆 高考物理 · 静电场闯关</h1><p>模型专题 · 带电粒子在电场中的类平抛运动</p></div>
+<div class="side-nav"><div class="side-title">🗂 知识点导航</div><div class="level-nav">
+<a class="level-link" href="index.html">📑 目录</a>
+<a class="level-link" href="库仑定律.html">考点01 · 库仑定律</a>
+<a class="level-link" href="电场强度.html">考点02 · 电场强度</a>
+<a class="level-link" href="电场线与典型电场.html">考点03 · 电场线与典型电场</a>
+<a class="level-link" href="电势与电势能.html">考点04 · 电势与电势能</a>
+<a class="level-link" href="电场力做功与电势差.html">考点05 · 电场力做功与电势差</a>
+<a class="level-link" href="匀强电场 U = Ed.html">考点06 · 匀强电场 U = Ed</a>
+<a class="level-link" href="静电平衡与电容器.html">考点07 · 静电平衡与电容器</a>
+<a class="level-link" href="带电粒子在电场中的运动.html">考点08 · 带电粒子在电场中的运动</a>
+<a class="level-link" href="静电场中的图象问题.html">考点09 · 静电场中的图象问题</a>
+<a class="level-link" href="静电场综合与真题演练.html">考点10 · 静电场综合与真题演练</a>
+<a class="level-link" href="轨迹线电场线等势线三线问题.html">方法 · 轨迹线、电场线、等势线</a>
+<a class="level-link" href="等分法正交分解法巧解电场强度.html">方法 · 等分法、正交分解法</a>
+<a class="level-link" href="电场中常见的图像.html">方法 · 电场中常见的图像</a>
+<a class="level-link" href="非点电荷电场强度的计算.html">方法 · 非点电荷电场强度</a>
+<a class="level-link active" href="带电粒子在电场中的类平抛运动.html">模型 · 类平抛运动</a>
+<a class="level-link" href="库仑力作用下电荷的平衡及加速问题.html">模型 · 库仑力平衡与加速</a>
+<a class="level-link" href="两点电荷电场的特点.html">方法 · 两点电荷电场特点</a>
+</div></div>
+<div class="container" id="container">
+<div class="level active" id="lv-method">
+  <div class="level-head">
+    <span class="level-badge">模型专题 · 类平抛运动</span>
+    <h2>带电粒子在电场中的类平抛运动</h2>
+  </div>
+  <p class="level-intro">带电粒子以初速度 $v_0$ 垂直电场强度方向进入匀强电场时，在电场力作用下做类平抛运动。本章将运动分解为两个方向，导出偏转量、偏转角及三个重要结论。</p>
+
+  <div class="formula-box">
+    <div class="ftitle">📘 核心思路</div>
+    <div class="formula-text">沿初速度方向：匀速直线运动；沿电场力方向：初速度为零的匀加速直线运动。</div>
+    <div class="formula-note">处理方法：运动的合成与分解。</div>
+  </div>
+
+  <figure>
+    <img src="images/S09_类平抛运动.png" alt="带电粒子在电场中的类平抛运动">
+    <figcaption>带电粒子垂直进入匀强电场，做类平抛运动</figcaption>
+  </figure>
+
+  <div class="method-card">
+    <h2>一、基本关系式</h2>
+    <p>设平行板长度为 $l$，板间距为 $d$，偏转电压为 $U$，粒子质量为 $m$，电荷量为 $q$，初速度 $v_0$ 垂直电场方向入射。</p>
+    <div class="formula-box">
+      <div class="formula-text">$$t=\frac{l}{v_0}$$</div>
+      <div class="formula-note">运动时间（沿初速度方向为匀速直线运动）</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-text">$$a=\frac{F}{m}=\frac{qE}{m}=\frac{qU}{md}$$</div>
+      <div class="formula-note">沿电场力方向的加速度</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-text">$$y=\frac{1}{2}at^2=\frac{qUl^2}{2mdv_0^2}$$</div>
+      <div class="formula-note">偏转量（沿电场方向的位移）</div>
+    </div>
+    <div class="formula-box">
+      <div class="formula-text">$$\tan\theta=\frac{v_y}{v_0}=\frac{at}{v_0}=\frac{qUl}{mdv_0^2}=\frac{2y}{l}$$</div>
+      <div class="formula-note">速度偏转角 $\theta$ 的正切值</div>
+    </div>
+  </div>
+
+  <div class="method-card">
+    <h2>二、三个重要推论</h2>
+
+    <h3>推论1：速度的反向延长线过水平位移中点</h3>
+    <p>粒子从偏转电场中射出时，其速度方向的反向延长线与初速度方向的延长线交于一点，该点恰为粒子沿初速度方向位移的中点。</p>
+    <div class="conclusion">
+      <strong>证明</strong>：由 $\tan\theta=\dfrac{y}{x}$、$y=\dfrac{1}{2}at^2$ 和 $x=v_0t=l$ 可得 $x=\dfrac{l}{2}$。因此 O 点是水平位移的中点，即粒子好像是从两极板间 $\dfrac{l}{2}$ 处沿直线射出。
+    </div>
+
+    <h3>推论2：位移角正切等于速度角正切的一半</h3>
+    <div class="formula-box">
+      <div class="formula-text">$$\tan\alpha=\frac{1}{2}\tan\theta$$</div>
+      <div class="formula-note">$\alpha$ 为位移方向与初速度方向的夹角。</div>
+    </div>
+
+    <h3>推论3：同一加速电场后再经同一偏转电场，轨迹重合</h3>
+    <p>不同的带电粒子（电性相同，初速度为零），先经同一加速电场（电压 $U_{加}$）加速，再进入同一偏转电场（电压 $U_{偏}$），它们的运动轨迹必定重合。</p>
+    <div class="conclusion">
+      <strong>证明</strong>：经加速后有 $qU_{加}=\dfrac{1}{2}mv_0^2$。代入偏转量与偏转角公式得：
+      $$y=\frac{U_{偏}l^2}{4dU_{加}},\qquad \tan\theta=\frac{U_{偏}l}{2dU_{加}}$$
+      可见 $y$ 和 $\theta$ 只与 $U_{加}$、$U_{偏}$ 有关，与 $q$、$m$ 无关，故轨迹重合。
+    </div>
+  </div>
+
+  <div class="method-card">
+    <h2>三、功能关系</h2>
+    <p>带电粒子的末速度 $v$ 也可从能量角度求解：</p>
+    <div class="formula-box">
+      <div class="formula-text">$$qU_y=\frac{1}{2}mv^2-\frac{1}{2}mv_0^2$$</div>
+      <div class="formula-note">其中 $U_y=E\cdot y=\dfrac{U}{d}y$，为初、末位置间的电势差。</div>
+    </div>
+  </div>
+
+  <div class="method-card" style="border-left-color:#27ae60;">
+    <h2>📝 解题方法总结</h2>
+    <ul>
+      <li><strong>正交分解</strong>：把运动分解为沿 $v_0$ 的匀速直线运动和沿电场力方向的匀加速直线运动。</li>
+      <li><strong>分运动独立</strong>：水平方向 $x=v_0t$，竖直方向 $y=\frac{1}{2}at^2$、$v_y=at$。</li>
+      <li><strong>灵活选用结论</strong>：$\tan\theta=\dfrac{2y}{l}$、$\tan\alpha=\dfrac{1}{2}\tan\theta$、速度反向延长线过中点。</li>
+      <li><strong>能量观点</strong>：用 $qU_y=\Delta E_k$ 求末速度大小。</li>
+    </ul>
+  </div>
+
+  <div class="level-actions"><a class="btn" href="非点电荷电场强度的计算.html">← 上一关</a><span id="status14"></span><a class="btn btn-next" href="库仑力作用下电荷的平衡及加速问题.html">下一关 →</a></div>
+</div>
+</div>
+<div class="footer">📚 高考物理静电场专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！</div>
+</body>
+</html>

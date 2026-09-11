@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 磁场基础知识</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .danger {
+            background: #ffebee;
+            border-left: 4px solid #e74c3c;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 90px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: fixed;
+            top: 120px; left: 18px;
+            width: 150px;
+            z-index: 100;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 14px 10px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+        .nav .nav-title {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.78em; letter-spacing: 1px;
+            padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 8px;
+        }
+        .nav a {
+            display: block;
+            color: white; text-decoration: none;
+            margin: 2px 0; font-size: 0.9em;
+            padding: 7px 10px; border-radius: 6px;
+            transition: background 0.25s;
+            border-left: 3px solid transparent;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active {
+            background: rgba(58,123,213,0.55);
+            border-left: 3px solid #7eb6ff;
+            font-weight: 600;
+        }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-readout {
+            margin-top: 10px; font-size: 0.92em; color: #34495e;
+        }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .compare-table td:first-child { font-weight: 600; color: #1e3c72; }
+        @media (max-width: 900px) {
+            .nav {
+                position: static;
+                width: auto; top: 0; left: 0;
+                max-height: none;
+                border-radius: 0;
+                display: flex; flex-wrap: wrap; justify-content: center;
+                padding: 10px; margin-bottom: 4px;
+            }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧲 磁场 · 基础知识</h1>
+    <p>高中物理核心概念 · 公式 · 定则 · 例题 · 互动练习</p>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">知识框架</a>
+    <a href="#concept">磁场概念</a>
+    <a href="#lines">磁感线</a>
+    <a href="#intensity">磁感应强度</a>
+    <a href="#flux">磁通量</a>
+    <a href="#ampere">安培力</a>
+    <a href="#lorentz">洛伦兹力</a>
+    <a href="#rules">左右手定则</a>
+    <a href="#calc">计算练习</a>
+    <a href="#gaokao">高考刷题</a>
+    <a href="#anim">动画演示</a>
+</nav>
+
+<div class="container">
+
+<!-- 子页面入口 -->
+<div class="card" style="border-left-color:#764ba2; background:linear-gradient(135deg,#f7f5ff,#eef2ff);">
+    <h2 style="border-bottom:none; color:#5a3e9e;"><span class="num" style="background:#764ba2;">▶</span>专题子页面</h2>
+    <p style="margin-bottom:14px;">磁场内容较多，已拆分为以下十个专题子页面，点击进入深度学习：</p>
+    <div class="mindmap">
+        <a class="node" href="高中物理_磁场_楞次定律与安培力.html" style="text-decoration:none;">楞次定律与安培力<small>电磁感应 · 楞次定律 · 安培力</small></a>
+        <a class="node" href="高中物理_磁场_单棒切割.html" style="text-decoration:none;">单棒切割磁感线<small>平动/转动切割 · 收尾速度 · 能量</small></a>
+        <a class="node" href="高中物理_磁场_双棒切割.html" style="text-decoration:none;">双棒切割磁感线<small>相对速度 · 动量守恒 · 共速</small></a>
+        <a class="node" href="高中物理_磁场_带电粒子在磁场中的运动.html" style="text-decoration:none;">粒子在磁场中运动<small>洛伦兹力 · 圆周运动 · 临界</small></a>
+        <a class="node" href="高中物理_磁场_磁场中的圆.html" style="text-decoration:none;">磁场中的圆<small>放缩圆 · 旋转圆 · 临界方法</small></a>
+        <a class="node" href="高中物理_磁场_磁场圆圆心确定.html" style="text-decoration:none;">磁场圆圆心确定<small>找圆心 · 双速度垂线 · 弦中垂线</small></a>
+        <a class="node" href="高中物理_磁场_磁聚焦与磁发散.html" style="text-decoration:none;">磁聚焦与磁发散<small>圆形磁场 · 菱形构造 · 方向过滤</small></a>
+        <a class="node" href="高中物理_磁场_带电粒子在复合场中的运动.html" style="text-decoration:none;">粒子在复合场中运动<small>组合场 · 叠加场 · 质谱仪/回旋加速器</small></a>
+        <a class="node" href="高中物理_磁场_洛伦兹力作用下带电体的运动.html" style="text-decoration:none;">洛伦兹力下带电体运动<small>变加速 · 弹力临界 · 杆约束</small></a>
+        <a class="node" href="高中物理_磁场_最小面积问题.html" style="text-decoration:none;">磁场的最小面积问题<small>圆形/边界 · 最小区域 · 几何</small></a>
+        <a class="node" href="高中物理_磁场_质谱仪与回旋加速器.html" style="text-decoration:none;">质谱仪与回旋加速器<small>复合场应用 · 比荷 · 最大动能</small></a>
+    </div>
+</div>
+
+<!-- 知识框架 -->
+<div class="toc" id="overview">
+    <h2>📚 知识框架（思维导图）</h2>
+    <div class="mindmap">
+        <div class="node">磁场<small>磁体 / 电流周围的特殊物质</small></div>
+        <div class="node">磁感线<small>闭合曲线 · 疏密表强弱</small></div>
+        <div class="node">磁感应强度 B<small>矢量 · 反映磁场强弱</small></div>
+        <div class="node">磁通量 Φ<small>B·S·cosθ</small></div>
+        <div class="node">安培力<small>BIL·sinθ</small></div>
+        <div class="node">洛伦兹力<small>qvB·sinθ</small></div>
+    </div>
+    <h3>本章学习路径：</h3>
+    <ol>
+        <li><a href="#concept">磁场的概念</a> — 磁场是什么、基本性质</li>
+        <li><a href="#lines">磁感线</a> — 形象描述磁场、常见磁场分布</li>
+        <li><a href="#intensity">磁感应强度</a> — 定义式与方向</li>
+        <li><a href="#flux">磁通量</a> — 穿过面的磁感线条数</li>
+        <li><a href="#ampere">安培力</a> — 通电导线在磁场中受力</li>
+        <li><a href="#lorentz">洛伦兹力</a> — 运动电荷在磁场中受力</li>
+        <li><a href="#rules">左手定则 / 右手定则</a> — 判断方向</li>
+        <li><a href="#calc">互动计算</a> — 动手验证公式</li>
+    </ol>
+</div>
+
+<!-- 1. 磁场概念 -->
+<div class="card" id="concept">
+    <h2><span class="num">1</span>磁场的概念</h2>
+
+    <h3>什么是磁场</h3>
+    <p>磁场是存在于<span class="highlight">磁体、电流和运动电荷</span>周围的一种特殊物质。它对放入其中的磁体、电流（通电导线）和运动电荷会产生<span class="highlight">力的作用</span>。</p>
+
+    <div class="key-point">
+        <b>📌 磁场的基本性质：</b>
+        <ul style="padding-left:25px; margin:8px 0;">
+            <li>对放入其中的磁体有力的作用（同名磁极相斥，异名磁极相吸）。</li>
+            <li>对通电导线有力的作用（安培力）。</li>
+            <li>对运动电荷有力的作用（洛伦兹力）。</li>
+        </ul>
+    </div>
+
+    <h3>磁场的方向</h3>
+    <p>规定：在磁场中某点，小磁针<span class="highlight">静止时 N 极所指的方向</span>，就是该点的磁场方向，也就是该点磁感应强度的方向。</p>
+
+    <div class="warn">
+        <b>⚠️ 注意：</b>磁感线是为了形象描述磁场而假想的曲线，<b>并非真实存在</b>。而磁场本身是客观存在的物质。
+    </div>
+</div>
+
+<!-- 2. 磁感线 -->
+<div class="card" id="lines">
+    <h2><span class="num">2</span>磁感线</h2>
+
+    <h3>定义与特点</h3>
+    <p>在磁场中画一些有方向的曲线，曲线上每一点的<span class="highlight">切线方向</span>都跟该点的磁场方向一致，这样的曲线叫磁感线。</p>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>磁感线是为了形象描述磁场而假想的曲线，<b>并非真实存在</b>。</li>
+        <li>磁感线在磁体外部从 <b>N 极指向 S 极</b>，在磁体内部从 <b>S 极指向 N 极</b>，形成<span class="highlight">闭合曲线</span>。</li>
+        <li>磁感线的<span class="highlight">疏密</span>表示磁场的强弱：越密磁场越强。</li>
+        <li>磁感线<span class="highlight">不相交、不相切</span>。</li>
+    </ul>
+
+    <h3>常见磁场的磁感线分布</h3>
+    <table>
+        <tr><th>磁场类型</th><th>磁感线分布特征</th></tr>
+        <tr><td>条形 / 蹄形磁体</td><td>外部从 N 极出发回到 S 极，两端密、中间疏</td></tr>
+        <tr><td>直线电流</td><td>以导线为圆心的<b>同心圆</b>，环绕方向用右手螺旋定则判断</td></tr>
+        <tr><td>环形电流</td><td>类似小磁针，中心轴线上磁场沿轴线方向</td></tr>
+        <tr><td>通电螺线管</td><td>内部近似<b>匀强磁场</b>，外部同条形磁体</td></tr>
+        <tr><td>匀强磁场</td><td>平行、等距、同向的<b>直线</b>，B 处处相同</td></tr>
+    </table>
+
+    <div class="key-point">
+        <b>📌 右手螺旋定则（安培定则）：</b>用于判断电流产生的磁场方向。
+        <ul style="padding-left:25px; margin:8px 0;">
+            <li><b>直线电流</b>：右手握住导线，大拇指指向电流方向，四指弯曲方向即磁感线环绕方向。</li>
+            <li><b>环形 / 螺线管电流</b>：四指指向电流方向，大拇指指向内部磁场（N 极）方向。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 3. 磁感应强度 -->
+<div class="card" id="intensity">
+    <h2><span class="num">3</span>磁感应强度 B</h2>
+
+    <h3>定义</h3>
+    <p>在磁场中垂直于磁场方向的通电导线，所受的<span class="highlight">安培力 F</span> 与<span class="highlight">电流 I</span> 和<span class="highlight">导线长度 L</span> 乘积的比值，叫做磁感应强度。</p>
+
+    <div class="formula">$$B = \frac{F}{IL}$$</div>
+    <p>其中：</p>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li><b>$B$</b>：磁感应强度（T，特斯拉）</li>
+        <li><b>$F$</b>：通电导线受到的安培力（N）</li>
+        <li><b>$I$</b>：电流强度（A）</li>
+        <li><b>$L$</b>：导线在磁场中的长度（m），且导线必须<span class="highlight">垂直于磁场方向</span></li>
+    </ul>
+
+    <h3>方向与物理意义</h3>
+    <p>$B$ 是<span class="highlight">矢量</span>，方向就是该点的磁场方向（小磁针 N 极受力方向）。$B$ 的大小反映了磁场的强弱。</p>
+
+    <div class="warn">
+        <b>⚠️ 易错点：</b>$B$ 由磁场本身决定，与放入的导线、电流大小 <b>无关</b>。$B=\frac{F}{IL}$ 是定义式、比值定义法，不能说 $B$ 与 $F$ 成正比、与 $IL$ 成反比。
+    </div>
+
+    <div class="key-point">
+        <b>📌 常见数量级：</b>地磁场约 $5\times10^{-5}\,\text{T}$；电动机、变压器铁芯中约 $1\,\text{T}$；超导强磁场可达 $10\,\text{T}$ 以上。
+    </div>
+</div>
+
+<!-- 4. 磁通量 -->
+<div class="card" id="flux">
+    <h2><span class="num">4</span>磁通量 Φ</h2>
+
+    <h3>定义</h3>
+    <p>穿过某一面积的<span class="highlight">磁感线条数</span>，叫做穿过这个面积的磁通量。定量上，当面积 $S$ 与磁场方向夹角为 $\theta$ 时：</p>
+
+    <div class="formula">$$\Phi = B S \cos\theta$$</div>
+    <p>其中 $\theta$ 是<span class="highlight">磁场方向与平面法线</span>的夹角。</p>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>单位：<b>韦伯（Wb）</b>，$1\,\text{Wb}=1\,\text{T}\cdot\text{m}^2$</li>
+        <li>当平面<span class="highlight">与磁场垂直</span>时（$\theta=0^\circ$），$\Phi = BS$，最大。</li>
+        <li>当平面<span class="highlight">与磁场平行</span>时（$\theta=90^\circ$），$\Phi = 0$，最小。</li>
+    </ul>
+
+    <div class="key-point">
+        <b>📌 磁通量变化：</b>$\Delta\Phi \neq 0$ 是电磁感应（法拉第电磁感应定律）产生感应电流的条件。磁通量变化可由 $B$、$S$、$\theta$ 中任一量改变引起。
+    </div>
+</div>
+
+<!-- 5. 安培力 -->
+<div class="card" id="ampere">
+    <h2><span class="num">5</span>安培力（通电导线在磁场中受力）</h2>
+
+    <h3>大小</h3>
+    <p>通电导线与磁场方向夹角为 $\theta$ 时，所受安培力大小为：</p>
+    <div class="formula">$$F = B I L \sin\theta$$</div>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>导线<span class="highlight">垂直于磁场</span>时（$\theta=90^\circ$）：$F = BIL$，最大。</li>
+        <li>导线<span class="highlight">平行于磁场</span>时（$\theta=0^\circ$）：$F = 0$，不受力。</li>
+    </ul>
+
+    <h3>方向 —— 左手定则</h3>
+    <p>伸开左手，使拇指与其余四指垂直，并且都与手掌在同一平面内；让<span class="highlight">磁感线穿入手心</span>，并使<span class="highlight">四指指向电流方向</span>，这时<span class="highlight">拇指所指的方向</span>就是通电导线在磁场中所受安培力的方向。</p>
+
+    <div class="danger">
+        <b>⚠️ 关键：</b>安培力方向一定<span class="highlight">垂直于 B 与 I 所决定的平面</span>，即 $F \perp B$ 且 $F \perp I$。
+    </div>
+
+    <h3>例题</h3>
+    <div class="example">
+        <div class="q">【例 1】在匀强磁场 $B=0.5\,\text{T}$ 中，有一段长 $L=0.4\,\text{m}$ 的通电直导线垂直于磁场放置，电流 $I=2\,\text{A}$。求导线受到的安培力大小。</div>
+        <div class="a">
+            <div class="step">解：导线垂直于磁场，$\theta = 90^\circ$，$\sin\theta = 1$。</div>
+            <div class="step">$F = BIL = 0.5 \times 2 \times 0.4 = 0.4\,\text{N}$。</div>
+            <div class="step">方向由左手定则判断，垂直于导线与磁场所在平面。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 6. 洛伦兹力 -->
+<div class="card" id="lorentz">
+    <h2><span class="num">6</span>洛伦兹力（运动电荷在磁场中受力）</h2>
+
+    <h3>大小</h3>
+    <p>电荷量为 $q$ 的粒子以速度 $v$ 进入磁感应强度为 $B$ 的磁场，当速度与磁场夹角为 $\theta$ 时：</p>
+    <div class="formula">$$f = q v B \sin\theta$$</div>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>$v \perp B$（$\theta=90^\circ$）：$f = qvB$，最大，粒子做<span class="highlight">匀速圆周运动</span>。</li>
+        <li>$v \parallel B$（$\theta=0^\circ$）：$f = 0$，粒子<span class="highlight">不受力</span>，做匀速直线运动。</li>
+    </ul>
+
+    <h3>方向 —— 左手定则（注意！）</h3>
+    <p>伸开左手，让<span class="highlight">磁感线穿入手心</span>，四指指向<span class="highlight">正电荷运动方向</span>（若是负电荷，则四指指向其运动的<span class="highlight">反方向</span>），拇指所指方向即洛伦兹力方向。</p>
+
+    <div class="danger">
+        <b>⚠️ 负电荷方向：</b>四指要指向负电荷运动的<b>反方向</b>！洛伦兹力永远不做功（始终垂直于速度方向），只改变速度<b>方向</b>，不改变速度<b>大小</b>。
+    </div>
+
+    <h3>带电粒子在匀强磁场中的圆周运动（$v \perp B$）</h3>
+    <p>洛伦兹力提供向心力：</p>
+    <div class="formula">$$q v B = m \frac{v^2}{r}$$</div>
+    <p>由此可得：</p>
+    <div class="formula">$$r = \frac{mv}{qB} \quad\quad T = \frac{2\pi m}{qB}$$</div>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li><b>半径 $r$</b>：动量越大、磁场越弱，半径越大。</li>
+        <li><b>周期 $T$</b>：与速度 $v$ 和半径 $r$ <span class="highlight">无关</span>，只由 $\frac{m}{q}$ 和 $B$ 决定。</li>
+    </ul>
+
+    <h3>例题</h3>
+    <div class="example">
+        <div class="q">【例 2】一个质子（电荷量 $e=1.6\times10^{-19}\,\text{C}$，质量 $m=1.67\times10^{-27}\,\text{kg}$）以 $v=10^6\,\text{m/s}$ 垂直进入 $B=0.1\,\text{T}$ 的匀强磁场，求圆周运动半径。</div>
+        <div class="a">
+            <div class="step">解：$r = \dfrac{mv}{qB}$</div>
+            <div class="step">$r = \dfrac{1.67\times10^{-27}\times10^6}{1.6\times10^{-19}\times0.1} \approx \dfrac{1.67\times10^{-21}}{1.6\times10^{-20}} \approx 0.104\,\text{m}$</div>
+        </div>
+    </div>
+</div>
+
+<!-- 7. 左右手定则对比 -->
+<div class="card" id="rules">
+    <h2><span class="num">7</span>左手定则 与 右手定则（必考区分）</h2>
+
+    <table class="compare-table">
+        <tr><th>对比项</th><th>左手定则</th><th>右手定则</th></tr>
+        <tr><td>用途</td><td>判断<b>安培力 / 洛伦兹力</b>方向（电动机原理）</td><td>判断<b>感应电流</b>方向（发电机原理）</td></tr>
+        <tr><td>适用情境</td><td>通电导线 / 运动电荷在磁场中受力</td><td>导体切割磁感线产生感应电流</td></tr>
+        <tr><td>四指指向</td><td>电流方向 / 正电荷运动方向</td><td>导体切割磁感线的运动方向</td></tr>
+        <tr><td>拇指指向</td><td>受力方向</td><td>感应电流方向</td></tr>
+        <tr><td>记忆口诀</td><td><b>"左力右电"</b>——左手力，右手电</td><td><b>"左力右电"</b></td></tr>
+    </table>
+
+    <div class="key-point">
+        <b>📌 记忆口诀：</b><span class="highlight">"左力右电"</span>——<b>左手管力（受力），右手管电（发电 / 感应电流）</b>。右手螺旋定则（安培定则）则是判断<b>电流产生磁场</b>方向，注意与前两者区分。
+    </div>
+
+    <h3>三个"右手/左手"速查</h3>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li><b>右手螺旋定则（安培定则）</b>：电流 → 磁场方向。</li>
+        <li><b>左手定则</b>：磁场 + 电流/运动电荷 → 受力方向。</li>
+        <li><b>右手定则</b>：磁场 + 切割运动 → 感应电流方向。</li>
+    </ul>
+</div>
+
+<!-- 互动计算 -->
+<div class="card" id="calc">
+    <h2><span class="num">8</span>互动计算练习</h2>
+
+    <h3>① 安培力计算器</h3>
+    <div class="interactive">
+        <div>
+            <label>磁感应强度 B (T)：<input type="number" id="ampB" value="0.5" step="0.1"></label>
+            <label>电流 I (A)：<input type="number" id="ampI" value="2" step="0.1"></label>
+            <label>长度 L (m)：<input type="number" id="ampL" value="0.4" step="0.1"></label>
+            <label>夹角 θ (°)：<input type="number" id="ampT" value="90" step="1"></label>
+        </div>
+        <button onclick="calcAmp()">计算安培力</button>
+        <div class="result" id="ampRes"></div>
+    </div>
+
+    <h3>② 洛伦兹力 / 半径计算器</h3>
+    <div class="interactive">
+        <div>
+            <label>质量 m (kg)：<input type="number" id="lorM" value="1.67e-27" step="1e-27"></label>
+            <label>电荷量 q (C)：<input type="number" id="lorQ" value="1.6e-19" step="1e-19"></label>
+            <label>速度 v (m/s)：<input type="number" id="lorV" value="1e6" step="1e5"></label>
+            <label>磁场 B (T)：<input type="number" id="lorB" value="0.1" step="0.1"></label>
+        </div>
+        <button onclick="calcLor()">计算洛伦兹力与半径</button>
+        <div class="result" id="lorRes"></div>
+    </div>
+
+    <h3>③ 磁通量计算器</h3>
+    <div class="interactive">
+        <div>
+            <label>磁感应强度 B (T)：<input type="number" id="fluB" value="0.3" step="0.1"></label>
+            <label>面积 S (m²)：<input type="number" id="fluS" value="0.5" step="0.1"></label>
+            <label>夹角 θ (°)：<input type="number" id="fluT" value="0" step="1"></label>
+        </div>
+        <button onclick="calcFlux()">计算磁通量</button>
+        <div class="result" id="fluRes"></div>
+    </div>
+</div>
+
+<!-- 高考刷题 -->
+<div class="card" id="gaokao">
+    <h2><span class="num">9</span>高考刷题（精选）</h2>
+
+    <div class="exam-block">
+        <h3>选择题</h3>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">选择</span>关于磁感应强度 $B=\dfrac{F}{IL}$，下列说法正确的是（　）</div>
+            <div>A. $B$ 随 $F$ 的增大而增大　B. $B$ 随 $I$、$L$ 的增大而减小</div>
+            <div>C. $B$ 由磁场本身决定，与 $F$、$I$、$L$ 无关　D. 只有在导线垂直于磁场时才可定义 $B$</div>
+            <button class="answer-btn" onclick="toggleAnswer('g1a')">显示解析</button>
+            <div class="analysis" id="g1a">解析：$B$ 是比值定义法，$B$ 由磁场本身性质决定，与放入的导线、电流、受力均无关。故选 <b>C</b>。</div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">选择</span>关于通电导线在磁场中所受安培力，下列说法正确的是（　）</div>
+            <div>A. 安培力方向一定与磁场方向相同　B. 安培力方向一定垂直于磁场和电流所决定的平面</div>
+            <div>C. 导线平行于磁场时安培力最大　D. 安培力对导线一定做功</div>
+            <button class="answer-btn" onclick="toggleAnswer('g2a')">显示解析</button>
+            <div class="analysis" id="g2a">解析：安培力方向由左手定则判定，始终垂直于 $B$ 与 $I$ 所决定的平面，且 $F\perp B$、$F\perp I$。导线平行磁场时 $F=0$。安培力可以做功。故选 <b>B</b>。</div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">选择</span>一个带电粒子以速度 $v$ 垂直进入匀强磁场做匀速圆周运动，若速度增大为 $2v$，则（　）</div>
+            <div>A. 半径不变，周期不变　B. 半径变为 2 倍，周期不变</div>
+            <div>C. 半径变为 2 倍，周期变为 2 倍　D. 半径不变，周期变为 2 倍</div>
+            <button class="answer-btn" onclick="toggleAnswer('g3a')">显示解析</button>
+            <div class="analysis" id="g3a">解析：由 $r=\dfrac{mv}{qB}$ 知 $v$ 变为 2 倍则 $r$ 变为 2 倍；由 $T=\dfrac{2\pi m}{qB}$ 知周期与 $v$ 无关，保持不变。故选 <b>B</b>。</div>
+        </div>
+    </div>
+
+    <div class="exam-block">
+        <h3>解答题</h3>
+        <div class="question">
+            <div class="q-title"><span class="tag">解答</span>在 $B=0.2\,\text{T}$ 的匀强磁场中，有一根长 $L=0.5\,\text{m}$ 的通电直导线，与磁场方向成 $30^\circ$ 角，电流 $I=3\,\text{A}$。求安培力大小，并说明用何定则判断方向。</div>
+            <button class="answer-btn" onclick="toggleAnswer('g4a')">显示答案</button>
+            <div class="answer" id="g4a">
+                解：$F = BIL\sin\theta = 0.2 \times 3 \times 0.5 \times \sin30^\circ = 0.2\times3\times0.5\times0.5 = 0.15\,\text{N}$。<br>
+                方向用<b>左手定则</b>判断：磁感线穿入手心，四指指向电流方向，拇指指向安培力方向，且垂直于 $B$ 与 $I$ 所在平面。
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 动画演示 -->
+<div class="card" id="anim">
+    <h2><span class="num">10</span>动画演示</h2>
+
+    <h3>带电粒子在匀强磁场中的圆周运动</h3>
+    <p>下方动画展示正电荷垂直进入匀强磁场后，在洛伦兹力作用下做匀速圆周运动（红色为速度方向，蓝色为洛伦兹力方向）。</p>
+    <div class="anim-wrap">
+        <canvas id="orbitCanvas" width="420" height="420"></canvas>
+        <div class="anim-controls">
+            <button onclick="toggleOrbit()">⏸ 暂停 / 播放</button>
+            <button onclick="speedUp()">加速</button>
+            <button onclick="speedDown()">减速</button>
+        </div>
+        <div class="anim-readout" id="orbitReadout">半径 r = 100 px　角速度 ω 可调</div>
+    </div>
+</div>
+
+<div class="footer">
+    📖 高中物理 · 磁场基础知识整理 &nbsp;|&nbsp; 公式与定则为高考常考内容，建议结合例题反复练习
+</div>
+
+</div>
+
+<script>
+    // 互动计算：安培力
+    function calcAmp() {
+        const B = parseFloat(document.getElementById('ampB').value);
+        const I = parseFloat(document.getElementById('ampI').value);
+        const L = parseFloat(document.getElementById('ampL').value);
+        const t = parseFloat(document.getElementById('ampT').value) * Math.PI / 180;
+        const F = B * I * L * Math.sin(t);
+        const res = document.getElementById('ampRes');
+        res.style.display = 'block';
+        res.innerHTML = `安培力 $F = BIL\\sin\\theta = ${B}\\times${I}\\times${L}\\times\\sin(${document.getElementById('ampT').value}^\\circ) \\approx ${F.toFixed(3)}\\,\\text{N}$`;
+        if (window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise([res]);
+    }
+
+    // 互动计算：洛伦兹力
+    function calcLor() {
+        const m = parseFloat(document.getElementById('lorM').value);
+        const q = parseFloat(document.getElementById('lorQ').value);
+        const v = parseFloat(document.getElementById('lorV').value);
+        const B = parseFloat(document.getElementById('lorB').value);
+        const f = q * v * B;
+        const r = (m * v) / (q * B);
+        const res = document.getElementById('lorRes');
+        res.style.display = 'block';
+        res.innerHTML = `洛伦兹力 $f = qvB = ${f.toExponential(3)}\\,\\text{N}$<br>圆周运动半径 $r = \\dfrac{mv}{qB} = ${r.toExponential(3)}\\,\\text{m}$`;
+        if (window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise([res]);
+    }
+
+    // 互动计算：磁通量
+    function calcFlux() {
+        const B = parseFloat(document.getElementById('fluB').value);
+        const S = parseFloat(document.getElementById('fluS').value);
+        const t = parseFloat(document.getElementById('fluT').value) * Math.PI / 180;
+        const phi = B * S * Math.cos(t);
+        const res = document.getElementById('fluRes');
+        res.style.display = 'block';
+        res.innerHTML = `磁通量 $\\Phi = BS\\cos\\theta = ${B}\\times${S}\\times\\cos(${document.getElementById('fluT').value}^\\circ) = ${phi.toFixed(3)}\\,\\text{Wb}$`;
+        if (window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise([res]);
+    }
+
+    // 高考题解析/答案切换
+    function toggleAnswer(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('show');
+    }
+
+    // 导航栏滚动高亮当前章节
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll('.nav a'));
+        const sections = navLinks
+            .map(a => document.querySelector(a.getAttribute('href')))
+            .filter(Boolean);
+        function onScroll() {
+            const pos = window.scrollY + 160;
+            let current = sections[0];
+            for (const sec of sections) {
+                if (sec.offsetTop <= pos) current = sec;
+            }
+            navLinks.forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+            });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    // 粒子圆周运动动画
+    const canvas = document.getElementById('orbitCanvas');
+    const ctx = canvas.getContext('2d');
+    const cx = canvas.width / 2, cy = canvas.height / 2;
+    const R = 100;
+    let angle = 0, omega = 0.04, playing = true;
+
+    function drawOrbit() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // 磁场方向提示（垂直纸面向外，用 ⊗/⊙ 示意，这里用文字）
+        // 轨道圆
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.strokeStyle = '#cfd8dc';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 圆心
+        ctx.beginPath();
+        ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#90a4ae';
+        ctx.fill();
+
+        // 粒子位置
+        const px = cx + R * Math.cos(angle);
+        const py = cy + R * Math.sin(angle);
+
+        // 速度方向（切线，逆时针）
+        const vx = -Math.sin(angle);
+        const vy = Math.cos(angle);
+
+        // 洛伦兹力方向（指向圆心，即向心）
+        const fx = -Math.cos(angle);
+        const fy = -Math.sin(angle);
+
+        // 粒子
+        ctx.beginPath();
+        ctx.arc(px, py, 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#e74c3c';
+        ctx.fill();
+
+        // 速度矢量（红）
+        drawArrow(px, py, px + vx * 40, py + vy * 40, '#e74c3c');
+        // 洛伦兹力矢量（蓝）
+        drawArrow(px, py, px + fx * 40, py + fy * 40, '#2980b9');
+
+        // 图例
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = '#e74c3c';
+        ctx.fillText('红色：速度 v', 12, 20);
+        ctx.fillStyle = '#2980b9';
+        ctx.fillText('蓝色：洛伦兹力 f（指向圆心）', 12, 40);
+        ctx.fillStyle = '#7f8c8d';
+        ctx.fillText('磁场垂直纸面向外（⊙）', 12, 60);
+    }
+
+    function drawArrow(x1, y1, x2, y2, color) {
+        const head = 8;
+        const ang = Math.atan2(y2 - y1, x2 - x1);
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - head * Math.cos(ang - Math.PI/6), y2 - head * Math.sin(ang - Math.PI/6));
+        ctx.lineTo(x2 - head * Math.cos(ang + Math.PI/6), y2 - head * Math.sin(ang + Math.PI/6));
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function loop() {
+        if (playing) angle += omega;
+        drawOrbit();
+        requestAnimationFrame(loop);
+    }
+    loop();
+
+    function toggleOrbit() { playing = !playing; }
+    function speedUp() { omega = Math.min(omega * 1.5, 0.3); document.getElementById('orbitReadout').textContent = `半径 r = ${R} px　角速度 ω = ${omega.toFixed(3)} rad/帧`; }
+    function speedDown() { omega = Math.max(omega / 1.5, 0.005); document.getElementById('orbitReadout').textContent = `半径 r = ${R} px　角速度 ω = ${omega.toFixed(3)} rad/帧`; }
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

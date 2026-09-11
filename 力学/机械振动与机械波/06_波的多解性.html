@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 波的多解性</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\\(","\\)"]],
+    displayMath: [["$$","$$"], ["\\[","\\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>波的多解性</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="multisolution">
+    <h2><span class="num">6</span>波的多解性（Multiple Solutions of Waves）</h2>
+
+    <h3>为什么会有多组解？</h3>
+    <p>机械波既有<b>空间周期性</b>（每隔一个波长 $λ$，波形重复），又有<b>时间周期性</b>（每隔一个周期 $T$，振动状态重复）；再加上<b>传播方向常常未知</b>。因此，仅由"某时刻的局部波形""某质点的振动方向"或"两时刻的波形"等<b>片段信息</b>，往往不能唯一确定波，会得到一组可能的解——这就是<b>波的多解性</b>。</p>
+    <div class="warn"><b>⚠️ 三大来源：</b>① 传播方向不确定（向左 / 向右）；② 时间周期性（$Δt = nT + Δt'$）；③ 空间周期性（$Δx = nλ + Δx'$）。$n = 0,1,2,…$</div>
+
+    <h3>一、空间多解（波长多解）</h3>
+    <p>波形图上两点 $a,b$ 沿传播方向相距 $Δx$，其间相位差对应一段不足一个波长的"零头" $Δx'$，则：</p>
+    <div class="formula">$$Δx = nλ + Δx' \quad⇒\quad λ = \frac{Δx}{n + \dfrac{Δx'}{λ}} \quad (n=0,1,2,…)$$</div>
+    <p>即<b>波长不唯一</b>，从而波速 $v=λ f$ 也不唯一（频率 $f$ 由波源决定，恒定）。</p>
+
+    <h3>二、时间多解（周期多解）</h3>
+    <p>经过时间 $Δt$ 后波形（或某质点状态）与原来<b>重合</b>，则 $Δt$ 比周期 $T$ 多出整数个周期：</p>
+    <div class="formula">$$Δt = nT + Δt' \quad⇒\quad T = \frac{Δt}{n + \dfrac{Δt'}{T}} \quad (n=0,1,2,…)$$</div>
+    <p>特别地，若只说"两时刻波形相同"而没给最小间隔，就取 $Δt' = 0$，得 $T = \dfrac{Δt}{n}$。</p>
+
+    <h3>三、双向多解（传播方向不确定）</h3>
+    <p>若题目未说明波向哪边传播，则沿 $+x$ 与 $-x$ 都满足，平移量差一个符号：</p>
+    <div class="formula">$$Δx = ±(nλ + Δx')\quad (n=0,1,2,…)$$</div>
+
+    <h3>📐 波速通式（必背）</h3>
+    <div class="formula">$$v = \frac{Δx + nλ}{Δt} \quad (n=0,1,2,…)$$</div>
+    <p>传播方向不明时，把 $Δx$ 换成 $±Δx$（或写成 $\displaystyle v=\frac{nλ ± Δx}{Δt}$）；已知两时刻波形时，$Δx$ 取两波形间<b>最小的平移距离</b>，$Δt$ 为时间间隔。</p>
+
+    <div style="text-align:center; margin:14px 0;">
+        <svg viewBox="0 0 380 140" style="max-width:100%; border:1px solid #ddd; border-radius:8px; background:#fafafa;">
+            <line x1="0" y1="70" x2="380" y2="70" stroke="#ccc" stroke-dasharray="4 4"/>
+            <path d="M10,70 C 55,30 100,30 100,70 C 100,110 145,110 190,70 C 190,30 235,30 280,70 C 280,110 325,110 370,70" fill="none" stroke="#3a7bd5" stroke-width="2.5"/>
+            <path d="M10,70 C 55,30 100,30 100,70 C 100,110 145,110 190,70 C 190,30 235,30 280,70 C 280,110 325,110 370,70" fill="none" stroke="#e67e22" stroke-width="2.5" stroke-dasharray="6 5" transform="translate(40,0)"/>
+            <text x="14" y="22" fill="#3a7bd5" font-size="13">t 时刻（实线）</text>
+            <text x="120" y="22" fill="#e67e22" font-size="13">t+Δt（虚线，右移 Δx）</text>
+        </svg>
+        <p style="font-size:0.85em; color:#888;">同一波形每隔 $λ$ 重复、每隔 $T$ 复现——这就是多解的根源。图中虚线可由实线平移 $Δx$ 或 $Δx+λ$ 得到。</p>
+    </div>
+
+    <h3>📝 典型例题</h3>
+
+    <div class="example">
+        <p><b>例 1（时间周期性）（多选）：</b>如图所示，一列横波以 10 m/s 的速度沿水平方向传播。某时刻的波形如图中的实线所示，经时间 Δt 后的波形如图中的虚线所示。已知 2T > Δt > T（T 为这列波的周期），由此可知 Δt 可能是（　　）</p>
+        <p style="text-align:center; margin:10px 0;"><img src="images/06_multi_例1.png" alt="时间周期性波形图" style="max-width:100%; border:1px solid #ddd; border-radius:6px; background:#fafafa;"></p>
+        <p>A．0.3 s　B．0.5 s　C．0.6 s　D．0.7 s</p>
+        <div class="step"><b>答案：</b>BD　<b>难度：</b>0.65</div>
+        <div class="step"><b>解析：</b>由图读出波长 λ = 4 m，根据 $v=\dfrac{\lambda}{T}$，得<br>$$T = \frac{\lambda}{v} = \frac{4}{10}\ \text{s} = 0.4\ \text{s}$$<br>已知 2T > Δt > T，即波传播的时间超过一个周期但不足两个周期。由图可知，若波向右传播，Δt 对应 $T+\dfrac{3}{4}T$，故<br>$$\Delta t = T + \frac{3}{4}T = 0.7\ \text{s}$$<br>若波向左传播，Δt 对应 $T+\dfrac{1}{4}T$，故<br>$$\Delta t = T + \frac{1}{4}T = 0.5\ \text{s}$$<br>故选 BD。</div>
+
+        <div class="knowledge-card" style="margin-top:14px;">
+            <div class="kc-title">🔍 怎么从图上看出"要补多少"？</div>
+            <p style="margin:6px 0;">这类"两时刻波形"题，核心就是把<b>实线套到虚线上，找最小的平移量 $Δx'$</b>。最实用的办法是<b>拿"波峰"（或波谷）当参照点</b>——因为波峰位置最显眼、不易看错。</p>
+            <div class="two-col">
+                <div>
+                    <p style="margin:6px 0;"><b>① 先读波长</b></p>
+                    <p style="margin:6px 0;">相邻两个实线波峰的距离就是 $λ$。图中实线波峰在 $x=1\ \text{m}$、$x=5\ \text{m}$，故 $λ=4\ \text{m}$，$T=\dfrac{λ}{v}=0.4\ \text{s}$。</p>
+                </div>
+                <div>
+                    <p style="margin:6px 0;"><b>② 看波峰"跑"到哪了</b></p>
+                    <p style="margin:6px 0;">实线波峰在 $x=1\ \text{m}$；虚线波峰在 $x=0\ \text{m}$、$x=4\ \text{m}$。</p>
+                </div>
+            </div>
+            <div class="step" style="margin-top:10px;">
+                <b>向右传：</b>波峰整体向右移。把 $x=1\ \text{m}$ 的实线波峰套到<b>右侧最近</b>的虚线波峰 $x=4\ \text{m}$，最小平移量<br>
+                $$Δx'_{\text{右}} = 4-1 = 3\ \text{m} = \frac{3}{4}λ$$
+            </div>
+            <div class="step">
+                <b>向左传：</b>波峰整体向左移。把 $x=1\ \text{m}$ 的实线波峰套到<b>左侧最近</b>的虚线波峰 $x=0\ \text{m}$，最小平移量<br>
+                $$Δx'_{\text{左}} = 1-0 = 1\ \text{m} = \frac{1}{4}λ$$
+            </div>
+            <p style="margin:10px 0 4px;">注意 $Δx'_{\text{右}} + Δx'_{\text{左}} = λ$：向"右补 $\dfrac{3}{4}λ$"等价于向"左补 $\dfrac{1}{4}λ$"（波形每隔 $λ$ 重复一遍），这正是<b>双向多解</b>的来源。</p>
+            <div class="key-point" style="margin-top:10px;">
+                <b>最后套时间条件：</b>已知 $2T>Δt>T$，平移量要超过一个波长，所以必须再<b>加上一整波长</b>：<br>
+                向右：$\Delta x = λ + \dfrac{3}{4}λ = \dfrac{7}{4}λ \ ⇒\ \Delta t = \dfrac{\Delta x}{v} = T + \dfrac{3}{4}T = 0.7\ \text{s}$<br>
+                向左：$\Delta x = λ + \dfrac{1}{4}λ = \dfrac{5}{4}λ \ ⇒\ \Delta t = \dfrac{\Delta x}{v} = T + \dfrac{1}{4}T = 0.5\ \text{s}$
+            </div>
+        </div>
+    </div>
+
+    <div class="example">
+        <p><b>例 2（空间周期性）：</b>简谐横波在均匀介质中从 a 传向 b。t = 0 时刻开始计时，a、b 两点的振动图像如图所示，a 与 b 间的距离为 6 m。该简谐横波的波速可能为（　　）</p>
+        <p style="text-align:center; margin:10px 0;"><img src="images/06_multi_例2.png" alt="空间周期性振动图" style="max-width:100%; border:1px solid #ddd; border-radius:6px; background:#fafafa;"></p>
+        <p>A．5 m/s　B．4 m/s　C．3 m/s　D．2 m/s</p>
+        <div class="step"><b>答案：</b>D　<b>难度：</b>0.85</div>
+        <div class="step"><b>解析：</b>振动由 a 向 b 传播，由图线可知周期 T = 4 s。振动从 a 传到 b 的时间可能为<br>$$\Delta t = nT + \frac{3}{4}T = (4n+3)\ \text{s}\quad (n=0,1,2,3,\ldots)$$<br>根据 $v\Delta t = \Delta x = 6\ \text{m}$，可得<br>$$v = \frac{6}{4n+3}\ \text{m/s}\quad (n=0,1,2,3,\ldots)$$<br>当 n = 0 时，v = 2 m/s；n = 1 时，$v=\dfrac{6}{7}\ \text{m/s}$；n = 2 时，$v=\dfrac{6}{11}\ \text{m/s}$，…… 故选 D。</div>
+    </div>
+
+    <div class="example">
+        <p><b>例 3（波形的隐含性）：</b>一列横波在 x 轴上传播，a、b 是 x 轴上相距 s<sub>ab</sub> = 6 m 的两质点，t = 0 时，b 点正好到达最高点，且 b 点到 x 轴的距离为 4 cm，而此时 a 点恰好经过平衡位置向上运动。已知这列波的频率为 25 Hz。</p>
+        <p>（1）求经过时间 1 s，a 质点运动的路程；<br>（2）若 a、b 在 x 轴上的距离大于一个波长，求该波的波速大小。</p>
+        <div class="step"><b>答案：</b>（1）4 m；（2）$v=\dfrac{600}{4n+3}\ \text{m/s}$（n=1,2,3,…）或 $v=\dfrac{600}{4n+1}\ \text{m/s}$（n=1,2,3,…）</div>
+        <div class="step"><b>难度：</b>0.65</div>
+        <div class="step"><b>解析：</b>（1）由题意知，振幅 A = 4 cm = 0.04 m。质点 a 一个周期运动的路程<br>$$s_0 = 4A = 0.16\ \text{m}$$<br>1 s 内的周期数为<br>$$n = \frac{1}{T} = f = 25$$<br>所以 1 s 内运动的路程<br>$$s = ns_0 = 25 \times 0.16\ \text{m} = 4\ \text{m}$$<br>（2）若波由 a 传向 b，由题意得<br>$$s_{ab} = \left(n+\frac{3}{4}\right)\lambda$$<br>则<br>$$v = \lambda f = \frac{600}{4n+3}\ \text{m/s}\quad (n=1,2,3,\ldots)$$<br>若波由 b 传向 a，由题意得<br>$$s_{ab} = \left(n+\frac{1}{4}\right)\lambda$$<br>则<br>$$v = \lambda f = \frac{600}{4n+1}\ \text{m/s}\quad (n=1,2,3,\ldots)$$</div>
+    </div>
+
+    <div class="example">
+        <p><b>例 4（双向性）：</b>一列沿 x 轴传播的简谐横波，t = 0 时的波形如图中实线所示，t = 0.5 s 时的波形如图中虚线所示，求：</p>
+        <p style="text-align:center; margin:10px 0;"><img src="images/06_multi_例4.png" alt="双向性波形图" style="max-width:100%; border:1px solid #ddd; border-radius:6px; background:#fafafa;"></p>
+        <p>（1）该简谐横波的传播速度；<br>（2）x 轴上的质点随波振动的周期。</p>
+        <div class="step"><b>答案：</b>（1）沿 x 轴正方向传播时 $v = \dfrac{\Delta x}{\Delta t} = (8n+6)\ \text{cm/s}$（n=0,1,2,3,…），沿 x 轴负方向传播时 $v = \dfrac{\Delta x}{\Delta t} = (8n+2)\ \text{cm/s}$（n=0,1,2,3,…）；（2）沿 x 轴正方向传播时 $T = \dfrac{\lambda}{v} = \dfrac{2}{4n+3}\ \text{s}$（n=0,1,2,3,…），沿 x 轴负方向传播时 $T = \dfrac{\lambda}{v} = \dfrac{2}{4n+1}\ \text{s}$（n=0,1,2,3,…）</div>
+        <div class="step"><b>难度：</b>0.94</div>
+        <div class="step"><b>解析：</b>由图可知波长 λ = 4 cm，时间间隔 Δt = 0.5 s。<br>（1）若波沿 x 轴正方向传播，传播的距离为<br>$$\Delta x = n\lambda + \frac{3}{4}\lambda = (4n+3)\ \text{cm}\quad (n=0,1,2,3,\ldots)$$<br>则波速为<br>$$v = \frac{\Delta x}{\Delta t} = (8n+6)\ \text{cm/s}\quad (n=0,1,2,3,\ldots)$$<br>若波沿 x 轴负方向传播，传播的距离为<br>$$\Delta x = n\lambda + \frac{1}{4}\lambda = (4n+1)\ \text{cm}\quad (n=0,1,2,3,\ldots)$$<br>则波速为<br>$$v = \frac{\Delta x}{\Delta t} = (8n+2)\ \text{cm/s}\quad (n=0,1,2,3,\ldots)$$<br>（2）若波沿 x 轴正方向传播，周期为<br>$$T = \frac{\lambda}{v} = \frac{2}{4n+3}\ \text{s}\quad (n=0,1,2,3,\ldots)$$<br>若波沿 x 轴负方向传播，周期为<br>$$T = \frac{\lambda}{v} = \frac{2}{4n+1}\ \text{s}\quad (n=0,1,2,3,\ldots)$$</div>
+    </div>
+
+    <div class="example">
+        <p><b>例 5（时间周期性）：</b>水平面上有一沿 x 轴正方向传播的简谐横波，如图所示的实线和虚线分别是 t = 0 和 t = 4 s 时的波形图，求：</p>
+        <p>（1）若已知波速 v = 2 m/s，该波波长的最大值；<br>（2）若已知波长 λ = 4 m，该波波速的可能值。</p>
+        <p style="text-align:center; margin:10px 0;"><img src="images/06_multi_例5.png" alt="时间周期性波形图" style="max-width:100%; border:1px solid #ddd; border-radius:6px; background:#fafafa;"></p>
+        <div class="step"><b>答案：</b>（1）32 m；（2）$v=\dfrac{4n+1}{4}\ \text{m/s}$（n=0,1,2,3,…）</div>
+        <div class="step"><b>难度：</b>0.65</div>
+        <div class="step"><b>解析：</b>波沿 x 轴正方向传播。拿"上坡零点"当参照点：实线在 $x=0$ 处经过平衡位置向上，而虚线的对应位置（上坡零点）在 $x=\dfrac{λ}{4}$ 处，所以 4 s 内波形向右平移了<br>
+        $$\Delta x = \left(n+\frac{1}{4}\right)\lambda \quad⇒\quad 4\ \text{s} = \left(n+\frac{1}{4}\right)T \quad (n=0,1,2,3,\ldots)$$<br>
+        解得<br>
+        $$T = \frac{4}{n+\dfrac{1}{4}}\ \text{s} = \frac{16}{4n+1}\ \text{s} \quad (n=0,1,2,3,\ldots)$$<br>
+        （1）当 n = 0 时周期最大，$T_m = 16\ \text{s}$，该波波长的最大值<br>
+        $$\lambda_m = vT_m = 2 \times 16\ \text{m} = 32\ \text{m}$$<br>
+        （2）若已知波长 λ = 4 m，该波波速的可能值<br>
+        $$v = \frac{λ}{T} = \frac{4}{\dfrac{16}{4n+1}}\ \text{m/s} = \frac{4n+1}{4}\ \text{m/s} \quad (n=0,1,2,3,\ldots)$$</div>
+    </div>
+
+    <div class="key-point">
+        <b>📌 破解波的多解性的关键：</b>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li><b>时间周期性：</b>Δt = nT + Δt′，注意题目是否给出 Δt 与 T 的大小关系。</li>
+            <li><b>空间周期性：</b>Δx = nλ + Δx′，两点间相位关系决定“零头”是 λ/4 还是 3λ/4。</li>
+            <li><b>传播方向的双向性：</b>未说明传播方向时，必须分 ±x 两个方向讨论。</li>
+            <li><b>波形的隐含性：</b>注意“平衡位置向上/向下”“最高点/最低点”等描述对应的相位差。</li>
+            <li><b>写通式：</b>$v = \dfrac{\Delta x + n\lambda}{\Delta t}$（方向不明时对 Δx 取 ±）。</li>
+        </ul>
+    </div>
+</div>
+
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波 · 波的多解性</p>
+</div>
+</div>
+</body>
+</html>

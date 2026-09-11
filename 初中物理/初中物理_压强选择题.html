@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初中物理 · 压强选择题（切割与旋转）</title>
+<script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+        svg: { fontCache: 'global' }
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        background: #f5f7fa; color: #2c3e50; line-height: 1.85;
+    }
+    .header {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: white; padding: 55px 20px; text-align: center;
+        box-shadow: 0 4px 20px rgba(106,17,203,0.3);
+    }
+    .header h1 { font-size: 2.4em; letter-spacing: 2px; }
+    .header p { opacity: 0.92; margin-top: 8px; font-size: 1.05em; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+    .card {
+        background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #6a11cb;
+    }
+    .card h2 {
+        color: #4a0e91; font-size: 1.6em; margin-bottom: 14px;
+        padding-bottom: 10px; border-bottom: 2px solid #e2d5fa;
+        display: flex; align-items: center; gap: 10px;
+    }
+    .card h2 .num {
+        background: #6a11cb; color: white; width: 34px; height: 34px; border-radius: 50%;
+        display: inline-flex; align-items: center; justify-content: center; font-size: 0.8em;
+    }
+    .quiz-source { font-size: 0.88em; color: #888; margin-bottom: 10px; }
+    .diagram {
+        background: #fbfdff; border: 2px dashed #c9b8f5; border-radius: 10px;
+        padding: 14px 14px 6px; margin: 14px 0; text-align: center;
+    }
+    .diagram img { max-width: 560px; width: 100%; height: auto; border-radius: 8px; }
+    .caption { font-size: 0.85em; color: #888; margin-top: 6px; }
+    .quiz-options { margin: 12px 0 6px; padding-left: 24px; color: #34495e; }
+    .quiz-options li { margin: 6px 0; }
+    .quiz-meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; font-size: 0.88em; }
+    .quiz-tag { background: #f0e8ff; color: #4a0e91; border: 1px solid #c9b8f5; padding: 2px 10px; border-radius: 12px; }
+    .quiz-tag.diff { background: #fff4e0; color: #c0741b; border-color: #ffd9a6; }
+    .quiz-tag.ans { background: #e8f6ff; color: #1a5fa6; border-color: #b8d8f3; }
+    details.quiz-detail {
+        margin-top: 14px; background: #f6f3fc; border: 1px solid #d8c9f5;
+        border-radius: 8px; padding: 10px 14px;
+    }
+    details.quiz-detail summary {
+        cursor: pointer; color: #4a0e91; font-weight: 600; user-select: none;
+        list-style: none; display: flex; align-items: center; gap: 6px;
+    }
+    details.quiz-detail summary::-webkit-details-marker { display: none; }
+    details.quiz-detail summary::before { content: "▶"; font-size: 0.75em; transition: transform 0.2s; }
+    details.quiz-detail[open] summary::before { transform: rotate(90deg); }
+    details.quiz-detail p { margin: 10px 0 0; color: #34495e; }
+    .ans-line { color: #c0392b; font-weight: 600; }
+    .formula-box {
+        background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px;
+        padding: 14px 18px; margin: 12px 0;
+    }
+    .key-point {
+        background: linear-gradient(90deg, #f3e8ff, #fbf5ff);
+        border-left: 4px solid #6a11cb; padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+    }
+    .back { display: inline-block; margin: 0 0 14px; color: #6a11cb; text-decoration: none; font-size: 0.9em; }
+    .back:hover { text-decoration: underline; }
+    .footer { text-align: center; padding: 30px; color: #999; font-size: 0.9em; }
+    /* ===== 左侧导航改造 ===== */
+    .sidenav {
+        position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+        background: rgba(255,255,255,0.97); border: 1px solid #e0e6ed;
+        border-radius: 14px; box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+        padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+    }
+    .sidenav .sn-title {
+        font-size: 0.85em; font-weight: 700; color: #6a11cb;
+        text-align: center; margin-bottom: 10px; padding-bottom: 8px;
+        border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+    }
+    .sidenav a {
+        display: block; background: #f0f4f8; color: #34495e;
+        border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+        border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;
+        text-decoration: none; font-size: 0.85em; transition: all 0.25s;
+    }
+    .sidenav a:hover { background: #e3ecf7; border-left-color: #6a11cb; }
+    @media (min-width: 1101px) { .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); } }
+    @media (max-width: 1100px) {
+        .sidenav {
+            position: sticky; top: 0; left: auto; width: auto;
+            max-height: none; overflow: visible; margin-bottom: 18px;
+            display: flex; flex-wrap: wrap; gap: 6px;
+        }
+        .sidenav .sn-title { width: 100%; margin-bottom: 4px; }
+        .sidenav a { display: inline-block; margin: 0; }
+        .container { margin-left: auto !important; }
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>压强选择题</h1>
+    <p>实心均匀正方体切割与旋转 · 压强变化量比较</p>
+</div>
+
+<div class="sidenav">
+    <div class="sn-title">🧭 页面导航</div>
+    <a href="#q9">本页 · 切割与旋转</a>
+    <a href="初中物理_浮力基础知识.html">浮力基础知识</a>
+    <a href="初中物理_浮力交互模型.html">浮力交互模型</a>
+</div>
+
+<div class="container">
+    <a class="back" href="初中物理_浮力基础知识.html">← 返回浮力基础知识</a>
+
+    <div class="card" id="q9">
+        <h2><span class="num">9</span> 压强 · 切割与旋转</h2>
+
+        <p class="quiz-source">实心均匀正方体甲、乙置于水平地面上，它们对地面的压强分别为 $p_{\text{甲}}$、$p_{\text{乙}}$。正方体甲沿水平方向切去一半，正方体乙沿竖直方向切去一半，并将甲、乙剩余部分均顺时针旋转 $90°$，如图所示。甲、乙剩余部分顺时针旋转 $90°$ 前后对地面的压强变化量 $\Delta p_{\text{甲}}$ 小于 $\Delta p_{\text{乙}}$。关于原来的压强 $p_{\text{甲}}$、$p_{\text{乙}}$ 的判断，正确的是（　　）</p>
+
+        <div class="diagram">
+            <img src="压强选择题_images/q9_pressure.png" alt="甲、乙正方体切割并旋转 90° 示意图：甲立着切一半，乙平放切一半后均旋转 90° 躺平">
+            <div class="caption">左侧甲正方体：水平方向切去一半 → 旋转 $90°$　|　右侧乙正方体：竖直方向切去一半 → 旋转 $90°$</div>
+        </div>
+
+        <ol class="quiz-options" type="A">
+            <li>$p_{\text{甲}}$ 一定小于 $p_{\text{乙}}$</li>
+            <li>$p_{\text{甲}}$ 可能等于 $p_{\text{乙}}$</li>
+            <li>$p_{\text{甲}}$ 一定等于 $p_{\text{乙}}$</li>
+            <li>$p_{\text{甲}}$ 一定大于 $p_{\text{乙}}$</li>
+        </ol>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】A</span>
+            <span class="quiz-tag diff">【难度】0.65</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+
+            <div class="key-point">
+                <b>核心结论（实心均匀柱体放在水平面上）：</b><br>
+                对边长为 $L$ 的实心均匀正方体，原压强 <b>$p = \rho g L$</b>；切一半旋转 $90°$ 后压强变化量（绝对值）等于原压强的一半，即 <b>$|\Delta p| = \dfrac{1}{2}p$</b>。
+            </div>
+
+            <p><b>设原正方体边长均为 $L$。</b></p>
+
+            <p><b>① 甲的分析（沿水平方向切去一半）：</b><br>
+            切面与地面平行，切完后是一块 $L \times L \times \dfrac{L}{2}$ 的扁方块（底面积仍是 $L^2$，高度减半为 $\dfrac{L}{2}$）。<br>
+            - 旋转前（立着放）：底面积 $S_1 = L^2$，高度 $h_1 = \dfrac{L}{2}$，质量 $m = \rho_{\text{甲}} \cdot L^2 \cdot \dfrac{L}{2}$。
+            $$p_{1} = \dfrac{m g}{S_1} = \dfrac{\rho_{\text{甲}}\,L^2 \cdot \dfrac{L}{2}\cdot g}{L^2} = \dfrac{1}{2}\,\rho_{\text{甲}} L g = \dfrac{1}{2}p_{\text{甲}}$$
+            - 旋转后（顺时针 $90°$ 躺平）：底面积 $S_2 = L \cdot \dfrac{L}{2} = \dfrac{L^2}{2}$，高度 $h_2 = L$。
+            $$p_{2} = \dfrac{m g}{S_2} = \dfrac{\rho_{\text{甲}}\,L^2 \cdot \dfrac{L}{2}\cdot g}{\dfrac{L^2}{2}} = \rho_{\text{甲}} L g = p_{\text{甲}}$$
+            - 压强变化量：
+            $$\Delta p_{\text{甲}} = |p_{2} - p_{1}| = p_{\text{甲}} - \dfrac{1}{2}p_{\text{甲}} = \dfrac{1}{2}p_{\text{甲}}$$
+            </p>
+
+            <p><b>② 乙的分析（沿竖直方向切去一半）：</b><br>
+            切面与地面垂直，切完后是一块 $\dfrac{L}{2} \times L \times L$ 的窄方柱（高度仍为 $L$，底面积减半为 $\dfrac{L^2}{2}$）。<br>
+            - 旋转前：底面积 $S_1 = \dfrac{L^2}{2}$，高度 $h_1 = L$，质量 $m = \rho_{\text{乙}} \cdot \dfrac{L^2}{2} \cdot L$。
+            $$p_{1} = \dfrac{m g}{S_1} = \rho_{\text{乙}} L g = p_{\text{乙}}$$
+            - 旋转后：底面积 $S_2 = L^2$，高度 $h_2 = \dfrac{L}{2}$。
+            $$p_{2} = \dfrac{m g}{S_2} = \dfrac{\rho_{\text{乙}}\,L^2 \cdot \dfrac{L}{2}\cdot g}{L^2} = \dfrac{1}{2}\rho_{\text{乙}} L g = \dfrac{1}{2}p_{\text{乙}}$$
+            - 压强变化量：
+            $$\Delta p_{\text{乙}} = |p_{1} - p_{2}| = p_{\text{乙}} - \dfrac{1}{2}p_{\text{乙}} = \dfrac{1}{2}p_{\text{乙}}$$
+            </p>
+
+            <div class="formula-box">
+                <b>比较：</b>已知 $\Delta p_{\text{甲}} < \Delta p_{\text{乙}}$，代入
+                $$\dfrac{1}{2}p_{\text{甲}} < \dfrac{1}{2}p_{\text{乙}} \;\Longrightarrow\; p_{\text{甲}} < p_{\text{乙}}$$
+                因此 <b>$p_{\text{甲}}$ 一定小于 $p_{\text{乙}}$</b>。
+            </div>
+
+            <p><b>③ 排除其他选项：</b></p>
+            <ul style="padding-left: 22px; color: #34495e;">
+                <li>由于 $\Delta p = \dfrac{1}{2}p$ 是<b>严格正比例</b>关系（不论密度和边长），所以不可能 $\Delta p_{\text{甲}} = \Delta p_{\text{乙}}$（否则 $p_{\text{甲}} = p_{\text{乙}}$，但已知 $\Delta p_{\text{甲}} < \Delta p_{\text{乙}}$ 已排除此情形）；</li>
+                <li>也不可能 $p_{\text{甲}} > p_{\text{乙}}$，否则 $\Delta p_{\text{甲}} > \Delta p_{\text{乙}}$ 与题设矛盾。</li>
+            </ul>
+
+            <p class="ans-line">故选 <b>A</b>。</p>
+        </details>
+    </div>
+
+    <div class="footer">压强选择题 · 与浮力基础知识页互链</div>
+</div>
+
+<script src="../nav.js"></script>
+</body>
+</html>

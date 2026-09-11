@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初中物理 · 电学压轴题</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 15px; font-size: 0.92em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .circuit {
+            background: #fff; border: 1px solid #e3e8ee; border-radius: 10px;
+            padding: 15px; margin: 12px 0; text-align: center;
+        }
+        .circuit svg { max-width: 100%; height: auto; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 8px; font-size: 0.82em; }
+            .card { padding: 20px; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>💡 电学压轴题 · 专题突破</h1>
+    <p>初中物理电学四大压轴题型 · 方法 · 例题 · 互动练习</p>
+</div>
+
+<nav class="nav">
+    <a href="#overview">题型地图</a>
+    <a href="#dynamic">动态电路</a>
+    <a href="#fault">电路故障</a>
+    <a href="#power">电功率综合</a>
+    <a href="#heat">电热综合</a>
+    <a href="#real">真题演练</a>
+    <a href="#rheostat">变阻器型号</a>
+    <a href="#calc">互动练习</a>
+    <a href="#summary">解题锦囊</a>
+</nav>
+
+<div class="container">
+
+<!-- 题型地图 -->
+<div class="toc" id="overview">
+    <h2>🗺️ 电学压轴题 · 题型地图</h2>
+    <ol>
+        <li><a href="#dynamic">动态电路分析</a> — 滑变引起的"串反并同"规律</li>
+        <li><a href="#fault">电路故障判断</a> — 短路 / 断路的电表与用电器表现</li>
+        <li><a href="#power">电功率综合计算</a> — 挡位问题、最值范围、额定实际</li>
+        <li><a href="#heat">电热综合（结合 I-U 图象）</a> — 图象法求电阻、电功</li>
+        <li><a href="#real">真题演练</a> — 上海电学压轴真题</li>
+        <li><a href="#rheostat">滑动变阻器型号</a> — 标称含义与判断考点</li>
+    </ol>
+    <div class="key-point">
+        <b>📌 电学三大基础公式（贯穿所有压轴题）：</b>
+        <div class="formula">$$I = \dfrac{U}{R}\quad P = UI\quad Q = I^2Rt \ (\text{纯电阻})$$</div>
+    </div>
+</div>
+
+<!-- 1. 动态电路 -->
+<div class="card" id="dynamic">
+    <h2><span class="num">1</span>动态电路分析</h2>
+    <p>含滑动变阻器的电路，当滑片移动时电阻变化，引起电流、电压、电功率的连锁变化。这是选择题、填空题的必考压轴题型。</p>
+
+    <h3>核心方法：串反并同</h3>
+    <div class="key-point">
+        <p style="margin-top:6px;">以<b>滑动变阻器 $R_{\text{滑}}$</b> 的阻值变化为"自变量"，分析其他用电器的物理量：</p>
+        <ul style="padding-left:20px;">
+            <li><b>串反</b>：与 $R_{\text{滑}}$ <b>串联</b>的用电器，其电流、电压、电功率变化方向与 $R_{\text{滑}}$ <b>相反</b>（滑变变大则它变小）。</li>
+            <li><b>并同</b>：与 $R_{\text{滑}}$ <b>并联</b>的用电器（通常指定值电阻 $R_0$），其电压变化方向与 $R_{\text{滑}}$ <b>相同</b>。</li>
+        </ul>
+    </div>
+
+    <div class="circuit">
+        <p style="color:#555;margin-bottom:8px;">典型模型：定值电阻 $R_0$ 与滑动变阻器 $R_{\text{滑}}$ 串联，电压表测 $R_0$ 两端电压</p>
+        <svg viewBox="0 0 460 220" width="460" height="220">
+            <!-- 电源 -->
+            <line x1="40" y1="40" x2="40" y2="170" stroke="#333" stroke-width="2"/>
+            <line x1="40" y1="40" x2="120" y2="40" stroke="#333" stroke-width="2"/>
+            <line x1="40" y1="170" x2="120" y2="170" stroke="#333" stroke-width="2"/>
+            <text x="22" y="60" font-size="14" fill="#e74c3c">+</text>
+            <text x="16" y="150" font-size="14" fill="#333">−</text>
+            <!-- R0 -->
+            <rect x="120" y="55" width="60" height="30" fill="#fff" stroke="#2980b9" stroke-width="2"/>
+            <text x="128" y="75" font-size="13" fill="#2980b9">R₀</text>
+            <line x1="180" y1="40" x2="220" y2="40" stroke="#333" stroke-width="2"/>
+            <line x1="180" y1="170" x2="220" y2="170" stroke="#333" stroke-width="2"/>
+            <!-- 电流表 -->
+            <circle cx="200" cy="105" r="14" fill="#fff" stroke="#333" stroke-width="2"/>
+            <text x="192" y="110" font-size="14" fill="#333">A</text>
+            <line x1="220" y1="40" x2="320" y2="40" stroke="#333" stroke-width="2"/>
+            <line x1="220" y1="170" x2="320" y2="170" stroke="#333" stroke-width="2"/>
+            <!-- 滑变 -->
+            <rect x="320" y="55" width="70" height="30" fill="#fff" stroke="#e67e22" stroke-width="2"/>
+            <text x="326" y="75" font-size="12" fill="#e67e22">R滑</text>
+            <line x1="390" y1="40" x2="420" y2="40" stroke="#333" stroke-width="2"/>
+            <line x1="390" y1="170" x2="420" y2="170" stroke="#333" stroke-width="2"/>
+            <line x1="420" y1="40" x2="420" y2="170" stroke="#333" stroke-width="2"/>
+            <!-- 电压表测R0 -->
+            <circle cx="150" cy="130" r="14" fill="#fff" stroke="#27ae60" stroke-width="2"/>
+            <text x="143" y="135" font-size="13" fill="#27ae60">V</text>
+            <line x1="150" y1="116" x2="150" y2="55" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="3,3"/>
+            <line x1="150" y1="144" x2="150" y2="170" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="3,3"/>
+        </svg>
+    </div>
+
+    <h3>推导示例（串联电路，滑片右移使 $R_{\text{滑}}$ 变大）</h3>
+    <div class="step" style="border-left:2px solid #a5d6a7; padding-left:12px; margin:6px 0;">
+        总电阻 $R_{\text{总}} = R_0 + R_{\text{滑}} \uparrow\ \Rightarrow\ $ 电流 $I = \dfrac{U}{R_{\text{总}}} \downarrow$
+    </div>
+    <div class="step" style="border-left:2px solid #a5d6a7; padding-left:12px; margin:6px 0;">
+        $R_0$ 两端电压（电压表）：$U_0 = I R_0 \downarrow$（<b>串反</b>，与 $R_{\text{滑}}$ 变化相反）
+    </div>
+    <div class="step" style="border-left:2px solid #a5d6a7; padding-left:12px; margin:6px 0;">
+        $R_{\text{滑}}$ 两端电压：$U_{\text{滑}} = U - U_0 \uparrow$（<b>并同</b>，分压变大）
+    </div>
+
+    <div class="example">
+        <div class="q">例：如上图，闭合开关，滑片 $P$ 向右移动（接入电阻变大），则电流表示数、电压表示数如何变化？$R_0$ 的实际功率如何变化？</div>
+        <div class="a">
+            <div class="step">答：电流表示数 <b>变小</b>；$R_0$ 与 $R_{\text{滑}}$ 串联，电压表测 $R_0$，$U_0 \downarrow$ 故电压表示数 <b>变小</b>。</div>
+            <div class="step">$R_0$ 实际功率 $P_0 = I^2 R_0$，$I$ 变小 → $P_0$ <b>变小</b>。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. 电路故障 -->
+<div class="card" id="fault">
+    <h2><span class="num">2</span>电路故障判断</h2>
+    <p>故障只有两类：<b>短路</b>（用电器被短接，电阻≈0）和<b>断路</b>（电路断开，电流=0）。结合电流表、电压表、灯泡亮暗快速判断。</p>
+
+    <h3>判断口诀表（串联电路，L 为待测灯，$R$ 为另一用电器）</h3>
+    <table>
+        <tr><th>故障</th><th>电流表 A</th><th>电压表 V（测 L）</th><th>灯泡 L</th></tr>
+        <tr><td>L <b>断路</b></td><td>无示数（=0）</td><td>有示数，≈电源电压</td><td>不亮</td></tr>
+        <tr><td>L <b>短路</b></td><td>有示数（变大）</td><td>无示数（=0）</td><td>不亮</td></tr>
+        <tr><td>R 断路</td><td>无示数</td><td>无示数</td><td>不亮</td></tr>
+        <tr><td>R 短路</td><td>有示数（变大）</td><td>有示数（≈电源）</td><td>亮</td></tr>
+    </table>
+
+    <div class="key-point">
+        <b>📌 核心技巧：电压表"有示数且接近电源"= 它两端以外的部分断路</b>。
+        因为电压表内阻极大，串联在断路处时几乎分走全部电压，所以测到≈电源电压，说明故障点就在<b>电压表所测元件之外（即与之串联的元件断路）</b>。
+    </div>
+
+    <div class="warn">
+        <b>⚠️ 易混点：</b>
+        <ul style="padding-left:20px;">
+            <li>电压表有示数且≈电源 → 通常<b>不是</b>被测元件断路（若被测元件断路，电压表无电流回路，应为 0）。</li>
+            <li>电流表有示数 → 电路<b>未断</b>，故障必为<b>短路</b>。</li>
+            <li>两表都无示数 → 电路<b>断路</b>，且断路点在电压表所测范围<b>之内</b>。</li>
+        </ul>
+    </div>
+
+    <div class="example">
+        <div class="q">例：如图串联电路，闭合开关后两灯都不亮，电流表无示数，电压表有示数且接近电源电压。故障是？</div>
+        <div class="a">
+            <div class="step">解：电流表为 0 → 电路<b>断路</b>；电压表有示数≈电源 → 断路点在电压表所测元件<b>之外</b>。</div>
+            <div class="step">答：若电压表测 L₁，则故障为 <b>L₂ 断路</b>（L₂ 断开使电压表串入电路测到电源电压）。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. 电功率综合 -->
+<div class="card" id="power">
+    <h2><span class="num">3</span>电功率综合计算</h2>
+    <p>电功率是计算题压轴的核心，常考：额定/实际功率转换、挡位问题、取值范围与最值。</p>
+
+    <h3>① 额定功率与实际功率</h3>
+    <div class="formula">$$P_{\text{额}} = U_{\text{额}} I_{\text{额}} = \dfrac{U_{\text{额}}^2}{R},\qquad \dfrac{P_{\text{实}}}{P_{\text{额}}} = \left(\dfrac{U_{\text{实}}}{U_{\text{额}}}\right)^2$$</div>
+    <div class="key-point">
+        <b>📌 电阻不变（纯电阻、温度忽略）时，功率与电压平方成正比。</b>这是"同一用电器在不同电压下"转换的关键。
+    </div>
+
+    <h3>② 挡位问题（家庭电路 U=220V）</h3>
+    <p>两电阻 $R_1$、$R_2$ 组合，总功率 $P = \dfrac{U^2}{R_{\text{总}}}$。<b>总电阻越小，功率越大（高档）</b>。</p>
+    <table>
+        <tr><th>连接方式</th><th>总电阻</th><th>总功率</th><th>挡位</th></tr>
+        <tr><td>只接 $R_1$</td><td>$R_1$</td><td>$U^2/R_1$</td><td>单挡</td></tr>
+        <tr><td>$R_1$ 与 $R_2$ <b>串联</b></td><td>$R_1+R_2$（最大）</td><td>$U^2/(R_1+R_2)$（最小）</td><td><b>低挡</b></td></tr>
+        <tr><td>$R_1$ 与 $R_2$ <b>并联</b></td><td>$R_1R_2/(R_1+R_2)$（最小）</td><td>最大</td><td><b>高挡</b></td></tr>
+    </table>
+
+    <h3>③ 取值范围与最值（压轴必考）</h3>
+    <p>电压表有量程、电流表有量程、用电器有额定电流，滑片移动时各量有范围。步骤：</p>
+    <div class="key-point">
+        <ol style="padding-left:25px;">
+            <li>找<b>最值约束</b>：电压表不超量程、电流不超用电器额定电流 / 电流表量程。</li>
+            <li>由约束列不等式求滑变 $R_{\text{滑}}$ 的取值范围。</li>
+            <li>电路功率 $P_{\text{总}} = \dfrac{U^2}{R_0+R_{\text{滑}}}$，求最大 / 最小功率。</li>
+        </ol>
+    </div>
+
+    <div class="example">
+        <div class="q">例（压轴）：电源电压 6 V，定值电阻 $R_0=10\ \Omega$ 与滑变 $R_{\text{滑}}$（0~20 Ω）串联，电压表测 $R_0$（量程 0~3 V）。求：(1) $R_{\text{滑}}$ 允许的取值范围；(2) 电路最大总功率。</div>
+        <div class="a">
+            <div class="step">解：(1) 电压表测 $R_0$：$U_0 = I R_0 \le 3\ \text{V} \Rightarrow I \le 0.3\ \text{A}$。</div>
+            <div class="step">$I = \dfrac{6}{10+R_{\text{滑}}} \le 0.3 \Rightarrow 10+R_{\text{滑}} \ge 20 \Rightarrow R_{\text{滑}} \ge 10\ \Omega$。又 $R_{\text{滑}}\le 20\ \Omega$，故 <b>$10\ \Omega \le R_{\text{滑}} \le 20\ \Omega$</b>。</div>
+            <div class="step">(2) 总功率 $P = \dfrac{6^2}{10+R_{\text{滑}}}$，当 $R_{\text{滑}}$ 最小（10 Ω）时最大：<br>$P_{\max} = \dfrac{36}{20} = \mathbf{1.8\ W}$。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. 电热综合 + 图象 -->
+<div class="card" id="heat">
+    <h2><span class="num">4</span>电热综合（结合 I-U / U-I 图象）</h2>
+    <p>近年压轴题大量采用<b>图象法</b>：给出两电阻的 $I-U$ 图象，求电阻、实际功率、电功。关键是<b>从图象上取点求电阻</b>。</p>
+
+    <h3>读图三步</h3>
+    <div class="key-point">
+        <ol style="padding-left:25px;">
+            <li>在图象上找<b>易读坐标点</b>（如整数坐标）。</li>
+            <li>由 $R = \dfrac{U}{I}$ 算出定值电阻（直线过原点 → 线性电阻）。</li>
+            <li>结合串并联规律求总电流 / 总电压，再算 $P=UI$、$W=UIt$。</li>
+        </ol>
+    </div>
+
+    <div class="example">
+        <div class="q">例（压轴·图象）：两定值电阻 $R_1$、$R_2$ 的 $I-U$ 图象均为过原点的直线，且 $R_1$ 更陡（斜率更大）。将两者并联接在 6 V 电源上，求：(1) $R_1$、$R_2$ 阻值（由图得 $R_1$ 上点 (2V,0.4A)，$R_2$ 上点 (4V,0.2A)）；(2) 干路电流；(3) 电路总功率。</div>
+        <div class="a">
+            <div class="step">解：(1) $R_1 = \dfrac{2}{0.4} = 5\ \Omega$；$R_2 = \dfrac{4}{0.2} = 20\ \Omega$。</div>
+            <div class="step">(2) 并联各支路电压均为 6 V：$I_1 = 6/5 = 1.2\ \text{A}$，$I_2 = 6/20 = 0.3\ \text{A}$；干路 $I = 1.5\ \text{A}$。</div>
+            <div class="step">(3) 总功率 $P = UI = 6\times1.5 = \mathbf{9\ W}$（或 $P = \dfrac{6^2}{5}+\dfrac{6^2}{20} = 7.2+1.8 = 9\ \text{W}$）。</div>
+        </div>
+    </div>
+
+    <h3>焦耳定律（纯电阻电路）</h3>
+    <div class="formula">$$Q = I^2 R t = \dfrac{U^2}{R}t = Pt \quad (\text{纯电阻，电能全转化为热})$$</div>
+    <div class="warn">
+        <b>⚠️ 非纯电阻（如电动机）：</b>$W = UIt$ 是总电能，$Q = I^2Rt$ 只是发热部分，$W > Q$，<b>不能用</b> $Q=U^2t/R$。初中压轴通常考纯电阻，但若出现"电动机""电风扇"要警惕。
+    </div>
+</div>
+
+<!-- 5. 真题演练 -->
+<div class="card" id="real">
+    <h2><span class="num">5</span>真题演练 · 上海电学压轴</h2>
+
+    <h3>真题一：2025·上海静安·二模</h3>
+    <p><b>题目：</b>在图所示的电路中，电源电压为 9 V，电阻 $R_1$ 的阻值为 10 Ω，电流表的表盘如图所示。</p>
+
+    <div class="circuit">
+        <svg viewBox="0 0 520 200" width="520" height="200">
+            <!-- 电源 -->
+            <line x1="60" y1="50" x2="60" y2="150" stroke="#333" stroke-width="2"/>
+            <line x1="60" y1="50" x2="120" y2="50" stroke="#333" stroke-width="2"/>
+            <line x1="60" y1="150" x2="120" y2="150" stroke="#333" stroke-width="2"/>
+            <circle cx="90" cy="100" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+            <text x="78" y="106" font-size="14" fill="#333">9V</text>
+            <text x="42" y="68" font-size="14" fill="#e74c3c">+</text>
+            <text x="42" y="132" font-size="14" fill="#333">−</text>
+            <!-- 电流表 -->
+            <circle cx="160" cy="100" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+            <text x="152" y="105" font-size="14" fill="#333">A</text>
+            <line x1="120" y1="50" x2="220" y2="50" stroke="#333" stroke-width="2"/>
+            <line x1="120" y1="150" x2="220" y2="150" stroke="#333" stroke-width="2"/>
+            <!-- R1 -->
+            <rect x="220" y="85" width="70" height="30" fill="#fff" stroke="#2980b9" stroke-width="2"/>
+            <text x="230" y="105" font-size="14" fill="#2980b9">R₁=10Ω</text>
+            <line x1="290" y1="50" x2="380" y2="50" stroke="#333" stroke-width="2"/>
+            <line x1="290" y1="150" x2="380" y2="150" stroke="#333" stroke-width="2"/>
+            <!-- 开关 S -->
+            <line x1="380" y1="50" x2="440" y2="50" stroke="#333" stroke-width="2"/>
+            <line x1="440" y1="50" x2="440" y2="75" stroke="#333" stroke-width="2"/>
+            <line x1="430" y1="75" x2="455" y2="55" stroke="#333" stroke-width="2"/>
+            <line x1="440" y1="75" x2="440" y2="150" stroke="#333" stroke-width="2"/>
+            <text x="455" y="60" font-size="14" fill="#333">S</text>
+            <!-- a、b 接线柱 -->
+            <circle cx="220" cy="50" r="4" fill="#e67e22"/>
+            <circle cx="290" cy="50" r="4" fill="#e67e22"/>
+            <text x="210" y="35" font-size="14" fill="#e67e22">a</text>
+            <text x="285" y="35" font-size="14" fill="#e67e22">b</text>
+            <!-- 电流表表盘 -->
+            <g transform="translate(340,120)">
+                <circle cx="0" cy="0" r="45" fill="#fff" stroke="#555" stroke-width="2"/>
+                <line x1="-40" y1="-12" x2="-30" y2="-9" stroke="#555" stroke-width="1.5"/>
+                <line x1="-25" y1="-34" x2="-19" y2="-26" stroke="#555" stroke-width="1.5"/>
+                <line x1="0" y1="-42" x2="0" y2="-32" stroke="#555" stroke-width="1.5"/>
+                <line x1="25" y1="-34" x2="19" y2="-26" stroke="#555" stroke-width="1.5"/>
+                <line x1="40" y1="-12" x2="30" y2="-9" stroke="#555" stroke-width="1.5"/>
+                <line x1="0" y1="0" x2="18" y2="-28" stroke="#c0392b" stroke-width="2"/>
+                <text x="-8" y="-38" font-size="10" fill="#333">0.6</text>
+                <text x="22" y="-28" font-size="10" fill="#333">3</text>
+                <text x="-35" y="-8" font-size="10" fill="#333">0</text>
+            </g>
+        </svg>
+        <p style="color:#555;margin-top:8px;">（a、b 为接入滑动变阻器 $R_2$ 的两点）</p>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(1)问</span>闭合开关 S，求电流表的示数 I</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">解：电路中只有 $R_1$ 接入，电流表测通过 $R_1$ 的电流。</div>
+            <div class="step">$I = \dfrac{U}{R_1} = \dfrac{9\ \text{V}}{10\ \Omega} = \mathbf{0.9\ A}$。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(2)问</span>接入滑动变阻器 $R_2$，a、b 两点间分别用两种方式连接，测得电流表示数最大、最小值部分数据如下表，求：① $I_{2\max}$；② $R_{2\max}$</div>
+        <table>
+            <tr><th></th><th>电流表示数最小值</th><th>电流表示数最大值</th></tr>
+            <tr><td>方式一</td><td>0.3 A</td><td>—</td></tr>
+            <tr><td>方式二</td><td>—</td><td>2.9 A</td></tr>
+        </table>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step"><b>判断连接方式：</b></div>
+            <div class="step">电源电压固定为 9 V。若 $R_2$ 与 $R_1$ <b>串联</b>，总电阻变大，电流会小于原来的 0.9 A；若 <b>并联</b>，总电阻变小，干路电流会大于 0.9 A。</div>
+            <div class="step">表中方式一最小电流为 0.3 A（&lt; 0.9 A）→ 方式一为 <b>串联</b>；方式二最大电流为 2.9 A（&gt; 0.9 A）→ 方式二为 <b>并联</b>。</div>
+            <div class="step"><b>① 求 $I_{2\max}$（并联方式）：</b></div>
+            <div class="step">并联时干路最大电流 $I_{\max} = 2.9\ \text{A}$，$R_1$ 支路电流恒为 $I_1 = 0.9\ \text{A}$。</div>
+            <div class="step">由并联分流：$I_{2\max} = I_{\max} - I_1 = 2.9\ \text{A} - 0.9\ \text{A} = \mathbf{2\ A}$。</div>
+            <div class="step"><b>② 求 $R_{2\max}$（串联方式）：</b></div>
+            <div class="step">串联时电流最小时，滑动变阻器接入电阻最大，即 $I_{\min} = 0.3\ \text{A}$。</div>
+            <div class="step">$R_{\text{总}} = \dfrac{U}{I_{\min}} = \dfrac{9\ \text{V}}{0.3\ \text{A}} = 30\ \Omega$。</div>
+            <div class="step">$R_{2\max} = R_{\text{总}} - R_1 = 30\ \Omega - 10\ \Omega = \mathbf{20\ \Omega}$。</div>
+        </div>
+    </div>
+
+    <div class="key-point">
+        <b>📌 这道题的核心突破口：</b>通过"电流与 0.9 A 比较"判断串、并联方式。串联让电流变小，并联让干路电流变大。判断出连接方式后，分别用串/并联规律和欧姆定律即可求解。
+    </div>
+
+    <h3>真题二：2026·上海松江·一模（测小灯泡电阻）</h3>
+    <p><b>题目：</b>小华用电流表、电压表、滑动变阻器等测小灯泡正常发光时的电阻，小灯泡标有"3.8V"字样。他正确连接电路，实验步骤正确。闭合开关，观察到电压表、电流表示数如图所示，发现无法使小灯泡正常发光。经过思考后，他改变了电源电压，重新连接了电路，测得四组实验数据如表所示。</p>
+
+    <div class="circuit">
+        <svg viewBox="0 0 620 180" width="620" height="180">
+            <!-- 电压表 -->
+            <circle cx="80" cy="60" r="48" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+            <line x1="50" y1="60" x2="110" y2="60" stroke="#333" stroke-width="1.5"/>
+            <line x1="80" y1="30" x2="80" y2="90" stroke="#333" stroke-width="1.5"/>
+            <!-- 电压表刻度 -->
+            <line x1="58" y1="38" x2="66" y2="46" stroke="#333" stroke-width="1"/>
+            <line x1="39" y1="60" x2="49" y2="60" stroke="#333" stroke-width="1"/>
+            <line x1="58" y1="82" x2="66" y2="74" stroke="#333" stroke-width="1"/>
+            <line x1="80" y1="100" x2="80" y2="108" stroke="#333" stroke-width="1"/>
+            <line x1="102" y1="82" x2="94" y2="74" stroke="#333" stroke-width="1"/>
+            <line x1="121" y1="60" x2="111" y2="60" stroke="#333" stroke-width="1"/>
+            <!-- 指针 -->
+            <line x1="80" y1="60" x2="55" y2="42" stroke="#c0392b" stroke-width="2"/>
+            <text x="65" y="130" font-size="13" fill="#c0392b">0-15V 量程，分度值 0.5V</text>
+            <!-- 电流表 -->
+            <circle cx="240" cy="60" r="48" fill="#fff" stroke="#2980b9" stroke-width="2"/>
+            <line x1="220" y1="60" x2="260" y2="60" stroke="#333" stroke-width="1.5"/>
+            <line x1="240" y1="40" x2="240" y2="80" stroke="#333" stroke-width="1.5"/>
+            <!-- 电流表刻度 -->
+            <line x1="215" y1="38" x2="222" y2="45" stroke="#333" stroke-width="1"/>
+            <line x1="197" y1="60" x2="207" y2="60" stroke="#333" stroke-width="1"/>
+            <line x1="215" y1="82" x2="222" y2="75" stroke="#333" stroke-width="1"/>
+            <line x1="240" y1="85" x2="240" y2="95" stroke="#333" stroke-width="1"/>
+            <line x1="265" y1="82" x2="258" y2="75" stroke="#333" stroke-width="1"/>
+            <line x1="283" y1="60" x2="273" y2="60" stroke="#333" stroke-width="1"/>
+            <!-- 指针 -->
+            <line x1="240" y1="60" x2="255" y2="36" stroke="#2980b9" stroke-width="2"/>
+            <text x="215" y="130" font-size="13" fill="#2980b9">0-0.6A 量程，分度值 0.02A</text>
+        </svg>
+        <p style="color:#555;margin-top:8px;">（左：电压表接 0~15 V；右：电流表接 0~0.6 A）</p>
+    </div>
+
+    <table>
+        <tr><th>实验序号</th><th>电压表示数（V）</th><th>电流表示数（A）</th></tr>
+        <tr><td>1</td><td>3.0</td><td>0.26</td></tr>
+        <tr><td>2</td><td>2.6</td><td>0.28</td></tr>
+        <tr><td>3</td><td>2.2</td><td>0.30</td></tr>
+        <tr><td>4</td><td>1.5</td><td>0.34</td></tr>
+    </table>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(1)问</span>① 本实验的原理是______；② 调整前小灯泡无法正常发光的原因是什么？</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">① 测电阻的原理：<b>$R = \dfrac{U}{I}$</b>（欧姆定律变形）。</div>
+            <div class="step">② 原因有两方面：</div>
+            <div class="step">（a）灯泡额定电压 3.8 V，而电压表使用的是 0~15 V 大量程，分度值为 <b>0.5 V</b>，无法精确读出 3.8 V；</div>
+            <div class="step">（b）电源电压太大，即使滑动变阻器调到阻值最大，灯泡两端电压仍超过 3.8 V，无法调到正常发光。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(1)问</span>③ 通过计算说明调整后的电源电压 U</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">调整前：电压表测灯泡，读数为 4.5 V，电流表读数为 0.34 A（灯泡此时电压已超过额定电压 3.8 V）。</div>
+            <div class="step">调整后：表格中电压随电流增大而减小，说明电压表改接在<b>滑动变阻器</b>两端。</div>
+            <div class="step">取第 4 次数据：$I = 0.34\ \text{A}$，滑动变阻器电压 $U_{\text{滑}} = 1.5\ \text{V}$，此时灯泡电压仍为 $U_L = 4.5\ \text{V}$。</div>
+            <div class="step">$U = U_L + U_{\text{滑}} = 4.5\ \text{V} + 1.5\ \text{V} = \mathbf{6\ V}$。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(1)问</span>④ 小灯泡正常发光时的电阻 $R_x$（精确到 0.1 Ω）</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">正常发光时 $U_L = 3.8\ \text{V}$。由表格数据，当滑动变阻器电压 $U_{\text{滑}} = 6 - 3.8 = 2.2\ \text{V}$ 时对应第 3 组，电流 $I = 0.30\ \text{A}$。</div>
+            <div class="step">$R_x = \dfrac{U_L}{I} = \dfrac{3.8\ \text{V}}{0.30\ \text{A}} = \mathbf{12.7\ \Omega}$。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(2)问</span>利用现有器材，能否"探究通过导体的电流与电压的关系"？说明理由。</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">答：<b>不能</b>。</div>
+            <div class="step">理由：探究电流与电压的关系时，必须控制导体的电阻不变；而小灯泡的电阻会随温度升高而明显增大，无法保证电阻恒定，因此不能用小灯泡完成该实验。</div>
+        </div>
+    </div>
+
+    <div class="key-point">
+        <b>📌 这道题的易错点：</b>① 注意"电压表示数随电流增大而减小"说明电压表测的是滑动变阻器；② 3.8 V 额定电压要用"$U - U_{\text{滑}}$"去找对应数据，而不是看电压表读数；③ 控制变量法要求电阻不变，灯泡电阻随温度变化，不能替代定值电阻。
+    </div>
+
+    <h3>真题三：2026·上海奉贤·一模（伏安法测电阻）</h3>
+    <p><b>题目：</b>小红和小华分别做"用电流表和电压表测量电阻"实验。现有甲、乙两个不同规格的滑动变阻器，甲标有"10Ω 3A"，乙标有"30Ω 2A"；电源电压相同且为 1.5 V 的整数倍，其他器材均相同且完好。他们分别选择一个变阻器进行实验。小红正确连接电路，操作步骤正确，闭合开关后，观察到电压表的示数如图所示。小华正确串联器材，并将电压表并联在电路中，闭合开关，移动滑片，测得的三组数据记录在表一中。</p>
+
+    <div class="circuit">
+        <svg viewBox="0 0 280 170" width="280" height="170">
+            <!-- 表盘 -->
+            <path d="M 40 140 A 100 100 0 0 1 240 140" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+            <!-- 刻度 -->
+            <line x1="60" y1="120" x2="72" y2="106" stroke="#333" stroke-width="1.5"/>
+            <line x1="77" y1="70" x2="90" y2="60" stroke="#333" stroke-width="1.5"/>
+            <line x1="140" y1="40" x2="140" y2="55" stroke="#333" stroke-width="1.5"/>
+            <line x1="203" y1="70" x2="190" y2="60" stroke="#333" stroke-width="1.5"/>
+            <line x1="220" y1="120" x2="208" y2="106" stroke="#333" stroke-width="1.5"/>
+            <!-- 指针 -->
+            <line x1="140" y1="140" x2="205" y2="75" stroke="#c0392b" stroke-width="2.5"/>
+            <!-- 接线柱 -->
+            <circle cx="115" cy="155" r="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+            <circle cx="140" cy="155" r="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+            <circle cx="165" cy="155" r="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+            <text x="110" y="172" font-size="12" fill="#333">-</text>
+            <text x="133" y="172" font-size="12" fill="#333">3</text>
+            <text x="159" y="172" font-size="12" fill="#333">15</text>
+            <text x="120" y="85" font-size="12" fill="#333">0</text>
+            <text x="90" y="58" font-size="12" fill="#333">5</text>
+            <text x="190" y="58" font-size="12" fill="#333">10</text>
+            <text x="225" y="100" font-size="12" fill="#333">15</text>
+        </svg>
+        <p style="color:#555;margin-top:8px;">（小红实验中电压表指针位置，0~3 V 量程，分度值 0.1 V）</p>
+    </div>
+
+    <table>
+        <tr><th>实验序号</th><th>电压表示数（V）</th><th>电流表示数（A）</th></tr>
+        <tr><td>1</td><td>3.0</td><td>0.16</td></tr>
+        <tr><td>2</td><td>2.2</td><td>0.22</td></tr>
+        <tr><td>3</td><td>1.5</td><td>0.30</td></tr>
+    </table>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(1)问</span>"用电流表和电压表测量电阻"实验的原理是______________。</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">答：<b>$R = \dfrac{U}{I}$</b>。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(2)问</span>小华实验中电压表并联在______两端。A. 待测电阻 &nbsp; B. 滑动变阻器 &nbsp; C. 电源</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">分析：在伏安法测电阻的串联电路中，若电压表测待测电阻，电流增大时其电压应增大；若测滑动变阻器，电流增大时其电压应减小。</div>
+            <div class="step">由表一可知，电流增大时电压表示数减小，故电压表并联在<b>滑动变阻器</b>两端。选 <b>B</b>。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第(3)问</span>通过推理计算说明实验时所用的电源电压 U 和实验序号 3 中待测电阻的阻值（精确到 0.1 Ω）。</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step"><b>步骤 1：判断谁用甲、谁用乙变阻器。</b></div>
+            <div class="step">小华第 1 次：$R_{\text{滑}1} = \dfrac{3.0\ \text{V}}{0.16\ \text{A}} = 18.75\ \Omega$。</div>
+            <div class="step">由于 $18.75\ \Omega > 10\ \Omega$，小华不可能用甲（最大仅 10 Ω），所以小华用的是 <b>乙（30Ω 2A）</b>，小红用的是 <b>甲（10Ω 3A）</b>。</div>
+            <div class="step"><b>步骤 2：利用小红实验求电源电压。</b></div>
+            <div class="step">小红操作正确，闭合开关时滑变阻值最大（10 Ω）。电压表用 0~3 V 量程，指针位置读数约为 $2.2\ \text{V} \sim 2.3\ \text{V}$，即待测电阻两端电压 $U_x$。</div>
+            <div class="step">小华第 2 次数据：$R_{\text{滑}2} = \dfrac{2.2\ \text{V}}{0.22\ \text{A}} = 10\ \Omega$，与小红"滑变最大"情况相同。</div>
+            <div class="step">此时小红实验中滑变电压 $U_{\text{滑}} = 2.2\ \text{V}$，则 $U = U_x + U_{\text{滑}} \approx 2.3\ \text{V} + 2.2\ \text{V} = 4.5\ \text{V}$。电源电压为 1.5 V 整数倍，故 <b>$U = 4.5\ \text{V}$</b>。</div>
+            <div class="step"><b>步骤 3：求实验序号 3 中待测电阻。</b></div>
+            <div class="step">小华第 3 次：$U_{\text{滑}3} = 1.5\ \text{V}$，则 $U_{x3} = U - U_{\text{滑}3} = 4.5\ \text{V} - 1.5\ \text{V} = 3.0\ \text{V}$。</div>
+            <div class="step">$R_{x3} = \dfrac{U_{x3}}{I_3} = \dfrac{3.0\ \text{V}}{0.30\ \text{A}} = \mathbf{10.0\ \Omega}$。</div>
+        </div>
+    </div>
+
+    <div class="key-point">
+        <b>📌 这道题的核心突破口：</b>① 通过"电流增大电压减小"判断电压表测滑动变阻器；② 用 $R_{\text{滑}} = U/I$ 反推变阻器规格，排除甲只能选乙；③ 小红"步骤正确"意味着闭合开关时滑变在最大值，与小华第 2 组数据对应，结合 1.5 V 整数倍锁定电源电压 4.5 V。
+    </div>
+
+    <h3>真题四：2014·上海·中考真题（判断变阻器规格）</h3>
+    <p><b>题目：</b>在图（a）所示的电路中，滑动变阻器 $R_2$ 是规格为"20Ω 2A"和"5Ω 3A"中的一个。闭合电键 S，当变阻器连入电路的电阻恰为其最大阻值的一半时，电流表的示数为 0.3 A。此时：</p>
+
+    <div class="circuit">
+        <svg viewBox="0 0 540 180" width="540" height="180">
+            <defs>
+                <g id="resistor">
+                    <rect x="-18" y="-8" width="36" height="16" fill="#fff" stroke="#2980b9" stroke-width="2"/>
+                </g>
+                <g id="rheostat">
+                    <rect x="-22" y="-8" width="44" height="16" fill="#fff" stroke="#e67e22" stroke-width="2"/>
+                    <line x1="-18" y1="-18" x2="18" y2="-18" stroke="#e67e22" stroke-width="1.8"/>
+                    <line x1="18" y1="-18" x2="18" y2="-12" stroke="#e67e22" stroke-width="1.8"/>
+                    <line x1="12" y1="-18" x2="24" y2="-18" stroke="#e67e22" stroke-width="1.8"/>
+                </g>
+                <g id="ammeter">
+                    <circle cx="0" cy="0" r="14" fill="#fff" stroke="#333" stroke-width="2"/>
+                    <text x="0" y="4" font-size="12" fill="#333" text-anchor="middle">A</text>
+                </g>
+                <g id="cell_v">
+                    <line x1="0" y1="-12" x2="0" y2="-2" stroke="#0d47a1" stroke-width="3"/>
+                    <line x1="0" y1="2" x2="0" y2="12" stroke="#0d47a1" stroke-width="1.5"/>
+                </g>
+                <g id="switch_v">
+                    <circle cx="0" cy="0" r="4" fill="none" stroke="#1565c0" stroke-width="2"/>
+                    <circle cx="16" cy="0" r="4" fill="none" stroke="#1565c0" stroke-width="2"/>
+                    <line x1="0" y1="0" x2="16" y2="-8" stroke="#1565c0" stroke-width="2"/>
+                </g>
+            </defs>
+            <text x="120" y="20" font-size="13" fill="#0d47a1" text-anchor="middle" font-weight="bold">图（a）电路</text>
+            <line x1="40" y1="120" x2="40" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <line x1="40" y1="80" x2="60" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <use href="#ammeter" x="60" y="80"/>
+            <line x1="74" y1="80" x2="100" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <use href="#resistor" x="118" y="80"/>
+            <text x="118" y="70" font-size="11" fill="#2980b9" text-anchor="middle">R₁</text>
+            <line x1="136" y1="80" x2="170" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <use href="#rheostat" x="200" y="80"/>
+            <text x="200" y="70" font-size="11" fill="#e67e22" text-anchor="middle">R₂</text>
+            <line x1="230" y1="80" x2="260" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <line x1="260" y1="80" x2="260" y2="120" stroke="#1565c0" stroke-width="2.5"/>
+            <use href="#switch_v" x="260" y="120"/>
+            <line x1="276" y1="120" x2="300" y2="120" stroke="#1565c0" stroke-width="2.5"/>
+            <line x1="300" y1="120" x2="300" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <line x1="300" y1="80" x2="330" y2="80" stroke="#1565c0" stroke-width="2.5"/>
+            <use href="#cell_v" x="330" y="80"/>
+            <line x1="330" y1="80" x2="330" y2="120" stroke="#1565c0" stroke-width="2.5"/>
+            <line x1="330" y1="120" x2="40" y2="120" stroke="#1565c0" stroke-width="2.5"/>
+            <text x="385" y="20" font-size="13" fill="#c0392b" text-anchor="middle" font-weight="bold">图（b）电压表</text>
+            <circle cx="385" cy="90" r="42" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+            <line x1="350" y1="90" x2="420" y2="90" stroke="#333" stroke-width="1.5"/>
+            <line x1="385" y1="55" x2="385" y2="125" stroke="#333" stroke-width="1.5"/>
+            <line x1="365" y1="65" x2="375" y2="75" stroke="#333" stroke-width="1.2"/>
+            <line x1="350" y1="90" x2="358" y2="90" stroke="#333" stroke-width="1.2"/>
+            <line x1="365" y1="115" x2="375" y2="105" stroke="#333" stroke-width="1.2"/>
+            <line x1="385" y1="125" x2="385" y2="133" stroke="#333" stroke-width="1.2"/>
+            <line x1="405" y1="115" x2="395" y2="105" stroke="#333" stroke-width="1.2"/>
+            <line x1="420" y1="90" x2="412" y2="90" stroke="#333" stroke-width="1.2"/>
+            <line x1="385" y1="90" x2="405" y2="68" stroke="#c0392b" stroke-width="2"/>
+            <text x="385" y="150" font-size="11" fill="#333" text-anchor="middle">0~3V / 0~15V</text>
+            <text x="385" y="20" font-size="13" fill="#c0392b" text-anchor="middle" font-weight="bold">图（b）电压表</text>
+
+            <text x="495" y="20" font-size="13" fill="#c0392b" text-anchor="middle" font-weight="bold">图（c）电压表</text>
+            <circle cx="495" cy="90" r="42" fill="#fff" stroke="#c0392b" stroke-width="2"/>
+            <line x1="460" y1="90" x2="530" y2="90" stroke="#333" stroke-width="1.5"/>
+            <line x1="495" y1="55" x2="495" y2="125" stroke="#333" stroke-width="1.5"/>
+            <line x1="475" y1="65" x2="485" y2="75" stroke="#333" stroke-width="1.2"/>
+            <line x1="460" y1="90" x2="468" y2="90" stroke="#333" stroke-width="1.2"/>
+            <line x1="475" y1="115" x2="485" y2="105" stroke="#333" stroke-width="1.2"/>
+            <line x1="495" y1="125" x2="495" y2="133" stroke="#333" stroke-width="1.2"/>
+            <line x1="515" y1="115" x2="505" y2="105" stroke="#333" stroke-width="1.2"/>
+            <line x1="530" y1="90" x2="522" y2="90" stroke="#333" stroke-width="1.2"/>
+            <line x1="495" y1="90" x2="515" y2="68" stroke="#c0392b" stroke-width="2"/>
+            <text x="495" y="150" font-size="11" fill="#333" text-anchor="middle">0~3V / 0~15V</text>
+        </svg>
+        <p style="color:#555;margin-top:8px;">图（b）指针指 0.9 V（0~3 V）或 4.5 V（0~15 V）；图（c）指针指 1.5 V（0~3 V）或 7.5 V（0~15 V）</p>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第①问</span>若电阻 $R_1 = 20\ \Omega$，求 $R_1$ 两端的电压 $U_1$。</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step">解：$U_1 = I R_1 = 0.3\ \text{A} \times 20\ \Omega = \mathbf{6\ V}$。</div>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="q-title"><span class="tag">第②问</span>若电路中正确连入两个电压表，示数分别如图（b）、（c）所示，判断 $R_2$ 的规格，并求 $R_1$ 消耗的电功率 $P_1$。</div>
+        <button class="answer-btn" onclick="this.nextElementSibling.classList.toggle('show')">显示解析与答案</button>
+        <div class="answer">
+            <div class="step"><b>第一步：读出两表所有可能值。</b></div>
+            <div class="step">图（b）指针：0~3 V 量程读 0.9 V，0~15 V 量程读 4.5 V。</div>
+            <div class="step">图（c）指针：0~3 V 量程读 1.5 V，0~15 V 量程读 7.5 V。</div>
+            <div class="step"><b>第二步：假设电压表接在 $R_2$ 两端，看是否与可能值吻合。</b></div>
+            <div class="step">若 $R_2$ 规格为"20Ω 2A"，接入一半为 $10\ \Omega$，则 $U_2 = I R_2' = 0.3\ \text{A} \times 10\ \Omega = 3\ \text{V}$。</div>
+            <div class="step">若 $R_2$ 规格为"5Ω 3A"，接入一半为 $2.5\ \Omega$，则 $U_2 = 0.3\ \text{A} \times 2.5\ \Omega = 0.75\ \text{V}$。</div>
+            <div class="step">两表示数中没有 3 V 或 0.75 V，因此电压表<b>不可能</b>都接在 $R_2$ 两端。</div>
+            <div class="step"><b>第三步：只能是“一个测 $R_1$，一个测电源”。</b></div>
+            <div class="step">串联电路：$U = U_1 + U_2$，所以两表示数之差应等于 $U_2$（3 V 或 0.75 V）。</div>
+            <div class="step">四种组合中：$4.5 - 1.5 = 3\ \text{V}$，$7.5 - 4.5 = 3\ \text{V}$，其它差不等于 3 V 也不等于 0.75 V。</div>
+            <div class="step">故 $U_2 = 3\ \text{V}$，对应 $R_2$ 规格为 <b>"20Ω 2A"</b>。</div>
+            <div class="step"><b>第四步：求 $R_1$ 功率。</b></div>
+            <div class="step">情形 A：$U = 4.5\ \text{V}$，$U_1 = 1.5\ \text{V}$，则 $P_1 = U_1 I = 1.5\ \text{V} \times 0.3\ \text{A} = \mathbf{0.45\ W}$。</div>
+            <div class="step">情形 B：$U = 7.5\ \text{V}$，$U_1 = 4.5\ \text{V}$，则 $P_1 = 4.5\ \text{V} \times 0.3\ \text{A} = \mathbf{1.35\ W}$。</div>
+            <div class="step">答：$R_2$ 规格为"20Ω 2A"，$P_1$ 为 0.45 W 或 1.35 W。</div>
+        </div>
+    </div>
+
+    <div class="key-point">
+        <b>📌 这道题的核心突破口：</b>① 电压表有 0~3 V 和 0~15 V 两种读数可能，必须列出所有组合；② 先假设电压表测 $R_2$，用两种规格算出 $U_2$，与可能值对比排除；③ 利用串联电压关系 $U = U_1 + U_2$ 把"差值"与 $U_2$ 对应；④ 最后不要忘记多解讨论。
+    </div>
+</div>
+
+<!-- 5.5 滑动变阻器型号考点 -->
+<div class="card" id="rheostat">
+    <h2><span class="num">5⁺</span>滑动变阻器"型号"考点总结</h2>
+    <p>真题中常给出"甲标 10Ω 3A、乙标 30Ω 2A"之类字样，要求判断某次实验用了哪一个。先把铭牌读懂：</p>
+
+    <h3>① 铭牌两个数的含义</h3>
+    <div class="formula">$$\text{``}R_{\max}\ I_{\max}\text{''}\quad\text{如 ``20Ω 2A'' ⇒ 最大阻值 20Ω，允许通过的最大电流 2A}$$</div>
+    <table>
+        <tr><th>参数</th><th>物理意义</th><th>解题用途</th></tr>
+        <tr><td>$R_{\max}$（如 10Ω、30Ω）</td><td>滑片移到一端时的<b>最大阻值</b></td><td>决定可调范围；闭合开关（滑变最大）时电路电流最小</td></tr>
+        <tr><td>$I_{\max}$（如 3A、2A）</td><td>变阻器<b>允许通过的最大电流</b></td><td>电路电流不能超过它，否则烧坏；是选器材的约束</td></tr>
+    </table>
+
+    <h3>② 题目中"问型号"的四种考法</h3>
+
+    <div class="key-point">
+        <b>考法 1：由实测数据反推用了哪个变阻器</b><br>
+        用 $R_{\text{滑}} = \dfrac{U_{\text{滑}}}{I}$ 算出某一时刻接入阻值，若它 <b>大于甲的最大阻值</b>，则甲装不下 → 必用乙。<br>
+        <span style="color:#555;">（奉贤一模：小华第 1 次 $R_{\text{滑1}}=18.75\ \Omega>10\ \Omega$ ⇒ 用乙"30Ω 2A"）</span>
+    </div>
+
+    <div class="key-point">
+        <b>考法 2：判断"闭合开关时滑变应在最大阻值处"</b><br>
+        实验步骤正确 → 闭合开关前滑片置于阻值最大端（保护电路）。此时 $R_{\text{滑}}=R_{\max}$，对应最小电流。<br>
+        <span style="color:#555;">（奉贤一模：小红用甲，闭合时 $R_{\text{滑}}=10\ \Omega$，与小华第 2 组对应）</span>
+    </div>
+
+    <div class="key-point">
+        <b>考法 3：用 $I_{\max}$ 校验 / 选择器材</b><br>
+        算出电路最大电流，必须 $\le I_{\max}$；否则该变阻器不可用，需换规格。<br>
+        <span style="color:#555;">（如测得干路电流 2.9 A，则"2A"的乙不能用，"3A"的甲才行）</span>
+    </div>
+
+    <div class="key-point">
+        <b>考法 4：结合"电源电压为某整数倍"锁定未知量</b><br>
+        奉贤题额外给"电源电压为 1.5 V 整数倍"，把由滑变反推的电压凑成最近的整数倍即可唯一确定。
+    </div>
+
+    <h3>③ 通用判断流程（压轴套路）</h3>
+    <ol style="padding-left:25px; color:#34495e;">
+        <li>从任一组数据算 $R_{\text{滑}} = U_{\text{滑}}/I$，与各个变阻器的 $R_{\max}$ 比较，<b>排除装不下的</b>；</li>
+        <li>利用"步骤正确 ⇒ 闭合时滑变最大"，把该最大阻值代入求电源电压 / 其他量；</li>
+        <li>用 $I_{\max}$ 验证电流不超过限值；</li>
+        <li>若仍不唯一，用题给的额外条件（整数倍、表盘读数范围）锁定。</li>
+    </ol>
+
+    <div class="warn">
+        <b>⚠️ 易错点：</b>
+        <ul style="padding-left:20px;">
+            <li>"$R_{\max}$"是<b>最大</b>阻值不是当前阻值；说"用了 20Ω 变阻器"是指它最大能到 20Ω。</li>
+            <li>反推时用的是某一状态的 $R_{\text{滑}}$，该值可以小于 $R_{\max}$；只有<b>大于</b> $R_{\max}$ 才能排除。</li>
+            <li>$I_{\max}$ 是最<b>大允许电流</b>，不是额定电流，也不是正常工作电流。</li>
+            <li>两变阻器"其他器材相同"，意味着待测电阻、电源、表都一样，差异只在滑变规格。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 6. 互动练习 -->
+<div class="card" id="calc">
+    <h2><span class="num">6</span>互动计算练习</h2>
+    <p>输入数值，验证你学到的公式！</p>
+
+    <div class="interactive">
+        <h3>① 欧姆定律 $I = U/R$</h3>
+        <label>电压 U (V): <input type="number" id="u1" value="6"></label>
+        <label>电阻 R (Ω): <input type="number" id="r1" value="10"></label>
+        <br><button onclick="calcI()">计算电流</button>
+        <div class="result" id="iResult"></div>
+    </div>
+
+    <div class="interactive">
+        <h3>② 电功率 $P = UI = U^2/R$</h3>
+        <label>电压 U (V): <input type="number" id="u2" value="220"></label>
+        <label>电阻 R (Ω): <input type="number" id="r2" value="100"></label>
+        <br><button onclick="calcP()">计算功率</button>
+        <div class="result" id="pResult"></div>
+    </div>
+
+    <div class="interactive">
+        <h3>③ 实际/额定功率比 $P_{\text{实}} = P_{\text{额}}(U_{\text{实}}/U_{\text{额}})^2$</h3>
+        <label>额定功率 P额 (W): <input type="number" id="pe3" value="100"></label>
+        <label>额定电压 U额 (V): <input type="number" id="ue3" value="220"></label>
+        <label>实际电压 U实 (V): <input type="number" id="ua3" value="110"></label>
+        <br><button onclick="calcReal()">计算实际功率</button>
+        <div class="result" id="realResult"></div>
+    </div>
+
+    <div class="interactive">
+        <h3>④ 焦耳热 $Q = I^2Rt$</h3>
+        <label>电流 I (A): <input type="number" id="i4" value="2"></label>
+        <label>电阻 R (Ω): <input type="number" id="r4" value="10"></label>
+        <label>时间 t (s): <input type="number" id="t4" value="60"></label>
+        <br><button onclick="calcQ()">计算热量</button>
+        <div class="result" id="qResult"></div>
+    </div>
+</div>
+
+<!-- 6. 解题锦囊 -->
+<div class="card" id="summary">
+    <h2><span class="num">7</span>解题锦囊</h2>
+    <table>
+        <tr><th>题型</th><th>第一反应</th><th>关键公式 / 规律</th></tr>
+        <tr><td>动态电路</td><td>先判串并联，再用"串反并同"</td><td>$I=U/R$</td></tr>
+        <tr><td>电路故障</td><td>看表有无示数 → 断/短</td><td>电压表≈电源→外部断</td></tr>
+        <tr><td>电功率</td><td>电阻不变则 $P\propto U^2$</td><td>$P=U^2/R$</td></tr>
+        <tr><td>挡位</td><td>电阻小→功率大→高档</td><td>并联高档/串联低档</td></tr>
+        <tr><td>图象</td><td>取点求 $R=U/I$</td><td>直线过原点=线性电阻</td></tr>
+        <tr><td>范围最值</td><td>列约束不等式</td><td>量程、额定电流</td></tr>
+        <tr><td>串/并联判断</td><td>看电流与基础电流比大小</td><td>串联小、并联大</td></tr>
+        </table>
+
+    <div class="key-point">
+        <b>🎯 压轴题通用四步：</b>
+        <ol style="padding-left:25px; margin-top:8px;">
+            <li><b>画等效电路</b>：去掉电表（A 视为导线、V 视为断路），看清串并联。</li>
+            <li><b>标已知</b>：电源、定值电阻、量程、额定值。</li>
+            <li><b>列方程</b>：欧姆定律 + 功率公式 + 串并联规律。</li>
+            <li><b>验范围</b>：检查是否超电压表 / 电流表 / 额定电流。</li>
+        </ol>
+    </div>
+
+    <div class="warn">
+        <b>📝 阅卷高频扣分点：</b>
+        <ul style="padding-left:20px;">
+            <li>动态电路把"串反并同"用反（先判断串联还是并联！）。</li>
+            <li>故障题中"电压表≈电源"误判为被测元件断路。</li>
+            <li>挡位问题低/高挡对应串/并联写反。</li>
+            <li>实际功率忘记用电压平方比，直接按比例。</li>
+            <li>非纯电阻电路误用 $Q=U^2t/R$。</li>
+            <li>伏安法测灯泡电阻时，把电压表测"滑变"的读数当成灯泡电压。</li>
+            <li>用灯泡代替定值电阻探究 $I-U$ 关系，忽略温度对电阻的影响。</li>
+            <li>忘记用"电源电压为 1.5 V 整数倍"这一条件锁定电源电压。</li>
+            <li>根据一次 $R_\text{滑}$ 数据就判断变阻器规格，没有验证最大阻值。</li>
+        </ul>
+    </div>
+</div>
+
+<div class="footer">
+    <p>💡 初中物理 · 电学压轴题突破卡片</p>
+    <p>建议先做例题、再独立做真题，重点练"画等效电路 + 列范围"两步</p>
+</div>
+
+</div>
+
+<script>
+function calcI() {
+    const U = parseFloat(document.getElementById('u1').value);
+    const R = parseFloat(document.getElementById('r1').value);
+    if (isNaN(U) || isNaN(R) || R === 0) { alert('请输入有效数值（R≠0）'); return; }
+    const I = U / R;
+    const div = document.getElementById('iResult');
+    div.style.display = 'block';
+    div.innerHTML = `I = ${U} / ${R} = <b>${I.toFixed(2)} A</b>`;
+}
+
+function calcP() {
+    const U = parseFloat(document.getElementById('u2').value);
+    const R = parseFloat(document.getElementById('r2').value);
+    if (isNaN(U) || isNaN(R) || R === 0) { alert('请输入有效数值（R≠0）'); return; }
+    const P = U * U / R;
+    const div = document.getElementById('pResult');
+    div.style.display = 'block';
+    div.innerHTML = `P = ${U}² / ${R} = <b>${P.toFixed(1)} W</b>`;
+}
+
+function calcReal() {
+    const Pe = parseFloat(document.getElementById('pe3').value);
+    const Ue = parseFloat(document.getElementById('ue3').value);
+    const Ua = parseFloat(document.getElementById('ua3').value);
+    if (isNaN(Pe) || isNaN(Ue) || isNaN(Ua) || Ue === 0) { alert('请输入有效数值（U额≠0）'); return; }
+    const Pr = Pe * Math.pow(Ua / Ue, 2);
+    const div = document.getElementById('realResult');
+    div.style.display = 'block';
+    div.innerHTML = `P实 = ${Pe} × (${Ua}/${Ue})² = <b>${Pr.toFixed(1)} W</b>`;
+}
+
+function calcQ() {
+    const I = parseFloat(document.getElementById('i4').value);
+    const R = parseFloat(document.getElementById('r4').value);
+    const t = parseFloat(document.getElementById('t4').value);
+    if (isNaN(I) || isNaN(R) || isNaN(t)) { alert('请输入有效数值'); return; }
+    const Q = I * I * R * t;
+    const div = document.getElementById('qResult');
+    div.style.display = 'block';
+    div.innerHTML = `Q = ${I}² × ${R} × ${t} = <b>${Q.toFixed(0)} J</b>`;
+}
+
+// 平滑滚动
+document.querySelectorAll('.nav a, .toc a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

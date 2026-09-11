@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 万有引力与航天闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .example .eq { color: #1b5e20; font-weight: 600; margin-bottom: 8px; }
+
+        .figbox { text-align: center; margin: 18px 0; }
+        .figbox img { max-width: 100%; border: 1px solid #d6e2ef; border-radius: 10px; background: #fff; padding: 6px; }
+        .figbox figcaption { font-size: 0.9em; color: #5a6b7b; margin-top: 8px; }
+
+        .formula-html { background: #fff; border: 1px solid #e0e6ed; border-radius: 8px; padding: 10px 12px; margin: 10px 0; overflow-x: auto; }
+        .cmp-table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+        .cmp-table th { background: #e8f0fa; color: #1e3c72; padding: 8px 12px; text-align: left; border-bottom: 2px solid #90caf9; white-space: nowrap; }
+        .cmp-table td { padding: 8px 12px; border-bottom: 1px solid #e3ecf5; vertical-align: top; color: #1a2a3a; }
+        .cmp-table tr:hover { background: #f5f9ff; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🛰️ 高考物理 · 万有引力与航天闯关</h1>
+    <p>开普勒定律 · 万有引力 · 天体质量 · 卫星与宇宙速度 · 变轨与双星 — 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 考点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部万有引力与航天关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理万有引力与航天专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+const KNOW = {
+    "kepler":    { name: "开普勒三定律", lv: 0, module: "天体运动规律", desc: "轨道为椭圆，面积速度守恒，T²∝a³" },
+    "gravity":   { name: "万有引力定律", lv: 1, module: "万有引力", desc: "F = GMm/r²，适用于质点或均匀球体，r 为球心距离" },
+    "golden":    { name: "黄金代换 GM = gR²", lv: 2, module: "万有引力", desc: "地表物体重力近似等于万有引力，用于代换 GM" },
+    "mass":      { name: "天体质量与密度", lv: 4, module: "天体测量", desc: "由环绕天体周期半径求中心天体质量：M = 4π²r³/(GT²)" },
+    "satellite": { name: "人造卫星与宇宙速度", lv: 5, module: "卫星运动", desc: "万有引力提供向心力，轨道越高线速度、角速度越小，周期越大" },
+    "plane":     { name: "卫星轨道平面", lv: 5, module: "卫星运动", desc: "轨道平面必过地心；按倾角分赤道/极地/倾斜轨道，按高度分 LEO/MEO/GEO" },
+    "sync":      { name: "同步卫星", lv: 6, module: "卫星运动", desc: "周期等于地球自转周期，位于赤道正上方，轨道唯一" },
+    "orbit":     { name: "卫星变轨问题", lv: 7, module: "卫星运动", desc: "加速离心、减速向心；变轨瞬间 v 变而 F万、a 不变；v_A>v₁>v₃>v_B，T₁<T₂<T₃，E₁<E₂<E₃" },
+    "double":    { name: "双星与多星系统", lv: 8, module: "天体运动规律", desc: "双星绕共同质心转动，角速度相同，m₁r₁=m₂r₂" },
+    "energy":    { name: "卫星能量与追击", lv: 9, module: "天体运动规律", desc: "轨道越高机械能越大；追击问题比较角速度" },
+    "cosmic":    { name: "三个宇宙速度", lv: 3, module: "卫星运动", desc: "第一宇宙速度 v₁=√(GM/R)=√(gR)≈7.9km/s（最大环绕速度/最小发射速度）；第二宇宙速度 v₂=√2·v₁≈11.2km/s 脱离地球引力；第三宇宙速度 v₃≈16.7km/s 脱离太阳引力" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+{
+        badge: "天体运动规律 · 考点01",
+        title: "开普勒三定律",
+        intro: "行星运动的三条经验规律，是万有引力定律发现前的'直觉总结'。",
+        formulas: [
+            { t: "🔭 第一定律（轨道定律）", f: "<span class='term-chip'>所有行星绕太阳运动的轨道都是椭圆，太阳在椭圆的一个焦点上</span>", note: "行星做椭圆运动，近日点速度大、远日点速度小。" },
+            { t: "📐 第二定律（面积定律）", f: "$$v_{\\text{近日点}} > v_{\\text{远日点}}$$", note: "行星与太阳的连线在相等时间内扫过相等的面积。" },
+            { t: "⚖️ 第三定律（周期定律）", f: "$$\\dfrac{a^3}{T^2} = k$$", note: "k 只与中心天体有关，与行星质量无关。a 为半长轴（近似圆轨道时为半径 r）。" }
+        ],
+        example: {
+            q: "地球绕太阳的轨道近似为圆形，公转周期为 1 年。若某行星轨道半径为地球的 4 倍，求其公转周期。",
+            steps: [
+                "由开普勒第三定律：$\\dfrac{r_1^3}{T_1^2} = \\dfrac{r_2^3}{T_2^2}$",
+                "$\\dfrac{1}{1} = \\dfrac{64}{T_2^2}$",
+                "$T_2 = 8\\ \\text{年}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "行星沿椭圆轨道绕太阳运动，下列说法正确的是？",
+                opts: [
+                    "行星在近日点的速度小于远日点的速度",
+                    "行星与太阳连线在相等时间内扫过相等的面积",
+                    "行星运行的周期与轨道半长轴成正比",
+                    "开普勒第三定律只适用于绕太阳运动的天体"
+                ],
+                answer: 1,
+                explain: "面积定律：相等时间扫过相等面积，因此近日点速度快。第三定律：T²∝a³，不是正比。开普勒定律适用于一切绕中心天体运动的天体。"
+            },
+            {
+                q: "某行星绕恒星运动的轨道半径为地球绕太阳轨道半径的 4 倍（恒星质量与太阳相同），则该行星公转周期为地球的？",
+                opts: ["2 倍", "4 倍", "8 倍", "16 倍"],
+                answer: 2,
+                explain: "同一中心天体 k 相同：$\\dfrac{T^2}{r^3}$ 为常数，$T \\propto r^{3/2}$，$T = 4^{3/2} = 8$ 倍。"
+            }
+        ]
+    },
+{
+        badge: "万有引力 · 考点02",
+        title: "万有引力定律",
+        intro: "宇宙中一切有质量的物体都互相吸引——公式简洁，适用范围要记牢。",
+        formulas: [
+            { t: "🌍 万有引力定律", f: "$$F = G\\dfrac{m_1m_2}{r^2}$$", note: "$G = 6.67\\times10^{-11}\\ \\text{N·m}^2/\\text{kg}^2$（引力常量，卡文迪许测得）。" },
+            { t: "📏 适用范围", f: "<span class='term-chip'>质点</span><span class='term-op'>/</span><span class='term-chip'>均匀球体（r 为球心距）</span>", note: "质量分布均匀的球壳对其内部的物体引力为零（球壳定理）。" },
+            { t: "⚠ 与重力的区别", f: "<span class='term-chip warn'>重力是万有引力的一个分力</span><span class='term-op'>（另一分力提供随地球自转的向心力）</span>", note: "两极处重力等于万有引力；赤道处重力最小。" }
+        ],
+        example: {
+            q: "地球质量约 6×10²⁴ kg，半径约 6.4×10⁶ m。求地球表面附近质量为 1 kg 的物体受到地球的万有引力。",
+            steps: [
+                "$F = G\\dfrac{Mm}{R^2} = \\dfrac{6.67\\times10^{-11} \\times 6\\times10^{24} \\times 1}{(6.4\\times10^6)^2}$",
+                "$F \\approx 9.77\\ \\text{N}$",
+                "近似等于物体的重力（g≈9.8 m/s²），说明重力是万有引力在近地表的主要分量"
+            ]
+        },
+        challenges: [
+            {
+                q: "两个质量均为 1 kg 的物体相距 1 m，它们之间的万有引力约为？",
+                opts: [
+                    "6.67 N",
+                    "6.67×10⁻¹¹ N",
+                    "6.67×10⁻⁵ N",
+                    "0"
+                ],
+                answer: 1,
+                explain: "$F = G\\dfrac{m_1m_2}{r^2} = 6.67\\times10^{-11} \\times \\dfrac{1\\times1}{1} = 6.67\\times10^{-11}\\ \\text{N}$，可见日常物体间引力极小。"
+            },
+            {
+                q: "两球质量分别为 m 和 4m，距离为 r 时的引力为 F。若两球质量均不变、距离变为 2r，则引力变为？",
+                opts: ["F/2", "F/4", "F/8", "F/16"],
+                answer: 1,
+                explain: "万有引力与距离平方成反比：距离变为 2 倍，引力变为原来的 $\\dfrac{1}{4}$。"
+            }
+        ]
+    },
+{
+        badge: "万有引力 · 考点03",
+        title: "重力与万有引力 · 黄金代换",
+        intro: "地表物体的重力近似等于万有引力，由此得到 GM = gR²——解天体问题的万能钥匙。",
+        formulas: [
+            { t: "🎯 黄金代换", f: "$$GM = gR^2$$", note: "由地表 $G\\dfrac{Mm}{R^2} = mg$ 推导，用 g、R 代换 GM，避免记忆 G 和 M。" },
+            { t: "📐 高空重力加速度", f: "$$g_h = g\\left(\\dfrac{R}{R+h}\\right)^2$$", note: "离地面高度 h 处，重力加速度随距离平方衰减。" },
+            { t: "⚠ 适用范围", f: "<span class='term-chip'>忽略地球自转影响</span><span class='term-op'>/</span><span class='term-chip'>在地表附近</span>", note: "考题默认可忽略自转影响，重力≈万有引力。" }
+        ],
+        example: {
+            q: "地球半径 R=6400 km，地表重力加速度 g=9.8 m/s²。求距地面高度为 R 处（即 2R 处）的重力加速度。",
+            steps: [
+                "由黄金代换：地表 $GM = gR^2$",
+                "高处：$g' = \\dfrac{GM}{(2R)^2} = \\dfrac{gR^2}{4R^2} = \\dfrac{g}{4}$",
+                "$g' = \\dfrac{9.8}{4} = 2.45\\ \\text{m/s}^2$"
+            ]
+        },
+        challenges: [
+            {
+                q: "已知地球半径 R、地表重力加速度 g，则地球的质量 M 可表示为？",
+                opts: [
+                    "M = gR²/G",
+                    "M = gG/R²",
+                    "M = GR²/g",
+                    "M = g/R²G"
+                ],
+                answer: 0,
+                explain: "由黄金代换 $GM = gR^2$ 得 $M = \\dfrac{gR^2}{G}$。"
+            },
+            {
+                q: "距地面高度为地球半径 3 倍（即 4R）处的重力加速度为地表 g 的？",
+                opts: ["1/3", "1/4", "1/9", "1/16"],
+                answer: 3,
+                explain: "$g_h = g\\left(\\dfrac{R}{R+h}\\right)^2 = g\\left(\\dfrac{R}{4R}\\right)^2 = \\dfrac{g}{16}$。"
+            }
+        ]
+    },
+{
+        badge: "卫星运动 · 考点04",
+        title: "三个宇宙速度",
+        intro: "从地球表面发射航天器，速度不同则命运不同：环绕地球、脱离地球、飞离太阳系。三个宇宙速度划定了这三条分界线。",
+        formulas: [
+            { t: "🚀 第一宇宙速度 · 思路一（万有引力提供向心力）", f: "$$G\\dfrac{Mm}{R^2}=m\\dfrac{v_1^2}{R}\\ \\Rightarrow\\ v_1=\\sqrt{\\dfrac{GM}{R}}$$", note: "近地卫星（轨道半径≈地球半径 R）在圆轨道上的运行速度，也是卫星圆轨道的最大运行速度。" },
+            { t: "🚀 第一宇宙速度 · 思路二（重力提供向心力）", f: "$$mg=m\\dfrac{v_1^2}{R}\\ \\Rightarrow\\ v_1=\\sqrt{gR}\\approx 7.9\\ \\text{km/s}$$", note: "由黄金代换 GM=gR² 可知两式等价。它也是人造卫星的最小发射速度——向高轨道发射需更多能量。" },
+            { t: "🌌 第二宇宙速度（脱离速度）", f: "$$v_2=\\sqrt{2}\\,v_1\\approx 11.2\\ \\text{km/s}$$", note: "使人造卫星脱离地球的引力束缚、不再绕地球运行，从地球表面发射所需的最小速度。" },
+            { t: "☀ 第三宇宙速度（逃逸速度）", f: "$$v_3\\approx 16.7\\ \\text{km/s}$$", note: "使物体脱离太阳的引力束缚而飞离太阳系，从地球表面发射所需的最小速度。" }
+        ],
+        example: {
+            q: "已知地球半径 R=6400 km，地表重力加速度 g=9.8 m/s²，用'重力提供向心力'求第一宇宙速度。",
+            steps: [
+                "近地卫星：重力近似等于向心力，$mg = m\\dfrac{v_1^2}{R}$",
+                "$v_1 = \\sqrt{gR} = \\sqrt{9.8 \\times 6.4\\times10^6}$",
+                "$v_1 \\approx 7.9\\times10^3\\ \\text{m/s} = 7.9\\ \\text{km/s}$（思路一 $v_1=\\sqrt{GM/R}$ 结果相同）"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于第一宇宙速度，下列说法正确的是？",
+                opts: [
+                    "它是人造地球卫星绕地球做圆轨道运行的最大速度，也是最小发射速度",
+                    "它等于 11.2 km/s",
+                    "它是使卫星脱离地球引力束缚的最小速度",
+                    "它是使物体飞离太阳系的最小速度"
+                ],
+                answer: 0,
+                explain: "第一宇宙速度 v₁≈7.9 km/s，是近地圆轨道的最大环绕速度，也是最小发射速度；v₂=11.2 km/s 用于脱离地球；v₃=16.7 km/s 用于飞离太阳系。"
+            },
+            {
+                q: "两个表达式 v₁=√(GM/R) 与 v₁=√(gR) 之所以等价，是因为？",
+                opts: [
+                    "地表附近万有引力≈重力，由 GM=gR²（黄金代换）",
+                    "引力常量 G 与重力加速度 g 数值相等",
+                    "中心天体质量 M 等于卫星质量 m",
+                    "轨道半径 R 等于发射高度 h"
+                ],
+                answer: 0,
+                explain: "地表 $G\\dfrac{Mm}{R^2}=mg$ 得黄金代换 $GM=gR^2$，故 $\\sqrt{GM/R}=\\sqrt{gR}$，两条思路殊途同归。"
+            },
+            {
+                q: "从地球表面发射航天器，使其脱离地球引力束缚、不再绕地球运行所需的最小速度称为？",
+                opts: [
+                    "第一宇宙速度 7.9 km/s",
+                    "第二宇宙速度 11.2 km/s",
+                    "第三宇宙速度 16.7 km/s",
+                    "地球同步卫星速度 3.1 km/s"
+                ],
+                answer: 1,
+                explain: "第二宇宙速度 v₂≈11.2 km/s 使物体脱离地球引力；第三宇宙速度 16.7 km/s 才使物体脱离太阳引力飞离太阳系。"
+            },
+            {
+                q: "理论表明第二宇宙速度与第一宇宙速度满足 v₂=√2·v₁。已知 v₁≈7.9 km/s，则 v₂≈？",
+                opts: [
+                    "5.6 km/s",
+                    "11.2 km/s",
+                    "15.8 km/s",
+                    "22.4 km/s"
+                ],
+                answer: 1,
+                explain: "$v_2=\\sqrt{2}\\,v_1\\approx 1.414\\times7.9\\approx 11.2\\ \\text{km/s}$。"
+            },
+            {
+                q: "第三宇宙速度 16.7 km/s 的物理意义是？",
+                opts: [
+                    "卫星绕地球圆轨道的最大运行速度",
+                    "物体脱离太阳引力束缚、飞离太阳系的最小发射速度",
+                    "物体脱离地球引力束缚的最小速度",
+                    "地球同步卫星的线速度"
+                ],
+                answer: 1,
+                explain: "第三宇宙速度 v₃≈16.7 km/s 使物体脱离太阳引力，从地球表面发射即可飞离太阳系；脱离地球只需 v₂=11.2 km/s。"
+            }
+        ]
+    },
+{
+        badge: "天体测量 · 考点05",
+        title: "天体质量与密度",
+        intro: "绕中心天体运动的卫星，其周期和轨道半径可以'称出'中心天体的质量与密度。",
+        formulas: [
+            { t: "🎯 天体质量", f: "$$M = \\dfrac{4\\pi^2r^3}{GT^2}$$", note: "由万有引力提供向心力：$G\\dfrac{Mm}{r^2} = m\\dfrac{4\\pi^2}{T^2}r$。" },
+            { t: "📐 天体密度（近地）", f: "$$\\rho = \\dfrac{3\\pi}{GT^2}$$", note: "卫星贴表面飞行 r≈R 时，密度只与周期有关。" },
+            { t: "⚠ 方法选择", f: "<span class='term-chip'>环绕法</span><span class='term-op'>→</span><span class='term-chip'>需 r、T</span><span class='term-op'>,</span><span class='term-chip good'>表面法</span><span class='term-op'>→</span><span class='term-chip'>需 g、R</span>", note: "测 M 的两条路径：卫星环绕或利用表面重力。" }
+        ],
+        example: {
+            q: "已知月球绕地球的轨道半径 r=3.84×10⁸ m，周期 T≈27.3 天。估算地球质量。",
+            steps: [
+                "$M = \\dfrac{4\\pi^2r^3}{GT^2}$",
+                "T = 27.3×24×3600 ≈ 2.36×10⁶ s，代入：$M = \\dfrac{4\\pi^2 \\times (3.84\\times10^8)^3}{6.67\\times10^{-11} \\times (2.36\\times10^6)^2}$",
+                "$M \\approx 6\\times10^{24}\\ \\text{kg}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "宇航员在月球表面用测力计称出质量为 m 的物体重力为 F，已知月球半径 R，则月球质量 M = ?",
+                opts: [
+                    "FR²/(Gm)",
+                    "Fm/(GR²)",
+                    "FR/Gm",
+                    "GmR²/F"
+                ],
+                answer: 0,
+                explain: "表面重力加速度 $g = \\dfrac{F}{m}$，由 $GM = gR^2$ 得 $M = \\dfrac{gR^2}{G} = \\dfrac{FR^2}{Gm}$。"
+            },
+            {
+                q: "某行星的卫星贴近表面飞行，周期为 T，则行星密度 ρ 为？",
+                opts: [
+                    "3π/(GT²)",
+                    "4π/(GT²)",
+                    "GT²/(3π)",
+                    "3πG/T²"
+                ],
+                answer: 0,
+                explain: "近地卫星 r≈R，$M = \\dfrac{4\\pi^2R^3}{GT^2}$，$\\rho = \\dfrac{M}{\\tfrac{4}{3}\\pi R^3} = \\dfrac{3\\pi}{GT^2}$。"
+            }
+        ]
+    },
+{
+        badge: "卫星运动 · 考点06",
+        title: "人造卫星与宇宙速度",
+        intro: "万有引力提供向心力：轨道越高，卫星越'慢'但周期越长——'高轨低速长周期'。",
+        formulas: [
+            { t: "🛰️ 基本方程", f: "$$G\\dfrac{Mm}{r^2} = m\\dfrac{v^2}{r} = m\\omega^2r = m\\dfrac{4\\pi^2}{T^2}r$$", note: "万有引力完全提供向心力，这是所有卫星问题的出发点。" },
+            { t: "📐 随轨道半径变化", f: "$$v = \\sqrt{\\dfrac{GM}{r}},\\ \\omega = \\sqrt{\\dfrac{GM}{r^3}},\\ T = 2\\pi\\sqrt{\\dfrac{r^3}{GM}}$$", note: "r 增大：v、ω、a 均减小，只有 T 增大。" },
+            { t: "🛩️ 轨道平面", f: "<span class='term-chip'>在赤道平面内（赤道轨道）</span><span class='term-op'>/</span><span class='term-chip dark'>通过两极上空（极地轨道）</span><span class='term-op'>/</span><span class='term-chip good'>与赤道平面成任意角度（倾斜轨道）</span>", note: "卫星的轨道平面可以在赤道平面内（如同步轨道卫星），可以通过两极上空（极地轨道），也可以和赤道平面成任意角度——三种情形都是允许的。" },
+            { t: "🗂️ 都有哪些轨道（按倾角 / 高度 / 用途分类）", f: "<table class='cmp-table'><tr><th>分类依据</th><th>轨道名称</th><th>特点与典型应用</th></tr><tr><td rowspan='3'>按轨道倾角 i<br>（轨道平面与赤道平面的夹角）</td><td><b>赤道轨道</b> i = 0°</td><td>轨道平面与赤道平面重合；地球静止同步卫星必须在这个平面内</td></tr><tr><td><b>极地轨道</b> i = 90°</td><td>经过两极上空，每圈都扫过极区；配合地球自转可扫描全球，用于气象、侦察、资源遥感</td></tr><tr><td><b>倾斜轨道</b> 0° &lt; i &lt; 90°</td><td>与赤道平面成任意角度，绝大多数卫星采用，如北斗 IGSO 倾斜地球同步轨道</td></tr><tr><td rowspan='3'>按轨道高度 h</td><td><b>近地轨道 LEO</b><br>h ≈ 200~2000 km</td><td>周期约 90 min，线速度最大（接近 7.9 km/s）；空间站、多数遥感卫星</td></tr><tr><td><b>中地球轨道 MEO</b><br>h ≈ 2000~35786 km</td><td>周期 2~12 h；GPS、北斗导航星座（约 21500 km，周期 12 h）</td></tr><tr><td><b>地球同步轨道 GEO</b><br>h ≈ 35786 km</td><td>周期 24 h；通信、广播、气象卫星；当 i = 0° 时即地球静止轨道</td></tr><tr><td>特殊轨道</td><td><b>太阳同步轨道</b></td><td>i ≈ 98° 的近极地轨道，轨道平面绕地轴的进动与地球公转同步，每天以同一地方时经过同一纬度，光照条件稳定，便于遥感对地观测</td></tr></table>", note: "轨道倾角 i 是轨道平面与赤道平面的夹角。无论哪一类轨道，轨道平面都必须通过地心。" },
+            { t: "⚠ 核心结论：轨道圆心必须与地心重合", f: "<span class='term-chip warn'>轨道平面必过地心</span><span class='term-op'>→</span><span class='term-chip warn'>卫星不能定点在赤道以外某地的正上方</span>", note: "万有引力始终指向地心并全部用来提供向心力，向心力必须在轨道平面内，所以地心一定在轨道平面内。这正是同步卫星只能定点在赤道正上方、不能定点在北京正上方的根本原因。" },
+            { t: "🚀 三个宇宙速度", f: "<span class='term-chip'>7.9 km/s</span><span class='term-op'>环绕（第一宇宙速度）</span><span class='term-chip'>11.2 km/s</span><span class='term-op'>脱离</span><span class='term-chip'>16.7 km/s</span><span class='term-op'>逃逸</span>", note: "第一宇宙速度 v₁ = √(gR) = √(GM/R)，是最大环绕速度也是最小发射速度。" }
+        ],
+        figs: [
+            { src: "images/sat_orbit_plane.png", cap: "卫星的轨道平面：可以在赤道平面内、可以通过两极上空、也可以与赤道平面成任意角度——但三种情况的轨道平面都必须通过地心" }
+        ],
+        example: {
+            q: "已知地球半径 R=6400 km，g=9.8 m/s²，求第一宇宙速度。",
+            steps: [
+                "近地卫星：万有引力 = 向心力，$\\dfrac{mv^2}{R} = mg$",
+                "$v_1 = \\sqrt{gR} = \\sqrt{9.8 \\times 6.4\\times10^6}$",
+                "$v_1 \\approx 7.9\\times10^3\\ \\text{m/s} = 7.9\\ \\text{km/s}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "三颗卫星绕地球做圆周运动，轨道半径分别为 r₁ < r₂ < r₃，则线速度关系为？",
+                opts: [
+                    "v₁ < v₂ < v₃",
+                    "v₁ > v₂ > v₃",
+                    "v₁ = v₂ = v₃",
+                    "无法确定"
+                ],
+                answer: 1,
+                explain: "$v = \\sqrt{\\dfrac{GM}{r}}$，轨道半径越大线速度越小，故 v₁ > v₂ > v₃（高轨低速）。"
+            },
+            {
+                q: "下列说法正确的是？",
+                opts: [
+                    "第一宇宙速度是卫星绕地球运行的最小速度",
+                    "发射速度越大，卫星轨道越高",
+                    "卫星轨道半径越大，周期越小",
+                    "所有卫星都在赤道平面内运动"
+                ],
+                answer: 1,
+                explain: "第一宇宙速度是最大环绕速度、最小发射速度；r 越大 T 越大；卫星轨道可以不在赤道平面（极地卫星等）；发射速度越大轨道越高。"
+            },
+            {
+                q: "关于人造地球卫星的轨道平面，下列说法正确的是（多选）？",
+                opts: [
+                    "轨道平面可以在赤道平面内，如同步轨道卫星",
+                    "轨道平面可以通过两极上空，即极地轨道",
+                    "轨道平面可以与赤道平面成任意角度",
+                    "轨道平面可以不通过地心"
+                ],
+                answer: [0, 1, 2],
+                explain: "卫星只受指向地心的万有引力，向心力必须在轨道平面内，因此<b>地心一定在轨道平面内</b>（轨道圆心与地心重合），D 错；除此之外倾角可任意：i=0° 为赤道轨道、i=90° 为极地轨道、其余为倾斜轨道，ABC 均正确。"
+            },
+            {
+                q: "关于极地轨道卫星与地球同步卫星，下列说法正确的是？",
+                opts: [
+                    "极地轨道卫星可以相对地面静止",
+                    "同步卫星的轨道平面与赤道平面重合",
+                    "极地轨道卫星的轨道平面不通过地心",
+                    "同步卫星可以定点在北京（北纬约 40°）的正上方"
+                ],
+                answer: 1,
+                explain: "同步卫星要与地球自转同步且相对地面静止，轨道平面必须与赤道平面重合（i=0°），只能定点在赤道正上方，D 错；极地轨道虽过两极上空，但星下点随地球自转不断西移，不能相对地面静止，A 错；任何卫星的轨道平面都必过地心，C 错。"
+            }
+        ]
+    },
+{
+        badge: "卫星运动 · 考点07",
+        title: "同步卫星",
+        intro: "赤道上空 35800 km、周期 24h、与地球相对静止——'三定'是其显著特征。",
+        formulas: [
+            { t: "🎯 同步卫星的'三定'", f: "<span class='term-chip'>周期定</span><span class='term-op'>（T=24h）</span><span class='term-chip'>高度定</span><span class='term-op'>（h≈3.6×10⁷ m）</span><span class='term-chip'>轨道定</span><span class='term-op'>（赤道正上方）</span>", note: "轨道只能在赤道平面内，且高度唯一确定。" },
+            { t: "📐 同步卫星高度推导", f: "$$h = \\sqrt[3]{\\dfrac{GMT^2}{4\\pi^2}} - R$$", note: "由 $G\\dfrac{Mm}{(R+h)^2} = m\\dfrac{4\\pi^2}{T^2}(R+h)$ 解出。" },
+            { t: "⚠ 与赤道上物体的区别", f: "<span class='term-chip warn'>赤道物体</span><span class='term-op'>随地球自转（万有引力=重力+向心力）</span>", note: "赤道物体向心力由万有引力分力提供，不是完全失重；同步卫星是万有引力全提供向心力。" }
+        ],
+        example: {
+            q: "同步卫星的轨道半径是地球半径的 6.6 倍，求它的向心加速度与地表重力加速度之比。",
+            steps: [
+                "同步卫星：$a = \\dfrac{GM}{r^2}$，$r = 6.6R$",
+                "$\\dfrac{a}{g} = \\dfrac{GM/r^2}{GM/R^2} = \\left(\\dfrac{R}{6.6R}\\right)^2 = \\dfrac{1}{43.56}$",
+                "同步卫星向心加速度约为地表 g 的 1/43.6"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于地球同步卫星，下列说法正确的是？",
+                opts: [
+                    "可以定点在北京的正上方",
+                    "轨道半径越大，运行越稳定",
+                    "只能在赤道正上方某一确定高度",
+                    "其线速度大于第一宇宙速度"
+                ],
+                answer: 2,
+                explain: "同步卫星必须在赤道正上方（轨道面与赤道面共面），且高度唯一确定。其线速度约 3.1 km/s，小于第一宇宙速度。"
+            },
+            {
+                q: "同步卫星的周期与下列哪个物理量相同？",
+                opts: [
+                    "地球自转周期",
+                    "月球公转周期",
+                    "地球公转周期",
+                    "近地卫星周期"
+                ],
+                answer: 0,
+                explain: "同步卫星与地球自转周期相同（约 24 h），与地球保持相对静止，故得名'同步'。"
+            }
+        ]
+    },
+{
+        badge: "卫星运动 · 考点08",
+        title: "卫星变轨问题",
+        intro: "加速离心、减速向心——变轨瞬间万有引力不变，速度突变导致轨道改变。卫星的发射要经过多次变轨才能到达预定轨道。",
+        formulas: [
+            { t: "🚀 卫星的发射与变轨过程概述", f: "<span class='term-chip'>① 赤道上顺自转方向发射</span><span class='term-op'>→</span><span class='term-chip'>圆轨道 Ⅰ</span><span class='term-op'>→</span><span class='term-chip'>② A 点点火加速</span><span class='term-op'>→</span><span class='term-chip dark'>椭圆轨道 Ⅱ</span><span class='term-op'>→</span><span class='term-chip'>③ B 点（远地点）点火加速</span><span class='term-op'>→</span><span class='term-chip good'>圆轨道 Ⅲ</span>", note: "为了节省能量，在赤道上顺着地球自转方向发射卫星到圆轨道Ⅰ上；在 A 点点火加速，由于速度变大，万有引力不足以提供向心力，卫星做离心运动进入椭圆轨道Ⅱ；在 B 点（远地点）再次点火加速，进入圆形轨道Ⅲ。" },
+            { t: "🔥 变轨原理", f: "<span class='term-chip'>加速 → 离心（轨道升高）</span><span class='term-op'>,</span><span class='term-chip good'>减速 → 向心（轨道降低）</span>", note: "在某一轨道上点火加速，v 增大超过该轨道所需速度，卫星离心进入更高轨道。" },
+            { t: "📐 椭圆转移轨道", f: "$$v_B(\\text{远}) < v_B'(\\text{圆}) ,\\quad v_A(\\text{近}) > v_A'(\\text{圆})$$", note: "从低轨 A 加速到椭圆，到远地点 B 再加速进入高轨圆。" },
+            { t: "📊 四个运行物理量的大小比较", f: "<table class='cmp-table'><tr><th>物理量</th><th>大小关系</th><th>判断依据</th></tr><tr><td><b>速度 v</b></td><td>\\(v_A &gt; v_1 &gt; v_3 &gt; v_B\\)</td><td>A 点加速 → \\(v_A&gt;v_1\\)；B 点加速 → \\(v_3&gt;v_B\\)；圆轨道上高轨低速 → \\(v_1&gt;v_3\\)</td></tr><tr><td><b>加速度 a</b></td><td>\\(a_A^{(Ⅰ)}=a_A^{(Ⅱ)}\\)，\\(a_B^{(Ⅱ)}=a_B^{(Ⅲ)}\\)，且 \\(a_A&gt;a_B\\)</td><td>在同一点卫星只受万有引力，\\(a=GM/r^2\\)，与经过哪条轨道无关；\\(r_A&lt;r_B\\) 故 \\(a_A&gt;a_B\\)</td></tr><tr><td><b>周期 T</b></td><td>\\(T_1 &lt; T_2 &lt; T_3\\)</td><td>由开普勒第三定律 \\(r^3/T^2=k\\)（椭圆轨道 r 取半长轴），且 \\(r_1&lt;r_2&lt;r_3\\)</td></tr><tr><td><b>机械能 E</b></td><td>\\(E_1 &lt; E_2 &lt; E_3\\)</td><td>在一个确定的圆（椭圆）轨道上机械能守恒；每次点火加速都要做正功，机械能增大</td></tr></table>", note: "记法：速度看'点火突变 + 高轨低速'，加速度只看位置 r，周期看半长轴，机械能看点过几次火。" },
+            { t: "🔬 卫星变轨的实质：离心运动与近心运动", f: "<table class='cmp-table'><tr><th>两类变轨</th><th>离心运动</th><th>近心运动</th></tr><tr><td><b>变轨起因</b></td><td>卫星速度突然<b>增大</b></td><td>卫星速度突然<b>减小</b></td></tr><tr><td><b>受力分析</b></td><td>\\(G\\dfrac{Mm}{r^2} &lt; m\\dfrac{v^2}{r}\\)</td><td>\\(G\\dfrac{Mm}{r^2} &gt; m\\dfrac{v^2}{r}\\)</td></tr><tr><td><b>变轨结果</b></td><td>变为椭圆轨道运动或在<b>较大</b>半径的圆轨道上运动</td><td>变为椭圆轨道运动或在<b>较小</b>半径的圆轨道上运动</td></tr></table>", note: "供给（万有引力）与需求（所需向心力 mv²/r）谁大谁小，决定卫星向心还是离心。" },
+            { t: "⚠ 易错点", f: "<span class='term-chip warn'>变轨瞬间：v 变、F万 不变、a 不变</span>", note: "同一位置点火前后万有引力相同，加速度相同，只有速度因点火而改变。" }
+        ],
+        figs: [
+            { src: "images/sat_orbit_transfer.png", cap: "卫星的发射与变轨：圆轨道Ⅰ →（A 点加速）→ 椭圆轨道Ⅱ →（B 点远地点加速）→ 圆轨道Ⅲ" }
+        ],
+        examples: [
+            {
+                q: "卫星在近地圆轨道运行，要实现向更高轨道转移，正确的操作是？",
+                steps: [
+                    "在近地轨道某点点火加速，v 增大",
+                    "万有引力不足以维持原圆周运动，卫星离心进入椭圆轨道",
+                    "到达椭圆轨道远地点时再次点火加速，进入目标圆轨道"
+                ]
+            },
+            {
+                q: "卫星在圆轨道Ⅰ上运行，在 A 点点火加速进入椭圆轨道Ⅱ，在远地点 B 再次点火加速进入圆轨道Ⅲ。试比较四个运行物理量（速度、加速度、周期、机械能）的大小。",
+                steps: [
+                    "<b>速度：</b>A 点加速 \\(v_A&gt;v_1\\)，B 点加速 \\(v_3&gt;v_B\\)，圆轨道上高轨低速 \\(v_1&gt;v_3\\)，故 \\(v_A&gt;v_1&gt;v_3&gt;v_B\\)",
+                    "<b>加速度：</b>同一点只受万有引力，\\(a=GM/r^2\\) 与轨道无关，故过 A 点时 Ⅰ、Ⅱ 上加速度相同，过 B 点时 Ⅱ、Ⅲ 上加速度相同；又 \\(r_A&lt;r_B\\)，故 \\(a_A&gt;a_B\\)",
+                    "<b>周期：</b>由开普勒第三定律 \\(r^3/T^2=k\\)（椭圆取半长轴），\\(r_1&lt;r_2&lt;r_3\\)，故 \\(T_1&lt;T_2&lt;T_3\\)",
+                    "<b>机械能：</b>确定轨道上机械能守恒，两次点火加速均做正功，故 \\(E_1&lt;E_2&lt;E_3\\)"
+                ]
+            }
+        ],
+        challenges: [
+            {
+                q: "卫星从低轨道向高轨道变轨，需要（在变轨点）？",
+                opts: [
+                    "点火加速",
+                    "点火减速",
+                    "关闭发动机",
+                    "保持速度不变"
+                ],
+                answer: 0,
+                explain: "加速后万有引力不足以提供所需向心力，卫星离心做椭圆运动，从而进入更高轨道。"
+            },
+            {
+                q: "卫星在 P 点从圆轨道 I 变轨到椭圆轨道 II（点火加速）。关于点火瞬间，下列说法正确的是？",
+                opts: [
+                    "速度突变增大，万有引力不变",
+                    "速度突变增大，万有引力也增大",
+                    "速度不变，万有引力减小",
+                    "加速度突变增大"
+                ],
+                answer: 0,
+                explain: "点火瞬间卫星位置不变，万有引力不变、加速度不变；点火使速度突变增大，从而离心进入椭圆轨道。"
+            },
+            {
+                q: "卫星在圆轨道Ⅰ上的 A 点点火加速进入椭圆轨道Ⅱ，在远地点 B 再次点火加速进入圆轨道Ⅲ。设卫星在圆轨道Ⅰ、Ⅲ上的速率分别为 $v_1$、$v_3$，在轨道Ⅱ上过 A、B 点的速率分别为 $v_A$、$v_B$，则四个速率的大小关系为？",
+                opts: [
+                    "$v_A > v_1 > v_3 > v_B$",
+                    "$v_1 > v_A > v_3 > v_B$",
+                    "$v_A > v_1 > v_B > v_3$",
+                    "$v_3 > v_1 > v_A > v_B$"
+                ],
+                answer: 0,
+                explain: "A 点点火加速 → $v_A > v_1$；B 点（远地点）点火加速 → $v_3 > v_B$；圆轨道上高轨低速 → $v_1 > v_3$。联立得 $v_A > v_1 > v_3 > v_B$。"
+            },
+            {
+                q: "卫星分别沿圆轨道Ⅰ和椭圆轨道Ⅱ经过同一个 A 点，两次经过 A 点时的加速度 $a_1$、$a_2$ 的关系为？",
+                opts: [
+                    "$a_1 > a_2$",
+                    "$a_1 < a_2$",
+                    "$a_1 = a_2$",
+                    "无法确定"
+                ],
+                answer: 2,
+                explain: "在 A 点卫星只受万有引力，$a = GM/r^2$ 只由位置 r 决定，与走哪条轨道、速度多大无关，故 $a_1 = a_2$（同理过 B 点时 Ⅱ、Ⅲ 上加速度也相同）。"
+            },
+            {
+                q: "关于卫星在轨道Ⅰ、Ⅱ、Ⅲ上的周期 $T_1$、$T_2$、$T_3$ 与机械能 $E_1$、$E_2$、$E_3$，下列说法正确的是（多选）？",
+                opts: [
+                    "$T_1 < T_2 < T_3$",
+                    "$T_1 > T_2 > T_3$",
+                    "$E_1 < E_2 < E_3$",
+                    "$E_1 = E_2 = E_3$"
+                ],
+                answer: [0, 2],
+                explain: "由开普勒第三定律 $r^3/T^2 = k$（椭圆轨道 r 取半长轴），且 $r_1 < r_2 < r_3$，故 $T_1 < T_2 < T_3$；在确定的圆（椭圆）轨道上机械能守恒，而每次点火加速都要做正功，故 $E_1 < E_2 < E_3$。"
+            },
+            {
+                q: "卫星在圆轨道上正常运行时突然减速（发动机反向制动），下列说法正确的是（多选）？",
+                opts: [
+                    "卫星将做近心运动，轨道半径变小",
+                    "卫星将做离心运动，轨道半径变大",
+                    "此时 $GMm/r^2 > mv^2/r$，供给大于需求",
+                    "此时 $GMm/r^2 < mv^2/r$，供给小于需求"
+                ],
+                answer: [0, 2],
+                explain: "减速后所需向心力 $mv^2/r$ 变小，出现 $GMm/r^2 > mv^2/r$，万有引力'供过于求'，卫星做近心运动，进入半径较小的轨道（或椭圆轨道）。"
+            }
+        ]
+    },
+{
+        badge: "天体运动规律 · 考点09",
+        title: "双星与多星系统",
+        intro: "双星绕共同质心转动、角速度相同——质量与轨道半径成反比是核心结论。",
+        formulas: [
+            { t: "⭐ 双星系统", f: "$$m_1r_1 = m_2r_2,\\quad r_1 + r_2 = L$$", note: "两星绕连线上的公共圆心转动，角速度相同。" },
+            { t: "📐 双星周期", f: "$$T = 2\\pi\\sqrt{\\dfrac{L^3}{G(m_1 + m_2)}}$$", note: "由 $G\\dfrac{m_1m_2}{L^2} = m_1\\omega^2r_1 = m_2\\omega^2r_2$ 联立推导。" },
+            { t: "⚠ 关键认识", f: "<span class='term-chip'>向心力相同</span><span class='term-op'>（万有引力）</span><span class='term-chip'>角速度相同</span>", note: "轨道半径小的星质量大；两星周期相同。" }
+        ],
+        example: {
+            q: "双星系统中两星质量分别为 m 和 2m，相距 L。求质量 2m 的星到公共质心的距离。",
+            steps: [
+                "由 $m_1r_1 = m_2r_2$：$m \\cdot r_1 = 2m \\cdot r_2$",
+                "$r_1 + r_2 = L$，且 $r_1 = 2r_2$，得 $3r_2 = L$",
+                "$r_2 = \\dfrac{L}{3}$（质量大的星离质心近）"
+            ]
+        },
+        challenges: [
+            {
+                q: "双星系统中两星质量之比 m₁:m₂ = 2:1，则它们到公共质心的距离之比 r₁:r₂ 为？",
+                opts: [
+                    "2:1",
+                    "1:2",
+                    "1:1",
+                    "4:1"
+                ],
+                answer: 1,
+                explain: "由 $m_1r_1 = m_2r_2$ 得 $r_1:r_2 = m_2:m_1 = 1:2$，质量大的星离质心更近。"
+            },
+            {
+                q: "关于双星系统，下列说法正确的是？",
+                opts: [
+                    "两星的角速度大小不同",
+                    "两星的向心力大小相等",
+                    "两星的线速度大小相等",
+                    "两星的周期与各自质量成正比"
+                ],
+                answer: 1,
+                explain: "两星间的万有引力大小相等（作用力与反作用力），提供各自向心力，故向心力相等；角速度、周期相同；线速度 v=ωr，与各自轨道半径成正比，一般不同。"
+            }
+        ]
+    },
+{
+        badge: "天体运动规律 · 考点10",
+        title: "卫星能量与追击",
+        intro: "轨道越高机械能越大；追及相遇问题本质是比较角速度、算相对角度。",
+        formulas: [
+            { t: "⚡ 卫星机械能", f: "$$E = -\\dfrac{GMm}{2r}$$", note: "轨道半径越大（r 越大），机械能越大（更接近零）。" },
+            { t: "📐 追击问题", f: "$$\\Delta\\theta = (\\omega_1 - \\omega_2)t = 2\\pi n$$", note: "两卫星再次相距最近/最远时，转过的角度差为 2π 的整数倍。" },
+            { t: "⚠ 能量转化", f: "<span class='term-chip'>加速变轨</span><span class='term-op'>→</span><span class='term-chip'>机械能增加</span><span class='term-op'>（点火做功）</span>", note: "从低轨到高轨需要多次点火做功，机械能增大。" }
+        ],
+        example: {
+            q: "卫星在半径为 r₁ 的轨道上运行，点火加速到半径 r₂（r₂ > r₁）的轨道，机械能如何变化？",
+            steps: [
+                "点火过程发动机做功，卫星机械能增加",
+                "机械能 E = -GMm/2r，r 增大则 E 增大（-GMm/2r 更接近 0）",
+                "结论：轨道越高，机械能越大"
+            ]
+        },
+        challenges: [
+            {
+                q: "两颗卫星绕地球做圆周运动，轨道半径 r₁ < r₂，则它们的角速度关系为？",
+                opts: [
+                    "ω₁ > ω₂",
+                    "ω₁ < ω₂",
+                    "ω₁ = ω₂",
+                    "无法确定"
+                ],
+                answer: 0,
+                explain: "$\\omega = \\sqrt{\\dfrac{GM}{r^3}}$，轨道半径小的角速度大，故 ω₁ > ω₂。追击问题中低轨卫星'追'高轨卫星。"
+            },
+            {
+                q: "卫星从低轨变到高轨（两次点火加速），其机械能将？",
+                opts: [
+                    "减小",
+                    "增大",
+                    "不变",
+                    "先增大后减小"
+                ],
+                answer: 1,
+                explain: "每次点火加速发动机都对卫星做功，机械能增加；轨道越高总机械能越大。"
+            }
+        ]
+    },
+{
+        badge: "综合与真题 · 考点11",
+        title: "综合与真题演练",
+        intro: "万有引力与圆周运动、能量、追击的综合题，是高考天体模块的压轴形态。",
+        formulas: [
+            { t: "📋 解题总流程", f: "<span class='term-chip dark'>找中心天体</span><span class='term-op'>→</span><span class='term-chip dark'>列万有引力=向心力</span><span class='term-op'>→</span><span class='term-chip dark'>黄金代换</span><span class='term-op'>→</span><span class='term-chip dark'>求解</span>", note: "遇到 GM 用 gR² 代换，遇到不变量用比例法。" },
+            { t: "🧮 比例法速算", f: "$$v \\propto \\dfrac{1}{\\sqrt{r}},\\ \\omega \\propto \\dfrac{1}{r^{3/2}},\\ T \\propto r^{3/2}$$", note: "只求比值时直接使用比例关系，避免复杂计算。" },
+            { t: "🏆 高考高频陷阱", f: "<span class='term-chip warn'>同步卫星≠赤道物体</span><span class='term-op'>/</span><span class='term-chip warn'>近地≠地面</span><span class='term-op'>/</span><span class='term-chip warn'>r 是球心距</span>", note: "r 一律指到中心天体球心的距离，不是高度。" }
+        ],
+        example: {
+            q: "已知地球半径为 R，同步卫星轨道半径为 r（r=6.6R）。求同步卫星与近地卫星线速度之比。",
+            steps: [
+                "由 $v = \\sqrt{\\dfrac{GM}{r}}$：$\\dfrac{v_{\\text{同}}}{v_{\\text{近}}} = \\sqrt{\\dfrac{r_{\\text{近}}}{r_{\\text{同}}}}$",
+                "$\\dfrac{v_{\\text{同}}}{v_{\\text{近}}} = \\sqrt{\\dfrac{R}{6.6R}} = \\sqrt{\\dfrac{1}{6.6}} \\approx 0.39$",
+                "同步卫星线速度约为近地卫星的 0.39 倍"
+            ]
+        },
+        challenges: [
+            {
+                q: "近地卫星（轨道半径 R）、同步卫星（轨道半径 6.6R）、赤道上的物体，三者中向心加速度最大的是？",
+                opts: [
+                    "近地卫星",
+                    "同步卫星",
+                    "赤道物体",
+                    "一样大"
+                ],
+                answer: 0,
+                explain: "近地卫星向心加速度 $a = \\dfrac{GM}{R^2} = g$；同步卫星 $a = \\dfrac{GM}{(6.6R)^2} \\approx \\dfrac{g}{43.6}$；赤道物体 $a = \\omega^2R \\approx 0.034\\ \\text{m/s}^2 \\ll g$。故近地卫星最大。"
+            },
+            {
+                exam: true,
+                q: "（高考真题 · 复合考点）地球赤道上的物体随地球自转的向心加速度为 a₁，同步卫星的向心加速度为 a₂，第一宇宙速度对应的近地卫星向心加速度为 a₃。则 a₁、a₂、a₃ 的大小关系是？",
+                opts: [
+                    "a₁ = a₂ = a₃",
+                    "a₁ > a₂ > a₃",
+                    "a₃ > a₂ > a₁",
+                    "a₂ > a₃ > a₁"
+                ],
+                answer: 2,
+                explain: "a₁ 与 a₂：角速度相同（同步），$a = \\omega^2r$，r₂ > R，故 a₂ > a₁。a₂ 与 a₃：$a = \\dfrac{GM}{r^2}$，r₃ = R < r₂ = 6.6R，故 a₃ > a₂。综上 a₃ > a₂ > a₁。",
+                points: [
+                    { step: "赤道物体与同步卫星角速度相同，a = ω²r 比较 a₂ > a₁", k: "sync" },
+                    { step: "近地卫星与同步卫星用 a = GM/r² 比较 a₃ > a₂", k: "satellite" },
+                    { step: "近地卫星 a₃ = GM/R² = g 为最大", k: "golden" },
+                    { step: "综合三段比较得出 a₃ > a₂ > a₁", k: "satellite" }
+                ]
+            },
+            {
+                exam: true,
+                q: "（压轴题 · 复合考点）飞船在半径为 R₁ 的轨道上绕地球做圆周运动，周期为 T₁。变轨后在半径 R₂ = 2R₁ 的轨道上运行。则新轨道周期 T₂ 与 T₁ 的关系为？",
+                opts: [
+                    "T₂ = 2T₁",
+                    "T₂ = 2√2 T₁",
+                    "T₂ = 4T₁",
+                    "T₂ = 8T₁"
+                ],
+                answer: 1,
+                explain: "由开普勒第三定律（圆轨道）：$\\dfrac{R_1^3}{T_1^2} = \\dfrac{R_2^3}{T_2^2}$，$T_2 = T_1\\left(\\dfrac{R_2}{R_1}\\right)^{3/2} = T_1 \\times 2^{3/2} = 2\\sqrt{2}\\,T_1$。",
+                points: [
+                    { step: "识别圆轨道运动，可用开普勒第三定律（或 GM 相等）", k: "kepler" },
+                    { step: "列式 R₁³/T₁² = R₂³/T₂²", k: "kepler" },
+                    { step: "代入 R₂ = 2R₁ 解出 T₂ = 2√2·T₁", k: "satellite" }
+                ]
+            }
+        ]
+    }
+];;
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+const LEVEL_COUNT = LEVELS.length;
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    const navBtn = document.createElement('button');
+    navBtn.innerHTML = `<span class="nav-no">考点${String(i+1).padStart(2,'0')}</span><span class="nav-name">${lv.title}</span>`;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    lv.formulas.forEach(f => {
+        const isMath = f.f.indexOf('$') !== -1;
+        const isTable = /^\s*<table/i.test(f.f);
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            ${isMath
+                ? `<div class="formula">${f.f}</div>`
+                : (isTable ? `<div class="formula-html">${f.f}</div>` : `<div class="formula-text">${f.f}</div>`)}
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    (lv.figs || []).forEach(g => {
+        html += `
+        <figure class="figbox">
+            <img src="${g.src}" alt="${g.cap}">
+            <figcaption>🖼 ${g.cap}</figcaption>
+        </figure>`;
+    });
+
+    const exs = lv.examples || (lv.example ? [lv.example] : []);
+    exs.forEach((ex, ei) => {
+        html += `<div class="example">
+        <div class="q">💡 例题${exs.length > 1 ? ' ' + (ei + 1) : ''}</div>`;
+        if (ex.q) html += `<div class="eq">${ex.q}</div>`;
+        ex.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+        html += `</div>`;
+    });
+
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        let ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        if (Array.isArray(c.answer)) ctag += `<span class="ctag" style="background:#00897b;margin-left:8px;">☑ 多选题（可多选）</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">考点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===LEVEL_COUNT-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+function isMulti(cid) {
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    return Array.isArray(chs[lk].answer);
+}
+
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        if (!isMulti(cid)) {
+            document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        }
+        if (this.classList.contains('selected')) {
+            this.classList.remove('selected');
+            this.style.borderColor = '';
+            this.style.background = '';
+        } else {
+            this.classList.add('selected');
+            this.style.borderColor = '#3a7bd5';
+            this.style.background = '#eef4ff';
+        }
+    });
+});
+
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelectorAll(`.opt[data-i="${cid}"].selected`);
+    if (!sel.length) { alert('请先选择一个答案！（多选题可点选多个）'); return; }
+    const picked = Array.from(sel).map(o => +o.dataset.j).sort((a, b) => a - b);
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    const rightSet = (Array.isArray(correct) ? correct.slice() : [correct]).sort((a, b) => a - b);
+    rightSet.forEach(i => opts[i].classList.add('correct'));
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    const ok = picked.length === rightSet.length && picked.every((v, i) => v === rightSet[i]);
+    if (ok) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        picked.forEach(i => { if (rightSet.indexOf(i) === -1) opts[i].classList.add('wrong'); });
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + rightSet.map(i => String.fromCharCode(65 + i)).join('、');
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => {
+            const key = li + '_' + k;
+            if (!answered[key]) return false;
+            const right = Array.isArray(c.answer) ? c.answer : [c.answer];
+            return right.every(a => document.querySelector(`.opt[data-i="${key}"][data-j="${a}"]`)?.classList.contains('correct'));
+        });
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= LEVEL_COUNT) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 光学基础知识</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #21d4fd 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(106,17,203,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #2575fc;
+        }
+        .card h2 {
+            color: #4a00e0;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #2575fc;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2575fc; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #4a00e0; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 90px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #2575fc; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #1a5fd0; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(74,0,224,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 15px; font-size: 0.92em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .mindmap .node.c2 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .mindmap .node.c3 { background: linear-gradient(135deg, #fc466b, #3f5efb); }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .question .q-img {
+            display: block; max-width: 280px; margin: 10px auto;
+            border: 1px solid #d6e2ef; border-radius: 8px; background: #fff;
+        }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #1a5fd0; }
+        .anim-readout {
+            margin-top: 10px; font-size: 0.92em; color: #34495e;
+        }
+        .anim-readout b { color: #1e3c72; }
+        .fig {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 16px; margin: 16px 0; text-align: center;
+        }
+        .fig canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .fig .cap { margin-top: 8px; font-size: 0.88em; color: #607d8b; }
+        .wave-controls { margin: 12px 0 6px; }
+        .wave-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .wave-controls button:hover { background: #1a5fd0; }
+        .wave-controls label { font-weight: 500; margin: 0 6px; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #4a00e0; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #2575fc; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 8px; font-size: 0.82em; }
+            .card { padding: 20px; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(74,0,224,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(74,0,224,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🔆 光学 · ⑤ 光的衍射</h1>
+    <p>高中物理核心概念 · 公式 · 例题</p>
+</div>
+
+<nav class="nav">
+        <a href="高中物理_光学.html">📚 总览</a>
+        <a href="高中物理_光学_光的反射.html">① 光的反射</a>
+        <a href="高中物理_光学_折射.html">② 折射</a>
+        <a href="高中物理_光学_全反射.html">③ 全反射</a>
+        <a href="高中物理_光学_色散和干涉.html">④ 色散和干涉</a>
+        <a href="高中物理_光学_衍射.html" class="active">⑤ 衍射</a>
+        <a href="高中物理_光学_偏振.html">⑥ 偏振</a>
+        <a href="高中物理_光学_习题.html">📝 习题</a>
+</nav>
+
+<div class="container">
+
+<div class="card" id="topic">
+<h3>② 光的衍射</h3>
+    <p>光绕过障碍物偏离直线传播。证明光具有<b>波动性</b>。</p>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li><b>单缝衍射</b>：中央亮纹最宽最亮，两侧对称分布、亮度递减的明暗条纹。</li>
+        <li><b>圆孔衍射</b>：爱里斑。</li>
+        <li><b>泊松亮斑</b>：光照射不透明小圆板，阴影中心出现亮斑（衍射典型证据）。</li>
+    </ul>
+
+    <!-- 衍射动画 -->
+    <div class="fig">
+        <canvas id="canvasDiffract" width="520" height="300"></canvas>
+        <div class="wave-controls">
+            <button onclick="diffractAnim.restart()">重置</button>
+            <button onclick="diffractAnim.toggle()">暂停 / 继续</button>
+            <label>缝宽 a (相对):
+                <input type="range" id="slitW" min="20" max="120" value="60" style="width:160px;" oninput="diffractAnim.setW(event.target.value)">
+            </label>
+            <span id="slitWReadout" style="font-weight:600;color:#1565c0;">60</span>
+        </div>
+        <div class="anim-readout" id="diffractReadout"></div>
+        <div class="cap">动画 · 单缝衍射：左为波面通过狭缝后向两侧扩展，右为屏上强度分布（中央亮纹最宽最亮，两侧递减）。缝越窄，衍射越明显、中央亮纹越宽。</div>
+    </div>
+
+    <!-- 泊松亮斑示意图 -->
+    <div class="fig">
+        <canvas id="canvasPoisson" width="520" height="280"></canvas>
+        <div class="wave-controls">
+            <label>圆板半径 R (相对):
+                <input type="range" id="poisR" min="10" max="50" value="26" style="width:160px;" oninput="poissonAnim.setR(event.target.value)">
+            </label>
+            <span id="poissonReadout" style="font-weight:600;color:#1565c0;"></span>
+        </div>
+        <div class="cap">交互 · 泊松亮斑：拖动滑块改变不透明小圆板大小，观察圆板后方阴影中<b>正中心</b>的亮斑始终存在（圆板越大，亮斑越亮、衍射环越密）。这是光具有波动性的著名证据。</div>
+    </div>
+
+    <div class="warn">
+        <b>⚠️ 干涉 vs 衍射：</b>干涉是"多束光"叠加，衍射是"同一波面受限"后的扩展。二者本质都是波的叠加，高考常对比考查。
+    </div>
+
+    
+</div>
+
+<div class="footer">
+    <p>📖 高中物理 · 光学 · ⑤ 光的衍射</p>
+    <p>建议结合教材例题练习，理解公式的物理意义而非死记硬背</p>
+</div>
+
+</div>
+
+<script>
+/* ===================== 动画 4：单缝衍射 ===================== */
+const diffractAnim = (function () {
+    const canvas = document.getElementById('canvasDiffract');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const sx = 80, sy = H / 2;
+    let a = 60, phase = 0, running = true, lastT = 0, raf = null;
+
+    function drawHuygens() {
+        // 狭缝：沿缝宽方向多个子波源
+        const n = 9;
+        for (let i = 0; i < n; i++) {
+            const y0 = sy - a / 2 + (a * i) / (n - 1);
+            for (let r = 10; r < 200; r += 14) {
+                const al = 0.16 * (1 - r / 200);
+                ctx.strokeStyle = `rgba(41,128,185,${al})`;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.arc(sx, y0, r, -Math.PI/2.2, Math.PI/2.2);
+                ctx.stroke();
+            }
+        }
+        // 缝（遮光板）
+        ctx.fillStyle = '#455a64';
+        ctx.fillRect(sx - 6, 0, 12, sy - a/2);
+        ctx.fillRect(sx - 6, sy + a/2, 12, H - (sy + a/2));
+        // 屏
+        ctx.strokeStyle = '#90a4ae'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(W - 50, 0); ctx.lineTo(W - 50, H); ctx.stroke();
+    }
+
+    function drawScreen() {
+        const screenX = W - 44;
+        for (let y = 8; y < H - 8; y++) {
+            const beta = Math.PI * a * (y - sy) / 4000;   // 衍射相位因子（示意）
+            const sinc = beta === 0 ? 1 : Math.sin(beta) / beta;
+            const I = sinc * sinc;
+            ctx.fillStyle = `rgba(41,128,185,${0.15 + 0.85 * I})`;
+            ctx.fillRect(screenX, y, 22, 1);
+        }
+    }
+
+    function loop(ts) {
+        if (!lastT) lastT = ts;
+        let dt = (ts - lastT) / 1000; lastT = ts;
+        if (dt > 0.05) dt = 0.05;
+        if (running) {
+            phase += dt * 3;
+            ctx.clearRect(0, 0, W, H);
+            drawHuygens();
+            drawScreen();
+        }
+        raf = requestAnimationFrame(loop);
+    }
+    function start() { if (!raf) raf = requestAnimationFrame(loop); }
+
+    function setW(v) {
+        a = parseFloat(v);
+        document.getElementById('slitWReadout').textContent = v;
+        document.getElementById('diffractReadout').innerHTML =
+            `缝宽 a = ${v}（相对值）：缝越窄，衍射越显著，中央亮纹越<b>宽</b>；缝越宽，越接近直线传播。`;
+    }
+    setW(60);
+    return {
+        start, restart() { phase = 0; }, toggle() { running = !running; }, setW
+    };
+})();
+diffractAnim.start();
+/* ===================== 交互图 7：泊松亮斑 ===================== */
+const poissonAnim = (function () {
+    const canvas = document.getElementById('canvasPoisson');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W * 0.32, cy = H / 2;       // 小圆板位置
+    let R = 26;                            // 圆板半径（可拖动）
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#1c2530';
+        ctx.fillRect(0, 0, W, H);
+        // 入射平行光
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1;
+        for (let y = 40; y < H; y += 18) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cx - R, y); ctx.stroke();
+        }
+        // 几何阴影边界
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(cx - R, cy - R); ctx.lineTo(W, cy - R - (W - cx) * 0.18); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx - R, cy + R); ctx.lineTo(W, cy + R + (W - cx) * 0.18); ctx.stroke();
+        ctx.setLineDash([]);
+        // 圆板
+        ctx.fillStyle = '#34495e';
+        ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.fill();
+        ctx.strokeStyle = '#90a4ae'; ctx.lineWidth = 1.5; ctx.stroke();
+        // 衍射绕到后方的光（弧线）
+        ctx.strokeStyle = 'rgba(120,200,255,0.5)'; ctx.lineWidth = 1.5;
+        for (let s = -1; s <= 1; s += 2) {
+            ctx.beginPath();
+            ctx.arc(cx, cy + s * R, (W - cx), Math.PI * (s > 0 ? 1.15 : 1.85), Math.PI * (s > 0 ? 0.85 : 2.15), s > 0);
+            ctx.stroke();
+        }
+        // 屏上：中心亮斑 + 衍射环（圆板越大，中心越亮、环越密）
+        const screenX = W - 12;
+        const k = 1 / (R * 0.8 + 6);       // 环密度随 R 增大
+        for (let y = 0; y < H; y++) {
+            const dy = y - cy;
+            // 中心亮斑（泊松）：用艾里斑式强度，主瓣宽度随 R 变化
+            const u = dy * k;
+            let I;
+            if (Math.abs(u) < 0.001) I = 1;
+            else {
+                const s = Math.sin(Math.PI * u) / (Math.PI * u);   // sinc² 近似衍射
+                I = s * s;
+            }
+            I = Math.min(1, I * (0.6 + R / 50));
+            ctx.fillStyle = `rgba(160,210,255,${I})`;
+            ctx.fillRect(screenX, y, 10, 1);
+        }
+        // 标注
+        ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif';
+        ctx.fillText('平行光', 8, 22);
+        ctx.fillText('不透明小圆板', cx - 42, cy - R - 8);
+        ctx.fillStyle = '#aef'; ctx.font = 'bold 12px sans-serif';
+        ctx.fillText('泊松亮斑（中心亮）', screenX - 120, cy - 34);
+    }
+    function setR(v) {
+        R = parseFloat(v);
+        document.getElementById('poissonReadout').textContent =
+            `R=${R} ｜ 阴影中心始终有亮斑；圆板越大，中央亮斑越亮、衍射环越密`;
+        draw();
+    }
+    setR(26);
+    return { setR };
+})();
+diffractAnim.start();
+</script>
+</body>
+</html>

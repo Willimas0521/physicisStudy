@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 带电粒子在复合场中的运动</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+        .header { background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%); color: white; padding: 50px 20px; text-align: center; box-shadow: 0 4px 20px rgba(30,60,114,0.3); }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5; }
+        .card h2 { color: #1e3c72; font-size: 1.6em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px; }
+        .card h2 .num { background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8em; flex-shrink: 0; }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula { background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px; padding: 18px 20px; margin: 12px 0; font-size: 1.15em; color: #1a2a3a; text-align: center; overflow-x: auto; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point { background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .warn { background: #fff3e0; border-left: 4px solid #ff9800; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .danger { background: #ffebee; border-left: 4px solid #e74c3c; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        td.rowname { font-weight: 600; color: #1e3c72; white-space: nowrap; background: #f8fafc; width: 90px; }
+        .figure { text-align: center; margin: 16px 0; }
+        .figure img { max-width: 100%; border: 1px solid #e3e8ee; border-radius: 10px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+        .figure figcaption { color: #7f8c8d; font-size: 0.9em; margin-top: 8px; }
+        .nav { position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100; background: rgba(30,60,114,0.96); backdrop-filter: blur(10px); border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22); max-height: calc(100vh - 140px); overflow-y: auto; }
+        .nav .nav-title { color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px; padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px; }
+        .nav a { display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em; padding: 7px 10px; border-radius: 6px; transition: background 0.25s; border-left: 3px solid transparent; }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0; display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧲 带电粒子在复合场中的运动</h1>
+    <p>高中物理 · 组合场 · 叠加场 · 质谱仪/回旋加速器</p>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#combo">组合场中的运动</a>
+    <a href="#define">模型定义</a>
+    <a href="#models">两大偏转模型</a>
+    <a href="#keypoints">要点点拨</a>
+    <a href="#method">解题方法</a>
+    <a href="#superposed">叠加场中的运动</a>
+    <a href="#velocity">速度选择器</a>
+    <a href="#mhd">磁流体发电机</a>
+    <a href="#flow">电磁流量计</a>
+    <a href="#hall">霍尔元件</a>
+    <a href="#mass">质谱仪</a>
+    <a href="#cyclotron">回旋加速器</a>
+</nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 一、组合场中的运动 -->
+<div class="card" id="combo">
+    <h2><span class="num">1</span>带电粒子在组合场中的运动</h2>
+
+    <h3 id="define">模型定义</h3>
+    <p><span class="highlight">组合场</span>是指静电场、磁场与无场区各位于一定的区域内，<b>并不重叠</b>；或在同一区域，静电场、磁场与无场区分<span class="highlight">时间段交替出现</span>。</p>
+    <div class="key-point">
+        <b>📌 关键特征：</b>电场、磁场、无场区<b>分区或分时</b>出现，粒子在不同阶段受力不同，因此要把整个运动过程拆成若干个小过程分别处理。
+    </div>
+
+    <h3 id="models">两大偏转模型</h3>
+    <figure class="figure">
+        <img src="images/复合场_甲乙.png" alt="两大偏转模型：甲 电偏转类平抛，乙 磁偏转匀速圆周">
+        <figcaption>两大偏转模型：甲为电偏转（类平抛），乙为磁偏转（匀速圆周）</figcaption>
+    </figure>
+
+    <h3>（1）电偏转</h3>
+    <p>带电粒子<b>垂直进入匀强电场</b>中做<span class="highlight">类平抛运动</span>（如图甲所示），可应用类平抛运动规律、动能定理等求解。</p>
+    <div class="formula">$$x = v_0 t \quad,\quad y = \frac{1}{2}at^2 = \frac{1}{2}\frac{qE}{m}t^2 \quad,\quad a = \frac{qE}{m}$$</div>
+    <div class="key-point">
+        <b>📌 电偏转要点：</b>电场力 $F=qE$ <span class="highlight">做功</span>，会改变粒子速度大小；运动可沿初速度方向与电场方向分解。
+    </div>
+
+    <h3>（2）磁偏转</h3>
+    <p>带电粒子<b>垂直进入匀强磁场</b>中做<span class="highlight">匀速圆周运动</span>（如图乙所示），<b>洛伦兹力提供向心力</b>。</p>
+    <div class="formula">$$q v B = m \frac{v^2}{r} \;\Rightarrow\; r = \frac{mv}{qB} \quad,\quad T = \frac{2\pi m}{qB}$$</div>
+    <div class="key-point">
+        <b>📌 磁偏转要点：</b>洛伦兹力始终垂直于速度，<span class="highlight">永不做功</span>，只改变速度方向；偏转方向由电性、磁场方向共同决定。
+    </div>
+
+    <table>
+        <tr><th>对比项</th><th>电偏转（电场）</th><th>磁偏转（磁场）</th></tr>
+        <tr><td class="rowname">受力</td><td>电场力 $qE$，恒定、做功</td><td>洛伦兹力 $qvB$，变向、不做功</td></tr>
+        <tr><td class="rowname">轨迹</td><td>类平抛（抛物线）</td><td>圆弧（匀速圆周）</td></tr>
+        <tr><td class="rowname">速度</td><td>大小、方向均改变</td><td>大小不变、方向变</td></tr>
+        <tr><td class="rowname">常用规律</td><td>类平抛分解、动能定理</td><td>圆周运动、几何关系</td></tr>
+    </table>
+
+    <h3 id="keypoints">要点点拨</h3>
+    <figure class="figure">
+        <img src="images/复合场_思维导图.png" alt="复合场解题要点点拨思维导图">
+        <figcaption>要点点拨：组合场问题解题思维要点</figcaption>
+    </figure>
+
+    <h3 id="method">解题方法</h3>
+    <p>通常按<span class="highlight">时间的先后顺序</span>把整个过程分成若干个小过程，在每一运动过程中，从粒子的<span class="highlight">受力性质、受力方向和速度方向的关系</span>入手，分析粒子在电场中做什么运动、在磁场中做什么运动。</p>
+    <div class="warn">
+        <b>⚠️ 分析思路：</b>
+        <ol style="padding-left:24px; margin-top:6px;">
+            <li><b>分段</b>：按电场区、磁场区、无场区（或按时间）划分子过程；</li>
+            <li><b>定受力</b>：判断每段的场力（电场力/洛伦兹力）及其方向；</li>
+            <li><b>判运动</b>：由受力与速度关系确定是类平抛、匀速圆周还是匀速直线；</li>
+            <li><b>找衔接</b>：每一段的末速度（大小与方向）即为下一段的初速度；</li>
+            <li><b>联立求解</b>：几何关系与运动学/动能定理结合。</li>
+        </ol>
+    </div>
+</div>
+
+<!-- 二、叠加场中的运动 -->
+<div class="card" id="superposed">
+    <h2><span class="num">2</span>带电粒子在叠加场中的运动</h2>
+
+    <h3>模型定义</h3>
+    <p><span class="highlight">叠加场</span>是指带电质点处在重力场、电场、磁场<span class="highlight">两种或三种共存</span>的空间，在<span class="highlight">重力、电场力、洛伦兹力共同作用下</span>产生的机械运动模型。</p>
+
+    <h3>三大基础场对应的作用力</h3>
+    <table>
+        <tr><th style="width:90px;">场</th><th>作用力</th><th>性质</th></tr>
+        <tr>
+            <td class="rowname">重力场</td>
+            <td>$G = mg$</td>
+            <td>恒力（大小方向均不变）</td>
+        </tr>
+        <tr>
+            <td class="rowname">电场</td>
+            <td>$F = Eq$</td>
+            <td>匀强电场中为恒力</td>
+        </tr>
+        <tr>
+            <td class="rowname">磁场</td>
+            <td>$F = qvB$</td>
+            <td>始终垂直速度方向、属于<span class="highlight">变力</span>、<span class="highlight">永不做功</span></td>
+        </tr>
+    </table>
+
+    <h3>要点点拨：常见运动形式的分析</h3>
+
+    <h3>（1）在叠加场中做匀速圆周运动</h3>
+    <p>带电粒子进入匀强电场、匀强磁场和重力场共同存在的叠加场中，若<span class="highlight">重力和电场力等大反向、合力为零</span>，且粒子运动方向与磁场方向垂直，则带电粒子只在洛伦兹力作用下做<span class="highlight">匀速圆周运动</span>。</p>
+    <div class="key-point">
+        <b>📌 条件：</b>$mg = Eq$（方向相反）且 $v \perp B$ → 等效为只有洛伦兹力提供向心力，轨迹为圆弧。
+    </div>
+
+    <h3>（2）在匀强电场、匀强磁场和重力场中做直线运动</h3>
+    <p>无轨道约束的自由带电粒子，在上述三场中的直线运动只能是<span class="highlight">匀速直线运动</span>。这是因为电场力和重力都是恒力，若它们的合力不与洛伦兹力平衡，则粒子速度的大小和方向都会改变，就不可能保持直线运动（粒子<span class="highlight">沿磁场方向运动</span>、$v \parallel B$、洛伦兹力为零的情况除外）。</p>
+    <div class="warn">
+        <b>⚠️ 关键判断：</b>要做直线运动，所有力必须沿同一直线且合力为零（匀速直线）；否则轨迹必弯曲。
+    </div>
+
+    <h3>解题方法</h3>
+    <ol style="padding-left:24px;">
+        <li><b>搞清楚叠加场的组成</b>——一般是磁场与电场叠加、磁场与重力场叠加，或磁场、重力场、电场三者叠加。</li>
+        <li><b>正确进行受力分析</b>——除重力、弹力、摩擦力外，还要特别关注<span class="highlight">电场力和洛伦兹力</span>的分析。</li>
+        <li><b>确定运动状态</b>——注意将运动情况和受力情况结合进行分析。</li>
+        <li><b>分段处理</b>——对于粒子连续经过几个不同场的情况，要分段进行分析、处理。</li>
+        <li><b>画轨迹、灵活选方法</b>——画出粒子的运动轨迹，灵活选择处理不同运动规律的方法。</li>
+    </ol>
+    <div class="danger">
+        <b>✅ 解题口诀：</b>“叠加先看力组成，重力电场洛伦兹；恒力与变力分清，圆周直线判得准；分段画轨选规律，合力为零方匀速。”
+    </div>
+</div>
+
+
+<!-- 三、速度选择器 -->
+<div class="card" id="velocity">
+    <h2><span class="num">3</span>速度选择器</h2>
+
+    <h3>1．构造与原理</h3>
+    <p>速度选择器由互相垂直的匀强电场和匀强磁场组成，带电粒子沿垂直于电场和磁场的方向射入，如图所示。电场强度 $E$ 与磁感应强度 $B$ 的方向相互垂直。</p>
+    <figure class="figure">
+        <img src="images/速度选择器.png" alt="速度选择器">
+        <figcaption>图：速度选择器原理示意图</figcaption>
+    </figure>
+
+    <h3>2．直线匀速通过的条件</h3>
+    <p>粒子能够沿直线匀速通过速度选择器时，所受静电力与洛伦兹力平衡：</p>
+    <div class="formula">$$qE = qvB \quad \Rightarrow \quad v = \frac{E}{B}$$</div>
+
+    <div class="key-point">
+        <b>📌 结论：</b>
+        <ul class="sub">
+            <li>只有速度满足 $v = \frac{E}{B}$ 的粒子才能直线通过。</li>
+            <li>速度选择器<span class="highlight">只能选择速度</span>，不能选择粒子的电性、电荷量或质量。</li>
+            <li>速度选择器具有<span class="highlight">单向性</span>：改变粒子的入射速度方向，静电力方向不变而洛伦兹力方向反向，无法实现速度选择功能。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 四、磁流体发电机 -->
+<div class="card" id="mhd">
+    <h2><span class="num">4</span>磁流体发电机</h2>
+
+    <h3>1．原理</h3>
+    <p>如图所示，等离子体以速度 $v$ 喷入磁感应强度为 $B$ 的匀强磁场中。正、负离子在洛伦兹力作用下分别向两块极板偏转并聚集，使 A、B 两板间产生电势差，从而将离子的动能通过磁场转化为电能。</p>
+    <figure class="figure">
+        <img src="images/磁流体发电机.png" alt="磁流体发电机">
+        <figcaption>图：磁流体发电机原理示意图</figcaption>
+    </figure>
+
+    <h3>2．电源正、负极判断</h3>
+    <p>根据左手定则，可判断出图中 <b>B 板为发电机的正极</b>（具体极性由磁场方向和等离子体流动方向共同决定）。</p>
+
+    <h3>3．电动势</h3>
+    <p>当外电路断路时，正、负离子所受静电力和洛伦兹力达到平衡。设两极板间距为 $d$，最大电势差为 $U$，则</p>
+    <div class="formula">$$q\frac{U}{d} = qvB \quad \Rightarrow \quad U = Bdv$$</div>
+    <p>因此发电机的电动势</p>
+    <div class="formula">$$\mathcal{E} = U = Bdv$$</div>
+
+    <h3>4．内阻</h3>
+    <p>若等离子体的电阻率为 $\rho$，极板面积为 $S$，极板间距为 $d$，则发电机的内阻</p>
+    <div class="formula">$$r = \rho\frac{d}{S}$$</div>
+
+    <h3>5．回路电流</h3>
+    <p>若外电路总电阻为 $R$，由闭合电路欧姆定律得</p>
+    <div class="formula">$$I = \frac{\mathcal{E}}{R + r} = \frac{Bdv}{R + r}$$</div>
+</div>
+
+<!-- 五、电磁流量计 -->
+<div class="card" id="flow">
+    <h2><span class="num">5</span>电磁流量计</h2>
+
+    <h3>1．流量的定义</h3>
+    <p>流量 $Q$ 表示单位时间内流过导管某一横截面的导电液体的体积。</p>
+
+    <h3>2．导电液体流速的计算</h3>
+    <p>一圆柱形导管直径为 $d$，用非磁性材料制成，其中有导电液体向右流动，如图所示。液体中的自由电荷（正、负离子）在洛伦兹力作用下发生偏转，使 $a$、$b$ 间出现电势差；当静电力与洛伦兹力平衡时，$a$、$b$ 间电势差 $U$ 达到最大。</p>
+    <figure class="figure">
+        <img src="images/电磁流量计.png" alt="电磁流量计">
+        <figcaption>图：电磁流量计原理示意图</figcaption>
+    </figure>
+    <p>由平衡条件</p>
+    <div class="formula">$$q\frac{U}{d} = qvB \quad \Rightarrow \quad v = \frac{U}{Bd}$$</div>
+
+    <h3>3．流量的表达式</h3>
+    <p>导管横截面积 $S = \frac{\pi d^2}{4}$，所以</p>
+    <div class="formula">$$Q = Sv = \frac{\pi d^2}{4} \cdot \frac{U}{Bd} = \frac{\pi dU}{4B}$$</div>
+
+    <h3>4．电势高低的判断</h3>
+    <p>根据左手定则可知，图中 $a$ 侧聚集正电荷，因此电势关系为</p>
+    <div class="formula">$$\varphi_a > \varphi_b$$</div>
+</div>
+
+<!-- 六、霍尔元件 -->
+<div class="card" id="hall">
+    <h2><span class="num">6</span>霍尔元件</h2>
+
+    <h3>1．定义</h3>
+    <p>将高为 $h$、宽为 $d$ 的导体（自由电荷为电子或正电荷）置于匀强磁场 $B$ 中，当电流通过导体时，在导体上表面 $A$ 和下表面 $A'$ 之间产生电势差，这种现象称为<span class="highlight">霍尔效应</span>，该电势差称为<span class="highlight">霍尔电压</span>。</p>
+    <figure class="figure">
+        <img src="images/霍尔元件.png" alt="霍尔元件">
+        <figcaption>图：霍尔元件原理示意图</figcaption>
+    </figure>
+
+    <h3>2．电势高低的判断</h3>
+    <p>如图所示，导体中电流 $I$ 向右时：</p>
+    <ul class="sub">
+        <li>若自由电荷是电子，根据左手定则可判断电子向下表面 $A'$ 偏转，因此 <b>$A'$ 板电势高</b>；</li>
+        <li>若自由电荷是正电荷，正电荷向上表面 $A$ 偏转，因此 <b>$A'$ 板电势低</b>。</li>
+    </ul>
+
+    <h3>3．霍尔电压</h3>
+    <p>当自由电荷所受静电力与洛伦兹力平衡时，$A$、$A'$ 间的电势差 $U_H$ 保持稳定。设自由电荷电荷量为 $q$，定向移动速度为 $v$，则</p>
+    <div class="formula">$$qvB = q\frac{U_H}{h} \quad \Rightarrow \quad U_H = Bvh$$</div>
+    <p>又由电流微观表达式 $I = nqSv$，其中 $S = hd$ 为导体的横截面积，$n$ 为单位体积内自由电荷数，可得</p>
+    <div class="formula">$$v = \frac{I}{nqhd}$$</div>
+    <p>代入霍尔电压表达式，得到</p>
+    <div class="formula">$$U_H = \frac{BI}{nqd} = k\frac{BI}{d}$$</div>
+    <p>其中</p>
+    <div class="formula">$$k = \frac{1}{nq}$$</div>
+    <p>称为<span class="highlight">霍尔系数</span>，与导体材料有关。</p>
+
+    <div class="warn">
+        <b>⚠️ 注意：</b>霍尔电压 $U_H$ 与外加磁感应强度 $B$ 和电流 $I$ 成正比，与导体沿磁场方向的厚度 $d$ 成反比。
+    </div>
+</div>
+
+
+
+<!-- 七、质谱仪 -->
+<div class="card" id="mass">
+    <h2><span class="num">7</span>质谱仪的原理和分析</h2>
+
+    <h3>1．作用</h3>
+    <p>测量带电粒子的质量（或比荷），以及<span class="highlight">分离同位素</span>。</p>
+
+    <h3>2．原理</h3>
+    <p>质谱仪主要由加速电场和偏转磁场两部分组成，如图所示。粒子先在电场中加速，再垂直进入匀强磁场做匀速圆周运动，不同比荷的粒子打在感光板（或收集器）的不同位置。</p>
+    <figure class="figure">
+        <img src="images/质谱仪.png" alt="质谱仪原理示意图">
+        <figcaption>图：质谱仪原理示意图</figcaption>
+    </figure>
+
+    <ol class="steps">
+        <li><b>加速电场</b>：带电粒子经电压 $U$ 加速，由动能定理
+            <div class="formula">$$qU = \frac{1}{2}mv^2 \quad \Rightarrow \quad v = \sqrt{\frac{2qU}{m}}$$</div>
+        </li>
+        <li><b>偏转磁场</b>：粒子以速度 $v$ 垂直进入磁感应强度为 $B$ 的匀强磁场，洛伦兹力提供向心力
+            <div class="formula">$$qvB = m\frac{v^2}{r} \quad \Rightarrow \quad r = \frac{mv}{qB}$$</div>
+            粒子打在底片上的位置到入射点的距离 $l$ 等于轨迹圆的直径，即
+            <div class="formula">$$l = 2r = \frac{2mv}{qB}$$</div>
+        </li>
+        <li><b>由以上两式联立</b>，消去 $v$ 可得粒子的比荷或质量：
+            <div class="formula">$$\frac{q}{m} = \frac{8U}{B^2 l^2} \qquad \text{或} \qquad m = \frac{q B^2 l^2}{8U}$$</div>
+        </li>
+    </ol>
+
+    <div class="key-point">
+        <b>📌 结论：</b>在 $U$、$B$ 相同的情况下，粒子打在底片上的位置 $l$ 仅由比荷 $q/m$ 决定。同位素电荷量相同、质量不同，因此落点不同，从而实现分离。
+    </div>
+</div>
+
+<!-- 八、回旋加速器 -->
+<div class="card" id="cyclotron">
+    <h2><span class="num">8</span>回旋加速器的原理和分析</h2>
+
+    <h3>1．构造</h3>
+    <p>$D_1$、$D_2$ 是两个半圆形金属盒（D 形盒），D 形盒的缝隙处接<span class="highlight">交流电源</span>，整个 D 形盒处于匀强磁场中，如图所示。</p>
+    <figure class="figure">
+        <img src="images/回旋加速器.png" alt="回旋加速器构造">
+        <figcaption>图：回旋加速器构造示意图</figcaption>
+    </figure>
+
+    <h3>2．原理</h3>
+    <ol class="steps">
+        <li>交流电的周期与粒子做圆周运动的周期相等，即
+            <div class="formula">$$T = \frac{2\pi m}{qB}$$</div>
+            粒子每经过一次 D 形盒缝隙，电场方向恰好改变，从而被持续加速。
+        </li>
+        <li>粒子在圆周运动过程中一次次经过缝隙，两盒间电势差一次次改变正负，粒子被一次次加速。</li>
+        <li>将带电粒子在两盒狭缝之间的运动首尾相连，可等效为一个初速度为零的匀加速直线运动。</li>
+        <li>每加速一次，回旋半径增大一次。由 $nqU = \dfrac{1}{2}mv_n^2$ 可得
+            <div class="formula">$$v_n = \sqrt{\frac{2nqU}{m}} \qquad \Rightarrow \qquad r_n = \frac{mv_n}{qB} = \frac{1}{B}\sqrt{\frac{2nmU}{q}}$$</div>
+            各半径之比为
+            <div class="formula">$$r_1 : r_2 : r_3 : \cdots = 1 : \sqrt{2} : \sqrt{3} : \cdots$$</div>
+        </li>
+        <li><b>获得的最大动能</b>：当粒子轨道半径达到 D 形盒最大半径 $R$ 时被引出，由 $qv_mB = m\dfrac{v_m^2}{R}$ 得 $v_m = \dfrac{qBR}{m}$，于是
+            <div class="formula">$$E_{km} = \frac{1}{2}mv_m^2 = \frac{q^2 B^2 R^2}{2m}$$</div>
+            <div class="warn"><b>⚠️ 注意：</b>最大动能由磁感应强度 $B$ 和 D 形盒半径 $R$ 决定，与加速电压 $U$ 无关。</div>
+        </li>
+        <li><b>加速到最大动能所需的加速次数</b>
+            <div class="formula">$$N = \frac{E_{km}}{qU} = \frac{qB^2R^2}{2mU}$$</div>
+        </li>
+        <li><b>加速到最大动能的运动时间</b>
+            <ul class="sub">
+                <li>在磁场中的运动时间：每转过半周用时 $\dfrac{T}{2} = \dfrac{\pi m}{qB}$，总时间
+                    <div class="formula">$$t_1 = N\cdot\frac{T}{2} = \frac{N\pi m}{qB}$$</div>
+                    （若把最后一次引出前的半周不记，可近似为 $t_1\approx(N-1)\dfrac{T}{2}$。）
+                </li>
+                <li>在电场中的加速时间：狭缝宽度为 $d$，粒子在电场中加速度 $a = \dfrac{qU}{md}$，则
+                    <div class="formula">$$t_2 = \frac{v_m}{a} = \frac{mv_m d}{qU} = \frac{BRd}{U}$$</div>
+                </li>
+                <li>总时间
+                    <div class="formula">$$t = t_1 + t_2$$</div>
+                </li>
+            </ul>
+        </li>
+    </ol>
+
+    <div class="key-point">
+        <b>📌 口诀：</b>电场加速、磁场转弯，周期同步、半径渐宽；最大动能看 $B$ 和 $R$，加速次数看 $U$。
+    </div>
+</div>
+
+
+<div class="footer">
+    📖 高中物理 · 带电粒子在复合场中的运动 &nbsp;|&nbsp; 组合场 = 分区/分时 → 分段分析 → 衔接求解 · 叠加场 · 仪器应用
+</div>
+
+</div>
+
+<script>
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll('.nav a'));
+        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        function onScroll() {
+            const pos = window.scrollY + 160;
+            let current = sections[0];
+            for (const sec of sections) if (sec.offsetTop <= pos) current = sec;
+            navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+</script>
+
+</body>
+</html>

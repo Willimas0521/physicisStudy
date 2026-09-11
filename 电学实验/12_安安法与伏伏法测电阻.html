@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 安安法、伏伏法与等效法测电阻</title>
+<style>
+::root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+h2 .bar{display:inline-block;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;border-radius:6px;width:28px;height:28px;text-align:center;line-height:28px;font-size:15px;margin-right:8px;vertical-align:middle}
+.imgbox{text-align:center;margin:10px 0}
+.imgbox img{max-width:100%;height:auto;background:#fff;padding:8px;border-radius:8px;border:1px solid var(--line)}
+.imgbox svg{max-width:100%;height:auto}
+.imgcap{color:var(--sub);font-size:12px;margin-top:4px}
+.formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:1px 8px;margin:0 2px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle .red{color:var(--danger)}
+.principle .warn{color:var(--warn)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+mjx-container[jax="CHTML"],mjx-container[jax="SVG"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(' , '\\)'], ['$', '$']],
+    displayMath: [['\\[', '\\]'], ['$$', '$$']],
+    processEscapes: true
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script id="MathJax-script" async src="mathjax/tex-svg.js"></script>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../高考物理_电学实验闯关.html">← 电学实验闯关目录</a>
+    <span class="pos">第 12 关 · 共 14 关</span>
+  </div>
+  <h1>安安法、伏伏法与等效法测电阻</h1>
+  <div class="tag">缺表替代 · 安安法 · 伏伏法 · 等效替代</div>
+
+  <h2><span class="bar">1</span> 安安法测电阻</h2>
+  <div class="principle">
+    <b>原理：</b>若已知电流表的内阻，就可以把它当作“电压表”使用，用安安法代替伏安法测电阻。
+    <hr>
+    <div class="imgbox"><img src="../电学实验_images/v12_aan_method.png" alt="安安法测电阻电路图"><div class="imgcap">图 1：安安法测电阻（\(A_1\) 的内阻 \(r_1\) 已知）</div></div>
+    <b>电阻测算：</b><br>
+    · \(R_x\) 两端电压 \(U_x = I_1 r_1\)；<br>
+    · 通过 \(R_x\) 的电流 \(I_x = I_2 - I_1\)；<br>
+    · 由电阻定义 \(\displaystyle R_x = \frac{U_x}{I_x}\)，联立得
+    <p style="text-align:center;font-size:15px;margin:8px 0;"><span class="formula">\(\displaystyle R_x = \frac{I_1 r_1}{I_2 - I_1}\)</span></p>
+    <hr>
+    <b>适用情况：</b>缺少合适的电压表，但有一块内阻已知的电流表。<br>
+    <b>说明：</b>若内阻已知的电流表量程不合适，可给它串联一个定值电阻 \(R_0\) 进行改装，把它变成“大量程电压表”。
+    <div class="imgbox"><img src="../电学实验_images/v12_aan_modify.png" alt="安安法改装"><div class="imgcap">图 2：电流表串联定值电阻 \(R_0\) 改装成电压表使用</div></div>
+  </div>
+
+  <h2><span class="bar">2</span> 伏伏法测电阻</h2>
+  <div class="principle">
+    <b>原理：</b>若已知电压表的内阻，就可以把它当作“电流表”使用，用伏伏法代替伏安法测电阻。
+    <hr>
+    <div class="imgbox"><img src="../电学实验_images/v12_vv_method.png" alt="伏伏法测电阻电路图"><div class="imgcap">图 3：伏伏法测电阻（\(V_1\) 的内阻 \(r_1\) 已知）</div></div>
+    <b>电阻测算：</b><br>
+    · \(R_x\) 两端电压 \(U_x = U_2 - U_1\)；<br>
+    · 通过 \(R_x\) 的电流 \(I_x = \dfrac{U_1}{r_1}\)；<br>
+    · 由电阻定义 \(\displaystyle R_x = \frac{U_x}{I_x}\)，联立得
+    <p style="text-align:center;font-size:15px;margin:8px 0;"><span class="formula">\(\displaystyle R_x = \frac{(U_2 - U_1) r_1}{U_1}\)</span></p>
+    <hr>
+    <b>适用情况：</b>缺少合适的电流表，但有一块内阻已知的电压表。<br>
+    <b>说明：</b>若内阻已知的电压表量程不合适，可给它并联一个定值电阻 \(R_0\) 进行改装。
+    <div class="imgbox"><img src="../电学实验_images/v12_vv_modify.png" alt="伏伏法改装"><div class="imgcap">图 4：电压表并联定值电阻 \(R_0\) 改装成电流表使用</div></div>
+  </div>
+
+  <h2><span class="bar">3</span> 等效法测电阻</h2>
+  <div class="principle">
+    <b>原理：</b>根据等效替代的思想，把待测电阻 \(R_x\) 和电阻箱 \(R_1\) 分别接入电路，调节电阻箱使电路中的电流（或电压）与接 \(R_x\) 时相同，则 \(R_x = R_1\)。
+    <hr>
+    <div class="imgbox"><img src="../电学实验_images/v12_equivalent.png" alt="等效法测电阻电路图"><div class="imgcap">图 5：等效法测电阻电路图（甲：电流表方案；乙：电压表方案）</div></div>
+    <b>测算步骤（以甲图为例）：</b><br>
+    ① 将待测电阻 \(R_x\) 接入电路，调节滑动变阻器 \(R_2\)，使电流表指针指到适当位置，读出电流表示数；<br>
+    ② 将电阻箱 \(R_1\) 接入电路，保持滑动变阻器 \(R_2\) 接入阻值不变，调节 \(R_1\) 使电流表示数等于原来记录的数值；<br>
+    ③ 因为 \(R_x\) 与 \(R_1\) 对电路的效果相同，所以 <span class="formula">\(R_x = R_1\)</span>。
+    <hr>
+    <b>适用情况：</b>只有一个电表，且有一个可调电阻箱。<br>
+    <b>说明：</b>等效替代法原理简单，看似没有系统误差，但因为电阻箱不能连续调节，实际操作中很难保证电表读数完全不变。
+  </div>
+
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（安安法）某同学要测量约 \(200\ \Omega\) 的未知电阻 \(R_x\)，实验室提供两块电流表：\(A_1\)（量程 \(30\ \text{mA}\)，内阻 \(r_1 = 10\ \Omega\)）、\(A_2\)（量程 \(100\ \text{mA}\)，内阻约为 \(2\ \Omega\)）。按图 1 连接电路，稳定后读出 \(I_1 = 20\ \text{mA}\)，\(I_2 = 60\ \text{mA}\)，求 \(R_x\)。</p>
+  <p class='ans'>答案：\(U_x = I_1 r_1 = 20\times 10^{-3}\times 10 = 0.20\ \text{V}\)，\(I_x = I_2 - I_1 = 40\ \text{mA} = 0.040\ \text{A}\)。<br>\(R_x = \dfrac{U_x}{I_x} = \dfrac{0.20}{0.040} = 5.0\ \Omega\)。注意本题 \(R_x\) 远小于 \(r_1\) 是出题特例，实际安安法常用于测大电阻。</p></div>
+
+  <div class="nav">
+    <a class="prev" href="11_电桥测电阻.html">← 电桥法测电阻</a>
+    <a class="mid" href="../高考物理_电学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="电表的改装（一）/index.html">电表的改装（一）→</a>
+  </div>
+  <div class="footer">电学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [
+  {"q": "安安法测电阻时，已知电流表 \(A_1\) 内阻为 \(r_1\)，读数分别为 \(I_1\) 和 \(I_2\)，则 \(R_x\) 等于？", "o": ["\(\dfrac{I_1 r_1}{I_2}\)", "\(\dfrac{I_1 r_1}{I_2-I_1}\)", "\(\dfrac{(I_2-I_1)r_1}{I_1}\)", "\(\dfrac{I_2 r_1}{I_1}\)"], "a": 1, "e": "安安法中 \(U_x = I_1 r_1\)，流过 \(R_x\) 的电流 \(I_x = I_2 - I_1\)，所以 \(R_x = U_x/I_x = I_1 r_1/(I_2-I_1)\)。"},
+  {"q": "伏伏法测电阻时，已知电压表 \(V_1\) 内阻为 \(r_1\)，读数分别为 \(U_1\) 和 \(U_2\)，则 \(R_x\) 等于？", "o": ["\(\dfrac{(U_2-U_1)r_1}{U_1}\)", "\(\dfrac{U_1 r_1}{U_2-U_1}\)", "\(\dfrac{U_2 r_1}{U_1}\)", "\(\dfrac{(U_2-U_1)U_1}{r_1}\)"], "a": 0, "e": "伏伏法中 \(U_x = U_2 - U_1\)，电流 \(I_x = U_1/r_1\)，所以 \(R_x = (U_2-U_1)r_1/U_1\)。"},
+  {"q": "等效法测电阻的核心思想是？", "o": ["用电压表直接读出电阻", "用电阻箱替代 \(R_x\) 并使电路效果相同", "用电流表代替电压表", "用电压表代替电流表"], "a": 1, "e": "等效替代法的关键是把 \(R_x\) 换成可调电阻箱 \(R_1\)，保持其他条件不变，使电表读数相同，则 \(R_x = R_1\)。"}
+];
+function typeset(el) {
+  if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+    MathJax.startup.promise.then(function(){ MathJax.typesetPromise(el ? [el] : undefined); });
+  } else if (window.MathJax && window.MathJax.typesetPromise) {
+    MathJax.typesetPromise(el ? [el] : undefined);
+  }
+}
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+      typeset(exp);
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+  typeset();
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

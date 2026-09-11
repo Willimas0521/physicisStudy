@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 电桥法测电阻（惠斯通电桥）</title>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:10px 0}
+.imgbox svg{max-width:100%;height:auto}
+.imgcap{color:var(--sub);font-size:12px;margin-top:4px}
+.formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:1px 8px;margin:0 2px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle .red{color:var(--danger)}
+.principle .warn{color:var(--warn)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+mjx-container[jax="CHTML"],mjx-container[jax="SVG"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+</style>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(' , '\\)'], ['$', '$']],
+    displayMath: [['\\[', '\\]'], ['$$', '$$']],
+    processEscapes: true
+  },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script id="MathJax-script" async src="mathjax/tex-svg.js"></script>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../高考物理_电学实验闯关.html">← 电学实验闯关目录</a>
+    <span class="pos">第 11 关 · 共 11 关</span>
+  </div>
+  <h1>电桥法测电阻（惠斯通电桥）</h1>
+  <div class="tag">桥路平衡 · 比较法 · 高精度</div>
+  <h2>📖 实验原理</h2>
+  <div class="principle"><div class="imgbox">
+<svg width="460" height="330" viewBox="0 0 460 330">
+  <!-- 菱形四臂 -->
+  <line x1="230" y1="50" x2="90" y2="160" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="230" y1="50" x2="370" y2="160" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="90" y1="160" x2="230" y2="270" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="370" y1="160" x2="230" y2="270" stroke="#5a6b7b" stroke-width="2"/>
+  <!-- 桥：检流计支路 -->
+  <line x1="90" y1="160" x2="205" y2="160" stroke="#e0922e" stroke-width="2"/>
+  <line x1="255" y1="160" x2="370" y2="160" stroke="#e0922e" stroke-width="2"/>
+  <circle cx="230" cy="160" r="25" fill="#ffffff" stroke="#e0922e" stroke-width="2"/>
+  <text x="230" y="166" text-anchor="middle" font-size="15" font-weight="bold" fill="#e0922e">G</text>
+  <text x="230" y="200" text-anchor="middle" font-size="11" fill="#e0922e">灵敏电流计（检流计）</text>
+  <!-- 电源支路（绕左侧） -->
+  <path d="M230 50 L230 32 L34 32 L34 296 L230 296 L230 270" fill="none" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="18" y1="150" x2="50" y2="150" stroke="#1f2a3d" stroke-width="2"/>
+  <line x1="24" y1="166" x2="44" y2="166" stroke="#1f2a3d" stroke-width="5"/>
+  <text x="34" y="192" text-anchor="middle" font-size="11" fill="#5a6b7b">电源 E</text>
+  <!-- 四个桥臂电阻 -->
+  <rect x="138" y="98" width="46" height="15" rx="2" fill="#ffffff" stroke="#2196f3" stroke-width="2" transform="rotate(141.8 161 105)"/>
+  <rect x="277" y="98" width="46" height="15" rx="2" fill="#ffffff" stroke="#2196f3" stroke-width="2" transform="rotate(38.2 300 105)"/>
+  <rect x="138" y="208" width="46" height="15" rx="2" fill="#ffffff" stroke="#2196f3" stroke-width="2" transform="rotate(38.2 161 215)"/>
+  <rect x="277" y="208" width="46" height="15" rx="2" fill="#ffffff" stroke="#1f9d6b" stroke-width="2" transform="rotate(141.8 300 215)"/>
+  <!-- 标注 -->
+  <text x="128" y="82" text-anchor="middle" font-size="13" fill="#2196f3">R₁</text>
+  <text x="332" y="82" text-anchor="middle" font-size="13" fill="#2196f3">R₃</text>
+  <text x="120" y="252" text-anchor="middle" font-size="13" fill="#2196f3">R₂</text>
+  <text x="342" y="252" text-anchor="middle" font-size="13" fill="#1f9d6b">Rₓ</text>
+  <text x="230" y="24" text-anchor="middle" font-size="13" fill="#1f2a3d">A</text>
+  <text x="74" y="152" text-anchor="middle" font-size="13" fill="#1f2a3d">B</text>
+  <text x="386" y="152" text-anchor="middle" font-size="13" fill="#1f2a3d">D</text>
+  <text x="230" y="288" text-anchor="middle" font-size="13" fill="#1f2a3d">C</text>
+  <text x="230" y="322" text-anchor="middle" font-size="12" fill="#5a6b7b">平衡时：I_G = 0，B、D 两点电势相等</text>
+</svg>
+<div class="imgcap">图 11-1：惠斯通电桥（四个桥臂 + 电源对角 + 检流计对角）</div>
+</div>
+<hr>
+<b>电路结构：</b>把四个电阻 <b>R₁、R₂、R₃、Rₓ</b> 依次连成一个四边形：<b>电源</b>接在一条对角线（A—C）上，<b>灵敏电流计 G</b> 接在另一条对角线（B—D）上——这条中间支路就叫<b>"桥"</b>。
+<hr>
+<b>平衡条件：</b>调节电阻使 <b>检流计指零</b>，即桥路电流 <div class="formula">I_G = 0</div>，此时 B、D 两点<b>电势相等</b>。两条支路的分压比因此相同：<br>
+<div class="formula">R₁ / R₂ = R₃ / Rₓ</div>　⇔　<div class="formula">R₁·Rₓ = R₂·R₃</div>（<span class="red">对臂乘积相等</span>）
+<hr>
+<b>待测电阻：</b><div class="formula">Rₓ = (R₂ / R₁)·R₃</div><br>
+其中 R₁、R₂ 叫<b>比例臂</b>（提供倍率 R₂/R₁），R₃ 叫<b>比较臂</b>（可调电阻箱），Rₓ 为待测臂。<br>
+例：<div class="formula">R₁/R₂ = 100/10</div>，<div class="formula">R₃ = 23.6 Ω</div> 时平衡，则 <div class="formula">Rₓ = 0.1 × 23.6 = 2.36 Ω</div>。
+<hr>
+<b>为什么比伏安法准？</b>电桥法属于<b>比较法（零示法）</b>：只判断桥上"有没有电流"，<b>不读电表的数值</b>，所以结果与电源电压、检流计内阻、电表精度<b>全都无关</b>，没有伏安法那种"内接偏大 / 外接偏小"的方法误差。这是中学阶段<b>精度最高</b>的测电阻方法。<br>
+<span class="warn">⚠ 注意：平衡条件只由电阻比决定，与电源电压无关——把电源电压加倍，电桥<b>仍然平衡</b>，只是灵敏度变高（但电压过大会烧坏桥臂）。</span>
+<hr>
+<b>滑线式电桥（高中常见）：</b>用一根<b>均匀电阻丝</b>代替两个比例臂，触头把电阻丝分成 L₁、L₂ 两段。因电阻与长度成正比：<br>
+<div class="formula">Rₓ = R·L₂ / L₁</div><br>
+调节触头位置使检流计指零，再用刻度尺量出两段长度即可，无需精密电阻。
+<hr>
+<b>交换法（减小系统误差）：</b>把 R 与 Rₓ <b>互换位置</b>再测一次，取两次结果的<b>几何平均</b>：<div class="formula">Rₓ = √(Rₓ₁·Rₓ₂)</div>这样可以抵消电阻丝粗细不均、触头零点（端点）偏差带来的<b>系统误差</b>。
+<hr>
+<b>灵敏度：</b>电源电压越高、检流计越灵敏、四个桥臂阻值越<b>接近</b>（比例臂取 1∶1 附近），电桥越灵敏；但要注意各桥臂的<b>额定电流</b>，防止烧毁。
+<hr>
+<span class="warn">⚠ 主要误差来源：</span>① 电阻丝不均匀或长度读数误差；② 触头处的<b>接触电阻</b>（滑线式电桥）；③ 桥臂电阻本身不准；④ 检流计不够灵敏造成"假平衡"。前两项可用<b>交换法</b>显著减小。</div>
+  <h2>🎯 闯关练习</h2>
+  <div id="qs"></div>
+  <h2>📜 高考真题</h2>
+  <div class="exam"><p>（真题改编）用滑线式电桥测未知电阻 \(R_x\)：均匀电阻丝全长 \(100.0\ \text{cm}\)，电阻箱 \(R = 20.0\ \Omega\)。</p>
+<p>(1) 第一次平衡时触头距电阻丝左端 \(40.0\ \text{cm}\)（\(R\) 接在左侧），求 \(R_x\)；</p>
+<p>(2) 保持触头位置不变，把电源电压提高到原来的 2 倍，检流计指针会怎样？电桥是否仍平衡？</p>
+<p>(3) 如何用"交换法"进一步提高测量精度？</p>
+<p class='ans'>答案：(1) 由 \(\dfrac{R}{R_x} = \dfrac{L_1}{L_2}\)，得 \(R_x = R\cdot\dfrac{L_2}{L_1} = 20.0\times\dfrac{60.0}{40.0} = 30.0\ \Omega\)。<br>(2) 平衡条件只与<b>电阻比</b>有关，与电源电压无关，故电桥<b>仍平衡</b>，检流计指针<b>仍指零</b>（不偏转）；只是电压升高后灵敏度变大。<br>(3) 将 \(R\) 与 \(R_x\) 互换位置，重新调节触头使检流计指零，得到 \(R_{x2}\)；取两次结果的<b>几何平均</b> \(R_x = \sqrt{R_{x1}R_{x2}}\)，可消除电阻丝粗细不均和触头零点偏差带来的系统误差。</p></div>
+  <div class="nav">
+    <a class="prev" href="10_测量金属丝电阻率.html">← 测量金属丝的电阻率</a>
+    <a class="mid" href="../高考物理_电学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="index.html">返回专题目录 →</a>
+  </div>
+  <div class="footer">电学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "惠斯通电桥达到平衡时，桥路上检流计 G 中的电流 \\(I_G\\) 为？", "o": ["等于待测电阻中的电流", "为零", "达到最大值", "等于电源的输出电流"], "a": 1, "e": "平衡的定义就是<b>检流计指零</b>（\\(I_G = 0\\)），此时桥路两端 B、D 电势相等，两条支路的分压完全相同。正因为只需判断“有没有电流”而不是读数值，电桥法才格外精确。"}, {"q": "惠斯通电桥平衡时，四个桥臂 \\(R_1、R_2、R_3、R_x\\)（\\(R_1\\) 与 \\(R_x\\) 为对臂）满足的关系是？", "o": ["\\(R_1 R_2 = R_3 R_x\\)", "\\(R_1 R_x = R_2 R_3\\)", "\\(R_1 + R_x = R_2 + R_3\\)", "\\(R_1 R_3 = R_2 R_x\\)"], "a": 1, "e": "平衡时 \\(I_G=0\\)，B、D 等势，两支路分压比相同：\\(\\dfrac{R_1}{R_2} = \\dfrac{R_3}{R_x}\\)，交叉相乘得 <b>对臂乘积相等</b> \\(R_1R_x = R_2R_3\\)。口诀：“对臂乘积相等”。注意 \\(R_1\\) 与 \\(R_x\\) 处在<b>对角</b>位置。"}, {"q": "比例臂 \\(R_1 = 100\\ \\Omega\\)、\\(R_2 = 10\\ \\Omega\\)，待测电阻接在 \\(R_x\\) 臂，当比较臂电阻箱 \\(R_3 = 23.6\\ \\Omega\\) 时电桥平衡，则 \\(R_x\\) 为？", "o": ["\\(2.36\\ \\Omega\\)", "\\(23.6\\ \\Omega\\)", "\\(236\\ \\Omega\\)", "\\(2.36\\ \\text{k}\\Omega\\)"], "a": 0, "e": "由 \\(R_1R_x = R_2R_3\\)：\\(R_x = \\dfrac{R_2R_3}{R_1} = \\dfrac{10\\times23.6}{100} = 2.36\\ \\Omega\\)。也就是“读数 × 倍率”，倍率 \\(R_2/R_1 = 0.1\\)。"}, {"q": "电桥平衡后，把电源电压提高到原来的 2 倍（触头与电阻均不动），则？", "o": ["电桥不再平衡，检流计偏转", "仍然平衡，检流计仍指零", "平衡被破坏，需重新调节", "无法判断"], "a": 1, "e": "平衡条件 \\(R_1R_x = R_2R_3\\) 只与<b>电阻比</b>有关，与电源电压无关，所以<b>仍平衡</b>、指针仍指零。电压升高只会让同样的失衡产生更大的桥路电流，即<b>灵敏度提高</b>（但要注意别超过桥臂额定电流）。"}, {"q": "滑线式电桥测电阻时，触头把均匀电阻丝分成 \\(L_1 = 40\\ \\text{cm}\\) 与 \\(L_2 = 60\\ \\text{cm}\\) 两段，已知电阻箱 \\(R = 24\\ \\Omega\\) 与 \\(L_1\\) 段对应，则 \\(R_x\\) 为？", "o": ["\\(16\\ \\Omega\\)", "\\(24\\ \\Omega\\)", "\\(36\\ \\Omega\\)", "\\(60\\ \\Omega\\)"], "a": 2, "e": "均匀电阻丝电阻与长度成正比：\\(\\dfrac{R}{R_x} = \\dfrac{L_1}{L_2}\\)，故 \\(R_x = R\\dfrac{L_2}{L_1} = 24\\times\\dfrac{60}{40} = 36\\ \\Omega\\)。"}, {"q": "用滑线式电桥测量时采用“交换法”（把 \\(R\\) 与 \\(R_x\\) 互换位置再测一次），主要是为了消除？", "o": ["检流计灵敏度不够的影响", "电阻丝不均匀、触头零点偏差等系统误差", "电源电压不稳定的影响", "导线电阻和接触电阻的全部影响"], "a": 1, "e": "交换后取两次结果的<b>几何平均</b> \\(R_x = \\sqrt{R_{x1}R_{x2}}\\)，可抵消电阻丝粗细不均、触头零点（端点）偏差带来的<b>系统误差</b>。电源电压本来就不影响平衡，无需消除。"}, {"q": "与伏安法相比，电桥法测电阻的最大优点是？", "o": ["电路更简单", "不需要电源", "属于比较法（零示法），不含电表内阻带来的方法误差，精度高", "可以测任意大的电阻"], "a": 2, "e": "电桥法只判断“有无电流”，<b>不依赖电表读数</b>，结果与电源电压、检流计内阻无关，避免了伏安法中“电流表分压（内接偏大）”或“电压表分流（外接偏小）”的<b>方法误差</b>，因此精度更高。缺点是需要可调标准电阻且操作较繁琐。"}];
+function typeset(el) {
+  if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+    MathJax.startup.promise.then(function(){
+      MathJax.typesetPromise(el ? [el] : undefined);
+    });
+  } else if (window.MathJax && window.MathJax.typesetPromise) {
+    MathJax.typesetPromise(el ? [el] : undefined);
+  }
+}
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+      typeset(exp);
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+  typeset();
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 静摩擦力专题：物块随圆盘转动中的临界问题</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 46px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header .tag {
+            display: inline-block;
+            background: rgba(255,255,255,.16);
+            border: 1px solid rgba(255,255,255,.35);
+            padding: 3px 16px;
+            border-radius: 999px;
+            font-size: .85em;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+        .header h1 { font-size: 2.1em; margin-bottom: 10px; letter-spacing: 1px; }
+        .header p { opacity: 0.92; font-size: 1.05em; }
+        .header .src { opacity: .75; font-size: .88em; margin-top: 10px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h2 .ans-chip {
+            font-size: .62em;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+            padding: 2px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-left: auto;
+        }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 12px 0;
+            font-size: 1.1em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .formula-row {
+            display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0;
+        }
+        .formula-row .fbox {
+            flex: 1 1 220px;
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 14px 16px;
+            text-align: center;
+            font-size: 1.05em;
+        }
+        .formula-row .fbox .fl { font-size: .8em; color: #5a6b7b; margin-bottom: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .opt { margin: 4px 0 4px 18px; color: #2e5d2e; }
+        .solve {
+            background: #fdf6ec;
+            border-left: 4px solid #e67e22;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .solve .sl { font-weight: 700; color: #a05a14; margin-bottom: 8px; }
+        .solve .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #f0c886; }
+        .solve .ans-box {
+            display: inline-block;
+            background: #fff;
+            border: 1px solid #f0c886;
+            border-radius: 6px;
+            padding: 2px 12px;
+            font-weight: 800;
+            color: #c0392b;
+            margin-bottom: 6px;
+        }
+        .memo {
+            background: linear-gradient(90deg, #ede7f6, #f9f6ff);
+            border-left: 4px solid #8e44ad;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .memo ol { margin-left: 22px; }
+        .memo li { margin-bottom: 6px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: center;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        td.left { text-align: left; }
+        .ok { color: #2e7d32; font-weight: 700; }
+        .no { color: #c0392b; font-weight: 700; }
+        .back {
+            display: inline-block;
+            margin: 6px 0 26px;
+            color: #3a7bd5;
+            text-decoration: none;
+            font-size: .95em;
+        }
+        .back:hover { text-decoration: underline; }
+        .footer {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: .88em;
+            padding: 20px 0 40px;
+        }
+        .note { font-size: .88em; color: #7f8c8d; }
+        .figure {
+            text-align: center;
+            margin: 14px 0;
+        }
+        .figure img {
+            max-width: 100%;
+            max-height: 260px;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            background: #fff;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="tag">静摩擦力分析 · 圆盘模型</div>
+    <h1>物块随圆盘转动中的临界问题</h1>
+    <p>静摩擦力提供向心力 · 方向判断 · 临界角速度 · 绳连多体分类讨论</p>
+    <p class="src">整理自：郭雨《物理习题 | 物块随圆盘转动过程中的临界问题》（公众号「雨情雨理」）· 公式推导与选项解析为补充整理</p>
+</div>
+
+<div class="container">
+    <a class="back" href="../index.html">← 返回高中物理知识库</a>
+
+    <div class="card">
+        <h2><span class="num">📌</span> 本专题讲什么</h2>
+        <p>这几道题虽然场景都是「圆盘转动」，但考的核心<strong>不是</strong>圆周运动公式，而是<strong>静摩擦力的分析</strong>：</p>
+        <p>① 静摩擦力的<strong>方向</strong>判断（物体相对圆盘的滑动趋势方向）；② 静摩擦力<strong>大小</strong>随角速度的变化规律；③ 最大静摩擦力对应的<strong>临界条件</strong>（恰好滑动）；④ 用细线相连的多物体，绳张力出现后如何<strong>分配</strong>向心力、如何分类讨论。</p>
+        <p>题目按难度递进：<b>单个物块（例1）→ 三个物块比较（例2）→ 绳连两物块（例3）→ 绳连三物块（例4）</b>，最后给出统一的方法总结。</p>
+    </div>
+
+    <div class="card">
+        <h2><span class="num">1</span> 解题必备：三个核心结论</h2>
+        <div class="formula">
+            物体随圆盘一起做匀速圆周运动时，水平方向只有静摩擦力，故 $$f_{\text{静}}=m\omega^2r$$ 方向始终指向圆心（静摩擦力提供向心力）。
+        </div>
+        <div class="formula-row">
+            <div class="fbox"><div class="fl">临界条件（恰好滑动）</div>$f_{\max}=\mu mg$（或题给 $f_m$）</div>
+            <div class="fbox"><div class="fl">单个物块的临界角速度</div>$\omega_0=\sqrt{\dfrac{\mu g}{r}}$</div>
+            <div class="fbox"><div class="fl">向心力需求</div>$F_{\text{需}}=m\omega^2r$（$\omega$ 相同，$r$ 大者需要更大向心力）</div>
+        </div>
+        <div class="key-point">
+            <b>★ 无绳连接时「谁先滑」：</b>比较临界角速度 $\omega_0=\sqrt{\mu g/r}$，<b>半径 r 越大、μ 越小，越先滑动</b>（所需向心力大但最大静摩擦小）。
+        </div>
+        <div class="key-point">
+            <b>★ 有绳连接时的分析顺序：</b>角速度小时绳无张力，各物块独立靠静摩擦提供向心力 → <b>外侧（r 大）物块先达到最大静摩擦</b> → 绳出现张力，张力「拉外侧物块向圆心、拉内侧物块向外」→ 逐物块达到最大 → 最后把绳连整体用<strong>重心法</strong>求整体临界角速度。
+        </div>
+        <div class="warn">
+            <b>⚠ 易错点：</b>① 静摩擦力方向与<strong>相对运动趋势</strong>相反，不是与运动方向相反，也不一定是阻力；② 「向心力」是效果力，受力分析时<strong>不</strong>能把它作为独立力写进去；③ 绳张力是「被动」的：外侧物块达到最大静摩擦后，绳张力才开始出现并随角速度增大。
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="num">2</span> 例1 · 单个物块的受力判断<span class="ans-chip">答案 C</span></h2>
+        <div class="example">
+            <div class="q">【例1】（单选）如图 1 所示，一圆盘可绕过圆盘的中心 O 且垂直于盘面的竖直轴转动，在圆盘上放一小木块 A，它随圆盘一起做匀速圆周运动，则关于木块 A 的受力，下列说法中正确的是（　　）</div>
+            <div class="figure"><img src="images/friction_disk_example1.png" alt="例1题图：圆盘上的小木块A"></div>
+            <div class="opt">A. 木块 A 受重力、支持力和向心力</div>
+            <div class="opt">B. 木块 A 受重力、支持力和静摩擦力，摩擦力的方向与木块运动方向相反</div>
+            <div class="opt">C. 木块 A 受重力、支持力和静摩擦力，摩擦力的方向指向圆心</div>
+            <div class="opt">D. 木块 A 受重力、支持力和静摩擦力，摩擦力的方向与木块运动方向相同</div>
+        </div>
+        <div class="solve">
+            <div class="sl">【例 1 解析】</div>
+            <div class="step">物体放在圆盘上，与圆盘保持相对静止，一起做匀速圆周运动。</div>
+            <div class="step">竖直方向：重力 $mg$ 与支持力 $N$ 平衡；水平方向：只有静摩擦力这一个力，它提供了全部向心力。</div>
+            <div class="step">因此静摩擦力方向<strong>指向圆心</strong>，大小 $f=m\omega^2r$。选 <b style="color:#2e7d32;">C</b>。</div>
+            <div class="step" style="color:#a05a14;"><b>错项分析：</b>A 错在「向心力是效果力，不单独分析」；B、D 错在「摩擦力方向与运动方向（切向）无关，而与相对滑动趋势（离心方向）相反，即指向圆心」。</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="num">3</span> 例2 · 三个物块的比较与「谁先滑」<span class="ans-chip">答案 AD</span></h2>
+        <div class="example">
+            <div class="q">【例2】（多选）如图 2 所示，水平转台上放着 A、B、C 三个物体，质量分别为 $2m$、$m$、$m$，离转轴的距离分别为 $R$、$R$、$2R$，与转台间的动摩擦因数相同。已知最大静摩擦力等于滑动摩擦力，当转台旋转时，下列说法中正确的是（　　）</div>
+            <div class="figure"><img src="images/friction_disk_example2.png" alt="例2题图：转台上的A、B、C三物块"></div>
+            <div class="opt">A. 若三个物体均未滑动，则 C 物体的向心加速度最大</div>
+            <div class="opt">B. 若三个物体均未滑动，则 B 物体受的摩擦力最大</div>
+            <div class="opt">C. 若转速增加，则 A 物体比 B 物体先滑动</div>
+            <div class="opt">D. 若转速增加，则 C 物体最先滑动</div>
+        </div>
+        <div class="solve">
+            <div class="sl">【例 2 解析】</div>
+            <div class="step"><b>① 均未滑动时：</b>角速度 $\omega$ 相同，由 $a=\omega^2r$、$f=m\omega^2r$：</div>
+            <table>
+                <tr><th>物体</th><th>质量</th><th>半径</th><th>向心加速度 $a=\omega^2r$</th><th>静摩擦力 $f=m\omega^2r$</th></tr>
+                <tr><td>A</td><td>$2m$</td><td>$R$</td><td>$\omega^2R$</td><td>$2m\omega^2R$</td></tr>
+                <tr><td>B</td><td>$m$</td><td>$R$</td><td>$\omega^2R$</td><td>$m\omega^2R$（最小）</td></tr>
+                <tr><td>C</td><td>$m$</td><td>$2R$</td><td>$2\omega^2R$（最大）</td><td>$2m\omega^2R$</td></tr>
+            </table>
+            <div class="step">→ C 的向心加速度最大，<span class="ok">A 正确</span>；B 的静摩擦力最小而非最大，<span class="no">B 错误</span>。</div>
+            <div class="step"><b>② 临界滑动：</b>最大静摩擦力 $f_{\max}=\mu mg$，临界角速度 $\omega_0=\sqrt{\mu g/r}$：</div>
+            <table>
+                <tr><th>物体</th><th>质量</th><th>半径</th><th>$f_{\max}$</th><th>$\omega_0=\sqrt{f_{\max}/(mr)}$</th></tr>
+                <tr><td>A</td><td>$2m$</td><td>$R$</td><td>$2\mu mg$</td><td>$\sqrt{2\mu mg/(2mR)}=\sqrt{\mu g/R}$</td></tr>
+                <tr><td>B</td><td>$m$</td><td>$R$</td><td>$\mu mg$</td><td>$\sqrt{\mu g/R}$</td></tr>
+                <tr><td>C</td><td>$m$</td><td>$2R$</td><td>$\mu mg$</td><td>$\sqrt{\mu g/(2R)}$（最小）</td></tr>
+            </table>
+            <div class="step">随角速度增大，C 先达到临界角速度，故 C 最先滑动，<span class="ok">D 正确</span>；A、B 临界角速度相同，同时滑动，「A 比 B 先滑」<span class="no">C 错误</span>。</div>
+            <div class="ans-box">答案：AD</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="num">4</span> 例3 · 绳连两物块（重点）<span class="ans-chip">答案 CD</span></h2>
+        <div class="example">
+            <div class="q">【例3】（多选）如图 3 所示，在水平圆盘上沿半径方向放置用细线相连的质量均为 $m$ 的 A、B 两个物块（可视为质点）。A 和 B 距轴心 O 的距离分别为 $r_A=R$，$r_B=2R$，且 A、B 与转盘之间的最大静摩擦力都是 $f_m$，两物块 A 和 B 随着圆盘转动时，始终与圆盘保持相对静止。则在圆盘转动的角速度从 0 缓慢增大的过程中，下列说法正确的是（　　）</div>
+            <div class="figure"><img src="images/friction_disk_example3.png" alt="例3题图：细线连接的A、B两物块"></div>
+            <div class="opt">A. B 所受合外力一直等于 A 所受合外力</div>
+            <div class="opt">B. A 受到的摩擦力一直指向圆心</div>
+            <div class="opt">C. B 受到的摩擦力一直指向圆心</div>
+            <div class="opt">D. A、B 两物块与圆盘保持相对静止的最大角速度为 $\sqrt{\dfrac{2f_m}{3mR}}$</div>
+        </div>
+        <div class="solve">
+            <div class="sl">【例 3 解析】分阶段分析（$f_m$ 表示最大静摩擦力）：</div>
+            <div class="step"><b>阶段一（$\omega$ 很小，绳无张力）：</b>静摩擦力独立提供向心力：$f_A=m\omega^2R$，$f_B=m\omega^2\cdot2R=2m\omega^2R$。B 的向心力需求是 A 的两倍，故 <b>B 先达到最大静摩擦</b>：$2m\omega_1^2R=f_m \Rightarrow \omega_1=\sqrt{\dfrac{f_m}{2mR}}$，此时 $f_A=\dfrac{f_m}{2}$。</div>
+            <div class="step"><b>阶段二（$\omega_1\le\omega\le\omega_m$）：</b>B 的静摩擦保持最大值 $f_m$（不再增大），细线被拉紧，绳张力 $T=2m\omega^2R-f_m$ 随 $\omega$ 增大而增大：绳拉 B 向圆心（帮 B 提供向心力），同时拉 A 沿半径向外。A 的静摩擦力随之改变，<strong>并非一直指向圆心</strong>；当 A 的静摩擦也达到最大值 $f_m$ 时，系统即将相对圆盘滑动。</div>
+            <div class="step"><b>③ 求最大角速度（滑动临界，此时 A、B 的静摩擦均达最大 $f_m$）：</b>
+                $$对\ A：f_m-T=m\omega_m^2R；\qquad 对\ B：T+f_m=2m\omega_m^2R$$
+                两式相加消去 $T$：$2f_m=3m\omega_m^2R$，解得
+                $$\omega_m=\sqrt{\dfrac{2f_m}{3mR}}$$
+            </div>
+            <div class="step"><b>④ 选项判定：</b></div>
+            <table>
+                <tr><th>选项</th><th>分析</th><th>结论</th></tr>
+                <tr><td>A</td><td class="left">B 的合外力 $=2m\omega^2R\neq m\omega^2R=$ A 的合外力（$\omega>0$ 时）</td><td class="no">错</td></tr>
+                <tr><td>B</td><td class="left">细线绷紧后，绳张力拉 A 沿半径向外，A 的静摩擦力方向改变，并非「一直指向圆心」</td><td class="no">错</td></tr>
+                <tr><td>C</td><td class="left">B 的静摩擦力始终指向圆心（大小先增大、达到最大后保持不变）</td><td class="ok">对</td></tr>
+                <tr><td>D</td><td class="left">由上面的联立方程得 $\omega_m=\sqrt{\dfrac{2f_m}{3mR}}$</td><td class="ok">对</td></tr>
+            </table>
+            <div class="ans-box">答案：CD</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="num">5</span> 例4 · 绳连三物块（综合）<span class="ans-chip">答案 BC</span></h2>
+        <div class="example">
+            <div class="q">【例4】（多选）如图 4 所示，在水平圆盘上放有质量分别为 $m$、$m$、$2m$ 的可视为质点的三个物体 A、B、C，圆盘可绕垂直圆盘的中心轴转动。三个物体与圆盘的动摩擦因数均为 $\mu=0.1$，最大静摩擦力认为等于滑动摩擦力。三个物体与轴 O 共线且 $OA=AB=BC=r=0.2\ \text{m}$，现将三个物体用轻质细线相连，保持细线伸直且恰无张力。若圆盘从静止开始转动，角速度极其缓慢地增大，已知重力加速度 $g=10\ \text{m/s}^2$，则对于这个过程，下列说法正确的是（　　）</div>
+            <div class="figure"><img src="images/friction_disk_example4.png" alt="例4题图：细线连接的A、B、C三物块"></div>
+            <p class="note" style="text-align:center;">图注：O—A—B—C 沿半径依次排列，相邻间距均为 r（A、B、C 距轴分别为 r、2r、3r）</p>
+            <div class="opt">A. A、B 两个物体同时达到最大静摩擦力</div>
+            <div class="opt">B. B、C 两个物体的静摩擦力先增大后不变</div>
+            <div class="opt">C. 当 $\omega=\sqrt{\dfrac{4\mu g}{9r}}$ 时整体会发生滑动</div>
+            <div class="opt">D. 当 $\omega&lt;\sqrt{\dfrac{\mu g}{3r}}$ 时，在 $\omega$ 增大的过程中 B、C 间的拉力不断增大</div>
+        </div>
+        <div class="solve">
+            <div class="sl">【例 4 解析】由 OA=AB=BC=r 得：A(m, r)、B(m, 2r)、C(2m, 3r)，最大静摩擦分别为 $f_{A\max}=\mu mg$、$f_{B\max}=\mu mg$、$f_{C\max}=2\mu mg$。</div>
+            <div class="step"><b>① 无张力阶段（$\omega&lt;\omega_1$）：</b>向心力需求 $F_A=m\omega^2r$、$F_B=2m\omega^2r$、$F_C=6m\omega^2r$。C 的质量与半径都最大，需求增加最快，<strong>C 最先达到最大静摩擦</strong>：
+                $$6m\omega_1^2r=2\mu mg\Rightarrow\omega_1=\sqrt{\dfrac{\mu g}{3r}}=\sqrt{\dfrac{0.1\times10}{3\times0.2}}=\sqrt{\dfrac{5}{3}}\approx1.29\ \text{rad/s}$$
+                此时 A、B 均未达最大，「A、B 同时达到最大静摩擦」<span class="no">A 错误</span>。</div>
+            <div class="step"><b>② 阶段二（$\omega_1\le\omega&lt;\omega_2$）：</b>C 保持最大静摩擦 $2\mu mg$，B、C 间绳出现张力 $T_{BC}=6m\omega^2r-2\mu mg$（拉 C 向圆心、拉 B 向外）。B 的静摩擦继续增大：
+                $$f_B=2m\omega^2r+T_{BC}=8m\omega^2r-2\mu mg$$
+                当 $f_B=\mu mg$ 时 B 达最大：$8m\omega_2^2r=3\mu mg\Rightarrow\omega_2=\sqrt{\dfrac{3\mu g}{8r}}=\sqrt{\dfrac{3\times1}{8\times0.2}}=\sqrt{1.875}\approx1.37\ \text{rad/s}$。</div>
+            <div class="step">可见：<strong>C 的静摩擦先增大后保持 $2\mu mg$ 不变；B 的静摩擦先增大后保持 $\mu mg$ 不变</strong>，「B、C 两个物体的静摩擦力先增大后不变」<span class="ok">B 正确</span>。</div>
+            <div class="step"><b>③ 阶段三（$\omega_2\le\omega&lt;\omega_3$）：</b>B 也达最大，A、B 间绳出现张力；A 的静摩擦继续变化，直至也达最大。此后细线张力再也无法帮助维持相对静止，整体滑动。</div>
+            <div class="step"><b>④ 整体滑动点（重心法）：</b>把 A、B、C 及绳看作整体，系统重心到轴的距离
+                $$r_c=\dfrac{m\cdot r+m\cdot2r+2m\cdot3r}{4m}=\dfrac{9r}{4}$$
+                整体所需向心力 $F_{\text{需}}=4m\omega^2\cdot\dfrac{9r}{4}=9mr\omega^2$；整体能提供的最大静摩擦 $\Sigma f_{\max}=\mu mg+\mu mg+2\mu mg=4\mu mg$。整体刚滑动时：
+                $$9mr\omega_3^2=4\mu mg\Rightarrow\omega_3=\sqrt{\dfrac{4\mu g}{9r}}=\sqrt{\dfrac{4\times1}{9\times0.2}}=\sqrt{\dfrac{20}{9}}\approx1.49\ \text{rad/s}$$
+                「当 $\omega=\sqrt{\dfrac{4\mu g}{9r}}$ 时整体发生滑动」<span class="ok">C 正确</span>。</div>
+            <div class="step"><b>⑤ D 选项：</b>当 $\omega&lt;\sqrt{\mu g/(3r)}\approx1.29\ \text{rad/s}$ 时，C 尚未达到最大静摩擦，B、C 间细线一直处于无张力状态（拉力恒为 0），并非「不断增大」<span class="no">D 错误</span>。</div>
+            <div class="ans-box">答案：BC</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="num">6</span> 方法总结：解决圆盘临界问题的关键点</h2>
+        <div class="memo">
+            <ol>
+                <li><b>角速度很小时</b>，物块受到的静摩擦力能够完全充当向心力，绳上无张力——先按「单物体」分析；</li>
+                <li><b>随着角速度增大</b>，先算出各物体的<strong>临界角速度</strong> $\omega_0=\sqrt{\mu g/r}$（$r$ 大、$\mu$ 小的先滑），确定第一个达到最大静摩擦的物体；</li>
+                <li><b>对于用绳连接的两个或多个物体</b>，当外侧物体达到最大静摩擦后，绳张力开始参与提供向心力；之后要<strong>把绳连物体看成一个整体，找出重心的位置</strong>，算出整体的临界角速度；</li>
+                <li><b>在算出各物体、整体的临界角速度基础上，进行分类讨论</b>（无张力阶段 → 部分绳有张力 → 全部达最大 → 整体滑动）。</li>
+            </ol>
+        </div>
+        <div class="key-point">
+            <b>★ 一类通法：</b>「找第一个达最大的物块 → 确定绳张力出现的顺序 → 逐阶段列平衡方程 → 重心法求整体临界角速度」。其中绳张力总是「帮外侧、拉内侧」，静摩擦力总是「阻碍相对滑动趋势」。
+        </div>
+    </div>
+
+    <div class="footer">
+        资料整理：静摩擦力专题 · 圆盘模型 | 原文作者：郭雨（公众号「雨情雨理」，2019-04-25）<br>
+        本页补充了原图缺失的公式推导与选项逐条分析，供复习参考。
+    </div>
+</div>
+
+</body>
+</html>

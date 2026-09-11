@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 恒定电流闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🔌 高考物理 · 恒定电流闯关</h1>
+    <p>欧姆定律 · 串并联 · 电功率 · 闭合电路 · 动态电路 · 含容电路 — 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 考点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部恒定电流关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理恒定电流专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+const KNOW = {
+    "ohm":       { name: "电流与欧姆定律", lv: 0, module: "电路基础", desc: "I = U/R，电流方向与正电荷定向移动方向相同" },
+    "resistor":  { name: "电阻定律与电阻率", lv: 1, module: "电路基础", desc: "R = ρL/S，电阻率由材料决定，随温度变化" },
+    "parallel":  { name: "串并联电路", lv: 2, module: "电路基础", desc: "串联分压、并联分流；并联总电阻小于任一支路" },
+    "power":     { name: "电功电功率与焦耳定律", lv: 3, module: "能量分析", desc: "P=UI 总功率，P热=I²R 热功率，纯电阻时两者相等" },
+    "closed":    { name: "闭合电路欧姆定律", lv: 4, module: "闭合电路", desc: "I = E/(R+r)，外电路电阻增大电流减小" },
+    "ui":        { name: "路端电压与 U-I 图像", lv: 5, module: "闭合电路", desc: "U = E - Ir，图像截距为 E，斜率为内阻 r" },
+    "dynamic":   { name: "动态电路分析", lv: 6, module: "闭合电路", desc: "'串反并同'判断各表变化" },
+    "cap":       { name: "含容电路", lv: 7, module: "闭合电路", desc: "稳定时电容器断路，两端电压等于并联部分电压" },
+    "fault":     { name: "电路故障与功率极值", lv: 8, module: "能量分析", desc: "断路/短路判断；R=r 时电源输出功率最大" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+    {
+        badge: "电路基础 · 考点01",
+        title: "电流与欧姆定律",
+        intro: "电流是电荷定向移动形成的，欧姆定律是电路分析的第一条金律。",
+        formulas: [
+            { t: "⚡ 电流定义式", f: "$$I = \\dfrac{q}{t}$$", note: "单位 A。电流方向规定为正电荷定向移动的方向（与电子方向相反）。" },
+            { t: "📐 欧姆定律", f: "$$I = \\dfrac{U}{R}$$", note: "适用于纯电阻电路；U-I 图像为过原点的直线（线性元件）。" },
+            { t: "🔌 电流微观表达式", f: "$$I = nqSv$$", note: "n 为单位体积自由电荷数，v 为定向移动速率（很小，远小于光速）。" }
+        ],
+        example: {
+            q: "某金属导体两端电压为 4 V 时，通过它的电流为 0.8 A。若电压变为 6 V，电流变为多少？",
+            steps: [
+                "电阻：$R = \\dfrac{U}{I} = \\dfrac{4}{0.8} = 5\\ \\Omega$",
+                "电压 6 V 时：$I = \\dfrac{U}{R} = \\dfrac{6}{5} = 1.2\\ \\text{A}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于电流，下列说法正确的是？",
+                opts: [
+                    "电流方向与负电荷定向移动方向相同",
+                    "通过导体横截面的电荷量越大，电流一定越大",
+                    "电流是矢量，有方向",
+                    "金属导体中电流方向与自由电子定向移动方向相反"
+                ],
+                answer: 3,
+                explain: "电流方向规定为正电荷定向移动方向，与电子（负电荷）移动方向相反。电流是标量（虽有方向但用正负表示，不遵循矢量法则）；电流还与时间有关。"
+            },
+            {
+                q: "某导体两端电压 6 V 时电流 1.5 A，电压降为 2 V 时（温度不变），电流为？",
+                opts: ["0.25 A", "0.5 A", "1 A", "1.5 A"],
+                answer: 1,
+                explain: "电阻 $R = \\dfrac{6}{1.5} = 4\\ \\Omega$，$I = \\dfrac{2}{4} = 0.5\\ \\text{A}$。"
+            }
+        ]
+    },
+    {
+        badge: "电路基础 · 考点02",
+        title: "电阻定律与电阻率",
+        intro: "电阻由导体本身性质决定：材料、长度、横截面积，与电压电流无关。",
+        formulas: [
+            { t: "📏 电阻定律", f: "$$R = \\rho\\dfrac{L}{S}$$", note: "ρ 为电阻率，由材料决定；L 为沿电流方向的长度，S 为垂直电流的横截面积。" },
+            { t: "🌡 电阻率与温度", f: "<span class='term-chip'>金属：ρ 随温度升高而增大</span><span class='term-op'>,</span><span class='term-chip'>半导体：随温度升高而减小</span>", note: "超导现象：温度降到临界温度以下时电阻突然变为零。" },
+            { t: "⚠ 易错点", f: "<span class='term-chip warn'>电阻由导体本身决定</span><span class='term-op'>，与 U、I 无关</span>", note: "R=U/I 是测量式（比值定义），不是决定式。" }
+        ],
+        example: {
+            q: "一根粗细均匀的电阻丝，电阻为 R。把它均匀拉长到原来的 2 倍，电阻变为多少？",
+            steps: [
+                "拉长到 2 倍：长度变为 2L，体积不变，横截面积变为 S/2",
+                "$R' = \\rho\\dfrac{2L}{S/2} = 4\\rho\\dfrac{L}{S}$",
+                "电阻变为原来的 4 倍"
+            ]
+        },
+        challenges: [
+            {
+                q: "一段金属丝电阻为 R，若将其对折并绞合在一起使用，电阻变为？",
+                opts: ["2R", "R/2", "R/4", "4R"],
+                answer: 2,
+                explain: "对折后长度变为 L/2，横截面积变为 2S，$R' = \\rho\\dfrac{L/2}{2S} = \\dfrac{1}{4}\\rho\\dfrac{L}{S} = \\dfrac{R}{4}$。"
+            },
+            {
+                q: "关于电阻率，下列说法正确的是？",
+                opts: [
+                    "电阻率越大的导体电阻一定越大",
+                    "电阻率只由材料决定，与长度、横截面积无关",
+                    "金属的电阻率随温度升高而减小",
+                    "超导体的电阻率为无穷大"
+                ],
+                answer: 1,
+                explain: "电阻率是材料的固有属性，与几何尺寸无关；电阻还与 L、S 有关。金属电阻率随温度升高而增大；超导体电阻率为零。"
+            }
+        ]
+    },
+    {
+        badge: "电路基础 · 考点03",
+        title: "串并联电路",
+        intro: "串联分压、并联分流——串并联规律是分析复杂电路的基本功。",
+        formulas: [
+            { t: "🔗 串联电路", f: "$$I_1 = I_2,\\quad U = U_1 + U_2,\\quad R = R_1 + R_2$$", note: "串联分压：$\\dfrac{U_1}{U_2} = \\dfrac{R_1}{R_2}$。" },
+            { t: "🔀 并联电路", f: "$$U_1 = U_2,\\quad I = I_1 + I_2,\\quad \\dfrac{1}{R} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2}$$", note: "并联分流：$\\dfrac{I_1}{I_2} = \\dfrac{R_2}{R_1}$。" },
+            { t: "⚠ 结论", f: "<span class='term-chip'>并联总电阻小于任一电阻</span><span class='term-op'>,</span><span class='term-chip'>越多并联总电阻越小</span>", note: "两电阻并联：$R = \\dfrac{R_1R_2}{R_1+R_2}$。" }
+        ],
+        example: {
+            q: "R₁=6 Ω 和 R₂=3 Ω 并联后，接到 6 V 电源上，求干路电流。",
+            steps: [
+                "并联总电阻：$R = \\dfrac{R_1R_2}{R_1+R_2} = \\dfrac{6\\times3}{6+3} = 2\\ \\Omega$",
+                "干路电流：$I = \\dfrac{U}{R} = \\dfrac{6}{2} = 3\\ \\text{A}$",
+                "支路电流：$I_1 = 1\\ \\text{A}$（6Ω），$I_2 = 2\\ \\text{A}$（3Ω）"
+            ]
+        },
+        challenges: [
+            {
+                q: "电阻 R₁ 和 R₂ 串联接入电路，R₁ = 2R₂，则它们两端的电压之比 U₁:U₂ 为？",
+                opts: ["1:2", "2:1", "1:1", "4:1"],
+                answer: 1,
+                explain: "串联分压与电阻成正比：$U_1:U_2 = R_1:R_2 = 2:1$。"
+            },
+            {
+                q: "两个电阻 R₁=6 Ω、R₂=3 Ω 并联，通过 R₁ 的电流为 1 A，则通过 R₂ 的电流为？",
+                opts: ["0.5 A", "1 A", "2 A", "3 A"],
+                answer: 2,
+                explain: "并联分流与电阻成反比：$\\dfrac{I_2}{I_1} = \\dfrac{R_1}{R_2} = 2$，$I_2 = 2\\ \\text{A}$。"
+            }
+        ]
+    },
+    {
+        badge: "能量分析 · 考点04",
+        title: "电功与电功率 · 焦耳定律",
+        intro: "'总功率'与'热功率'的区分是电路能量问题的核心——非纯电阻电路不适用欧姆定律。",
+        formulas: [
+            { t: "💡 电功与电功率", f: "$$W = UIt,\\quad P = UI$$", note: "对一切电路成立（总消耗功率）。" },
+            { t: "🔥 焦耳定律", f: "$$Q = I^2Rt,\\quad P_{\\text{热}} = I^2R$$", note: "发热功率，对一切电路成立。" },
+            { t: "⚠ 纯电阻 vs 非纯电阻", f: "<span class='term-chip good'>纯电阻：P = UI = I²R = U²/R</span><span class='term-op'>,</span><span class='term-chip warn'>非纯电阻（电动机）：P > I²R</span>", note: "电动机消耗的功率 UI = 机械功率 + 热功率（I²R）；此时 U ≠ IR。" }
+        ],
+        example: {
+            q: "额定电压 220 V、额定功率 1100 W 的电热水壶正常工作时的电流和电阻为多少？",
+            steps: [
+                "电流：$I = \\dfrac{P}{U} = \\dfrac{1100}{220} = 5\\ \\text{A}$",
+                "电阻：$R = \\dfrac{U}{I} = \\dfrac{220}{5} = 44\\ \\Omega$（纯电阻，可用欧姆定律）"
+            ]
+        },
+        challenges: [
+            {
+                q: "电动机线圈电阻 2 Ω，两端电压 10 V，通过的电流为 1 A。电动机输出的机械功率为？",
+                opts: ["2 W", "8 W", "10 W", "12 W"],
+                answer: 1,
+                explain: "总功率 $P = UI = 10\\ \\text{W}$，热功率 $P_{\\text{热}} = I^2R = 2\\ \\text{W}$，机械功率 $P_{\\text{机}} = 10 - 2 = 8\\ \\text{W}$。"
+            },
+            {
+                q: "两只电阻 R₁ > R₂ 串联接入电路，相同时间内发热较多的是？",
+                opts: [
+                    "R₁",
+                    "R₂",
+                    "一样多",
+                    "无法确定"
+                ],
+                answer: 0,
+                explain: "串联电流相同，由 $Q = I^2Rt$ 知电阻大的发热多（R₁ 发热多）。"
+            }
+        ]
+    },
+    {
+        badge: "闭合电路 · 考点05",
+        title: "闭合电路欧姆定律",
+        intro: "电动势是电源把其他能转化为电能的本领，闭合电路的总电流由内外电阻共同决定。",
+        formulas: [
+            { t: "🎯 闭合电路欧姆定律", f: "$$I = \\dfrac{E}{R + r}$$", note: "E 为电动势，R 为外电路总电阻，r 为内阻。" },
+            { t: "📐 电压关系", f: "$$E = U_{\\text{外}} + U_{\\text{内}} = U + Ir$$", note: "路端电压 U 与内电压 Ir 之和等于电动势。" },
+            { t: "⚠ 特殊情况", f: "<span class='term-chip'>断路：I=0，U=E</span><span class='term-op'>,</span><span class='term-chip'>短路：U=0，I=E/r</span>", note: "短路电流可能很大，电源会被烧毁——绝不允许短路。" }
+        ],
+        example: {
+            q: "电源电动势 E=12 V，内阻 r=1 Ω，外接电阻 R=5 Ω，求电路电流和路端电压。",
+            steps: [
+                "电流：$I = \\dfrac{E}{R+r} = \\dfrac{12}{6} = 2\\ \\text{A}$",
+                "路端电压：$U = IR = 2 \\times 5 = 10\\ \\text{V}$",
+                "内电压：$Ir = 2 \\times 1 = 2\\ \\text{V}$，验证 E = U + Ir = 12 V"
+            ]
+        },
+        challenges: [
+            {
+                q: "电动势为 E、内阻为 r 的电源，外电阻 R 增大时，电路电流和路端电压如何变化？",
+                opts: [
+                    "电流增大，路端电压减小",
+                    "电流减小，路端电压增大",
+                    "电流增大，路端电压增大",
+                    "电流减小，路端电压减小"
+                ],
+                answer: 1,
+                explain: "$I = \\dfrac{E}{R+r}$，R 增大则 I 减小；$U = E - Ir$，I 减小则 U 增大。"
+            },
+            {
+                q: "电源 E=9 V，r=1 Ω，短路电流为？",
+                opts: ["0 A", "1 A", "9 A", "无法确定"],
+                answer: 2,
+                explain: "$I_{\\text{短}} = \\dfrac{E}{r} = \\dfrac{9}{1} = 9\\ \\text{A}$。"
+            }
+        ]
+    },
+    {
+        badge: "闭合电路 · 考点06",
+        title: "路端电压与 U-I 图像",
+        intro: "电源的 U-I 图像一图两用：截距看电动势，斜率看内阻。",
+        formulas: [
+            { t: "📈 路端电压公式", f: "$$U = E - Ir$$", note: "U 随 I 线性减小。" },
+            { t: "📊 U-I 图像", f: "<span class='term-chip'>纵截距 = E</span><span class='term-op'>,</span><span class='term-chip'>|斜率| = r</span><span class='term-op'>,</span><span class='term-chip'>横截距 = 短路电流 E/r</span>", note: "图像与坐标轴围成的矩形面积 = 电源输出功率 P=UI。" },
+            { t: "⚠ 与电阻 U-I 图像的区别", f: "<span class='term-chip good'>电阻：过原点直线，斜率 = R</span>", note: "电源图像是 U 轴截距 E 的斜线；两者交点对应工作点。" }
+        ],
+        example: {
+            q: "某电源的 U-I 图像与 U 轴交于 12 V，与 I 轴交于 6 A，求电动势和内阻。",
+            steps: [
+                "纵截距：$E = 12\\ \\text{V}$",
+                "内阻：$r = \\dfrac{E}{I_{\\text{短}}} = \\dfrac{12}{6} = 2\\ \\Omega$",
+                "也可用斜率：$r = \\dfrac{12 - 0}{0 - 6}$ 取绝对值 = 2 Ω"
+            ]
+        },
+        challenges: [
+            {
+                q: "电源 U-I 图像是一条直线，纵截距为 E、横截距为 I短。下列说法正确的是？",
+                opts: [
+                    "内阻 r = E·I短",
+                    "内阻 r = E/I短",
+                    "电动势为 I短/E",
+                    "图像斜率越大，内阻越小"
+                ],
+                answer: 1,
+                explain: "由 $U = E - Ir$，斜率（绝对值）为 r；断路时 I=0、U=E，短路时 U=0、I=E/r，故 $r = \\dfrac{E}{I_{\\text{短}}}$。"
+            },
+            {
+                q: "电源电动势 10 V，内阻 1 Ω，外电路电阻 4 Ω 时路端电压为？",
+                opts: ["6 V", "8 V", "10 V", "2.5 V"],
+                answer: 1,
+                explain: "$I = \\dfrac{10}{4+1} = 2\\ \\text{A}$，$U = E - Ir = 10 - 2 \\times 1 = 8\\ \\text{V}$。"
+            }
+        ]
+    },
+    {
+        badge: "闭合电路 · 考点07",
+        title: "动态电路分析",
+        intro: "滑动变阻器一动，整个电路跟着变——'串反并同'帮你秒杀动态题。",
+        formulas: [
+            { t: "🎯 核心方法：串反并同", f: "<span class='term-chip'>与变阻器串联的：反变</span><span class='term-op'>,</span><span class='term-chip'>与变阻器并联的：同变</span>", note: "变阻器阻值增大时，串联部分电流/电压减小（反），并联部分增大（同）。" },
+            { t: "📐 分析流程", f: "<span class='term-chip dark'>判断总电阻</span><span class='term-op'>→</span><span class='term-chip dark'>总电流</span><span class='term-op'>→</span><span class='term-chip dark'>路端电压</span><span class='term-op'>→</span><span class='term-chip dark'>支路逐层分析</span>", note: "从整体到局部，逐层推进。" },
+            { t: "⚠ 前提", f: "<span class='term-chip'>电源内阻不可忽略</span>", note: "若忽略内阻则路端电压不变，动态问题退化为简单题。" }
+        ],
+        example: {
+            q: "滑动变阻器 R 与灯泡 L 串联后接在电源两端（电源有内阻）。增大 R 时，灯泡亮度如何变化？",
+            steps: [
+                "R 增大 → 总电阻增大 → 总电流 I 减小",
+                "灯泡（与变阻器串联）电流减小",
+                "灯泡变暗（'串反'）"
+            ]
+        },
+        challenges: [
+            {
+                q: "如图所示电路，滑动变阻器 R₁ 与电阻 R₂ 并联后与灯泡 L 串联（电源有内阻）。当 R₁ 的阻值增大时，灯泡 L 的亮度将？",
+                opts: [
+                    "变亮",
+                    "变暗",
+                    "不变",
+                    "先亮后暗"
+                ],
+                answer: 1,
+                explain: "R₁ 增大 → 并联部分总电阻增大 → 电路总电阻增大 → 总电流减小 → 灯泡（串联）电流减小 → 变暗（'串反'）。"
+            },
+            {
+                q: "电源有内阻，外电路由两个并联电阻 R₁、R₂ 组成。若 R₁ 增大，则路端电压 U 和 R₂ 的电流 I₂ 如何变化？",
+                opts: [
+                    "U 增大，I₂ 增大",
+                    "U 增大，I₂ 减小",
+                    "U 减小，I₂ 增大",
+                    "U 减小，I₂ 减小"
+                ],
+                answer: 0,
+                explain: "R₁ 增大 → 外电路总电阻增大 → 总电流减小 → U = E − Ir 增大；R₂ 与 R₁ 并联（'并同'），其电压增大 → I₂ 增大。"
+            }
+        ]
+    },
+    {
+        badge: "闭合电路 · 考点08",
+        title: "含容电路",
+        intro: "电容器在直流稳态电路中相当于断路，电压等于与其并联部分的电压。",
+        formulas: [
+            { t: "🎯 稳态分析", f: "<span class='term-chip'>稳定时：电容器断路</span><span class='term-op'>→</span><span class='term-chip'>该支路无电流</span>", note: "先去掉电容器支路，分析其余电路。" },
+            { t: "📐 电容公式", f: "$$Q = CU$$", note: "Q 为电荷量，U 为电容器两端的电压（等于并联部分的电压）。" },
+            { t: "⚠ 动态过程", f: "<span class='term-chip warn'>充电/放电瞬间有电流</span><span class='term-op'>，稳定后电流为零</span>", note: "含容电路变化题：比较变化前后电容器两端电压，判断充放电与电量变化。" }
+        ],
+        example: {
+            q: "E=12 V，r=1 Ω，R₁=2 Ω 与 R₂=3 Ω 串联，电容器 C 与 R₂ 并联。求稳定时电容器两端电压。",
+            steps: [
+                "电流：$I = \\dfrac{E}{R_1 + R_2 + r} = \\dfrac{12}{6} = 2\\ \\text{A}$",
+                "R₂ 两端电压：$U_2 = IR_2 = 2 \\times 3 = 6\\ \\text{V}$",
+                "电容器与 R₂ 并联，$U_C = 6\\ \\text{V}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "在直流电路中，电容器稳定后相当于？",
+                opts: [
+                    "短路",
+                    "断路",
+                    "电阻",
+                    "电源"
+                ],
+                answer: 1,
+                explain: "电容器充电完毕处于稳态时，所在支路无电流通过，相当于断路（电阻无穷大）。"
+            },
+            {
+                q: "电源电动势 10 V（内阻忽略），R₁=3 Ω 与 R₂=2 Ω 串联，电容器 C 与 R₂ 并联，稳定时电容器带电量与 C 的关系为？",
+                opts: [
+                    "Q = 4C",
+                    "Q = 6C",
+                    "Q = 10C",
+                    "Q = 2C"
+                ],
+                answer: 0,
+                explain: "电流 $I = \\dfrac{10}{3+2} = 2\\ \\text{A}$，$U_C = IR_2 = 2 \\times 2 = 4\\ \\text{V}$，$Q = CU_C = 4C$。"
+            }
+        ]
+    },
+    {
+        badge: "能量分析 · 考点09",
+        title: "电路故障与功率极值",
+        intro: "断路/短路判断考验电路洞察力；电源输出功率的极值条件 R=r 是经典考点。",
+        formulas: [
+            { t: "🔍 故障判断", f: "<span class='term-chip warn'>断路</span><span class='term-op'>：电流为零，电压表读数显著</span><span class='term-op'>,</span><span class='term-chip'>短路</span><span class='term-op'>：电压为零，电流大</span>", note: "用电压表逐段测量：示数为电源电压的段为断路点。" },
+            { t: "⚡ 电源输出功率", f: "$$P_{\\text{出}} = UI = EI - I^2r$$", note: "当外电阻 R = r 时，输出功率最大 $P_{\\max} = \\dfrac{E^2}{4r}$。" },
+            { t: "📈 功率变化规律", f: "<span class='term-chip'>R < r：增大 R，输出功率增大</span><span class='term-op'>,</span><span class='term-chip'>R > r：增大 R，输出功率减小</span>", note: "围绕 R=r 对称。" }
+        ],
+        example: {
+            q: "电源 E=12 V，r=2 Ω。外电阻 R 为多大时电源输出功率最大？最大功率为多少？",
+            steps: [
+                "由 R = r 时输出功率最大：$R = 2\\ \\Omega$",
+                "$P_{\\max} = \\dfrac{E^2}{4r} = \\dfrac{144}{8} = 18\\ \\text{W}$",
+                "此时效率 η = R/(R+r) = 50%"
+            ]
+        },
+        challenges: [
+            {
+                q: "电源电动势 E、内阻 r 固定，外电阻 R 由 0 增大到无穷大的过程中，电源输出功率将？",
+                opts: [
+                    "一直增大",
+                    "一直减小",
+                    "先增大后减小",
+                    "先减小后增大"
+                ],
+                answer: 2,
+                explain: "输出功率 $P = \\dfrac{E^2R}{(R+r)^2}$，当 R=r 时取最大值；R 从 0 增到 r 增大，从 r 继续增大则减小，故先增大后减小。"
+            },
+            {
+                q: "电源内阻 r=2 Ω，当外电阻 R=2 Ω 时电源输出功率为 4.5 W，则电源电动势 E 为？",
+                opts: ["3 V", "6 V", "9 V", "12 V"],
+                answer: 1,
+                explain: "R=r 时 $P_{\\max} = \\dfrac{E^2}{4r}$，$E = \\sqrt{4rP} = \\sqrt{4 \\times 2 \\times 4.5} = \\sqrt{36} = 6\\ \\text{V}$。"
+            }
+        ]
+    },
+    {
+        badge: "综合与真题 · 考点10",
+        title: "综合与真题演练",
+        intro: "闭合电路与串并联、能量、动态的综合题，是高考电学部分的常客。",
+        formulas: [
+            { t: "📋 解题总流程", f: "<span class='term-chip dark'>简化电路</span><span class='term-op'>→</span><span class='term-chip dark'>闭合电路欧姆定律求总电流</span><span class='term-op'>→</span><span class='term-chip dark'>串并联求各支路</span><span class='term-op'>→</span><span class='term-chip dark'>能量分析</span>", note: "含电容先断路处理，含电表先看内阻。" },
+            { t: "🧮 核心方程", f: "$$I = \\dfrac{E}{R_{\\text{总}}+r},\\quad U = E - Ir,\\quad P_{\\text{出}} = UI$$", note: "三件套：电流、路端电压、输出功率。" },
+            { t: "🏆 高考高频模型", f: "<span class='term-chip warn'>动态电路</span><span class='term-op'>/</span><span class='term-chip warn'>含容电路</span><span class='term-op'>/</span><span class='term-chip warn'>U-I 图像</span><span class='term-op'>/</span><span class='term-chip warn'>功率极值</span>", note: "四大模型反复出现。" }
+        ],
+        example: {
+            q: "E=6 V，r=1 Ω，R₁=2 Ω 与 R₂=4 Ω 串联后接在电源两端，求电源的输出功率和效率。",
+            steps: [
+                "电流：$I = \\dfrac{6}{2+4+1} = \\dfrac{6}{7}\\ \\text{A}$",
+                "路端电压：$U = E - Ir = 6 - \\dfrac{6}{7} \\approx 5.14\\ \\text{V}$",
+                "输出功率 $P = UI \\approx 4.41\\ \\text{W}$，效率 $\\eta = \\dfrac{U}{E} \\approx 85.7\\%$"
+            ]
+        },
+        challenges: [
+            {
+                q: "电动势 6 V、内阻 1 Ω 的电源给 R=2 Ω 和 R=4 Ω 串联外电路供电，电源输出功率约为？",
+                opts: ["2.9 W", "4.4 W", "5.1 W", "6 W"],
+                answer: 1,
+                explain: "$I = \\dfrac{6}{2+4+1} = \\dfrac{6}{7}\\ \\text{A}$，$U = 6 - \\dfrac{6}{7} \\approx 5.14\\ \\text{V}$，$P = UI \\approx 4.41\\ \\text{W}$。"
+            },
+            {
+                exam: true,
+                q: "（高考真题 · 复合考点）电源电动势 E、内阻 r，滑动变阻器 R₁ 与定值电阻 R₂ 串联。将 R₁ 从最大逐渐调小，关于灯泡（或各电表）变化，下列说法正确的是？",
+                opts: [
+                    "电流表读数减小，电压表读数增大",
+                    "电流表读数增大，电压表读数增大",
+                    "电流表读数增大，电压表读数减小",
+                    "电流表读数减小，电压表读数减小"
+                ],
+                answer: 2,
+                explain: "R₁ 减小 → 总电阻减小 → 总电流 I 增大（电流表读数增大）→ 路端电压 U = E − Ir 减小（电压表读数减小）。",
+                points: [
+                    { step: "R₁ 减小导致外电路总电阻减小", k: "parallel" },
+                    { step: "由闭合电路欧姆定律 I=E/(R总+r)，总电流增大", k: "closed" },
+                    { step: "路端电压 U=E-Ir 随 I 增大而减小", k: "ui" },
+                    { step: "结合'串反并同'快速验证各表变化", k: "dynamic" }
+                ]
+            },
+            {
+                exam: true,
+                q: "（压轴题 · 复合考点）电源电动势 E、内阻 r，外电路为 R₁（定值）与滑动变阻器 R₂ 并联。将 R₂ 调大，下列说法正确的是？",
+                opts: [
+                    "干路电流增大，R₁ 的功率增大",
+                    "干路电流减小，R₁ 的功率增大",
+                    "干路电流减小，R₁ 的功率减小",
+                    "干路电流增大，R₁ 的功率减小"
+                ],
+                answer: 1,
+                explain: "R₂ 增大 → 并联总电阻增大 → 干路电流减小；R₁ 与 R₂ 并联（'并同'），R₁ 两端电压随路端电压 U 增大而增大（U = E − Ir，I 减小则 U 增大），故 R₁ 功率 $P_1 = \\dfrac{U^2}{R_1}$ 增大。注意：R₁ 的功率看电压，电压增大了。",
+                points: [
+                    { step: "R₂ 增大 → 并联部分总电阻增大", k: "parallel" },
+                    { step: "总电阻增大 → 干路电流 I 减小", k: "closed" },
+                    { step: "路端电压 U=E-Ir 增大 → R₁ 两端电压增大", k: "ui" },
+                    { step: "由 P₁=U²/R₁ 判断 R₁ 功率变化", k: "power" }
+                ]
+            }
+        ]
+    }
+];
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+const LEVEL_COUNT = LEVELS.length;
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    const navBtn = document.createElement('button');
+    navBtn.innerHTML = `<span class="nav-no">考点${String(i+1).padStart(2,'0')}</span><span class="nav-name">${lv.title}</span>`;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    lv.formulas.forEach(f => {
+        const isMath = f.f.indexOf('$') !== -1;
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            ${isMath
+                ? `<div class="formula">${f.f}</div>`
+                : `<div class="formula-text">${f.f}</div>`}
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    html += `<div class="example">
+        <div class="q">💡 例题</div>`;
+    lv.example.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+    html += `</div>`;
+
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        const ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">考点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===LEVEL_COUNT-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65+correct);
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => answered[li+'_'+k] && document.querySelector(`.opt[data-i="${li}_${k}"][data-j="${c.answer}"]`)?.classList.contains('correct'));
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= LEVEL_COUNT) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="nav.js"></script>
+</body>
+</html>

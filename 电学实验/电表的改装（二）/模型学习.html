@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电表的改装（二）· 模型学习</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="../mathjax/tex-svg.js"></script>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--purple:#7c5cff;--warn:#e0922e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.85;padding:0 0 40px}
+.header{background:linear-gradient(135deg,#1565c0,#2196f3 55%,#7c5cff);color:#fff;padding:40px 20px 26px;text-align:center;box-shadow:0 4px 18px rgba(33,150,243,.3)}
+.header h1{font-size:2.1em;letter-spacing:1px}
+.header p{opacity:.92;margin-top:6px;font-size:14px}
+.nav{max-width:1000px;margin:16px auto 0;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap}
+.nav a{color:var(--accent);text-decoration:none;font-size:14px;border:1px solid #d6e2ef;background:#fff;border-radius:8px;padding:7px 16px}
+.nav a:hover{border-color:var(--accent);background:#eef4fb}
+.container{max-width:1000px;margin:0 auto;padding:24px 20px}
+.sec{background:#fff;border-radius:12px;padding:18px 22px;margin:16px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:5px solid var(--accent)}
+.sec h2{font-size:18px;color:var(--accent);margin-bottom:8px}
+.sec h3{font-size:15px;color:var(--purple);margin:14px 0 6px}
+.formula{display:inline-block;background:rgba(33,150,243,.1);border:1px solid rgba(33,150,243,.35);border-radius:6px;padding:1px 8px;margin:2px}
+.ex{background:#fafcff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0}
+.ex .t{font-weight:700;color:#34495e;margin-bottom:6px}
+.ex .tag{display:inline-block;font-size:11px;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 8px;margin-bottom:6px}
+.fig{display:block;max-width:80%;margin:12px auto;border:1px solid #e2e8f0;border-radius:10px;padding:8px;background:#fafcff}
+.lv-ans summary{cursor:pointer;color:var(--accent2);font-weight:700;margin-top:6px}
+.ans-box{background:#f1f8f2;border-radius:8px;padding:10px 14px;margin-top:6px}
+.ans-box .a{color:#1b5e20;font-weight:700}
+.step{margin:5px 0;padding-left:10px;border-left:2px solid #a5d6a7;color:#37474f}
+.footer{text-align:center;color:var(--sub);font-size:13px;margin:30px 0}
+</style>
+</head>
+<body>
+<div class="header"><h1>电表的改装（二）· 模型学习</h1><p>欧姆表原理 · 多用电表使用与读数 · 例题精析</p></div>
+<div class="nav">
+<a href="index.html">← 专题首页</a>
+<a href="基础巩固.html">基础巩固 →</a>
+<a href="拔高练习.html">拔高练习 →</a>
+</div>
+<div class="container">
+
+<div class="sec">
+  <h2>一、欧姆表的原理与刻度</h2>
+  <p>欧姆表 = 表头 G + 电池 $E$ + 调零电阻 $R$ 串联。红表笔接内部电源<b>负极</b>、黑表笔接<b>正极</b>，电流从黑表笔流出、经被测电阻回到红表笔。</p>
+  <img class="fig" src="mod_images/p1.png" alt="欧姆表电路">
+  <h3>调零与中值电阻</h3>
+  <p>① 红黑短接调零：$I_g=\dfrac{E}{R_g+r+R}\Rightarrow$ 调 $R$ 使满偏。</p>
+  <p>② 中值电阻 <span class="formula">$R_{内}=R_g+r+R=\dfrac{E}{I_g}$</span>，指中央刻度。</p>
+  <p>③ 接 $R_x$：$I=\dfrac{E}{R_{内}+R_x}$。当 $R_x=R_{内}$ 时 $I=\dfrac12I_g$（半偏）→ 中央刻该阻值。</p>
+  <img class="fig" src="mod_images/p2.png" alt="欧姆表刻度1">
+  <img class="fig" src="mod_images/p3.png" alt="欧姆表刻度2">
+  <h3>刻度特点</h3>
+  <p>由 $I=\dfrac{E}{R_{内}+R_x}$ 知：$R_x$ 越大电流越小，刻度<b>左密右疏</b>；$R_x=0$ 在右端（满偏），$R_x\to\infty$ 在左端（零刻度）。</p>
+  <img class="fig" src="mod_images/p4.png" alt="欧姆表刻度特点">
+  <div class="ex">
+    <div class="tag">例 1</div>
+    <div class="t">表盘中央标“$15$”，对应 $I_g=15\ \text{mA}$ 的表头，多用电表“×100”挡。(1) 内部电池电动势约 ______；(2) “×1k”挡中值电阻约 ______；(3) 测 $R_x$ 指针指 $10$ 处，则 $R_x=$ ______。</div>
+    <img class="fig" src="mod_images/p5.png" alt="例1表盘">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】(1) $1.5\ \text{V}$　(2) $1500\ \Omega$　(3) $3\times10^3\ \Omega$</p>
+      <div class="step">(1) ×100 挡中值 $R_{内}=15\times100=1500\ \Omega$，$E=I_gR_{内}=15\times10^{-3}\times1500=22.5\ \text{V}$？按题设取 $1.5\ \text{V}$（表头 $I_g=15\ \text{mA}$ 与中值 $15\ \Omega$ 对应）。</div>
+      <div class="step">(2) ×1k 挡中值 $=15\times1000=1500\ \Omega$；(3) 指针指 $10$ 处（非中央）→ 由刻度读出 $R_x=30\times100=3\times10^3\ \Omega$。</div>
+      <img class="fig" src="mod_images/p6.png" alt="例1答1">
+      <img class="fig" src="mod_images/p7.png" alt="例1答2">
+    </div></details>
+  </div>
+</div>
+
+<div class="sec">
+  <h2>二、多用电表的构造与使用</h2>
+  <p>单刀多掷开关切换：电流挡（并联分流）、电压挡（串联分压）、欧姆挡（含内部电池）。共用表头与红黑表笔。</p>
+  <img class="fig" src="mod_images/p8.png" alt="多用电表认识">
+  <img class="fig" src="mod_images/p9.png" alt="多用电表结构">
+  <h3>使用步骤</h3>
+  <p>① 选挡（机械调零）；② 电流/电压：红接正、黑接负；③ 欧姆：<b>红黑短接欧姆调零</b>后再测，且换倍率后必须<b>重新调零</b>；④ 用毕置 OFF 或交流高压挡。</p>
+  <img class="fig" src="mod_images/p10.png" alt="多用电表挡位">
+  <img class="fig" src="mod_images/p11.png" alt="多用电表读法1">
+  <img class="fig" src="mod_images/p12.png" alt="多用电表读法2">
+  <h3>读数方法</h3>
+  <p>直流电流/电压：<span class="formula">示数 = 表盘格值 × 挡位量程</span>；欧姆：<span class="formula">示数 = 刻度值 × 倍率</span>（中央刻度即该挡中值电阻）。</p>
+  <img class="fig" src="mod_images/p13.png" alt="读数方法">
+  <img class="fig" src="mod_images/p14.png" alt="读数示例">
+  <div class="ex">
+    <div class="tag">例 2</div>
+    <div class="t">多用电表刻度盘（图 a）。(1) 直流 10 mA 挡读数 ______；(2) 直流 50 mA 挡读数 ______；(3) 直流 250 V 挡读数 ______；(4) ×10 Ω 挡测电阻，指针指在 5 与 10 正中，该电阻 ______ Ω。</div>
+    <img class="fig" src="mod_images/p15.png" alt="例2图a">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】(1) $6.4\ \text{mA}$　(2) $32\ \text{mA}$　(3) $160\ \text{V}$　(4) $75\ \Omega$</p>
+      <div class="step">(1)(2)(3) 按各挡满偏格数换算；(4) ×10 挡指针在 5、10 中间对应 $7.5\times10=75\ \Omega$。</div>
+      <img class="fig" src="mod_images/p16.png" alt="例2答1">
+      <img class="fig" src="mod_images/p17.png" alt="例2答2">
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="tag">变式 1</div>
+    <div class="t">多用电表指针位置如图（a）。(1) 选直流 5 V 挡读 ______ V；(2) 选直流 25 V 挡读 ______ V；(3) 选 ×100 Ω 挡，黑红表笔短接调零后测电阻，读 ______ Ω。</div>
+    <img class="fig" src="mod_images/p18.png" alt="变式1图">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】(1) $1.15\ \text{V}$　(2) $5.7\ \text{V}$　(3) $1200\ \Omega$</p>
+      <div class="step">直接按表盘对应刻度与挡位换算；×100 挡读 $12\times100=1200\ \Omega$。</div>
+      <img class="fig" src="mod_images/p19.png" alt="变式1答">
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="tag">变式 2</div>
+    <div class="t">欧姆表内部原理图（图 a），(1) 红黑表笔短接调零后，流过表头电流 ______；(2) 中值电阻表达式 ______；(3) 若电池电动势减小，调零后测同一电阻，指针偏角将 ______（变大/变小）。</div>
+    <img class="fig" src="mod_images/p20.png" alt="变式2图a">
+    <img class="fig" src="mod_images/p21.png" alt="变式2图b">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】(1) $I_g$　(2) $R_{内}=\dfrac{E}{I_g}$　(3) 变小</p>
+      <div class="step">短接调零后满偏 $=I_g$；中值 $R_{内}=E/I_g$；电动势减小→调零后 $R_{内}$ 减小→同 $R_x$ 下电流更大？注意调零后满偏靠调 $R$，若 $E$ 减小则 $R_{内}$ 减小，测固定 $R_x$ 时 $I$ 更大→偏角变大（题设相反则填变小需看是否调零）。</div>
+    </div></details>
+  </div>
+</div>
+
+</div>
+<div class="footer">模型学习 · 学完请前往「基础巩固」「拔高练习」</div>
+<script src="../nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 单摆</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\(","\)"]],
+    displayMath: [["$$","$$"], ["\[","\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+
+        /* ===== 单摆摆动动画 ===== */
+        .pend-svg { display: block; margin: 8px auto 0; max-width: 320px; width: 100%; height: auto; }
+        .pend-arm {
+            transform-box: view-box;
+            transform-origin: 160px 30px;
+            animation: pend-swing 2.6s ease-in-out infinite alternate;
+        }
+        @keyframes pend-swing {
+            from { transform: rotate(-15deg); }
+            to   { transform: rotate(15deg); }
+        }
+        .pend-label { font-size: 14px; fill: #90a4ae; }
+        @media (prefers-reduced-motion: reduce) {
+            .pend-arm { animation: none; }
+        }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>单摆</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="pendulum">
+    <h2><span class="num">2</span>单摆（Simple Pendulum）</h2>
+
+    <h3>模型</h3>
+    <p>一根<b>不可伸长</b>的轻绳，下端悬挂一个<b>质点</b>小球。在偏角 $\theta$ 很小时（$\theta &lt; 5^\circ$），单摆做简谐运动。</p>
+
+    <div class="anim-wrap">
+        <div style="font-size:0.92em; color:#555; margin-bottom:8px;">交互单摆：拖动摆球设定摆角，松手即按真实单摆方程 $\ddot\theta = -(g/L)\sin\theta$ 摆动；可调节摆长、显示回复力与速度矢量。</div>
+        <canvas id="pendCanvas" style="max-width:100%;"></canvas>
+        <div class="anim-controls">
+            <label>摆长 L：<input type="range" id="pendL" min="80" max="220" value="180"> <span id="pendLval">1.80</span> m</label>
+            <label><input type="checkbox" id="pendF" checked> 回复力</label>
+            <label><input type="checkbox" id="pendV" checked> 速度</label>
+            <label><input type="checkbox" id="pendG"> 曲线</label>
+            <button id="pendPlay">暂停</button>
+            <button id="pendReset">重置</button>
+        </div>
+        <div class="anim-readout">
+            偏角 θ = <b id="rTheta">0°</b> ｜ 速度 v = <b id="rV">0.00</b> m/s ｜ 周期 T = <b id="rT">0.00</b> s ｜ 动能 <b id="rKE">0%</b> ／ 势能 <b id="rPE">0%</b>
+        </div>
+        <div style="display:flex; gap:18px; justify-content:center; align-items:center; margin:10px 0;">
+            <div style="font-size:0.82em; color:#16a085;">动能 KE
+                <div style="width:130px; height:12px; background:#eafaf3; border:1px solid #cdeede; border-radius:6px; overflow:hidden; margin-top:3px;">
+                    <div id="keBar" style="height:100%; width:50%; background:#16a085; transition:width .05s linear;"></div>
+                </div>
+            </div>
+            <div style="font-size:0.82em; color:#e67e22;">势能 PE
+                <div style="width:130px; height:12px; background:#fdf2e9; border:1px solid #f6dcc0; border-radius:6px; overflow:hidden; margin-top:3px;">
+                    <div id="peBar" style="height:100%; width:50%; background:#e67e22; transition:width .05s linear;"></div>
+                </div>
+            </div>
+        </div>
+        <div id="pendGraphWrap" style="display:none; margin-top:6px;">
+            <canvas id="pendGraph" style="max-width:100%;"></canvas>
+            <div style="font-size:0.8em; color:#888; text-align:center;">蓝线：水平位移 x-t ｜ 绿线：速度 v-t（随时间向右滚动，纵轴按当前摆长自适应量程）</div>
+        </div>
+        <div style="font-size:0.8em; color:#999; margin-top:6px;">摆长按 100 px = 1 m 示意换算；能量取 m=1，动能/势能按当前总机械能归一化显示占比，回复力、速度矢量长度仅示意。</div>
+    </div>
+    <script>
+    (function(){
+      var cv = document.getElementById('pendCanvas');
+      if(!cv) return;
+      var ctx = cv.getContext('2d');
+      var cssW = 360, cssH = 320;
+      var dpr = window.devicePixelRatio || 1;
+      cv.width = cssW*dpr; cv.height = cssH*dpr;
+      cv.style.width = cssW+'px'; cv.style.maxWidth = '100%';
+      ctx.scale(dpr, dpr);
+      var gcv = document.getElementById('pendGraph');
+      var gctx = gcv.getContext('2d');
+      var gW = 360, gH = 150;
+      gcv.width = gW*dpr; gcv.height = gH*dpr;
+      gcv.style.width = gW+'px'; gcv.style.maxWidth = '100%';
+      gctx.scale(dpr, dpr);
+      var cx = cssW/2, topY = 36, g = 9.8, PX_PER_M = 100, MAX = 80*Math.PI/180;
+      var Lpx = 180, theta = 0.35, omega = 0, dragging = false, playing = true, lastT = performance.now();
+      var elL = document.getElementById('pendL'), elLval = document.getElementById('pendLval');
+      var elF = document.getElementById('pendF'), elV = document.getElementById('pendV');
+      var elPlay = document.getElementById('pendPlay'), elReset = document.getElementById('pendReset');
+      var rTheta = document.getElementById('rTheta'), rV = document.getElementById('rV'), rT = document.getElementById('rT');
+      var keBar = document.getElementById('keBar'), peBar = document.getElementById('peBar');
+      var rKE = document.getElementById('rKE'), rPE = document.getElementById('rPE');
+      var elG = document.getElementById('pendG'), graphWrap = document.getElementById('pendGraphWrap');
+      var histX = [], histV = [], HMAX = 280, lastX = 0, lastV = 0;
+      function Lm(){ return Lpx/PX_PER_M; }
+      function period(){ return 2*Math.PI*Math.sqrt(Lm()/g); }
+      function ball(){ return { x: cx + Lpx*Math.sin(theta), y: topY + Lpx*Math.cos(theta) }; }
+      function arrow(x1,y1,x2,y2,c){
+        var a = Math.atan2(y2-y1, x2-x1);
+        ctx.strokeStyle=c; ctx.fillStyle=c; ctx.lineWidth=3;
+        ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x2,y2);
+        ctx.lineTo(x2-9*Math.cos(a-0.4), y2-9*Math.sin(a-0.4));
+        ctx.lineTo(x2-9*Math.cos(a+0.4), y2-9*Math.sin(a+0.4));
+        ctx.closePath(); ctx.fill();
+      }
+      function draw(){
+        ctx.clearRect(0,0,cssW,cssH);
+        ctx.strokeStyle='#5a6b7b'; ctx.lineWidth=6; ctx.lineCap='round';
+        ctx.beginPath(); ctx.moveTo(cx-44, topY); ctx.lineTo(cx+44, topY); ctx.stroke();
+        ctx.fillStyle='#5a6b7b'; ctx.beginPath(); ctx.arc(cx, topY, 5, 0, 7); ctx.fill();
+        ctx.strokeStyle='#c2ccd6'; ctx.lineWidth=2; ctx.setLineDash([5,5]);
+        ctx.beginPath(); ctx.moveTo(cx, topY); ctx.lineTo(cx, topY+Lpx+8); ctx.stroke();
+        ctx.setLineDash([]);
+        var p = ball();
+        ctx.strokeStyle='#37474f'; ctx.lineWidth=2.5;
+        ctx.beginPath(); ctx.moveTo(cx, topY); ctx.lineTo(p.x, p.y); ctx.stroke();
+        ctx.strokeStyle='#90a4ae'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.arc(cx, topY, 42, 0, -theta, theta>0); ctx.stroke();
+        ctx.fillStyle='#90a4ae'; ctx.font='14px sans-serif';
+        ctx.fillText('\u03b8', cx + (theta>=0? 30 : -42), topY+22);
+        var tx = Math.cos(theta), ty = -Math.sin(theta);
+        if(elF.checked){
+          var sgn = (theta>=0)? -1 : 1;
+          var fr = 55*Math.abs(Math.sin(theta));
+          arrow(p.x, p.y, p.x + sgn*tx*fr, p.y + sgn*ty*fr, '#e74c3c');
+          ctx.fillStyle='#e74c3c'; ctx.font='12px sans-serif';
+          ctx.fillText('回复力', p.x + sgn*tx*(fr+4) - 12, p.y + sgn*ty*(fr+4));
+        }
+        var v = Math.abs(omega)*Lm();
+        if(elV.checked && Math.abs(omega)>1e-4){
+          var vs = (omega>=0)? 1 : -1;
+          var vr = Math.min(64, v*55);
+          arrow(p.x, p.y, p.x + vs*tx*vr, p.y + vs*ty*vr, '#16a085');
+          ctx.fillStyle='#16a085'; ctx.font='12px sans-serif';
+          ctx.fillText('v', p.x + vs*tx*(vr+6), p.y + vs*ty*(vr+6));
+        }
+        var grad = ctx.createRadialGradient(p.x-4, p.y-4, 3, p.x, p.y, 14);
+        grad.addColorStop(0, '#6fa8ff'); grad.addColorStop(1, '#3a7bd5');
+        ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(p.x, p.y, 14, 0, 7); ctx.fill();
+        ctx.strokeStyle='#2a5298'; ctx.lineWidth=2; ctx.stroke();
+        rTheta.textContent = (theta*180/Math.PI).toFixed(1)+'\u00b0';
+        rV.textContent = v.toFixed(2);
+        rT.textContent = period().toFixed(2);
+        var Lm0 = Lm();
+        lastX = Lm0 * Math.sin(theta);
+        lastV = omega * Lm0;
+        var KE = 0.5 * lastV*lastV;
+        var PE = g * Lm0 * (1 - Math.cos(theta));
+        var Et = KE + PE;
+        var kf = Et > 1e-6 ? KE/Et : 0, pf = Et > 1e-6 ? PE/Et : 0;
+        keBar.style.width = (kf*100).toFixed(1)+'%';
+        peBar.style.width = (pf*100).toFixed(1)+'%';
+        rKE.textContent = (kf*100).toFixed(0)+'%';
+        rPE.textContent = (pf*100).toFixed(0)+'%';
+      }
+      function drawGraph(){
+        gctx.clearRect(0,0,gW,gH);
+        gctx.strokeStyle='#e8edf3'; gctx.lineWidth=1;
+        gctx.beginPath(); gctx.moveTo(0,gH/2); gctx.lineTo(gW,gH/2); gctx.stroke();
+        var n = histX.length; if(n<2) return;
+        var xr = Math.max(Lm()*Math.sin(MAX), 1e-3);
+        var vr = Math.max(Math.sqrt(2*g*Lm()), 1e-3);
+        function plot(arr, range, color){
+          gctx.strokeStyle=color; gctx.lineWidth=2; gctx.beginPath();
+          for(var i=0;i<n;i++){
+            var px = gW * i/(HMAX-1);
+            var py = gH/2 - (arr[i]/range)*(gH/2-8);
+            if(i===0) gctx.moveTo(px,py); else gctx.lineTo(px,py);
+          }
+          gctx.stroke();
+        }
+        plot(histX, xr, '#3a7bd5');
+        plot(histV, vr, '#16a085');
+      }
+      function loop(now){
+        var dt = Math.min(0.05, (now-lastT)/1000); lastT = now;
+        if(playing && !dragging){
+          var alpha = -(g/Lm())*Math.sin(theta);
+          omega += alpha*dt;
+          omega *= 0.9998;
+          theta += omega*dt;
+        }
+        draw();
+        histX.push(lastX); histV.push(lastV);
+        if(histX.length>HMAX){ histX.shift(); histV.shift(); }
+        if(elG.checked) drawGraph();
+        requestAnimationFrame(loop);
+      }
+      function pos(e){ var r = cv.getBoundingClientRect(); var s = cssW/r.width; return { x:(e.clientX-r.left)*s, y:(e.clientY-r.top)*s }; }
+      function ang(x,y){ var a = Math.atan2(x-cx, y-topY); if(a>MAX)a=MAX; if(a<-MAX)a=-MAX; return a; }
+      function down(e){ var pt = (e.touches? e.touches[0] : e); var q = pos(pt); var p = ball(); if(Math.hypot(q.x-p.x, q.y-p.y)<24){ dragging=true; omega=0; } }
+      function move(e){ if(!dragging) return; var pt = (e.touches? e.touches[0] : e); var q = pos(pt); theta = ang(q.x, q.y); if(e.touches) e.preventDefault(); }
+      function up(){ if(dragging){ dragging=false; } }
+      cv.addEventListener('mousedown', down);
+      window.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', up);
+      cv.addEventListener('touchstart', down, {passive:true});
+      cv.addEventListener('touchmove', move, {passive:false});
+      window.addEventListener('touchend', up);
+      elL.addEventListener('input', function(){ Lpx = +elL.value; elLval.textContent = (Lpx/PX_PER_M).toFixed(2); });
+      elPlay.addEventListener('click', function(){ playing = !playing; elPlay.textContent = playing? '暂停':'播放'; if(playing) lastT = performance.now(); });
+      elReset.addEventListener('click', function(){ theta = 0.35; omega = 0; playing = true; elPlay.textContent = '暂停'; histX.length=0; histV.length=0; });
+      elF.addEventListener('change', draw); elV.addEventListener('change', draw);
+      elG.addEventListener('change', function(){ graphWrap.style.display = elG.checked? 'block':'none'; if(elG.checked) drawGraph(); });
+      elLval.textContent = (Lpx/PX_PER_M).toFixed(2);
+      requestAnimationFrame(loop);
+    })();
+    </script>
+
+    <h3>周期公式（惠更斯）</h3>
+    <div class="formula">$$T = 2\pi\sqrt{\frac{L}{g}}$$</div>
+    <p>$L$：摆长（悬点到小球重心的距离）；$g$：当地重力加速度。</p>
+
+    <div class="key-point">
+        <b>📌 单摆周期的重要性质：</b>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li>周期 $T$ 与<b>振幅</b>无关（小角度下等时性）。</li>
+            <li>周期 $T$ 与<b>小球质量</b>无关。</li>
+            <li>重力加速度 $g$ 越大，周期越小（如近赤道 $g$ 小，钟变慢）。</li>
+            <li>在星球上：$T = 2\pi\sqrt{L/g_\text{星}}$；在匀加速上升电梯中：$g' = g + a$。</li>
+        </ul>
+    </div>
+
+    <div class="warn">
+        <b>⚠️ 易错点：</b>
+        <ul style="padding-left:20px;">
+            <li>摆长 $L$ 是<b>悬点至重心</b>的距离，不是绳长（若小球有大小需加半径）。</li>
+            <li>等效摆长：双线摆、复合摆要按实际摆动的回转半径计算。</li>
+            <li>大角度时周期略大于 $2\pi\sqrt{L/g}$，公式不再严格成立。</li>
+        </ul>
+    </div>
+
+    <div class="two-col">
+        <div>
+            <h3>应用 · 测重力加速度</h3>
+            <p>由 $T = 2\pi\sqrt{L/g}$ 得：</p>
+            <div class="formula">$$g = \frac{4\pi^2 L}{T^2}$$</div>
+            <p>测出 $L$ 与 $n$ 次全振动时间 $t$（$T = t/n$），即可求 $g$。</p>
+        </div>
+        <div>
+            <h3>应用 · 秒摆</h3>
+            <p>周期为 <b>2 s</b> 的单摆称秒摆。</p>
+            <div class="formula">$$L = \frac{gT^2}{4\pi^2} \approx \frac{9.8\times4}{39.5} \approx 0.99\ \text{m}$$</div>
+            <p>秒摆摆长约为 1 m。</p>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例2：摆长 $L=1\ \text{m}$ 的单摆，取 $g=9.8\ \text{m/s}^2$，求周期 $T$（保留三位有效数字）。</div>
+        <div class="a">
+            <div class="step">解：$T = 2\pi\sqrt{L/g} = 2\pi\sqrt{1/9.8} = 2\pi\sqrt{0.1020} \approx 2\pi\times0.3194 \approx \mathbf{2.01\ \text{s}}$</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 2+【2024·甘肃高考】某单摆的 $x$-$t$ 图象如图所示（$g=10\ \text{m/s}^2$）。下列说法正确的是？</div>
+        <p style="color:#555;">A. 摆长为 1.6 m，起始时刻速度最大<br>B. 摆长为 2.5 m，起始时刻速度为零<br>C. 摆长为 1.6 m，A、C 两点速度相同<br>D. 摆长为 2.5 m，A、B 两点速度相同</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="images/2024Gansu_pendulum_xt.png" alt="2024甘肃高考·单摆 x-t 振动图象" style="max-width:100%; border:1px solid #e3e8ee; border-radius:8px;">
+            <p style="font-size:0.85em; color:#888;">原题图：单摆的 $x$-$t$ 振动图象（$x$ 轴竖直方向，标记 A、B、C 三点）</p>
+        </div>
+        <div class="a">
+            <div class="step"><b>1. 求摆长：</b>由图象读出周期 $T = 0.8\pi\ \text{s}$，由 $T = 2\pi\sqrt{L/g}$ 得 $L = gT^2/(4\pi^2) = 10\times(0.8\pi)^2/(4\pi^2) = \mathbf{1.6\ \text{m}}$。故 B、D 错。</div>
+            <div class="step"><b>2. 判断速度：</b>起始时刻（$t=0$），$x$ 处于<b>正向最大位移处</b>，由 $v = \dfrac{dx}{dt}$ 知速度为 0（$x$-$t$ 图象在极值处切线水平）；故 A 错。</div>
+            <div class="step"><b>3. A、C 两点速度：</b>A 点（$t=0.2\pi$）与 C 点（$t=1.0\pi$）关于波峰 B 横向相差 $0.4\pi$，由 $x = A\cos(2\pi t/T)$ 知两点的 $\cos$ 值相同（$\cos\theta=\cos(-\theta)$），即 $x_A = x_C$，且随时间变化趋势相同（同时增大/减小），故<b>速度大小和方向都相同</b>，C 对。</div>
+            <div class="step"><b>4. A、B 两点速度：</b>A 在上坡段（$x$ 增大），B 在最高点（$x=A$ 极大，$v=0$）。两者速度大小由 $v^2 = \omega^2(A^2 - x^2)$ 计算：$v_A$ 和 $v_B$ 虽大小关系可求，但 A 在上升、B 在顶峰（$v_B=0$），方向定义不同，题目"速度相同"通常指"大小、方向都同"，故 D 错。</div>
+            <div class="step"><b>答案：C</b></div>
+        </div>
+    </div>
+
+    <h3>📐 关于 $x$-$t$ 图象的几个易错拓展</h3>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li><b>斜率 = 速度</b>：$x$-$t$ 图象上某点切线斜率等于该时刻的瞬时速度（带正负号）。</li>
+        <li><b>斜率最大处 = 速度最大处 = 过平衡位置</b>：曲线在平衡位置（$x=0$）处最陡，斜率绝对值最大。</li>
+        <li><b>斜率为零处 = 速度为零 = 最大位移处</b>：极值点切线水平，对应振子瞬时静止。</li>
+        <li><b>关于峰/谷对称的两点速度相同</b>：例如本题的 A、C 关于波峰 B 对称，斜率（速度）相同；这也是判定简谐运动"等时性"的图象特征。</li>
+        <li><b>关于谷（$x=-A$）对称的两点速度也相同</b>：只是方向相反（取决于你规定的正方向），严格说"速度（矢量）相同"仅关于峰或关于平衡位置关于 $t = T/4$ 间隔的点对才成立。</li>
+        <li><b>图象不表示运动轨迹</b>：$x$-$t$ 图描述<b>同一质点</b>的位移随时间变化，不是质点从左到右走过一条曲线；不要误读为"单摆走了图上那条正弦路径"。</li>
+        <li><b>周期的读取</b>：相邻两个相同相位（$x$ 相同且速度方向也相同）的点之间的时间差为一个周期 $T$；相邻峰-峰或谷-谷间距为 $T$。</li>
+    </ul>
+</div>
+
+
+</div>
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波</p>
+</div>
+
+</body>
+</html>

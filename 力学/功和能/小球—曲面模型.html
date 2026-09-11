@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小球—曲面模型 · 动量守恒闯关</title>
+<script>
+window.MathJax = { tex: { inlineMath:[['$','$'],['\\(','\\)']], displayMath:[['$$','$$'],['\\[','\\]']] }, svg:{fontCache:'global'} };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            /* 宽屏下内容区在可视区域居中，同时给左侧固定导航栏留出最小 210px 空间 */
+            .container {
+                margin-left: max(210px, calc((100vw - 1040px) / 2));
+                margin-right: max(0px, calc((100vw - 1040px) / 2));
+            }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        /* 概念型公式（纯文本/流程图，不走 MathJax） */
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        /* 模型示意图 */
+        .model-figure {
+            margin: 18px 0; text-align: center;
+        }
+        .model-figure img {
+            max-width: 100%; max-height: 320px;
+            border-radius: 10px; background: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            border: 1px solid #e0e6ed; padding: 10px;
+        }
+        .model-figure figcaption {
+            margin-top: 8px; font-size: 0.9em; color: #5a6b7b;
+        }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    
+        .level-nav a {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; text-align: left; text-decoration: none;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s;
+        }
+        .level-nav a::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav a.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav a.active::before { background: #ff6a00; }
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🏆 高考物理 · 动量守恒闯关</h1>
+<p>动量守恒 · 考点11 · 小球—曲面模型</p>
+</div>
+<div class="progress-wrap">
+<div class="progress-info">
+<span class="title">📊 本关闯关进度</span>
+<span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">6</span> &nbsp;|&nbsp; 已答 <b id="doneVal">0</b> 题</span>
+</div>
+<div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+<div class="side-nav" id="sideNav">
+<div class="side-title">🗂 知识点导航</div>
+<div class="level-nav"><a class="level-link" href="index.html">📑 目录</a><a class="level-link" href="动量与冲量.html">动量与冲量</a><a class="level-link" href="动量定理.html">动量定理</a><a class="level-link" href="动量守恒定律.html">动量守恒定律</a><a class="level-link" href="弹性碰撞.html">弹性碰撞</a><a class="level-link" href="非弹性碰撞与完全非弹性碰撞.html">非弹性碰撞与完全非弹性碰撞</a><a class="level-link" href="反冲与爆炸.html">反冲与爆炸</a><a class="level-link" href="人船模型.html">人船模型</a><a class="level-link" href="滑块—木板模型.html">滑块—木板模型</a><a class="level-link" href="子弹打木块.html">子弹打木块</a><a class="level-link" href="弹簧连接体.html">弹簧连接体</a><a class="level-link active" href="小球—曲面模型.html">小球—曲面模型</a><a class="level-link" href="碰撞综合与真题演练.html">碰撞综合与真题演练</a></div>
+</div>
+<div class="container" id="container">
+<div class="level active" id="lv0"><div class="level-head"><span class="level-badge">动量守恒 · 考点11</span><h2>小球—曲面模型</h2></div><p class="level-intro">小球滑上光滑水平面上可自由滑动的曲面：上升过程等价于完全非弹性碰撞（共速、动能损失最大），返回底端过程等价于弹性碰撞（动量守恒且动能守恒）。</p><figure class="model-figure"><img src="images/momentum_sphere_surface_model.png" alt="小球—曲面模型：m₁ 以 v₀ 滑上可动曲面 m₂，水平面光滑"><figcaption>小球—曲面模型：m₁ 以 v₀ 滑上可动曲面 m₂，水平面光滑</figcaption></figure><div class="formula-box"><div class="ftitle">📘 🎯 上升至最高点（完全非弹性碰撞）</div><div class="formula">$$m_1v_0 = (m_1+m_2)v$$</div><div class="formula-note">最高点时小球与曲面水平方向共速；系统水平方向动量守恒，损失的动能转化为小球的重力势能。</div></div><div class="formula-box"><div class="ftitle">📘 📐 最高点能量关系</div><div class="formula">$$\dfrac{1}{2}m_1v_0^2 = \dfrac{1}{2}(m_1+m_2)v^2 + m_1gh$$</div><div class="formula-note">h 为上升的最大高度。无摩擦时机械能守恒。</div></div><div class="formula-box"><div class="ftitle">📘 🔁 返回曲面底端（弹性碰撞）</div><div class="formula">$$m_1v_0 = m_1v_1 + m_2v_2 \ \dfrac{1}{2}m_1v_0^2 = \dfrac{1}{2}m_1v_1^2 + \dfrac{1}{2}m_2v_2^2$$</div><div class="formula-note">返回底端时系统水平方向动量守恒、机械能守恒，等价于弹性碰撞。</div></div><div class="example"><div class="q">💡 例题</div><div class="step">最高点时小球与曲面水平共速，取向右为正：$m_1v_0 = (m_1+m_2)v$</div><div class="step">$v = \dfrac{1 \times 6}{1+2} = 2\ \text{m/s}$</div><div class="step">由机械能守恒：$\dfrac{1}{2}m_1v_0^2 = \dfrac{1}{2}(m_1+m_2)v^2 + m_1gh$</div><div class="step">$\dfrac{1}{2}\times1\times6^2 = \dfrac{1}{2}\times3\times2^2 + 1\times10h$</div><div class="step">$18 = 6 + 10h$，解得 $h = 1.2\ \text{m}$</div></div><div class="example"><div class="q">💡 例题</div><div style="text-align:center;margin:8px 0;"><img src="images/momentum_sphere_surface_model.png" alt="例题图" style="max-width:100%;border:1px solid #e0e6ed;border-radius:8px;"></div><div class="step">（1）<b>机械能守恒</b>：水平面光滑、轨道光滑，无摩擦做功，只有重力做功，系统机械能守恒。<br><b>总动量不守恒</b>：系统所受合外力不为零（竖直方向有重力和支持力），但水平方向合外力为零，因此<b>水平方向动量守恒</b>。</div><div class="step">（2）小球到达最高点时，小球相对轨道不再上升，二者具有相同的水平速度，即 $v_{A}=v_{B}=v_{共}$（注意不是小球速度为零）。</div><div class="step">（3）轨道 B 的速度在小球从左侧离开轨道时达到最大。因为小球从最高点返回底端过程中继续对轨道做正功，离开后轨道不再受力加速。</div><div class="step">（4）小球离开轨道瞬间，系统水平方向动量守恒、机械能守恒。设小球离开轨道时速度为 $v_1$，轨道速度为 $v_2$，则<br>$m_1v_0=m_1v_1+m_2v_2$<br>$\dfrac12m_1v_0^2=\dfrac12m_1v_1^2+\dfrac12m_2v_2^2$。</div><div class="step">📌 要点点拨：① 切勿认为系统总动量守恒，只能用水平方向动量守恒；② 最高点不是小球速度为 0，而是两者水平速度相等；③ 该模型等效弹性碰撞，无能量损失，可直接套用弹性碰撞速度结论。</div><div class="step">🧮 解题方法——“两个位置”：<br>① 最高点：水平共速 $v_{共}$，$m_1v_0=(m_1+m_2)v_{共}$，$\dfrac12m_1v_0^2=\dfrac12(m_1+m_2)v_{共}^2+m_1gh$；<br>② 返回最低点：$m_1v_0=m_1v_1+m_2v_2$，$\dfrac12m_1v_0^2=\dfrac12m_1v_1^2+\dfrac12m_2v_2^2$。</div></div><div class="example"><div class="q">💡 例题</div><div style="text-align:center;margin:8px 0;"><img src="images/sphere_surface_var2.png" alt="例题图" style="max-width:100%;border:1px solid #e0e6ed;border-radius:8px;"></div><div class="step">（1）小球刚到最低点 A 时，由牛顿第二定律：$F_N-mg=\dfrac{mv_0^2}{R}$，代入 $m=0.05\ \text{kg},\ v_0=4\ \text{m/s},\ R=0.2\ \text{m},\ g=10$ 得 $F_N=4.5\ \text{N}$。由牛顿第三定律，小球对滑块压力 $F_N'=4.5\ \text{N}$，方向竖直向下。</div><div class="step">（2）小球从 A 到最高点的过程中，系统水平动量守恒：$mv_0=(M+m)v_{共}$；机械能守恒：$\dfrac12mv_0^2=\dfrac12(M+m)v_{共}^2+mgh$。代入数据解得 $h=0.72\ \text{m}$。</div><div class="step">（3）设小球第一次着地前竖直分速度为 $v_y$，则 $v_y^2=2gh$。第一次着地后每次竖直速度减半，空中运动时间也减半，总时间 $t=\dfrac{v_y}{g}\left(1+\dfrac12+\dfrac1{2^2}+\cdots\right)=\dfrac{2v_y}{g}$。水平方向以 $v_{共}$ 匀速，故 $x=v_{共}t=\dfrac{12\sqrt2}{125}\ \text{m}$。</div></div><div class="challenge"><span class="ctag">🎮 闯关挑战</span><div class="cq">小球沿光滑曲面上升，当小球达到最高点时，下列说法正确的是？</div><div class="opts" id="opts10_0"><div class="opt" data-i="10_0" data-j="0"><span class="key">A</span><span>小球和曲面的速度相同</span></div><div class="opt" data-i="10_0" data-j="1"><span class="key">B</span><span>小球相对地面的速度为零</span></div><div class="opt" data-i="10_0" data-j="2"><span class="key">C</span><span>系统动量守恒，机械能也守恒</span></div><div class="opt" data-i="10_0" data-j="3"><span class="key">D</span><span>小球的重力势能最小</span></div></div><button class="cbtn" id="btn10_0">提交答案</button><div class="cresult" id="res10_0"></div><div class="cexplain" id="exp10_0"><b>📝 解析：</b>最高点时小球与曲面在水平方向共速（相对静止），因此二者速度相同。由于曲面可动，系统水平方向动量守恒；无摩擦时机械能守恒。上升过程重力势能增大。</div></div><div class="challenge"><span class="ctag">🎮 闯关挑战</span><div class="cq">光滑水平面上，质量 2 kg 的小球以 4 m/s 滑上静止的 2 kg 光滑曲面，小球返回底端时速度大小为？</div><div class="opts" id="opts10_1"><div class="opt" data-i="10_1" data-j="0"><span class="key">A</span><span>0</span></div><div class="opt" data-i="10_1" data-j="1"><span class="key">B</span><span>2 m/s</span></div><div class="opt" data-i="10_1" data-j="2"><span class="key">C</span><span>4 m/s</span></div><div class="opt" data-i="10_1" data-j="3"><span class="key">D</span><span>8 m/s</span></div></div><button class="cbtn" id="btn10_1">提交答案</button><div class="cresult" id="res10_1"></div><div class="cexplain" id="exp10_1"><b>📝 解析：</b>小球返回底端的过程等价于质量相等的弹性碰撞，二者交换速度：小球速度变为 0，曲面以 4 m/s 前进。也可用动量守恒与动能守恒联立解得。</div></div><div class="challenge"><span class="ctag">🎮 闯关挑战</span><div class="cq">关于小球—曲面模型，下列说法正确的是？</div><div class="opts" id="opts10_2"><div class="opt" data-i="10_2" data-j="0"><span class="key">A</span><span>上升最高点过程相当于完全非弹性碰撞</span></div><div class="opt" data-i="10_2" data-j="1"><span class="key">B</span><span>返回底端过程相当于完全非弹性碰撞</span></div><div class="opt" data-i="10_2" data-j="2"><span class="key">C</span><span>整个过程中系统动量不守恒</span></div><div class="opt" data-i="10_2" data-j="3"><span class="key">D</span><span>小球一定能返回底端</span></div></div><button class="cbtn" id="btn10_2">提交答案</button><div class="cresult" id="res10_2"></div><div class="cexplain" id="exp10_2"><b>📝 解析：</b>上升最高点时二者共速、动能损失最大，等价于完全非弹性碰撞；返回底端时动量守恒且机械能守恒，等价于弹性碰撞。系统水平方向合外力为零，动量守恒；若小球初速度足够大且曲面足够高，小球能返回底端。</div></div><div class="challenge"><span class="ctag">🎮 闯关挑战</span><div class="cq">1. 如图所示，在光滑足够长水平面上有半径 R=0.8 m 的光滑圆弧斜劈 B，质量 M=3 kg，底端与水平面相切，左边有质量 m=1 kg 的小球 A 以初速度 v₀=4 m/s 从切点 C（圆弧最低点）冲上斜劈，重力加速度 g 取 10 m/s²，下列说法正确的是（　　）</div><div class="opts" id="opts10_3" data-multi="1"><div class="opt" data-i="10_3" data-j="0"><span class="key">A</span><span>小球 A 不能从斜劈顶端冲出</span></div><div class="opt" data-i="10_3" data-j="1"><span class="key">B</span><span>小球 A 能从斜劈顶端冲出后还会再落入斜劈</span></div><div class="opt" data-i="10_3" data-j="2"><span class="key">C</span><span>小球 A 冲上斜劈过程中经过最低点 C 时对斜劈的压力大小是 30 N</span></div><div class="opt" data-i="10_3" data-j="3"><span class="key">D</span><span>小球 A 从斜劈上返回最低点 C 时速度大小为 2 m/s，方向向左</span></div></div><button class="cbtn" id="btn10_3">提交答案</button><div class="cresult" id="res10_3"></div><div class="cexplain" id="exp10_3"><b>📝 解析：</b>C. 小球在最低点 C 时，由牛顿第二定律 $N-mg=\dfrac{mv_0^2}{R}$，代入 $m=1,\ v_0=4,\ R=0.8,\ g=10$ 得 $N=30\ \text{N}$，由牛顿第三定律小球对斜劈压力也为 30 N，C 正确。<br>AB. 假设能到顶端，此时小球与斜劈水平共速 $v=\dfrac{mv_0}{m+M}=1\ \text{m/s}$，由机械能守恒 $\dfrac12mv_0^2=\dfrac12(m+M)v^2+mgh$ 得 $h=0.6\ \text{m}<R=0.8\ \text{m}$，故不能冲出顶端，A 正确、B 错误。<br>D. 返回最低点 C 等价于质量 $m=1$、$\ M=3$ 的弹性碰撞：$v_1=\dfrac{m-M}{m+M}v_0=-2\ \text{m/s}$，即大小为 2 m/s、方向向左，D 正确。故选 ACD。</div></div><div class="challenge"><span class="ctag">🎮 闯关挑战</span><div class="cq">2. 如图所示，在光滑水平面上放置一个质量为 M 的滑块，滑块的一侧是一个 1/4 弧形凹槽 OAB，凹槽半径为 R，A 点切线水平。另有一个质量为 m 的小球以速度 v₀ 从 A 点冲上凹槽，重力加速度大小为 g，不计摩擦。下列说法中正确的是（　　）</div><div class="opts" id="opts10_4"><div class="opt" data-i="10_4" data-j="0"><span class="key">A</span><span>当 $v_0=\sqrt{2gR}$ 时，小球能到达 B 点</span></div><div class="opt" data-i="10_4" data-j="1"><span class="key">B</span><span>如果小球的速度足够大，球将从滑块的左侧离开滑块后落到水平面上</span></div><div class="opt" data-i="10_4" data-j="2"><span class="key">C</span><span>当 $v_0=\sqrt{2gR}$ 时，小球在弧形凹槽上运动的过程中，滑块的动能一直增大</span></div><div class="opt" data-i="10_4" data-j="3"><span class="key">D</span><span>如果滑块固定，小球返回 A 点时对滑块的压力为 $\dfrac{mv_0^2}{R}$</span></div></div><button class="cbtn" id="btn10_4">提交答案</button><div class="cresult" id="res10_4"></div><div class="cexplain" id="exp10_4"><b>📝 解析：</b>A. 当 $v_0=\sqrt{2gR}$ 时，由水平动量守恒 $mv_0=(m+M)v_{共}$ 和机械能守恒 $\dfrac12mv_0^2=\dfrac12(m+M)v_{共}^2+mgh$，解得 $h=\dfrac{M}{M+m}R<R$，故不能到达 B 点，A 错。<br>B. 即使速度很大，从 B 点离开时 B 点切线竖直，小球与滑块水平速度相同，离开后会从 B 点落回，不会从左侧落到水平面上，B 错。<br>C. 小球对弧形槽的压力始终对滑块做正功，滑块动能一直增大，C 对。<br>D. 若滑块固定，返回 A 点时由牛顿第二定律 $N-mg=\dfrac{mv_0^2}{R}$，压力应为 $mg+\dfrac{mv_0^2}{R}$，D 错。故选 C。</div></div><div class="challenge"><span class="ctag">🎮 闯关挑战</span><div class="cq">3. 如图所示，质量为 4m 的光滑物块 a 静止在光滑水平地面上，物块 a 左侧面为圆弧面且与水平地面相切，质量为 m 的滑块 b 以初速度 v₀ 向右运动滑上 a，沿 a 左侧面上滑一段距离后又返回，最后滑离 a，不计一切摩擦。下列说法正确的是（　　）</div><div class="opts" id="opts10_5"><div class="opt" data-i="10_5" data-j="0"><span class="key">A</span><span>滑块 b 沿 a 上升的最大高度为 $\dfrac{v_0^2}{5g}$</span></div><div class="opt" data-i="10_5" data-j="1"><span class="key">B</span><span>滑块 a 运动的最大速度为 $\dfrac{2v_0}{5}$</span></div><div class="opt" data-i="10_5" data-j="2"><span class="key">C</span><span>滑块 b 沿 a 上升的最大高度为 $\dfrac{v_0^2}{2g}$</span></div><div class="opt" data-i="10_5" data-j="3"><span class="key">D</span><span>滑块 a 运动的最大速度为 $\dfrac{v_0}{5}$</span></div></div><button class="cbtn" id="btn10_5">提交答案</button><div class="cresult" id="res10_5"></div><div class="cexplain" id="exp10_5"><b>📝 解析：</b>AC. 上升到最大高度时二者水平共速，由动量守恒 $mv_0=(m+4m)v$，机械能守恒 $\dfrac12mv_0^2=\dfrac12(m+4m)v^2+mgh$，解得 $h=\dfrac{2v_0^2}{5g}$，故 A、C 错。<br>BD. 滑离 a 后 a 速度最大，整个过程等价于弹性碰撞：$v_a=\dfrac{2m}{m+4m}v_0=\dfrac{2}{5}v_0$，$v_b=\dfrac{m-4m}{m+4m}v_0=-\dfrac{3}{5}v_0$，B 对、D 错。故选 B。</div></div><div class="keymemo">🔑 <b>本关记忆要点：</b>小球—曲面模型 — 熟记上方公式，理解例题思路，再做题巩固。</div><div class="level-actions"><a class="btn" href="弹簧连接体.html">← 上一关</a><span></span><a class="btn btn-next" href="碰撞综合与真题演练.html">下一关 →</a></div></div></div>
+<script>
+let score=0,done=0;
+const total=6;
+const ANS={"10_0": 0, "10_1": 0, "10_2": 0, "10_3": [0, 2, 3], "10_4": 2, "10_5": 1};
+let answered={};
+document.querySelectorAll('.opt').forEach(opt=>{
+  opt.addEventListener('click',function(){
+    const cid=this.dataset.i;
+    if(answered[cid]) return;
+    const grp=document.querySelectorAll('.opt[data-i="'+cid+'"]');
+    const multi = grp[0].parentElement.dataset.multi==='1';
+    if(!multi){ grp.forEach(o=>{o.classList.remove('selected');o.style.borderColor='';o.style.background='';}); }
+    this.classList.toggle('selected');
+    if(this.classList.contains('selected')){ this.style.borderColor='#3a7bd5'; this.style.background='#eef4ff'; }
+    else { this.style.borderColor=''; this.style.background=''; }
+  });
+});
+document.querySelectorAll('.cbtn').forEach(btn=>{
+  btn.addEventListener('click',function(){ submitAnswer(this.id.replace('btn','')); });
+});
+function submitAnswer(cid){
+  if(answered[cid]) return;
+  const sel=document.querySelectorAll('.opt[data-i="'+cid+'"].selected');
+  if(sel.length===0){ alert('请先选择一个答案！'); return; }
+  const ans=ANS[cid];
+  const correctSet = Array.isArray(ans)?new Set(ans):new Set([ans]);
+  const selSet=new Set([].slice.call(sel).map(o=>+o.dataset.j));
+  answered[cid]=true;
+  const opts=document.querySelectorAll('.opt[data-i="'+cid+'"]');
+  opts.forEach(o=>{ o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+  opts.forEach(o=>{ if(correctSet.has(+o.dataset.j)) o.classList.add('correct'); });
+  const res=document.getElementById('res'+cid);
+  const exp=document.getElementById('exp'+cid);
+  exp.classList.add('show');
+  const trace=document.getElementById('trace'+cid);
+  if(trace) trace.classList.add('show');
+  const ok = selSet.size===correctSet.size && [].slice.call(selSet).every(x=>correctSet.has(x));
+  if(ok){ score++; res.className='cresult ok'; res.textContent='✅ 回答正确！'; }
+  else {
+    [].slice.call(sel).forEach(o=>{ if(!correctSet.has(+o.dataset.j)) o.classList.add('wrong'); });
+    res.className='cresult no';
+    res.textContent='❌ 回答错误，正确答案：'+[].slice.call(correctSet).map(x=>String.fromCharCode(65+x)).join('、');
+  }
+  done++;
+  document.getElementById('doneVal').textContent=done;
+  document.getElementById('scoreVal').textContent=score;
+  document.getElementById('progFill').style.width=(done/total*100)+'%';
+}
+</script><div class="footer">📚 高考物理动量专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！</div>
+</body>
+</html>

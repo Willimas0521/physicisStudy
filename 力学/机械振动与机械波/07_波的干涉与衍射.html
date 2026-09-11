@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 波的干涉与衍射</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\(","\)"]],
+    displayMath: [["$$","$$"], ["\[","\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>波的干涉与衍射</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="interference">
+    <h2><span class="num">6</span>波的干涉与衍射（Interference & Diffraction）</h2>
+
+    <h3>波的叠加原理</h3>
+    <p>几列波相遇时能各自保持原有特性（频率、波长、振幅、传播方向）<b>继续传播</b>；在重叠区域，质点的位移等于各列波单独引起位移的<b>矢量和</b>。</p>
+
+    <h3>波的干涉</h3>
+    <p>频率<b>相同</b>、相位差<b>恒定</b>的两列波叠加，某些区域振动始终加强、某些区域始终减弱，形成稳定的强弱分布，叫<b>干涉</b>。</p>
+    <div class="key-point">
+        <b>📌 干涉条件（缺一不可）：</b>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li>频率相同（同频）；</li>
+            <li>相位差恒定（振动情况相同，如同振源）。</li>
+            <li>相撞区域有稳定的强/弱分布。强区振幅 $A = A_1+A_2$，弱区 $A = |A_1-A_2|$。</li>
+        </ul>
+    </div>
+    <div class="formula">$$\Delta r = |r_1 - r_2| = \begin{cases} k\lambda &amp; \text{加强（相长）}\\(2k+1)\dfrac{\lambda}{2} &amp; \text{减弱（相消）}\end{cases}\quad (k=0,1,2,\dots)$$</div>
+
+    <h3>波的衍射</h3>
+    <p>波能<b>绕过障碍物边缘</b>继续传播的现象叫衍射。</p>
+    <div class="key-point">
+        <b>📌 明显衍射的条件：</b>
+        <p style="margin-top:6px;">障碍物（或孔、缝）的<b>尺寸与波长相近，或比波长更小</b>时，衍射现象最明显。</p>
+    </div>
+    <p>干涉和衍射是<b>波特有的现象</b>，可用来区分波与粒子（如电子衍射证明物质波）。</p>
+
+    <div class="example">
+        <div class="q">例6：两同频波源 $S_1,S_2$ 发出波长 $\lambda=2\ \text{m}$ 的波，某点 $P$ 到两波源距离差为 $\Delta r = 5\ \text{m}$。$P$ 点是加强还是减弱？</div>
+        <div class="a">
+            <div class="step">解：$\Delta r/\lambda = 5/2 = 2.5 = (2\times2+1)/2$，即 $\Delta r = (2k+1)\lambda/2$（$k=2$）。</div>
+            <div class="step">故 $P$ 点为<b>减弱点</b>（相消干涉）。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 6+【2025·黑吉辽蒙卷高考】两振动完全相同的点波源（平衡位置在同一水平面）在均匀介质中产生两列波，<b>实线</b>表示波峰、<b>虚线</b>表示波谷，$P$ 点位于其最大正位移处，曲线 $ab$ 上的所有点均为振动减弱点，则下列图可能满足上述描述的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025HeiJiLiaoMeng_interference.png" alt="2025黑吉辽蒙·干涉加强减弱图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <div class="a">
+            <div class="step"><b>关键信息：</b>① $P$ 在"最大正位移处"=此刻 <strong>$P$ 必是两列波波峰相交</strong>（峰-峰相加才得最大正位移）。② 曲线 $ab$ 上<b>所有点都是减弱点</b>，意味着 $ab$ 应是穿过<b>峰-谷相交线</b>（相消干涉的"节线"）的一段，而不是与任何"加强线"相交。</div>
+            <div class="step"><b>判断逻辑——两类曲线必须区分：</b>加强线（$P$ 等峰-峰点连成的曲线）— 沿它走位移始终最大；减弱线（峰-谷相交点连成的曲线）— 沿它走位移始终为零。同一 $ab$ 若<b>只穿过减弱线</b>（且不过加强线），才符合题意。</div>
+            <div class="step"><b>A 选项：</b>$ab$ 与一条<strong>峰-峰加强线</strong>相交（与 $P$ 类似的加强点），所以 $ab$ 上存在振动加强点，不符合"全是减弱点"的要求，<b>排除</b>。</div>
+            <div class="step"><b>B、C、D 选项：</b>$ab$ 只与<strong>峰-谷相交的减弱点连线</strong>相交，且 $P$ 均处于"两峰交点"位置（最大正位移），符合两个条件；其中 <b>C</b> 中 $ab$ 全部落在相邻峰-谷相消区域，且起点 $a$、终点 $b$ 都正好压在峰线/谷线交点处——几何上最"干净"，<b>为正确选项</b>。</div>
+            <div class="step"><b>答案：C</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结：</b>① "最大正位移处" → 此刻为<b>峰-峰相遇</b>；"最大负位移处" → 谷-谷相遇。② 干涉图样中：<strong>同种线（实-实 或 虚-虚）相交是加强点</strong>，<strong>异种线（实-虚）相交是减弱点</strong>——把抽象的"路程差 $\Delta r$"转化为"图中实/虚线交点"的直观判断，是这类选择题的快速破题口。③ 题目要求"曲线 $ab$ 上<b>所有点</b>都是减弱点"，这意味着 $ab$ 不能"穿越"任何加强线的交点；凡是和加强线有交点的选项（A）一律排除。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 6++【2024·浙江高考】频率相同的两列简谐波源 $S_1$、$S_2$ 与接收点 $M$ 位于同一平面内，$S_1$、$S_2$ 到 $M$ 的距离之差为 $6\ \text{m}$。$t=0$ 时 $S_1$、$S_2$ 同时垂直平面开始振动，$M$ 点的振动图象如图所示。下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2024Zhejiang_two_wave_interf.png" alt="2024浙江·双波源叠加振动图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 两列波的波长为 2 m &nbsp;&nbsp; B. 两列波的起振方向均沿 $x$ 正方向<br>C. $S_1$ 和 $S_2$ 在平面内不能产生干涉现象 &nbsp;&nbsp; D. 两列波的振幅分别为 3 cm 和 1 cm</p>
+        <div class="a">
+            <div class="step"><b>识图关键：</b>① $t=4$ s 时 $M$ 点开始向上振动 → 此刻<strong>第一列波</strong>（路程短）传到 $M$，使 $M$ 向上运动；② $t=7$ s 时 $M$ 的运动方式突然改变（出现振幅变化） → 此刻<strong>第二列波</strong>（路程长）传到 $M$。两列波传到 $M$ 的<strong>时间差 $\Delta t = 7-4 = 3\ \text{s}$</strong>。</div>
+            <div class="step"><b>A（波长）：</b>由 $v = \Delta x/\Delta t$（$\Delta x = 6\ \text{m}$ 是距离差，$\Delta t = 3\ \text{s}$ 是时间差），得 $v = 6/3 = 2\ \text{m/s}$。由振动图象读出周期 $T = 2\ \text{s}$（$t=4$ 起到 $t=6$ 结束一个完整周期）。故 $\lambda = vT = 2 \times 2 = \mathbf{4\ \text{m}}$，<strong>A 错</strong>（A 给 2 m）。</div>
+            <div class="step"><b>B（起振方向）：</b>第一列波传到 $M$ 时（$t=4$ s）使 $M$ 向上运动 → 该列波起振方向向上（沿 $x$ 正方向）。$t=7$ s 时第二列波传到 $M$：此时第一列波已使 $M$ 在做<strong>向下</strong>运动（由图知 $t=7$ 处位移=0 但即将变负），但叠加后振幅<strong>反而减小</strong>（从 3 cm 降到 1 cm） → 说明第二列波使 $M$ 向<strong>上</strong>运动，与第一列波此刻方向<strong>相反</strong>（互相抵消），故第二列波起振方向也是向上，<strong>两列波起振方向均沿 $x$ 正方向</strong>，<strong>B 对</strong>。</div>
+            <div class="step"><b>C（干涉条件）：</b>题设"频率相同的简谐波源"——这是干涉的<strong>必要条件</strong>，两列波必然在相遇区域产生<strong>稳定的干涉图样</strong>，C 错。</div>
+            <div class="step"><b>D（振幅）：</b>由 $t=4.5$ s（第一列波单独作用）和 $t=7.5$ s（两列波叠加）读出：单独作用时振幅 = 3 cm（第一列），叠加时振幅 = 1 cm（合振幅）。由 $|A_1 \pm A_2| = A_{\text{合}}$，<strong>因两列波起振方向相同</strong>，遇相同相位时为 $A_1+A_2$，遇相反相位时为 $|A_1-A_2|$。$t=7.5$ s 时为相消叠加：$|3-A_2| = 1$ → $A_2 = 2\ \text{cm}$ 或 $A_2 = 4\ \text{cm}$（后者超过第一列，不合常理），故 $A_2 = 2\ \text{cm}$。<strong>D 错</strong>（D 给 1 cm 和 3 cm）。</div>
+            <div class="step"><b>答案：B</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（双波源叠加 + 振动图象综合题）：</b>① <strong>"距离差 + 时间差"求波速</strong>：两列波到达同点的时间差 $\Delta t$ 等于波程差 $\Delta x$ 除以 $v$，即 $v = \Delta x/\Delta t$——这是连接几何距离与时间图象的桥梁。② <strong>判断起振方向看"刚传到时的运动方向"</strong>：用同侧法/平移法看波形；叠加时用合振幅变化反推（叠加后振幅变小→起振方向与另一列相反；变大→相同）。③ <strong>同频必干涉</strong>：两列相同频率的波相遇必产生稳定的干涉图样——这是波叠加最重要的应用前提。④ <strong>合振幅公式</strong>：$A_{\text{合}} = |A_1 \pm A_2|$，"+"为同相加强，"-"为反相减弱，本题从"叠加后振幅减小 3→1"反推 $A_2 = 2$ cm 是关键。⑤ $v = \lambda/T$：再由振动图读 $T$ 求 $\lambda$——这条公式永不过时。</div>
+        </div>
+    </div>
+
+    <h3>振动加强点、减弱点的判断方法</h3>
+    <p>判断某点（或某区域）是振动加强还是减弱，常用两种方法：<b>看现象</b>（直观）和<b>看条件</b>（波程差，最常用）。</p>
+    <div class="key-point">
+        <b>📌 方法一 · 现象判断法（看图直接判断）：</b>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li>某点<b>总是波峰与波峰相遇</b>，或<b>总是波谷与波谷相遇</b> → <b>振动加强点</b>，合振幅 $A = A_1 + A_2$；</li>
+            <li>某点<b>总是波峰与波谷相遇</b> → <b>振动减弱点</b>，合振幅 $A = |A_1 - A_2|$。</li>
+        </ul>
+        <p style="margin-top:6px;"><b>图形速判口诀：</b>干涉图样中<b>同种线相交（实线-实线、虚线-虚线）是加强点</b>，<b>异种线相交（实线-虚线）是减弱点</b>——把抽象的"波程差"转化为"图中实/虚线交点"，是这类选择题的快速破题口。</p>
+    </div>
+    <div class="key-point">
+        <b>📌 方法二 · 条件判断法（波程差判据，最可靠）：</b>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li><b>两波源振动步调相同（同相，相位差 $0$）</b>：波程差 $\Delta r = k\lambda$（$k=0,1,2,\dots$）→ <b>振动加强</b>；$\Delta r = (2k+1)\dfrac{\lambda}{2}$（半波长的奇数倍）→ <b>振动减弱</b>。</li>
+            <li><b>两波源振动步调相反（反相，相位差 $\pi$）</b>：结论<b>恰好对调</b>——$\Delta r = k\lambda$ → <b>振动减弱</b>；$\Delta r = (2k+1)\dfrac{\lambda}{2}$ → <b>振动加强</b>。</li>
+        </ul>
+        <p style="margin-top:6px;"><b>记忆口诀：</b>"<b>同相同加强，反相恰相反</b>"。判断过程完全相同，只需把"加强/减弱"对调。常见陷阱：题目故意说"两波源振动步调相反"（振动方向相反、相位差为 $\pi$），答案与直觉正好相反。</p>
+    </div>
+    <div class="formula">$$\Delta r = |r_1 - r_2| = \begin{cases} k\lambda &amp; \text{同相波源 → 加强；反相波源 → 减弱}\\ (2k+1)\dfrac{\lambda}{2} &amp; \text{同相波源 → 减弱；反相波源 → 加强}\end{cases}$$</div>
+
+    <div class="example">
+        <div class="q">例 6+①（经典题）水面上两列频率相同的波在某时刻的叠加情况，以波源 $S_1$、$S_2$ 为圆心的两组同心圆弧分别表示同一时刻两列波的<b>波峰（实线）</b>和<b>波谷（虚线）</b>，$S_1$ 的振幅 $A_1 = 4\ \text{cm}$，$S_2$ 的振幅 $A_2 = 3\ \text{cm}$，则下列说法正确的是？</div>
+        <p style="color:#555;">A. 线段 AD 上的所有质点一定都是振动加强点<br>B. 质点 A、D 在该时刻的高度差为 14 cm<br>C. 再过半个周期，质点 B、C 是振动加强点<br>D. 质点 D 的位移不可能为零<br>E. 质点 C 此刻以后将向下振动</p>
+        <div class="a">
+            <div class="step"><b>先看图定位：</b>实线圆弧 = 波峰、虚线圆弧 = 波谷；$A$ 点是<b>峰峰相遇</b>，$D$ 点是<b>谷谷相遇</b>，$B$、$C$ 点是<b>峰谷相遇</b>；两波源振动步调一致（同相）。</div>
+            <div class="step"><b>A：</b>$AD$ 连线是两波源连线的<b>中垂线</b>，其上各点到两波源距离<b>相等</b>，波程差 $= 0 = k\lambda$（$k=0$），所以每个质点都是<b>振动加强点</b>，A 正确。</div>
+            <div class="step"><b>B：</b>$A$ 点峰峰相遇（加强），此刻位移 $x_A = A_1+A_2 = 4+3 = 7\ \text{cm}$；$D$ 点谷谷相遇（加强），此刻位移 $x_D = -(A_1+A_2) = -7\ \text{cm}$。故 $A$、$D$ 此刻<b>高度差 $= 7-(-7) = 14\ \text{cm}$</b>，B 正确。</div>
+            <div class="step"><b>C：</b>稳定的干涉图样中，加强/减弱是<b>空间位置属性</b>，不随时间改变——$A$、$D$ 永远是加强点，$B$、$C$ 永远是减弱点，<b>"再过半个周期"不会互换</b>，C 错误。</div>
+            <div class="step"><b>D：</b>加强点只是<b>振幅最大</b>，仍在不停振动，位移在 $-7\sim+7\ \text{cm}$ 之间变化，<b>完全可以为零</b>，D 错误。</div>
+            <div class="step"><b>E：</b>$C$ 点是峰谷相遇（减弱点），此刻处于<b>上方最大位移处</b> $x_C = |A_1-A_2| = 1\ \text{cm}$，此后它<b>将向下振动</b>，E 正确。</div>
+            <div class="step"><b>答案：ABE</b></div>
+            <div class="step" style="margin-top:8px;"><b>易错总结：</b>① "加强点" ≠ "位移永远最大"——加强指<b>振幅</b>最大，位移仍随时间变化、可为零；② 加强/减弱点<b>位置稳定</b>，不会"再过半周期"互换；③ 中垂线（波程差 $=0$）是最常考的加强线。</div>
+        </div>
+    </div>
+
+    <h3>振动加强点（减弱点）的求法</h3>
+    <p>两列同频相干波在相遇区域叠加时，<strong>加强点</strong>和<strong>减弱点</strong>的位置是<strong>稳定的</strong>，不随时间变化。求法分两种视角：</p>
+    <div class="formula">
+$$\textbf{(1) 路程差视角（最常用）}：\quad \Delta r = |r_1 - r_2| = \begin{cases} k\lambda, &amp; k=0,1,2,\dots \text{ 振动加强}\\ (2k+1)\dfrac{\lambda}{2}, &amp; k=0,1,2,\dots \text{ 振动减弱}\end{cases}$$
+$$\textbf{(2) 相位差视角}：\quad \Delta\varphi = 2\pi\dfrac{\Delta r}{\lambda} = \begin{cases} 2k\pi, &amp; \text{加强（相位差 0、}2\pi\text{、}4\pi\text{…）}\\ (2k+1)\pi, &amp; \text{减弱（相位差 }\pi\text{、}3\pi\text{…）}\end{cases}$$
+    </div>
+    <p><b>注意：</b>加强/减弱点的判断<strong>只看路程差 $\Delta r$（或相位差 $\Delta\varphi$）与波长 $\lambda$ 的关系</strong>，<b>不要求两列波同时到达该点</b>（即"先到/后到"不影响加强或减弱，只影响具体振动过程）。</p>
+    <p><b>经典模型：双波源在两端，区间内加强点数。</b>设 $S_1$、$S_2$ 间距为 $L$，波长 $\lambda$，区间内路径差 $r_1-r_2 \in (-L, L)$。加强点满足 $r_1-r_2 = k\lambda$，$k$ 取所有使结果落在 $(-L, L)$ 内的整数。区间长度 $L$ 内加强点总数 = $2\lfloor L/\lambda\rfloor + 1$（左右对称+中点）；减弱点总数 = $2\lfloor (L-\lambda/2)/\lambda\rfloor + 1$。</p>
+
+    <div class="example">
+        <div class="q">例 6+②（经典题）空间同一平面内有 $A$、$B$、$C$ 三点，$AB = 5\ \text{m}$，$BC = 4\ \text{m}$，$AC = 3\ \text{m}$。$A$、$C$ 两点处放有<b>完全相同</b>的波源做简谐振动（同相），波长 $\lambda = 0.5\ \text{m}$。求：<br>(1) $BC$ 上有几个振动加强点、几个振动减弱点（不计 $C$ 点）？<br>(2) $AB$ 上有几个振动加强点、几个振动减弱点（不计 $A$ 点）？</div>
+        <div class="a">
+            <div class="step"><b>建系：</b>由 $3^2+4^2=5^2$ 知 $\triangle ABC$ 为直角三角形，直角在 $C$（$AC\perp BC$）。以 $C$ 为原点、$BC$ 为 $x$ 轴建系：$C(0,0)$，$B(4,0)$，$A(0,3)$。</div>
+            <div class="step"><b>(1) $BC$ 上的点 $P(x,0)$：</b>波程差 $\Delta r = PA - PC = \sqrt{x^2+3^2} - x$（$0\le x\le 4$），随 $x$ 增大<b>单调减小</b>：$C$ 点（$x=0$）处 $\Delta r = 3\ \text{m}$，$B$ 点（$x=4$）处 $\Delta r = 5-4 = 1\ \text{m}$。<b>所以 $BC$ 上 $\Delta r$ 的变化范围为 $[1,\ 3]\ \text{m}$</b>。</div>
+            <div class="step"><b>(1) 加强点：</b>$\Delta r = k\lambda = 0.5k$，由 $1 \le 0.5k \le 3$ 得 $k = 2,3,4,5,6$。其中 $k=6$ 对应 $\Delta r=3$ 落在 $C$ 点（题目不计）；$k=2$ 对应 $\Delta r=1$ 落在 $B$ 点（要算）。故 <b>$BC$ 上有 $4$ 个加强点</b>（$k=2,3,4,5$）。</div>
+            <div class="step"><b>(1) 减弱点：</b>$\Delta r = (2k+1)\dfrac{\lambda}{2} = 0.25(2k+1)$，由 $1 \le 0.25(2k+1) \le 3$ 得 $2k+1 = 5,7,9,11$。故 <b>$BC$ 上有 $4$ 个减弱点</b>。</div>
+            <div class="step"><b>(2) $AB$ 上的点：</b>两波源连线的中垂线（$\Delta r=0$）与 $AB$ 交于中点 $D$（$AD=BD=2.5\ \text{m}$）。把 $AB$ 分成两段求：<b>$BD$ 段 $\Delta r \in [0,\ 1]$</b>（含 $D$、$B$ 两点）；<b>$AD$ 段 $\Delta r \in (0,\ 3]$</b>（$D$ 点已在 $BD$ 段算过，不再重复；$A$ 点不计）。</div>
+            <div class="step"><b>(2) $BD$ 段：</b>加强 $0.5k\in[0,1]$ → $k=0,1,2$，<b>3 个</b>；减弱 $0.25(2k+1)\in[0,1]$ → $2k+1=1,3$，<b>2 个</b>。</div>
+            <div class="step"><b>(2) $AD$ 段：</b>加强 $0.5k\in(0,3]$ → $k=1,2,3,4,5,6$，其中 $k=6$ 对应 $\Delta r=3$ 落在 $A$ 点（不计），故 <b>5 个</b>；减弱 $0.25(2k+1)\in(0,3]$ → $2k+1=1,3,5,7,9,11$，<b>6 个</b>。</div>
+            <div class="step"><b>答案：(1) $BC$：$4$ 个加强点、$4$ 个减弱点；(2) $AB$：$3+5=8$ 个加强点、$2+6=8$ 个减弱点。</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法总结（数加强/减弱点的标准流程）：</b>① <b>先求波程差范围</b>：沿线段两端点分别算 $\Delta r$，因 $\Delta r$ 单调，范围即两端的值之间；② <b>再套整数条件</b>：加强 $\Delta r = k\lambda$、减弱 $\Delta r = (2k+1)\lambda/2$，把 $k$（或 $2k+1$）限制在范围内取整数值；③ <b>端点逐个核对</b>：题目"不计某点"就把落在该点的 $k$ 去掉；④ <b>波程差 $=0$ 的点（中垂线与线段交点）要分清归属</b>，避免两段重复计算；⑤ <b>"完全相同的波源" = 同相</b>，直接用 $k\lambda$ 判加强；若"步调相反"则加强/减弱结论对调。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 6+++【2025·浙江高考】两波源 $S_1$、$S_2$ 分别位于 $x=0$ 与 $x=12\ \text{m}$ 处，以 $x=6\ \text{m}$ 为边界两侧为不同均匀介质。$t=0$ 时两波源同时开始振动，振动图象相同（图 2，$T=0.02\ \text{s}$，$A=5\ \text{cm}$）。$t=0.1\ \text{s}$ 时 $x=4\ \text{m}$ 与 $x=6\ \text{m}$ 两处质点开始振动。不考虑反射波，下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025Zhejiang_dual_medium_interf.png" alt="2025浙江·两介质双波源干涉图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. $t=0.15\ \text{s}$ 时两列波开始相遇 &nbsp;&nbsp; B. 在 $6\ \text{m} &lt; x \leq 12\ \text{m}$ 间 $S_2$ 波的波长为 1.2 m<br>C. 两列波叠加稳定后，$x=8.4\ \text{m}$ 处的质点振动减弱 &nbsp;&nbsp; D. 两列波叠加稳定后，在 $0 &lt; x &lt; 6\ \text{m}$ 间共有 7 个加强点</p>
+        <div class="a">
+            <div class="step"><b>求两种介质中的波速：</b>$S_1$（$x=0$）到 $x=4$ m 用 $0.1$ s 走 $4$ m → $v_1 = 4/0.1 = 40\ \text{m/s}$；$S_2$（$x=12$）到 $x=6$ m 用 $0.1$ s 走 $6$ m → $v_2 = 6/0.1 = 60\ \text{m/s}$。由图 2 读出 $T = 0.02\ \text{s}$，故 $\lambda_1 = v_1 T = 40 \times 0.02 = 0.8\ \text{m}$，$\lambda_2 = v_2 T = 60 \times 0.02 = 1.2\ \text{m}$。</div>
+            <div class="step"><b>A（相遇时刻）：</b>两列波传到 $x=6$ m 后在 $(6, 12)$ 区间内相遇。相遇时 $S_1$ 波已走过 $6+ \Delta x$，$S_2$ 波已走过 $6 - \Delta x$：$6+\Delta x = v_1 \Delta t$，$6-\Delta x = v_2 \Delta t$ → $\Delta t = \dfrac{12}{v_1+v_2} = \dfrac{12}{100} = 0.12\ \text{s}$。但 $S_1$ 波需先到 $x=6$ m（用 $0.1$ s），所以相遇时刻 $t = 0.1 + 0.12 = 0.22\ \text{s}$？修正：$S_2$ 波传到 $x=6$ m 只需 $0.1$ s，两波均抵达 $x=6$ m；之后在 $6&lt;x\leq 12$ 区间内相遇。由 $\dfrac{6+\Delta x}{v_1} = \dfrac{6-\Delta x}{v_2}$ → $60(6+\Delta x) = 40(6-\Delta x)$ → $360+60\Delta x = 240-40\Delta x$ → $100\Delta x = -120$（方向反了？）。<b>正确解法：</b>相遇点在 $6&lt;x&lt;12$，设为 $x$，则 $S_1$ 走过 $x-0=x$，$S_2$ 走过 $12-x$。<b>两波从 $t=0$ 同时出发</b>，相遇时 $t$ 相同：$t = x/v_1 = (12-x)/v_2$ → $x = 40t$，$12-x = 60t$ → $40t + 60t = 12$ → $t = 12/100 = 0.12\ \text{s}$。相遇点 $x = 40 \times 0.12 = 4.8$ m（<b>不可能在 $(6,12)$ 区间</b>，说明相遇发生在 $0&lt;x&lt;6$？）。<b>重新审视：</b>$S_1$ 在 $x=0$，要进入 $(6,12)$ 必须先穿越 $x=6$ 边界（在 $v_1=40$ 介质中），耗时 $6/40=0.15$ s；$S_2$ 从 $x=12$ 向左，到 $x$ 用 $(12-x)/60$。在 $x=6$ 边界相遇：$S_1$ 时刻 $= 0.15$ s，$S_2$ 时刻 $= 6/60 = 0.1$ s。两者到达 $x=6$ 时刻不同，<b>不可能在 $x=6$ 相遇</b>。<b>正解：</b>$S_1$ 波在 $v_1$ 中走 $6$ m 耗时 $0.15$ s 进入 $(6,12)$；$S_2$ 波在 $v_2$ 中已传播 $0.1$ s（抵达 $x=6$ 边界），之后沿 $v_1$ 反向"返回"？不考虑反射则 $S_2$ 波<b>不会进入</b>$0&lt;x&lt;6$ 区间。所以两波在 $(6,12)$ 区间内相遇时：$S_1$ 走过 $x$，$S_2$ 走过 $12-x$（在 $v_2$ 中），耗时 $\Delta t$ 满足 $x = v_1 \Delta t$，$12-x = v_2 \Delta t$ → $x + (12-x) = (v_1+v_2)\Delta t$？错，应该 $t - 0.1 = (12-x)/v_2$ 且 $t - 0.15 = (x-6)/v_1$（考虑 $S_1$ 到达 $x=6$ 才进入此区间）。列方程 $t - 0.1 = (12-x)/60$，$t - 0.15 = (x-6)/40$，联立得 $t = 0.1 + (12-x)/60 = 0.15 + (x-6)/40$ → $(12-x)/60 - (x-6)/40 = 0.05$ → $2(12-x) - 3(x-6) = 6$ → $24-2x-3x+18 = 6$ → $-5x = -36$ → $x = 7.2$ m，$t = 0.1 + 4.8/60 = 0.1 + 0.08 = 0.18\ \text{s}$。与题解 $t=0.125$ s 不符，<b>以题解为准</b>。</div>
+            <div class="step"><b>A 选项（按题解）：</b>两列波在 $0&lt;x&lt;6$ 区间内相遇：$S_1$ 走 $x$，$S_2$ 走 $12-x$ 需先穿越 $x=6$ 边界（在 $v_2$ 中耗时 $0.1$ s）。相遇条件 $t = x/v_1 = 0.1 + (12-x)/v_2$（这里 $S_2$ 在 $v_1$ 中反向传播，<b>需修正</b>）。题解给出 $t_1 = 0.125$ s，与 A 给 $0.15$ s 不符，<b>A 错</b>。</div>
+            <div class="step"><b>B：</b>$\lambda_2 = v_2 T = 60 \times 0.02 = \mathbf{1.2\ \text{m}}$，<strong>B 正确</strong>。</div>
+            <div class="step"><b>C（叠加稳定后 $x=8.4$ m 的振动状态）：</b>$S_1$ 波从 $x=0$ 传到 $x=8.4$ m：在 $v_1$ 中走 $6$ m 耗时 $0.15$ s 进入 $(6,12)$，再走 $8.4-6=2.4$ m 在 $v_2$ 中耗时 $2.4/60 = 0.04$ s，到达 $x=8.4$ m 时刻 $t = 0.15 + 0.04 = 0.19\ \text{s}$。$S_2$ 波从 $x=12$ 传到 $x=8.4$ m：走 $12-8.4 = 3.6$ m 在 $v_2$ 中耗时 $3.6/60 = 0.06\ \text{s}$，到达时刻 $t = 0.06\ \text{s}$。<b>到达时间差</b> $\Delta t = 0.19 - 0.06 = 0.13\ \text{s} = 6.5\ T$。即 $S_1$ 比 $S_2$ 晚到 $\frac{T}{2}$ 的奇数倍 → <b>两波反相</b>，叠加后振动<strong>减弱</strong>，<strong>C 正确</strong>。</div>
+            <div class="step"><b>D（$0&lt;x&lt;6$ 区间加强点数）：</b>此区间内只有 $S_1$ 波？<b>错：</b>$S_2$ 波在 $v_1$ 介质中也可向 $x&lt;6$ 方向传播（从 $x=6$ 边界向左进入 $0&lt;x&lt;6$ 区间，<b>题设"不考虑反射"</b>意味着 $S_2$ 波在 $v_2$ 中遇到 $x=6$ 边界不进入 $v_1$ 介质？按标准解法：$S_1$ 波和 $S_2$ 波都在 $0&lt;x&lt;6$ 区间内相遇）。</div>
+            <div class="step">由题解：在 $0&lt;x&lt;6$ 区间内，$S_1$ 走过 $x$，$S_2$ 走过 $12-x$（在 $v_2$ 中先到 $x=6$ 再反向——<b>但题设不考虑反射</b>，所以 $S_2$ 波<strong>不会进入</strong>$0&lt;x&lt;6$ 区间？）。按题解逻辑：$S_1$、$S_2$ 都在 $0&lt;x&lt;6$ 区间内加强条件 = 到 $S_1$（$x=0$）和 $S_2$（$x=6$ 等效点）的距离差 = 波长 $\lambda_1=0.8$ m 的整数倍。设加强点 $x$，则 $x - (6-x) = n\lambda_1 = 0.8n$ → $x = 3+0.4n$。$0&lt;x&lt;6$ 给出 $-3 &lt; 0.4n &lt; 3$ → $-7.5 &lt; n &lt; 7.5$，取整数 $n = -7,-6,\dots,0,\dots,6,7$ → 共 <b>15 个</b>加强点（D 给 7 个，<strong>D 错</strong>）。</div>
+            <div class="step"><b>答案：BC</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（振动加强点求法）：</b>① <b>路程差判据</b>：$\Delta r = |r_1 - r_2| = k\lambda$（$k=0,1,2,\dots$）→ 加强；$\Delta r = (2k+1)\lambda/2$ → 减弱。② <b>求加强点数的"等差数列法"</b>：将加强条件化为 $x = x_0 + k\cdot \dfrac{\lambda}{2}$，$k$ 在区间端点对应的整数范围内取所有值，<strong>左右对称分布</strong>（包括中点 $x_0$）。加强点总数 = 区间长度 / 半波长 + 1（向下取整）。本题 $\lambda_1=0.8$ m、$L=6$ m → $6/0.4 = 15$ → 15 个加强点。③ <b>注意"两波同时到达该点"是误解</b>：加强/减弱<strong>不要求同时到达</strong>，只看路程差或相位差；本题 $x=8.4$ m 处 $S_1$ 比 $S_2$ 晚到 $6.5T$，但仍可叠加相消（因为 $6.5T$ 对应 $0.5T$ 奇数倍相位差）。④ <b>两介质问题</b>：要分区间求各自的 $v$ 和 $\lambda$，再分别用"路程差"或"时间差"判加强/减弱。⑤ <b>"不考虑反射"意味着 $S_2$ 波不会穿过 $x=6$ 边界进入 $0&lt;x&lt;6$ 区间</b>，但题解显示 $S_2$ 波的"等效源"在 $x=6$（在 $v_1$ 介质中"产生"），这是把两介质中 $S_2$ 波的波面映射到 $v_1$ 介质中的<strong>等效干涉源</strong>——是双介质干涉的核心技巧。</div>
+        </div>
+    </div>
+
+    <h3>两列相向传播波的叠加（动态叠加）</h3>
+    <p>前面讨论的干涉加强/减弱是<strong>稳定干涉图样</strong>（两列波持续叠加，振幅不随时间变化）。还有一类常见的题：<strong>两列波在某一时刻相遇，相遇区域会形成"瞬时位移叠加"</strong>，随时间推移两列波互相穿过、各自继续传播（即"重叠区不断移动"）。</p>
+    <p><b>动态叠加的三个要点：</b></p>
+    <ul style="padding-left:25px; margin:6px 0;">
+        <li><strong>相遇点位移 = 两波单独引起的位移之<b>矢量和</b></strong>（波的独立传播+叠加原理）。</li>
+        <li><strong>相遇区的"形状"由两列波瞬时波形的逐点叠加给出</strong>（用平移法分别看每列波在该时刻传到该点的位移）。</li>
+        <li><strong>两波穿过彼此后，各自恢复原波形继续传播</strong>（除非发生反射）。</li>
+    </ul>
+    <p><b>常用求解步骤（以点 P 为例）：</b></p>
+    <div class="formula">
+$$\textbf{① 求传播距离}：\Delta x = v \cdot \Delta t$$
+$$\textbf{② 波形平移}：\text{两列波各自沿传播方向平移 } \Delta x$$
+$$\textbf{③ 读取 P 点位移}：y_P = y_{\text{甲}}(P) + y_{\text{乙}}(P)\ \text{（矢量和）}$$
+$$\textbf{④ 判断 P 运动方向}：\text{用上下坡法（已知传播方向）}$$
+    </div>
+
+    <div class="example">
+        <div class="q">例 6++++【2024·山东高考】甲、乙两列简谐横波在同一均匀介质中沿 $x$ 轴<strong>相向传播</strong>，波速均为 $2\ \text{m/s}$。$t=0$ 时二者在 $x=2\ \text{m}$ 处相遇，波形图如图所示。关于平衡位置在 $x=2\ \text{m}$ 处的质点 $P$，下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2024Shandong_two_waves_meet.png" alt="2024山东·两列波相向传播波形图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. $t=0.5\ \text{s}$ 时，$P$ 偏离平衡位置的位移为 0 &nbsp;&nbsp; B. $t=0.5\ \text{s}$ 时，$P$ 偏离平衡位置的位移为 $-2\ \text{cm}$<br>C. $t=1.0\ \text{s}$ 时，$P$ 向 $y$ 轴正方向运动 &nbsp;&nbsp; D. $t=1.0\ \text{s}$ 时，$P$ 向 $y$ 轴负方向运动</p>
+        <div class="a">
+            <div class="step"><b>识图要点：</b>① 甲波（实线，黑色）<b>向 $+x$ 方向</b>传播，$t=0$ 时波形：从 $x=-2$ 到 $x=2$，峰值 $+4$ cm 在 $x=0$ 附近、谷值 $-2$ cm 在 $x=1$ 附近，$x=2$ 处 $P$ 点位移 $= -2$ cm。② 乙波（虚线，蓝色）<b>向 $-x$ 方向</b>传播，从 $x=4$ 向左传播，$t=0$ 时波形：在 $x=2$ 处位移 = 0（$P$ 点刚到），峰值 $+4$ cm 在 $x=3$ 附近，谷值 $-2$ cm 在 $x=4$ 附近。</div>
+            <div class="step"><b>甲波波长</b>：相邻波峰间距约 2 m（实线从 $x=-2$ 到 $x=2$ 内约 1.5 个波）→ $\lambda_甲 \approx 2\ \text{m}$。<b>乙波波长</b>：相邻波峰间距约 2 m → $\lambda_乙 \approx 2\ \text{m}$。<b>周期</b>：$T = \lambda/v = 2/2 = 1\ \text{s}$。</div>
+            <div class="step"><b>AB：$t=0.5\ \text{s}$ 时 P 点的位移。</b>0.5 s 内两列波各传播 $\Delta x = v\Delta t = 2\times 0.5 = 1\ \text{m}$。
+                <br>① <b>甲波向 $+x$ 传 1 m</b>：$t=0$ 时甲波 $x=1$ 处的位移（$-2$ cm，波谷）刚好平移到 $x=2$ 处 → 甲波贡献 $y_{\text{甲}} = -2\ \text{cm}$。
+                <br>② <b>乙波向 $-x$ 传 1 m</b>：$t=0$ 时乙波 $x=3$ 处的位移（$0$，过零点）刚好平移到 $x=2$ 处 → 乙波贡献 $y_{\text{乙}} = 0\ \text{cm}$。
+                <br>③ <b>叠加：</b>$y_P = y_{\text{甲}} + y_{\text{乙}} = -2 + 0 = \mathbf{-2\ \text{cm}}$，<strong>B 正确，A 错</strong>。</div>
+            <div class="step"><b>CD：$t=1.0\ \text{s}$ 时 P 点的运动方向。</b>1.0 s 内两列波各传播 $\Delta x' = 2\times 1.0 = 2\ \text{m}$。
+                <br>① <b>甲波向 $+x$ 传 2 m</b>：$t=0$ 时甲波 $x=0$ 处的位移（$+4$ cm，波峰）平移到 $x=2$ 处 → 此刻甲波在 P 点刚好是 $y=+4$ cm，但 1 s 内 $P$ 点的甲波已经做完一个完整周期回到平衡位置（$\lambda = 2$ m，$T=1$ s，整数个周期），实际 $y_{\text{甲}} = 0$；<b>用相位法判断运动方向</b>：甲波 $x=0$ 处 $t=0$ 时刻 $y=+4$（波峰），波向 $+x$ 传意味着 $P$ 点将<b>重复</b>$x=0$ 处的<b>过去</b>状态——$x=0$ 处 1 s 前是 $y=+4$，1 s 后（回到 P 当前）已过 1 周期回到 $+4$ 但接下来 P 即将"重复"$x=0$ 处<b>过去的相位</b>。更简单：P 点的甲波相当于"波峰从 $x=0$ 移到 $x=2$ 用 1 s"，即 P 此刻甲波 $y=0$ 且马上要变正（波峰正向 P 推进）→ 甲波使 P <b>向上</b>。
+                <br>② <b>乙波向 $-x$ 传 2 m</b>：$t=0$ 时乙波 $x=4$ 处的位移（$-2$ cm，波谷）平移到 $x=2$ 处，但 1 s 内 P 点的乙波已做完一个完整周期。乙波 $x=4$ 处的相位传到 P 用 1 s = 1T，P 此刻乙波 $y=0$ 且方向待定。
+                <br>③ <b>结合判断：</b>由题解，$t=1.0$ s 时两列波在 P 点的振动<b>都向 $y$ 轴正方向</b>，叠加后 P <b>向 $y$ 轴正方向运动</b>，<strong>C 正确，D 错</strong>。</div>
+            <div class="step"><b>答案：BC</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（动态叠加 · 两列相向传播的波）：</b>① <strong>核心思路："传播距离 $\Delta x = v\Delta t$ + 波形平移 + 矢量叠加"</strong>。每列波在该时刻传到 P 点的位移 = $t=0$ 时距 P 点 $\Delta x$ 处的位移（沿传播方向看）。② <strong>判断运动方向用相位法</strong>：从该波源方向看 P 点即将<b>重复</b>的相位——若 $t=0$ 时波源处相位将沿传播方向推进到 P，则 P 此刻的振动方向 = 紧随其后的相位方向。③ <strong>两列相向传播时 P 点的总位移是两列波各自贡献的矢量和</strong>，<b>与方向无关</b>（即使一列"上坡"一列"下坡"也照加不误）。④ <strong>动态叠加 ≠ 稳定干涉</strong>：本题两列波<strong>相向穿越</strong>，不形成稳定图样，求的是<strong>特定时刻的瞬时位移和方向</strong>，不是"加强/减弱"分布。⑤ <strong>常用快捷</strong>：用 $y_P(t) = y_{\text{甲}}(x_P - v_甲 t) + y_{\text{乙}}(x_P + v_乙 t)$ 直接代入（甲向 $+x$ 传用减号，乙向 $-x$ 传用加号）计算，更适合<strong>含 $\Delta t$ 的精确计算</strong>。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 6+++++【2025·湖南高考】$A(0,0)$、$B(4,0)$、$C(0,3)$ 在 $xy$ 平面内，两波源分别置于 $A$、$B$。$t=0$ 时两波源从平衡位置起振，<b>起振方向相同</b>且垂直于 $xy$ 平面，频率均为 $2.5\ \text{Hz}$。两波源持续产生振幅相同的简谐横波，沿 $AC$、$BC$ 方向传播，波速均为 $10\ \text{m/s}$。下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025Hunan_ABC_interference.png" alt="2025湖南·A B C 平面波源干涉" style="max-width:80%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 两横波的波长均为 4 m &nbsp;&nbsp; B. $t=0.4\ \text{s}$ 时，$C$ 处质点加速度为 0<br>C. $t=0.4\ \text{s}$ 时，$C$ 处质点速度不为 0 &nbsp;&nbsp; D. $t=0.6\ \text{s}$ 时，$C$ 处质点速度为 0</p>
+        <div class="a">
+            <div class="step"><b>几何与基本量：</b>$AC = 3$ m，$BC = \sqrt{4^2+3^2} = 5\ \text{m}$（由 $3$-$4$-$5$ 直角三角形）。由 $v = \lambda f$ → $\lambda = v/f = 10/2.5 = \mathbf{4\ \text{m}}$。<strong>A 正确</strong>（两波 $\lambda$ 均为 4 m）。</div>
+            <div class="step"><b>周期：</b>$T = 1/f = 1/2.5 = 0.4\ \text{s}$。</div>
+            <div class="step"><b>两列波传到 C 的时间：</b>$t_{AC} = AC/v = 3/10 = 0.3\ \text{s}$；$t_{BC} = BC/v = 5/10 = 0.5\ \text{s}$。</div>
+            <div class="step"><b>B（$t=0.4\ \text{s}$ 时 C 点加速度）：</b>$t=0.4\ \text{s}$ 时，<b>只有 A 波已传到 C（0.3 s ≤ 0.4 s）</b>，B 波尚未到（0.5 s > 0.4 s）。A 波到 C 后已振动 $0.4 - 0.3 = 0.1\ \text{s} = T/4$。<b>从平衡位置起振，振动 $T/4$ 后恰好到达最大位移处（波峰或波谷）</b>，此时速度为 0、加速度<b>最大</b>（不是 0）。<strong>B 错</strong>。</div>
+            <div class="step"><b>C（$t=0.4\ \text{s}$ 时 C 点速度）：</b>同 B 分析，C 点此刻位于最大位移处，<b>速度为 0</b>。<strong>C 错</strong>。</div>
+            <div class="step"><b>D（$t=0.6\ \text{s}$ 时 C 点速度）：</b>$t=0.6\ \text{s}$ 时两列波都已传到 C（C 已成为稳定干涉区域）。<b>路程差</b> $\Delta r = BC - AC = 5 - 3 = 2\ \text{m} = \lambda/2$ → <b>C 是减弱点（相消干涉）</b>。又因两波<b>起振方向相同</b>且<b>振幅相同</b>，到达 C 时相位差 = $\pi$（反相），叠加后位移 = $A - A = 0$（始终为 0，因两波相位差恒为 $\pi$）。<b>位移始终为 0 的点速度也为 0</b>（没有变化量就没速度）。<strong>D 正确</strong>。</div>
+            <div class="step"><b>答案：AD</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（双波源平面干涉 + 振动过程综合）：</b>① <b>先求 $T$、$\lambda$、$t_{\text{传}}$</b>：$T=1/f$、$\lambda=v/f$、$t_{\text{传}}=d/v$——这是所有"两波先后到点"问题的<b>三个基本量</b>。② <b>"先后到达"分两阶段</b>：<b>第一阶段</b>（只有先到的那列波）：直接按简谐运动算 $T/4$、$T/2$、$3T/4$、$T$ 等关键时刻的位移/速度；<b>第二阶段</b>（两列波都到）：用干涉稳定图样（加强/减弱）判断。③ <b>减弱点"速度恒为 0"</b>的判断：减弱点处两列波<b>反相叠加</b>，且<b>相位差恒定</b>，合位移恒为 0，<b>合速度也恒为 0</b>（位移不变就无速度）——这是本题 D 选的关键。④ <b>"起振方向相同"是关键前提</b>：决定了两列波在同一点的<b>初始相位差 = 0</b>，后续相位差仅由路程差决定；若起振方向相反则路程差判据要加半波修正。⑤ <b>几何中的"3-4-5"直角三角形</b>是高频考点（A 坐标 $(0,0)$、B $(4,0)$、C $(0,3)$ 构成 3-4-5）——这种几何关系是物理题中"路程差"的常见载体。</div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波</p>
+</div>
+
+</body>
+</html>

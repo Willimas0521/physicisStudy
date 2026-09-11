@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动学闯关 · 水平面内圆周运动的临界问题</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav a {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; text-align: left; text-decoration: none;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s;
+        }
+        .level-nav a::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav a.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav a.active::before { background: #ff6a00; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5;
+        }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .section-title { color: #1e3c72; font-size: 1.35em; margin: 28px 0 10px; font-weight: 700; }
+        .sub-title { color: #34495e; font-size: 1.15em; font-weight: 700; margin: 16px 0 8px; }
+        .scene-svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 12px auto; }
+        .svg-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        .svg-row .scene-svg { max-width: 360px; margin: 0; }
+        .ul-list { margin: 8px 0 8px 22px; }
+        .ul-list li { margin: 6px 0; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .opt.selected { border-color: #3a7bd5; background: #eef4ff; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav a { width: auto; flex: 1; min-width: 84px; white-space: nowrap; }
+            .level-nav a::before { display: none; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+            .svg-row { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏃 高考物理 · 运动学闯关</h1>
+    <p>直线运动 &amp; 曲线运动 · 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 本关闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">1</span> &nbsp;|&nbsp; 已答 <b id="doneVal">0</b> 题</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 知识点导航</div>
+            <div class="level-nav">
+            <a class="level-link" href="运动的描述.html">运动的描述</a>
+            <a class="level-link" href="匀变速直线运动基本公式.html">匀变速直线运动基本公式</a>
+            <a class="level-link" href="自由落体与竖直上抛.html">自由落体与竖直上抛</a>
+            <a class="level-link" href="匀变速推论与图像.html">匀变速推论与图像</a>
+            <a class="level-link" href="追及与相遇.html">追及与相遇</a>
+            <a class="level-link" href="曲线运动基础.html">曲线运动基础</a>
+            <a class="level-link" href="平抛运动.html">平抛运动</a>
+            <a class="level-link" href="斜抛运动.html">斜抛运动</a>
+            <a class="level-link" href="圆周运动.html">圆周运动</a>
+            <a class="level-link" href="圆周运动临界问题.html">圆周运动临界问题</a>
+            <a class="level-link" href="关联速度分解.html">关联速度分解</a>
+            <a class="level-link" href="接触物类.html">接触物类</a>
+            <a class="level-link" href="斜面上的平抛运动.html">斜面上的平抛运动</a>
+            <a class="level-link" href="弹簧与木块分离问题.html">弹簧与木块分离问题</a>
+            <a class="level-link" href="竖直平面内的圆周运动.html">竖直平面内的圆周运动</a>
+            <a class="level-link active" href="水平面内圆周运动的临界问题.html">水平面内圆周运动的临界问题</a>
+            <a class="level-link" href="斜面内圆周运动的临界问题.html">斜面内圆周运动的临界问题</a>
+            <a class="level-link" href="变力做功.html">变力做功</a>
+        </div>
+</div>
+
+<div class="container" id="container">
+    <div class="level active" id="lvHorizontalCircle">
+        <div class="level-head">
+            <span class="level-badge">圆周 · 方法</span>
+            <h2>水平面内圆周运动的临界问题</h2>
+        </div>
+        <p class="level-intro">水平面内的圆周运动常与临界极值、圆锥摆、摩擦临界、绳拉力临界结合。核心思路仍是“找圆心、画半径、分析向心力来源”。</p>
+
+        <div class="section-title">（一）圆锥摆、圆锥斗、圆碗模型</div>
+
+        <div class="sub-title">1．圆锥摆模型</div>
+        <p class="level-intro">一根质量和伸长可以不计的轻细线，上端固定，下端系一个可视为质点的摆球，在水平面内做匀速圆周运动，细绳所掠过的路径为圆锥表面。</p>
+
+        <div class="svg-row">
+            <img src="images/圆锥摆受力分析.png" alt="圆锥摆受力分析" class="scene-svg" style="max-width:100%;width:280px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+            <img src="images/圆锥摆等高对比.png" alt="等高圆锥摆对比" class="scene-svg" style="max-width:100%;width:320px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">📘 受力与运动特点</div>
+            <div class="formula-note">摆球只受重力 $mg$ 和沿摆线方向的拉力 $F_T$。二力的合力提供向心力。</div>
+            <div class="formula">$F_\text{合}=mg\tan\theta=m\omega^2 r=m\dfrac{v^2}{r}$</div>
+            <div class="formula">$r=l\sin\theta$</div>
+            <div class="formula">$F_T=\dfrac{mg}{\cos\theta}$</div>
+            <div class="formula-note">其中 $l$ 为摆长，$\theta$ 为摆线与竖直方向的夹角，$r$ 为圆周运动半径。</div>
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">✏️ 解题方法</div>
+            <div class="formula-note">摆球在水平面内做匀速圆周运动时，竖直方向合力为零，水平方向合力全部提供向心力。列式时常用“竖直平衡 + 水平向心力”联立求解。</div>
+            <div class="formula">$F_T\cos\theta=mg$</div>
+            <div class="formula">$F_T\sin\theta=m\omega^2 l\sin\theta\;\Rightarrow\;\omega=\sqrt{\dfrac{g}{l\cos\theta}}=\sqrt{\dfrac{g}{h}}$</div>
+            <div class="formula-note">$h=l\cos\theta$ 为圆锥摆的高度（悬点到圆心所在水平面的距离）。</div>
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">🔍 讨论</div>
+            <p class="sub-title">（1）摆长一定，同一地点、不同高度</p>
+            <div class="formula-note">由 $\omega=\sqrt{g/h}$ 可知，角速度越大，$h$ 越小，$\theta$ 越大；摆线拉力 $F_T=mg/\cos\theta$ 越大，向心力 $F_n=mg\tan\theta$ 越大，向心加速度 $a_n=g\tan\theta$ 越大，线速度 $v=\omega r$ 也越大。</div>
+            <div class="formula-note"><b>结论：</b>同一圆锥摆，$\omega$ 越大，转得越快，也运动得越快。</div>
+
+            <p class="sub-title">（2）高度相同、摆长不等</p>
+            <div class="formula-note">在同一地点、摆球质量相等、摆长不等但高度 $h$ 相同的圆锥摆，若在同一水平面内做匀速圆周运动：</div>
+            <div class="formula">$\omega=\sqrt{\dfrac{g}{h}}$</div>
+            <div class="formula">$F_T=\dfrac{mg}{\cos\theta}$</div>
+            <div class="formula">$F_n=mg\tan\theta$</div>
+            <div class="formula">$a_n=g\tan\theta$</div>
+            <div class="formula-note"><b>结论：</b>高度相同则转动的快慢相等；$\theta$ 越大的圆锥摆，拉力、向心力、向心加速度、线速度都越大。</div>
+        </div>
+
+        <div class="section-title">（二）圆锥斗模型</div>
+        <p class="level-intro">内壁为圆锥的光滑锥面，轴线垂直于水平面且固定不动。可视为质点的小球紧贴内壁，在水平面内做匀速圆周运动。</p>
+        <div class="svg-row">
+            <img src="images/圆锥斗模型.png" alt="圆锥斗模型" class="scene-svg" style="max-width:100%;width:260px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 受力与运动特点</div>
+            <div class="formula-note">小球只受重力 $mg$ 和垂直内壁沿斜向上的支持力 $N$。二力的合力提供向心力。</div>
+            <div class="formula">$F_\text{合}=mg\tan\theta=m\omega^2 r=m\dfrac{v^2}{r}$</div>
+            <div class="formula">$N=\dfrac{mg}{\cos\theta}$</div>
+            <div class="formula-note">其中 $\theta$ 为轴线与圆锥母线的夹角，$r$ 为小球做圆周运动的轨道半径。</div>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">✏️ 解题方法</div>
+            <div class="formula-note">小球在水平面内做匀速圆周运动时，竖直方向合力为零，水平方向合力全部提供向心力。</div>
+            <div class="formula">$N\cos\theta=mg$</div>
+            <div class="formula">$N\sin\theta=m\omega^2 r$</div>
+            <div class="formula-note"><b>结论：</b>在同一地点、同一锥形斗内、不同高度的水平面内做匀速圆周运动的同一小球，支持力 $N$ 大小相等，向心力大小相等，向心加速度 $a_n=g\tan\theta$ 大小相等；高度越高（$r$ 越大），由 $\omega=\sqrt{g\tan\theta/r}$ 知角速度越小，转得越慢，但线速度 $v=\omega r=\sqrt{gr\tan\theta}$ 越大，运动得越快。</div>
+        </div>
+
+        <div class="section-title">（三）圆碗模型</div>
+        <p class="level-intro">内壁为半径 $R$ 的光滑圆碗，小球在碗内某一水平面内紧贴内壁做匀速圆周运动。</p>
+        <div class="svg-row">
+            <img src="images/圆碗受力分析.png" alt="圆碗受力分析" class="scene-svg" style="max-width:100%;width:280px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+            <img src="images/圆碗三球对比.png" alt="圆碗内三球对比" class="scene-svg" style="max-width:100%;width:280px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 受力与运动特点</div>
+            <div class="formula-note">小球只受重力 $mg$ 和垂直内壁沿斜向上的支持力 $N$。设竖直方向与支持力的夹角为 $\theta$，则：</div>
+            <div class="formula">$N\sin\theta=m\omega^2 r$</div>
+            <div class="formula">$N\cos\theta=mg$</div>
+            <div class="formula">$a_n=g\tan\theta$</div>
+            <div class="formula-note">轨道半径 $r=R\sin\theta$。</div>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">✏️ 解题方法</div>
+            <div class="formula-note">竖直方向平衡，水平方向合力提供向心力。</div>
+            <div class="formula">$\tan\theta=\dfrac{r}{\sqrt{R^2-r^2}}$</div>
+            <div class="formula">$\omega=\sqrt{\dfrac{g}{R\cos\theta}}=\sqrt{\dfrac{g}{h}}$</div>
+            <div class="formula-note"><b>结论：</b>下图 A、B、C 三球在碗内不同水平面内做匀速圆周运动。</div>
+            <ul class="ul-list">
+                <li><b>同角同向心加速度：</b>B 和 C 与球心连线与竖直方向夹角相同，故 $a_n=g\tan\theta$ 相同。</li>
+                <li><b>同高同角速度：</b>A 和 C 所在轨道面到球心竖直距离相同（即 $h=R\cos\theta$ 相同），故 $\omega=\sqrt{g/h}$ 相同。</li>
+            </ul>
+        </div>
+
+        <div class="section-title">二、水平面内圆周运动的常见临界问题</div>
+
+        <div class="formula-box">
+            <div class="ftitle">📘 常见临界类型</div>
+            <ul class="ul-list">
+                <li><b>相对滑动临界：</b>物体恰好（没有）发生相对滑动，静摩擦力达到最大值 $f_m=\mu N$。</li>
+                <li><b>离开接触面临界：</b>物体恰好要离开接触面，物体与接触面之间的弹力 $N=0$。</li>
+                <li><b>绳子断裂临界：</b>绳子的张力达到最大承受值 $T_m$。</li>
+                <li><b>绳子刚好伸直：</b>绳子的张力恰好为 $0$。</li>
+            </ul>
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">✏️ 解题方法</div>
+            <ul class="ul-list">
+                <li>当题目出现“恰好”“最大”“至少”“取值范围”等字眼时，说明运动过程中存在<b>临界点</b>。</li>
+                <li>分析临界状态的受力，列出临界条件下的牛顿第二定律方程。</li>
+            </ul>
+        </div>
+
+        <div class="sub-title">摩擦力的临界问题</div>
+        <p class="level-intro">粗糙水平圆盘上有一质量为 $m$ 的物块 A，圆盘从静止开始绕转轴缓慢加速转动，角速度为 $\omega$，动摩擦因数为 $\mu$，物块到转轴距离为 $r$。</p>
+        <div class="svg-row">
+            <img src="images/圆盘物块摩擦力临界.png" alt="圆盘上物块的摩擦力临界" class="scene-svg" style="max-width:100%;width:300px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 例1 分析</div>
+            <div class="formula-note">物块随圆盘一起做匀速圆周运动，静摩擦力提供向心力。当角速度增大到某一值时，静摩擦力达到最大静摩擦力，物块即将相对圆盘滑动。</div>
+            <div class="formula">$f=m\omega^2 r$</div>
+            <div class="formula">$f_{m}=\mu N=\mu mg$</div>
+            <div class="formula">$\omega_{m}=\sqrt{\dfrac{\mu g}{r}}$</div>
+            <div class="formula-note"><b>结论：</b>物块与圆盘保持相对静止的最大角速度为 $\omega_{m}=\sqrt{\mu g/r}$。</div>
+        </div>
+
+        <div class="sub-title">弹力的临界问题</div>
+        <p class="level-intro">水平圆盘绕过中心 O 的竖直轴匀速转动，物块通过长为 $L$ 的轻绳与转轴相连，绳与竖直方向夹角为 $\theta$。当角速度变化时，绳的拉力、圆盘对物块的支持力随之变化，会出现弹力为零或绳刚好伸直等临界状态。</p>
+        <div class="svg-row">
+            <img src="images/绳连物块弹力临界.png" alt="绳连物块弹力临界" class="scene-svg" style="max-width:100%;width:300px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 分析要点</div>
+            <div class="formula-note">设物块质量为 $m$，绳长为 $L$，绳与竖直方向夹角为 $\theta$，轨道半径 $r=L\sin\theta$。</div>
+            <div class="formula">竖直方向：$T\cos\theta+N=mg$</div>
+            <div class="formula">水平方向：$T\sin\theta=m\omega^2 r=m\omega^2 L\sin\theta$</div>
+            <div class="formula-note">当 $N=0$ 时，物块恰好离开圆盘，仅由绳拉力的水平分力提供向心力，对应临界角速度 $\omega_0=\sqrt{g/(L\cos\theta)}$。</div>
+        </div>
+
+        <div class="challenge">
+            <span class="ctag">🎮 闯关挑战</span>
+            <div class="cq">一根长为 $l$ 的轻绳系着小球在水平面内做圆锥摆运动，摆线与竖直方向夹角为 $\theta$。若保持摆长不变而增大角速度，下列说法正确的是？</div>
+            <div class="opts" id="optsHC_0">
+                <div class="opt" data-i="HC_0" data-j="0"><span class="key">A</span><span>小球圆周运动半径 $r$ 不变</span></div>
+                <div class="opt" data-i="HC_0" data-j="1"><span class="key">B</span><span>摆线拉力 $F_T$ 不变</span></div>
+                <div class="opt" data-i="HC_0" data-j="2"><span class="key">C</span><span>摆线与竖直方向夹角 $\theta$ 增大</span></div>
+                <div class="opt" data-i="HC_0" data-j="3"><span class="key">D</span><span>圆锥摆高度 $h=l\cos\theta$ 增大</span></div>
+            </div>
+            <button class="cbtn" id="btnHC_0">提交答案</button>
+            <div class="cresult" id="resHC_0"></div>
+            <div class="cexplain" id="expHC_0"><b>📝 解析：</b>由 $\omega=\sqrt{g/(l\cos\theta)}$ 可知，$\omega$ 增大时 $\cos\theta$ 减小，$\theta$ 增大，半径 $r=l\sin\theta$ 也增大；高度 $h=l\cos\theta$ 减小；拉力 $F_T=mg/\cos\theta$ 增大。故选 C。</div>
+        </div>
+
+        <div class="keymemo">🔑 <b>本关记忆要点：</b>水平面内圆周运动 — 圆锥摆的向心力由重力与拉力的合力提供；关键关系 $\omega=\sqrt{g/h}$，高度相同则角速度相同；增大 $\omega$ 会使 $\theta$、拉力、向心加速度、线速度都增大。</div>
+        <div class="level-actions">
+            <a class="btn" href="竖直平面内的圆周运动.html">← 上一关</a>
+            <a class="btn" href="index.html">📑 目录</a>
+            <a class="btn btn-next" href="index.html">🏠 回到目录</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理运动学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+<script>
+let score = 0, done = 0;
+const total = 1;
+const ANS = { "HC_0": 2 };
+let answered = {};
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const correct = ANS[cid];
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65 + correct);
+    }
+    done++;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('progFill').style.width = (done / total * 100) + '%';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>高考物理·力学实验闯关</title>
+<style>
+  :root{
+    --bg:#0f1220; --card:#1a1f33; --card2:#222a45; --line:#2e3759;
+    --txt:#e8ecf6; --sub:#9aa6c4; --accent:#4f8cff; --accent2:#36d399;
+    --warn:#ffb454; --danger:#ff6b6b; --purple:#a78bfa; --pink:#f472b6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+  #main{max-width:880px;margin:0 auto;padding:0 8px}
+  .main-wrap{max-width:880px;margin:0 auto;padding:0 8px}
+  h1{text-align:center;font-size:28px;margin-bottom:6px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{text-align:center;color:var(--sub);margin-bottom:18px;font-size:14px}
+  #sidebar{position:fixed;top:0;left:0;width:230px;height:100vh;background:linear-gradient(180deg,#141a2e,#11152a);
+    border-right:1px solid var(--line);padding:18px 12px;overflow-y:auto;z-index:50;display:flex;flex-direction:column}
+  #sidebar .sb-title{font-size:15px;font-weight:800;color:var(--txt);margin-bottom:4px;padding:0 4px}
+  #sidebar .sb-sub{font-size:11px;color:var(--sub);margin-bottom:14px;padding:0 4px}
+  #sidebar .progress-bar{height:8px;background:var(--card2);border-radius:6px;overflow:hidden;margin:0 4px 4px}
+  #sidebar .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+  #sidebar .progress-text{font-size:11px;color:var(--sub);margin:0 4px 14px}
+  .levels{display:flex;flex-direction:column;gap:9px}
+  .lvl{cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;transition:.2s;position:relative;overflow:hidden}
+  .lvl:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 6px 16px rgba(0,0,0,.35)}
+  .lvl .thumb{height:78px;background:#fff center/cover no-repeat;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:30px}
+  .lvl .no{font-size:11px;color:var(--sub);letter-spacing:.5px;padding-right:20px}
+  .lvl .ttl{font-size:13px;font-weight:700;line-height:1.35;padding-right:20px}
+  .lvl .tag{display:inline-block;margin-top:5px;font-size:10px;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 8px}
+  .lvl:hover{transform:translateX(3px);border-color:var(--accent)}
+  .lvl.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(79,140,255,.35)}
+  .lvl .badge{position:absolute;top:8px;right:10px;font-size:18px}
+  .lvl.cleared{border-color:var(--accent2)}
+  .progress-wrap{margin:0 0 22px}
+  .progress-bar{height:10px;background:var(--card2);border-radius:6px;overflow:hidden}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+  .progress-text{text-align:center;color:var(--sub);font-size:13px;margin-top:6px}
+  .quiz{margin:24px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:none}
+  .quiz.show{display:block}
+  .back{display:inline-block;cursor:pointer;color:var(--accent);font-size:14px;margin-bottom:10px}
+  .back:hover{text-decoration:underline}
+  .qtitle{font-size:20px;font-weight:800;margin-bottom:4px}
+  .qsub{color:var(--sub);font-size:13px;margin-bottom:14px}
+  .principle{background:var(--card2);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:14px}
+  .principle b{color:var(--accent2)}
+  .kp-card{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:14px}
+  .kp-card:last-child{margin-bottom:0}
+  .kp-card b{color:var(--accent2)}
+  .imgbox{text-align:center;margin:14px 0}
+  .imgbox img{max-width:100%;max-height:320px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:10px;background:#fff}
+  .imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+  .question{font-size:15px;margin:14px 0 10px;font-weight:600}
+  .opts{display:flex;flex-direction:column;gap:8px}
+  .opt{border:1px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer;transition:.15s;font-size:14px}
+  .opt:hover{border-color:var(--accent);background:var(--card2)}
+  .opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+  .opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+  .opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .opt.disabled{cursor:default;pointer-events:none}
+  .confirm-btn{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 18px;font-size:14px;cursor:pointer;transition:.15s}
+  .confirm-btn:hover{filter:brightness(1.1)}
+  .explain{margin-top:12px;padding:12px 14px;background:var(--card2);border-radius:8px;font-size:14px;border-left:4px solid var(--warn);display:none}
+  .explain.show{display:block}
+  .next{margin-top:16px;display:inline-block;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px 18px;cursor:pointer;font-size:14px;font-weight:600}
+  .next:hover{opacity:.9}
+    .quiz.split{display:flow-root}
+  .quiz.split .imgbox{float:left;width:340px;margin:6px 20px 14px 0}
+  .quiz.split .imgbox img{max-height:230px}
+  .quiz.split .principle{margin-left:360px}
+  @media (max-width:900px){
+    .quiz.split .imgbox{float:none;width:100%;margin:0 0 14px}
+    .quiz.split .principle{margin-left:0}
+  }
+.exam{margin:14px 0 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;display:none}
+  .exam.show{display:block}
+  .exam h3{color:var(--warn);font-size:16px;margin-bottom:10px}
+  .exam p{font-size:14px;margin-bottom:8px}
+  .exam .ans{color:var(--accent2);font-weight:700}
+  .final{margin:30px 0;text-align:center;display:none}
+  .final.show{display:block}
+  .final .big{font-size:34px;font-weight:900;background:linear-gradient(90deg,var(--accent2),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .footer{text-align:center;color:var(--sub);font-size:12px;margin:30px 0 10px}
+  .reset{margin-top:14px;background:transparent;border:1px solid var(--line);color:var(--sub);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px}
+  .reset:hover{border-color:var(--danger);color:var(--danger)}
+  @media (max-width:820px){
+    body{padding:14px}
+    #sidebar{position:static;width:100%;height:auto;flex-direction:column;border-right:none;border-bottom:1px solid var(--line);margin-bottom:16px}
+    #sidebar .levels{flex-direction:row;flex-wrap:wrap}
+    #sidebar .lvl{flex:1 1 160px;max-width:220px}
+    #sidebar .lvl .thumb{height:60px}
+  }
+</style>
+</head>
+<body>
+<nav id="sidebar">
+  <div class="sb-title">🧪 力学实验闯关</div>
+  <div class="sb-sub">常考 8 大实验 · 点击即可进入</div>
+  <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+  <div class="progress-text" id="ptext">已通关 0 / 8</div>
+  <div class="levels" id="levels"></div>
+</nav>
+
+<div id="main">
+<h1>高考物理 · 力学实验闯关</h1>
+<div class="sub">常考力学实验全收录 | 先学原理再做闯关题 | 配图见同级 ../力学实验_images/ 文件夹</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="pfill2"></div></div>
+  <div class="progress-text" id="ptext2">已通关 0 / 8</div>
+</div>
+
+<div class="quiz" id="quiz">
+  <span class="back" id="backBtn">← 返回关卡列表</span>
+  <div class="qtitle" id="qTitle"></div>
+  <div class="qsub" id="qSub"></div>
+  <div class="imgbox" id="qImgBox"></div>
+  <div class="principle" id="qPrinciple"></div>
+  <div id="qList"></div>
+  <button class="next" id="nextBtn" style="display:none">下一关 →</button>
+</div>
+
+<div class="exam" id="exam">
+  <h3>📜 高考真题演练</h3>
+  <div id="examBody"></div>
+</div>
+
+<div class="final" id="final">
+  <div class="big">🎉 全部通关！</div>
+  <p style="color:var(--sub);margin-top:10px">力学实验是高考实验题的半壁江山，记得结合真实器材多练手感。</p>
+  <button class="reset" id="resetBtn">重置闯关进度</button>
+</div>
+
+<div class="footer">提示：本页面关卡进度保存在浏览器本地，刷新不丢失。建议配合教材分组实验同步学习。</div>
+</div><!-- /#main -->
+
+<script>
+const LEVELS = [{"no": "第 1 关", "ttl": "研究匀变速直线运动", "tag": "纸带 · 逐差法", "img": "../力学实验_images/ticker_setup.png", "imgCap": "图甲：研究匀变速直线运动装置（电磁打点计时器 + 小车 + 砝码盘 + 光电门测速）", "principle": "<b>核心原理：</b>打点计时器每 0.02 s 打一个点（电源频率 50 Hz）；图甲中托盘及砝码拖动小车沿长直导轨运动，电磁打点计时器在纸带上打点，纸带记录小车运动信息。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>瞬时速度：</b>某点速度 ≈ 包含该点前后相邻两段位移的平均速度，<b>v<sub>n</sub> = (x<sub>n</sub>+x<sub>n+1</sub>)/(2T)</b>。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>加速度（逐差法 / 充分利用数据）：</b>把偶数段位移前后对半分，<b>a = [(x₄+x₅+x₆)−(x₁+x₂+x₃)] / (9T²)</b>，可充分利用所有数据、减小偶然误差。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>逐差法一般式（n 段位移）：</b>把 n 段位移均分为前后两组（每组 n/2 段），再对两组的<b>段和</b>作差：<b>a = (s<sub>后</sub> − s<sub>前</sub>) / ( (n/2)<sup>2</sup> T<sup>2</sup> )</b>。例如 4 段位移 s₁,s₂,s₃,s₄：<b>a = (s₃+s₄ − s₁−s₂) / (4T<sup>2</sup>)</b>。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>计数点时间 T：</b>若相邻计数点间还有 k 个点未画出，则 <b>T = (k+1)·0.02 s</b>。题目\"每相邻两个计数点间还有 4 个点\" → k=4 → T = 5·0.02 = <b>0.1 s</b>。<br>\n<b>有效数字：</b>结果保留 2 位有效数字 → a ≈ 0.51 m/s²。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>替代方案：</b>用图甲中的光电门 1、光电门 2 与遮光片可测小车的瞬时速度：v = d/Δt（d 为遮光片宽度，Δt 为挡光时间）。", "questions": [{"q": "电磁打点计时器使用的电源是？", "o": ["4~6 V 低压交流", "220 V 交流", "直流电", "220 V 直流"], "a": 0, "e": "电磁打点计时器使用 4~6 V 低压交流电；电火花计时器使用 220 V 交流电。"}, {"q": "用逐差法求 a，若纸带上有 6 段位移 x₁…x₆（T=0.02s），正确公式是？", "o": ["a=(x₆−x₁)/(5T²)", "a=[(x₄+x₅+x₆)−(x₁+x₂+x₃)]/(9T²)", "a=(x₃+x₄−x₁−x₂)/(4T²)", "a=逐项相减再平均"], "a": 1, "e": "逐差法 6 段位移标准公式：a = [(x₄+x₅+x₆)−(x₁+x₂+x₃)] / (9T²)，可充分利用全部数据。"}, {"q": "某点瞬时速度应取？", "o": ["该点前后两段位移的瞬时速度直接相加", "包含该点的前后两段位移的平均速度", "最大那一段位移除以 T", "最小那一段位移除以 T"], "a": 1, "e": "中点时刻的瞬时速度等于包含该点的两段位移的平均速度：v_n = (x_n + x_{n+1})/(2T)。"}, {"q": "纸带上有 4 段位移 s₁,s₂,s₃,s₄，相邻计数点间还有 4 个点。要充分利用数据求 a，正确公式是？", "o": ["a=(s₄−s₁)/(3T²)", "a=(s₃+s₄−s₁−s₂)/(4T²)，T=0.1 s", "a=逐段两两相减再平均", "a=(s₂−s₁)/T²"], "a": 1, "e": "4 段位移前后对半：a = (s₃+s₄−s₁−s₂)/(4T²)。相邻计数点间还有 4 个点 → T = 5×0.02 s = 0.1 s。代入数据：a = (7.73+7.21−6.70−6.20)×10⁻²/(4×0.1²) = 2.04×10⁻²/0.04 = 0.51 m/s²（保留 2 位有效数字）。"}], "exam": "<p>（2023·全国甲）某同学用打点计时器探究小车匀变速运动，得到一条纸带，相邻计数点间还有 4 个点未画出（T=0.1 s）。测得 x₁=2.62 cm，x₂=3.01 cm，x₃=3.40 cm，x₄=3.79 cm，x₅=4.18 cm，x₆=4.57 cm。</p><p>求：(1) 小车的加速度 a；(2) 打计数点 3 时小车的速度 v₃。</p><p class='ans'>答案：(1) a=[(x₄+x₅+x₆)−(x₁+x₂+x₃)]/(9T²)=[(3.79+4.18+4.57)−(2.62+3.01+3.40)]/(9×0.01)≈0.396 m/s²；(2) v₃=(x₃+x₄)/(2T)=(0.0340+0.0379)/(0.2)≈0.36 m/s。</p>", "img2": "../力学实验_images/ticker_4segments.png", "img2Cap": "图乙：纸带上的计数点 A,B,C,D,E 与相邻位移 s₁,s₂,s₃,s₄（相邻计数点间还有 4 个点未画出）"}, {"no": "第 2 关", "ttl": "探究弹力和弹簧伸长关系", "tag": "胡克定律", "img": "../力学实验_images/spring_hooke.png", "imgCap": "探究弹力与弹簧伸长量关系装置", "principle": "<b>核心原理（胡克定律）：</b>F = k x，其中 x 是弹簧的<b>形变量（伸长量）</b>，不是弹簧总长。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>做法：</b>悬挂不同钩码，记录弹力 F=mg 与对应伸长量 x，作 F–x 图像，斜率即劲度系数 k。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>注意：</b>F–x 图线应为过原点的直线；若不过原点，可能是未计弹簧原长或指针初始未调零。", "questions": [{"q": "弹簧的劲度系数 k 等于 F–x 图像的？", "o": ["纵截距", "斜率", "面积", "斜率的倒数"], "a": 1, "e": "F=kx，纵轴 F 对横轴 x 的图像斜率就是 k。"}, {"q": "下列说法正确的是？", "o": ["x 指弹簧自然长度", "弹力与伸长量成正比（弹性限度内）", "k 随拉力增大而增大", "图像一定过 (L₀,0)"], "a": 1, "e": "弹性限度内弹力与形变量成正比，k 由弹簧本身决定，与 F 无关；图像过原点 (0,0) 指形变量为 0 时弹力为 0。"}, {"q": "用图像求 k 比逐点计算取平均的优点是？", "o": ["计算更快", "可减小偶然误差、直观看出线性关系", "不需要原长", "避免单位换算"], "a": 1, "e": "图像法能利用全部数据点、抵消随机误差，并检验是否为线性。"}], "exam": "<p>（2022·广东）用右侧装置探究弹簧弹力与伸长量的关系，得到数据并作 F–x 图，图线斜率 k=50 N/m。若挂一重 1.0 N 的钩码，弹簧伸长量 x=？</p><p class='ans'>答案：由 F=kx → x=F/k=1.0/50=0.020 m=2.0 cm。</p>"}, {"no": "第 3 关", "ttl": "验证力的平行四边形定则", "tag": "力的合成", "img": "../力学实验_images/force_parallelogram.png", "imgCap": "验证力的平行四边形定则实验装置", "principle": "<b>核心原理：</b>互成角度的两个力 F₁、F₂ 的合力 F，与以 F₁、F₂ 为邻边作平行四边形的对角线大小、方向一致。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>做法：</b>用橡皮条结点拉到某 O 点，记下 F₁、F₂ 的大小方向；再用一个力 F 单独把结点拉到<b>同一 O 点</b>，比较 F 与 F₁、F₂ 的合成结果。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>关键：</b>两次都把结点拉到<b>同一位置</b>，才能保证作用效果相同（等效替代）。", "questions": [{"q": "在『验证力的平行四边形定则』实验中，比较按平行四边形定则作图得到的合力 F 与用一只弹簧测力计把结点拉到同一 O 点得到的力 F′，可能产生误差的原因有？（多选）", "o": ["弹簧秤、细绳、橡皮条没有都与木板平行", "读数时没有正视弹簧测力计", "实验台没有调水平", "F₁、F₂ 之间的夹角保持不变"], "a": [0, 1], "e": "<b>A ✓</b>：弹簧秤、细绳、橡皮条若不都与木板平行，力的方向会偏离纸面，刻度尺量出的力的大小方向均不准确，导致 F 与 F′ 偏差；<br><b>B ✓</b>：读数时若不<b>正视</b>刻度（视线与刻度盘平面不垂直），会产生视差，导致 F₁、F₂、F′ 读数偏大或偏小；<br><b>C ✗</b>：本实验与实验台是否水平无关（台面在水平方向上的小倾斜不影响力的水平方向测量）；<br><b>D ✗</b>：保持夹角不变是实验要求，不是误差来源。"}, {"q": "实验中两次拉伸橡皮条都应使结点到达？", "o": ["任意位置", "同一位置 O", "不同位置", "越远越好"], "a": 1, "e": "等效替代思想：两次作用效果相同，故结点必须拉到同一位置。"}, {"q": "本实验用到的物理思想是？", "o": ["控制变量", "等效替代", "理想模型", "微小量放大"], "a": 1, "e": "用单个力 F 等效替代两个力 F₁、F₂ 的共同作用，是等效替代法。"}, {"q": "为减小误差，细绳应？", "o": ["尽量长", "尽量短", "越粗越好", "打结使用"], "a": 0, "e": "细绳适当长一些，便于准确确定力的方向（描点画线更准）。"}], "exam": "<p>（2021·湖南）在验证平行四边形定则实验中，先用互成角度的 F₁、F₂ 将橡皮条结点拉至 O 点；再用一个弹簧测力计将结点拉至同一 O 点，读数为 F。则 F 与 F₁、F₂ 的关系是？</p><p class='ans'>答案：F 应是以 F₁、F₂ 为邻边的平行四边形的对角线（大小、方向均相符），即 F 是 F₁、F₂ 的合力。</p><p>（问答题·误差分析）在做『验证力的平行四边形定则』实验中，根据记录纸上 F₁、F₂ 的方向大小，按平行四边形定则作图得到合力 F；同时用一只弹簧测力计把结点拉到同一 O 点，测得 F′。请写出可能产生误差的两点原因。</p><p class='ans'>答案：① <b>没有做到弹簧秤、细绳、橡皮条都与木板平行</b>（导致力的方向偏离纸面，作图失真）；② <b>读数时没有正视弹簧测力计</b>（产生视差，读数偏大或偏小）。其他可能：作图误差（线段/角度不精确）、未把结点拉到同一位置 O 等。</p>", "img2": "../力学实验_images/force_parallelogram_paper.png", "img2Cap": "图 3-2：（d）两力 F₁、F₂ 拉橡皮条结点至 O 点的装置；（e）记录纸：O 为结点位置，P₁、P₂、P₃ 为多次拉伸的标记点（标度 1N）"}, {"no": "第 4 关", "ttl": "探究加速度与力、质量关系", "tag": "控制变量", "img": "../力学实验_images/a_F_m_setup.png", "imgCap": "图甲：探究加速度与力、质量关系装置（打点计时器 + 小车 + 轨道 + 槽码）", "principle": "<b>核心原理：</b>牛顿第二定律 a = F/m。<br>\n<b>控制变量法：</b>① 质量 m 不变，改变拉力 F，得 a∝F；② 拉力 F 不变，改变质量 m，得 a∝1/m。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>平衡摩擦力（常考点①）：</b>调整轨道（长木板）的<b>倾斜度</b>，使小车<b>刚好不受牵引</b>（不挂砝码/托盘）时，能<b>拖动纸带沿轨道做匀速运动</b>（纸带上的点间距均匀），此时重力沿斜面的分力恰好平衡阻力。判断标准：轻推小车，纸带上打出的点<b>间距大致相等</b>。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>图像：</b>作 a–F 图（过原点直线）和 a–1/m 图（过原点直线）；若未平衡摩擦，a–F 图在 F 轴上有正截距；若平衡过度（垫太高），a–F 图在 a 轴上有正截距。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>用光电门测瞬时速度（常考点②）：</b>将两光电门安装在长直轨道上，选择宽度为 d 的遮光片固定在小车上，调整轨道倾角，用跨过定滑轮的细线将小车与托盘及砝码相连。小车通过光电门时：v ≈ d/Δt。<br>\n<b>遮光片宽度选择：</b>应选用<b>较窄</b>的遮光片（如 d = 1.00 cm，而不是 5.00 cm）。因为小车在做<b>加速运动</b>，遮光片越宽，Δt 内速度变化越大，d/Δt 就越偏离该点的<b>瞬时速度</b>（测得的是平均速度），误差越大。宽度越小越接近瞬时速度。<br>\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>力传感器直接测拉力（常考点③）：</b>把力传感器安装在小车上可直接测绳的拉力 T，能避免\"槽码重力近似\"带来的系统误差。设小车（含传感器）总质量 M、槽码质量 m，对槽码：mg−T=ma；对小车：T=Ma，联立得 <b>T = Mmg/(M+m) = mg/(1+m/M)</b>，故 <b>T 总小于 mg</b>，且 m 越大（越不满足 m≪M），T 与 mg 的差异越大。用\"槽码重力 mg 当合力\"与\"传感器示数 T 当合力\"对比时，槽码质量越大差异越大。如 M=210 g、m 取 5/10/20/40 g，<b>m=40 g 时差异最大</b>。", "questions": [{"q": "探究 a 与 F 关系时，应控制什么不变？", "o": ["拉力 F", "小车质量 m", "位移", "时间"], "a": 1, "e": "控制变量：研究 a 与 F 关系时保持质量 m 不变。"}, {"q": "平衡摩擦力的正确做法是？", "o": ["把轨道一端垫高，使小车不挂牵引时能拖动纸带做匀速运动", "加大砝码质量", "降低打点计时器电压", "把轨道放平即可"], "a": 0, "e": "调整轨道倾斜度，使小车刚好不受牵引时能拖动纸带沿轨道做匀速运动（纸带上点距均匀），即重力沿斜面分力刚好抵消阻力。"}, {"q": "若未平衡摩擦，a–F 图像会怎样？", "o": ["过原点", "不过原点、横轴（F 轴）有正截距", "竖直", "无规律"], "a": 1, "e": "未平衡摩擦时，需 F 超过某临界值小车才加速，a–F 图在 F 轴上有正截距；若垫得过高，则 a 轴上有正截距。"}, {"q": "用光电门测小车瞬时速度，遮光片宽度应选？", "o": ["越宽越好", "较窄的（如 1.00 cm），因为小车在加速", "任意宽度都行", "与宽度无关"], "a": 1, "e": "小车做加速运动，遮光片越宽，Δ t 内速度变化越大，d/Δt 越偏离瞬时速度（实为平均速度）。选窄遮光片（如 1.00 cm）误差小、更准确。"}, {"q": "力传感器装在小车上（小车含传感器总质量 M=210 g），平衡阻力后槽码质量 m 依次取 5 g、10 g、20 g、40 g。比较“槽码重力 mg 作合力”与“传感器示数 T 作合力”，差异最大时槽码质量为？", "o": ["5 g", "10 g", "20 g", "40 g"], "a": 3, "e": "对槽码 mg−T=ma，对小车 T=Ma，得 T = Mmg/(M+m) = mg/(1+m/M)，T 总小于 mg；m 越大差异越大，故 m=40 g 时两种合力差异最大。"}], "exam": "<p>（2023·新课标）探究加速度与力、质量关系，平衡摩擦后，保持小车质量不变，增挂钩码改变拉力 F，测得多组 a、F。作出的 a–F 图像应为____；若作出的图像在 F 轴上有截距，说明____。</p><p class='ans'>答案：过原点的倾斜直线；未完全平衡摩擦力（或摩擦力未被完全抵消）。</p>"}, {"no": "第 5 关", "ttl": "探究平抛运动规律", "tag": "平抛 · 描迹", "img": null, "imgCap": "", "principle": "<b>核心原理：</b>平抛运动可分解为<b>水平方向匀速直线</b>（vₓ=v₀）与<b>竖直方向自由落体</b>（y=½gt²）。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>关系：</b>水平 x=v₀t，竖直 y=½gt²，联立得 y = (g/(2v₀²)) x²（抛物线）。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>测初速：</b>由 y=½gt² 求 t，再 v₀=x/t；或用频闪照片比较相邻位置竖直位移差 Δy=gT²。<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>挡板平移法（常考点·图3装置）：</b>竖直挡板上附复写纸+白纸，挡板初始紧贴斜槽末端，记录点迹 0；挡板每次水平向右移动 x，重复释放钢球得点迹 1,2,3,4。<br>· 关键：钢球中心离斜槽末端的水平距离 = <b>挡板位移 − d/2</b>（d 为钢球直径，因钢球撞挡板时球心到末端 = x − d/2）<br>· 竖直方向：y<sub>n</sub> = ½g t<sub>n</sub>²（自由落体）；水平方向：nx − d/2 = v₀ t<sub>n</sub>（n=1,2,3,4）<br>· 求 v₀：v₀ = (nx − d/2)·√(g/(2y<sub>n</sub>))，最简用点迹 4：<b>v₀ = (4x − d/2)·√(g/(2y₄))</b>", "questions": [{"q": "平抛运动在竖直方向是？", "o": ["匀速直线", "自由落体", "静止", "匀速圆周"], "a": 1, "e": "竖直方向只受重力，初速为 0，做自由落体运动。"}, {"q": "用频闪照片测 v₀，关键依据是？", "o": ["水平等距", "竖直相邻位移差 Δy=gT²", "总位移相等", "速度不变"], "a": 1, "e": "竖直方向自由落体，连续相等时间内的位移差 Δy=gT²，可求 T，再由水平等距 x=v₀T 求初速。"}, {"q": "关于平抛，正确说法是？", "o": ["水平速度随时间减小", "运动时间由高度决定", "落地速度只由初速决定", "轨迹是直线"], "a": 1, "e": "t=√(2h/g)，运动时间只由抛出高度 h 决定；水平速度不变，轨迹为抛物线。"}, {"q": "用图 1 装置（小锤打两小桌+两小球）探究平抛运动，下列说法正确的是？", "o": ["只能探究平抛运动水平分运动的特点", "需改变小锤击打的力度，多次重复实验", "能同时探究平抛运动水平、竖直分运动的特点"], "a": 1, "e": "图 1 是用小锤同时打击两球（A 球做平抛、B 球同时自由落体），只能对比竖直分运动，验证两者同时落地。<b>不能</b>研究水平分运动，所以 A/C 错。<br>实验中需要<b>多次改变小锤击打力度</b>，观察两球是否每次都同时落地，才能得出普遍结论，所以 B 对。"}, {"q": "用图 2 装置（斜槽 M + 可调挡板 N）进行实验，下列说法正确的是？", "o": ["斜槽轨道 M 必须光滑且其末端水平", "上下调节挡板 N 时必须每次等间距移动", "小钢球从斜槽 M 上同一位置静止滚下"], "a": 2, "e": "① 斜槽末端必须水平（保证抛体方向水平），但<b>不必光滑</b>——只要每次小球从<b>同一位置静止释放</b>，到末端速度就相同，所以 A 错。<br>② 调节挡板 N 是为了描出平抛轨迹，每次<b>不必等间距</b>移动——只要多次描点即可，所以 B 错。<br>③ 同位置静止释放 → 每次抛出的初速度 v₀ 相同，C 对。"}, {"q": "用图 3 装置，竖直挡板依次水平向右移动 x 重复实验，得点迹 0,1,2,3,4，竖直坐标 y₁~y₄，钢球直径 d。求 v₀？", "o": ["v₀ = (x + d/2)·√(g/(2y₁))", "v₀ = x·√(g/(y₂ − 2y₁))", "v₀ = (3x − d/2)·√(g/(2y₄))", "v₀ = (4x − d/2)·√(g/(2y₄))"], "a": 3, "e": "挡板 4 次右移距离共 4x，球心水平距离 = 4x − d/2（要扣掉钢球半径）。<br>竖直方向自由落体：y₄ = ½g t⁴，水平匀速：4x − d/2 = v₀ t。<br>联立得 <b>v₀ = (4x − d/2)·√(g/(2y₄))</b>，即 D。<br>A 错在用 +d/2 且用了点迹 1；B 错在水平用 x（未减 d/2），且 y₂−2y₁ 不是逐差法正确形式；C 错在水平用 3x−d/2（应是 4x−d/2）。"}], "exam": "<p>（2022·山东）某同学用频闪摄影研究平抛，相邻闪光间隔 T=0.1 s，测得某段水平位移 x=0.30 m，竖直方向连续三段位移分别为 4.9 cm、14.7 cm、24.5 cm。</p><p>求：(1) 初速度 v₀；(2) 验证竖直方向是否为自由落体。</p><p class='ans'>答案：(1) v₀=x/T=0.30/0.1=3.0 m/s；(2) 竖直相邻位移差 14.7−4.9=9.8 cm，24.5−14.7=9.8 cm，Δy=9.8 cm=gT²（g≈9.8 时），符合自由落体。</p><p>【综合题】\"探究平抛运动的特点\"实验（含图 1/2/3 三装置）三小问：</p>\n<p>（1）用图 1 装置，下列说法正确的是？A.只能探究水平分运动；B.需改变小锤击打力度多次重复；C.能同时探究水平、竖直分运动。【答案】B</p>\n<p>（2）用图 2 装置（斜槽 M + 挡板 N），下列说法正确的是？A.斜槽必须光滑且末端水平；B.挡板每次等间距移动；C.小钢球从同一位置静止滚下。【答案】C</p>\n<p>（3）用图 3 装置，挡板水平右移 x，重复得 y₁~y₄，球径 d，则 v₀ = (4x − d/2)·√(g/(2y₄))，即选项 D。</p>\n<p class='ans'>答案：(1)B；(2)C；(3)D。<br>关键：① 图 1 只能验证竖直分运动，需多次改变力度重复；② 图 2 斜槽只需末端水平 + 同位置静止释放（不要求光滑 / 等间距）；③ 图 3 球心水平距离 = 移动距离 − d/2，竖直 y₄ 对应时间 t = √(2y₄/g)，联立水平匀速 4x−d/2 = v₀t。</p>"}, {"no": "第 6 关", "ttl": "验证机械能守恒定律", "split": true, "tag": "自由落体", "img": "../力学实验_images/energy_cons_real.png", "imgCap": "图1：验证机械能守恒定律装置（重锤 + 打点计时器 + 纸带）", "principle": "<b>【专题】验证机械能守恒定律的 4 种常用方案</b><br>\n机械能守恒的本质：<b>ΔE<sub>k</sub> = |ΔE<sub>p</sub>|</b>，即动能增加量等于重力势能减少量（质量 m 通常可约去）。不同方案的区别只在<b>如何测速度 v</b> 和<b>如何测高度 h</b>。\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\">\n<b>方案一：自由落体 + 打点计时器（最经典）</b>【图1】<br>\n· 装置：铁架台（带铁夹）、打点计时器、纸带、重锤、刻度尺、交流电源（50 Hz）<br>\n· 原理：mgh = ½mv² → <b>gh = ½v²</b>，验证某点 gh<sub>n</sub> ≈ ½vₙ²<br>\n· 测速：v<sub>n</sub> = (h<sub>n+1</sub> − h<sub>n−1</sub>)/(2T)<br>\n· 图像法：作 <b>v²–h 图像</b>，应为过原点直线，<b>斜率 = 2g</b><br>\n· 关键：<b>不需要测质量 m</b>；必须<b>先接通电源再释放纸带</b>；打点计时器竖直、限位孔在同一竖直线\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\">\n<b>方案二：单摆（圆周运动）+ 光电门</b>【图2】<br>\n· 装置：铁架台、细线、小钢球、光电门（置于<b>最低点</b>）、游标卡尺<br>\n· 原理：小球从偏离竖直线某高度 h 处<b>静止释放</b>，到最低点：mgh = ½mv²<br>\n· 测速：v = d/Δt（d 为小球直径，Δt 为挡光时间）<br>\n· 关键：光电门光速须对准<b>小球球心经过的位置</b>（最低点）；细线质量与阻力忽略；从静止释放（初速为 0）\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\">\n<b>方案三：气垫导轨 + 光电门（斜面下滑）</b><br>\n· 装置：气垫导轨（一端垫高）、滑块、遮光片、两个光电门、刻度尺<br>\n· 原理：滑块沿倾斜导轨下滑，高度下降 h：mgh = ½mv₂² − ½mv₁²<br>\n· 测速：两光电门分别测 v₁ = d/Δt₁、v₂ = d/Δt₂；h = L·sinθ（L 为两光电门间距，θ 为导轨倾角）<br>\n· 关键：气垫把摩擦降到极低；需测（或已知）导轨倾角；遮光片宽度 d 要小\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\">\n<b>方案四：平抛运动</b><br>\n· 装置：斜槽（末端切线水平）、小钢球、白纸、复写纸、刻度尺<br>\n· 原理：½mv₀² + mgh = ½mv²，即验证末动能增量等于势能减少量<br>\n· 测速：由平抛规律，水平 x = vt，竖直 y = ½gt²，联立求 v₀ 与落地速度 v<br>\n· 关键：斜槽末端<b>切线必须水平</b>；小球每次从<b>同一位置由静止释放</b>；用重锤线确定坐标原点\n<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\">\n<b>📌 通用误差分析：</b>由于空气阻力、纸带与限位孔摩擦、光电门测的是平均速度（非瞬时）等，实测 <b>ΔE<sub>k</sub> 通常略小于 |ΔE<sub>p</sub>|</b>（相对误差 η = (E<sub>p</sub> − E<sub>k</sub>)/E<sub>p</sub> × 100%），一般 η &lt; 6% 即可认为守恒。", "questions": [{"q": "验证机械能守恒时，是否需要测量重物质量？", "o": ["必须测", "不需要，m 可约去", "只测相对质量", "视情况"], "a": 1, "e": "mgh=½mv² 中 m 两边约去，只需验证 gh=½v²，故不必测质量。这是四种方案的共同点。"}, {"q": "用打点计时器做自由落体实验，第 n 点的瞬时速度应取？", "o": ["√(2ghₙ)", "(hₙ₊₁−hₙ₋₁)/(2T)", "hₙ/T", "2hₙ/T"], "a": 1, "e": "用纸带前后两段求平均速度，避免直接用 gh=½v²（那正是要验证的结论，不能当已知用）。"}, {"q": "下列实验中，能够验证机械能守恒定律的有？（多选思路：选最全面的）", "o": ["只有自由落体 + 打点计时器", "自由落体、单摆+光电门、气垫导轨、平抛都可以", "只有用打点计时器的方案", "只有涉及弹簧的方案"], "a": 1, "e": "只要能测出速度 v 和下落高度 h，就能验证 ΔE_k = |ΔE_p|。自由落体+打点计时器、单摆+光电门、气垫导轨+光电门、平抛运动都是课本/高考认可的合法方案。"}, {"q": "实验结果显示动能增量略小于势能减少量，原因是？", "o": ["空气阻力和纸带摩擦", "质量测错", "公式错误", "计时器太快"], "a": 0, "e": "存在阻力做负功，使机械能有少量损失，故 ΔE_k 略小于 |ΔE_p|，属正常误差。"}, {"q": "用气垫导轨（如图3）验证机械能守恒定律，正确的实验步骤顺序是？且验证关系式为？", "o": ["步骤：E→A→C→B→D；验证 m₂gl = ½(m₁+m₂)(d/Δt)²", "步骤：A→B→C→D→E；验证 m₁gl = ½m₂(d/Δt)²", "步骤：A→E→B→C→D；验证 m₁gl = ½(m₁+m₂)(d/Δt)²", "步骤：B→A→E→C→D；验证 (m₁+m₂)gl = ½m₂(d/Δt)²"], "a": 0, "e": "正确顺序：先 A 调水平 → E 测质量（不需用砝码）→ B 测遮光条宽 d → C 测距离 l → D 释放测 Δt。对系统（滑块+托盘+砝码）：势能减少量 = m₁gl（砝码下降 l），动能增加量 = ½(m₁+m₂)v²（v = d/Δt）。注意：若只考虑砝码 m₁ 减少的重力势能与系统整体增加的动能，则验证 m₁gl = ½(m₁+m₂)(d/Δt)²；若仅以滑块 m₂ 为研究对象，则 ½m₂v² = m₁gl（因砝码失重力势能转化为系统动能）。题目条件不同时写法略有差异。"}], "exam": "<p><b>（2025·河南·高考真题）</b>实验小组利用图1所示装置验证机械能守恒定律。可选用的器材有：交流电源（频率 50Hz）、铁架台、电子天平、重锤、打点计时器、纸带、刻度尺等。</p>\n<p><b>(1)</b> 下列所给实验步骤中，有4个是完成实验必需且正确的，把它们选择出来并按实验顺序排列：________（填步骤前面的序号）<br>\n①先接通电源，打点计时器开始打点，然后再释放纸带<br>\n②先释放纸带，然后再接通电源，打点计时器开始打点<br>\n③用电子天平称量重锤的质量<br>\n④将纸带下端固定在重锤上，穿过打点计时器的限位孔，用手捏住纸带上端<br>\n⑤在纸带上选取一段，用刻度尺测量该段内各点到起点的距离，记录分析数据<br>\n⑥关闭电源，取下纸带</p>\n<p><b>(2)</b> 图2所示是纸带上连续打出的五个点A、B、C、D、E到起点的距离。则打出B点时重锤下落的速度大小为________ m/s（保留3位有效数字）。</p>\n<p style=\"text-align:center\"><img src=\"../力学实验_images/energy_fig2.png\" alt=\"图2\" style=\"max-width:100%;background:#fff;padding:8px;border-radius:8px\"><br><span style=\"color:var(--sub);font-size:12px\">图2：纸带上 A～E 点到起点距离</span></p>\n<p><b>(3)</b> 纸带上各点与起点间的距离即为重锤下落高度 h，计算相应的重锤下落速度 v，并绘制图3所示的 v²–h 关系图像。理论上，若机械能守恒，图中直线应________（填“通过”或“不通过”）原点且斜率为________（用重力加速度大小 g 表示）。由图3得直线的斜率 k = ________（保留3位有效数字）。</p>\n<p style=\"text-align:center\"><img src=\"../力学实验_images/energy_fig3.png\" alt=\"图3\" style=\"max-width:100%;background:#fff;padding:8px;border-radius:8px\"><br><span style=\"color:var(--sub);font-size:12px\">图3：v²–h 关系图像</span></p>\n<p><b>(4)</b> 定义单次测量的相对误差 η = (Ep − Ek) / Ep × 100%，其中 Ep 是重锤重力势能的减小量，Ek 是其动能增加量，则实验相对误差为 η = ________ × 100%（用字母 k 和 g 表示）；当地重力加速度大小取 g = 9.80 m/s²，则 η = ________ %（保留2位有效数字），若 η &lt; 6%，可认为在实验误差允许的范围内机械能守恒。</p>\n<p class=\"ans\"><b>【答案】</b> (1) ④①⑥⑤ &nbsp;&nbsp; (2) 1.79 &nbsp;&nbsp; (3) 通过 / 2g / 18.6 &nbsp;&nbsp; (4) (2g−k)/(2g) × 100% / 5.1</p>\n<details style=\"margin-top:10px\"><summary style=\"cursor:pointer;color:var(--accent)\">▸ 查看详解</summary>\n<div style=\"padding:10px 14px;background:var(--card2);border-radius:8px;margin-top:8px;font-size:13px\">\n<p><b>（1）</b>实验步骤：④ → ① → ⑥ → ⑤。由 mgh = ½mv² 知 m 可约掉，不必用电子天平（步骤③错误）；必须先接通电源再释放（②错误）。</p>\n<p><b>（2）</b>T = 1/f = 0.02 s；中间时刻速度等于平均速度：v<sub>B</sub> = h<sub>AC</sub>/(2T) = (0.2034 − 0.1320)/0.04 ≈ 1.79 m/s。</p>\n<p><b>（3）</b>由 mgh = ½mv² 得 v² = 2g·h，故直线通过原点，斜率 = 2g；由图3，k = (5.0−1.0)/(0.265−0.05) ≈ 18.6。</p>\n<p><b>（4）</b>η = (mgh − ½mv²)/(mgh) × 100% = (2g − k)/(2g) × 100%；代入 g = 9.80、k = 18.6 得 η ≈ 5.1% &lt; 6%，符合守恒。</p>\n</div></details>", "img2": "../力学实验_images/energy_cons_real2.png", "img2Cap": "图2：单摆 + 光电门验证机械能守恒装置", "img3": "../力学实验_images/energy_cons_airtrack.png", "img3Cap": "图3：气垫导轨 + 光电门验证机械能守恒装置"}, {"no": "第 7 关", "ttl": "探究动能定理", "tag": "合力做功", "img": "../力学实验_images/air_track.png", "imgCap": "气垫导轨装置（用于探究动能定理）", "principle": "<b>核心原理：</b>合外力对物体做的功等于物体动能的变化：<b>W = ΔE_k = ½mv₂² − ½mv₁²</b>。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>做法：</b>小车在砝码牵引下运动，用打点计时器或光电门测初末速度 v₁、v₂，计算 W 与 ΔE_k 比较。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>平衡摩擦：</b>同样需将木板一端垫高平衡摩擦，使绳拉力做功近似等于合外力功。", "questions": [{"q": "动能定理的表达式是？", "o": ["W=ΔE_p", "W=ΔE_k", "F=ma", "W=mgh"], "a": 1, "e": "动能定理：合外力做功等于动能变化量 W=ΔE_k。"}, {"q": "实验中为让绳拉力做功近似等于合外力功，需？", "o": ["增大质量", "平衡摩擦力", "减小电压", "不用纸带"], "a": 1, "e": "平衡摩擦后，摩擦力被重力分力抵消，绳拉力即合外力。"}, {"q": "若小车质量远大于砝码质量，目的是？", "o": ["让加速度更大", "使绳拉力近似等于砝码重力 mg", "减小摩擦", "便于计时"], "a": 1, "e": "m车≫m码 时，系统加速度小，绳拉力 T≈mg，可用砝码重力代替拉力做功 W=mgh。"}], "exam": "<p>（2021·河北）探究动能定理，平衡摩擦后，用质量为 m 的砝码通过滑轮牵引小车，小车由静止从 A 到 B 位移 s，打点测得末速 v。则验证式为____。</p><p class='ans'>答案：mgs = ½Mv²（M 为小车质量，近似 m车≫m 时绳拉力≈mg）；更严格应测拉力 T 用 Ts=½Mv²。</p>"}, {"no": "第 8 关", "ttl": "验证动量守恒定律", "tag": "碰撞 · 一维", "img": "../力学实验_images/momentum_collision.png", "imgCap": "验证动量守恒定律装置（一维碰撞）", "principle": "<b>核心原理：</b>系统不受外力或合外力为零时，总动量守恒：<b>m₁v₁+m₂v₂ = m₁v₁′+m₂v₂′</b>。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>气垫导轨法：</b>用光电门测碰前碰后速度，验证 m₁v₁+m₂v₂=m₁v₁′+m₂v₂′。<br><hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>平抛法（传统）：</b>两小球从同一高度飞出做平抛，水平位移 x∝v，故用 <b>m₁x₁=m₁x₁′+m₂x₂′</b> 验证（无需测速度与时间）。<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>平抛法关键条件（常考点）：</b>① 斜槽末端<b>水平</b>（保证水平初速）；② 入射球 m<sub>a</sub> <b>&gt;</b> 被碰球 m<sub>b</sub>——保证碰后入射球仍向前运动（v<sub>a</sub> &gt; 0，<b>不反弹</b>），且被碰球速度更大（v<sub>b</sub> &gt; v<sub>a</sub>，<b>避免二次碰撞</b>）；③ 两球<b>半径相同</b>——保证碰后都在同一高度做平抛（时间 t 相同）才能用 x 代替 v。", "questions": [{"q": "一维碰撞中动量守恒的条件是？", "o": ["机械能守恒", "系统所受合外力为零（或外力远小于内力）", "质量相等", "速度相反"], "a": 1, "e": "系统不受外力或合外力为零（如气垫导轨近似无摩擦、水平方向合外力为零）时总动量守恒。"}, {"q": "用平抛法验证动量守恒，用水平位移 x 代替速度的依据是？", "o": ["x 与 v 成反比", "平抛时间相同，x∝v", "x 与质量无关", "x 等于速度"], "a": 1, "e": "两球从同高度平抛，飞行时间 t 相同，故 x=vt ∝ v，可用 mx 代替 mv 验证。"}, {"q": "气垫导轨上用光电门测速，若挡光片宽 d、挡光时间 Δt，则速度 v≈？", "o": ["d·Δt", "d/Δt", "Δt/d", "2d/Δt"], "a": 1, "e": "极短时间内的平均速度近似瞬时速度：v≈d/Δt。"}, {"q": "平抛法验证动量守恒：入射球 a 与被碰球 b 半径相同，为保证碰后 a 球不反弹、且 b 球不追上 a 球再次碰撞，实验中须满足 m_a ____ m_b。", "o": [">", "<", "=", "不确定"], "a": 0, "e": "碰后 a 球必须仍向前运动（v<sub>a</sub> &gt; 0）→ 由动量守恒 m<sub>a</sub>v<sub>0</sub> = m<sub>a</sub>v<sub>a</sub> + m<sub>b</sub>v<sub>b</sub>，若 m<sub>a</sub> &lt; m<sub>b</sub> 可能使 v<sub>a</sub> ≤ 0（反弹）甚至被推回斜槽。同时 m<sub>a</sub> &gt; m<sub>b</sub> 时碰后 v<sub>b</sub> &gt; v<sub>a</sub>，保证被碰球在前、入射球在后，<b>不会发生二次碰撞</b>。故选 A（&gt;）。"}, {"q": "如图 8-2 装置，未碰时 a 球落点 P，碰后 a 球落点 M，b 球落点 N（球心落在木板上）；则在实验误差范围内验证动量守恒的关系式为？", "o": ["m_a·x_P = m_a·x_M + m_b·x_N", "m_a·x_P = m_a·x_N + m_b·x_M", "m_b·x_P = m_a·x_M + m_b·x_N", "m_a·x_P = (m_a + m_b)·x_M"], "a": 0, "e": "三球离开斜槽末端的高度相同，<b>下落时间 t 相同</b>，水平方向匀速：<br>· 未碰时 a：v<sub>0</sub> = x<sub>P</sub>/t<br>· 碰后 a：v<sub>a</sub> = x<sub>M</sub>/t<br>· 碰后 b：v<sub>b</sub> = x<sub>N</sub>/t<br>代入 m<sub>a</sub>v<sub>0</sub> = m<sub>a</sub>v<sub>a</sub> + m<sub>b</sub>v<sub>b</sub> 得 <b>m<sub>a</sub>·x<sub>P</sub> = m<sub>a</sub>·x<sub>M</sub> + m<sub>b</sub>·x<sub>N</sub></b>，选 A（注意：碰后 a 球落点 M 离 O 最近、未碰的 P 在中间、碰后 b 的 N 最远，<b>不是球心半径</b>而是<b>球落地点</b>距离）。"}], "exam": "<p>（2024·甘肃）气垫导轨上两滑块质量 m₁、m₂，碰前速度 v₁、v₂（相向），碰后 v₁′、v₂′。请写出动量守恒验证式，并说明为何导轨需调水平。</p><p class='ans'>答案：m₁v₁+m₂v₂=m₁v₁′+m₂v₂′（注意方向取正负）；导轨调水平是为避免重力沿斜面分力作为外力，保证水平方向合外力近似为零，动量守恒成立。</p><p>（2024·新疆河南·高考真题）28．某同学用如图 8-2 所示装置验证动量守恒定律：将斜槽固定在水平桌面，末端水平，末端在木板上垂直投影 O；木板上叠放白纸+复写纸。先把 a 球从斜槽上 Q 处静止释放，从末端水平飞出落在木板，重复多次测落点平均位置 P 距 O 为 x<sub>P</sub>；再将半径与 a 相同的 b 球置于斜槽右端，将 a 球从 Q 释放，两球碰撞后均落在木板，重复多次测得 a、b 落点 M、N 距 O 分别为 x<sub>M</sub>、x<sub>N</sub>。请完成：</p>\n<p>（1）实验中须满足 m<sub>a</sub> ____ m<sub>b</sub>（填 \"&gt;\" 或 \"&lt;\"）；</p>\n<p>（2）若 x<sub>P</sub>、x<sub>M</sub>、x<sub>N</sub>、m<sub>a</sub>、m<sub>b</sub> 满足关系式 _______ 即验证动量守恒；用落点距离代替速度，依据是 _______。</p>\n<p class='ans'>答案：（1）<b>m<sub>a</sub> &gt; m<sub>b</sub></b>（保证碰后 a 不反弹、b 不追上 a 发生二次碰撞）；（2）关系式 <b>m<sub>a</sub>·x<sub>P</sub> = m<sub>a</sub>·x<sub>M</sub> + m<sub>b</sub>·x<sub>N</sub></b>；依据：两球离开斜槽后做平抛运动，下落高度相同→时间 t 相同，水平方向匀速运动，故水平位移与初速度成正比（x = v·t）。</p>", "img2": "../力学实验_images/momentum_horizontal_2024.png", "img2Cap": "图 8-2（2024·新疆河南真题）平抛法验证动量守恒：a 从 Q 静止释放，碰后 a、b 均做平抛落点为 M、N，未碰落点为 P"}, {"no": "第 9 关", "ttl": "用单摆测量重力加速度", "tag": "单摆 · 周期法", "img": "../力学实验_images/pendulum_photogate.png", "imgCap": "图 9-1：单摆测 g 装置（摆球最低点处光电门 + 数据采集器）", "principle": "<b>核心原理：</b>单摆做简谐运动，周期 <b>T = 2π√(L/g)</b>，故测出摆长 L 与周期 T 即可求 <b>g = 4π²L/T²</b>。<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>摆长测量：</b>摆长是<b>悬点到球心</b>的距离：L = 摆线长 l + 小球半径 <b>d/2</b>（用刻度尺量 l，游标卡尺量球直径 d）。<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>周期测量：</b>为减小误差，测 n 次全振动的时间 t，<b>T = t/n</b>；计时从摆球通过<b>平衡位置（最低点）</b>开始，此时速度最大、误差最小。<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>光电门法（图 9-1）：</b>摆球每次经过最低点挡住光电门，相邻两次挡光间隔 = <b>半个周期 T/2</b>；记录 n 个挡光间隔求 T 更精确。<hr style=\"border:none;border-top:1px solid var(--line);margin:8px 0\"><b>误差分析：</b>g ∝ L、g ∝ 1/T²。<br>· L 偏小（把摆线长当摆长）→ <b>g 偏小</b>；L 偏大 → g 偏大。<br>· 漏记全振动次数（n 偏小）→ T 偏大 → <b>g 偏小</b>；多记 → g 偏大。<br>· 圆锥摆（摆球画圆）→ T 偏小 → g 偏大；摆角过大 → T 偏大 → g 偏小。<br>· 图像法：作 <b>T²–L 图像</b>为过原点直线，斜率 k = 4π²/g → <b>g = 4π²/k</b>，可减小偶然误差。", "questions": [{"q": "关于本实验（用单摆测重力加速度），下列说法正确的是？（多选）", "o": ["小钢球摆动平面应与光电门U形平面垂直", "应在小钢球自然下垂时测量摆线长度", "小钢球可以换成较轻的橡胶球", "应无初速度、小摆角释放小钢球"], "a": [0, 1, 3], "e": "A ✓：摆动平面与光电门 U 形平面<b>垂直</b>，摆球每次经过最低点才能穿过 U 形槽挡光计时；B ✓：自然下垂时摆线<b>竖直拉直</b>，此时量悬点到球顶距离 + 半径才是摆长；C ✗：应选<b>密度大、体积小</b>的钢球以减小空气阻力，换轻橡胶球会显著增大误差；D ✓：<b>无初速度</b>释放避免圆锥摆，<b>小摆角</b>（摆角≤5°）保证小角度近似、做简谐运动。"}, {"q": "用单摆测重力加速度，测得摆长 L、周期 T，则 g 为？", "o": ["g = 2π√(L/T)", "g = 4π²L/T²", "g = T²/(4π²L)", "g = 4π²T²/L"], "a": 1, "e": "由 T = 2π√(L/g) 两边平方：T² = 4π²L/g，解得 <b>g = 4π²L/T²</b>，选 B。"}, {"q": "摆线长 l = 98.00 cm，游标卡尺测得摆球直径 d = 2.00 cm，则摆长 L 为？", "o": ["98.00 cm", "99.00 cm", "100.00 cm", "97.00 cm"], "a": 1, "e": "摆长 = 悬点到球心的距离 = 摆线长 + 小球半径：L = l + d/2 = 98.00 + 1.00 = <b>99.00 cm</b>。选 B（易错点：误把直径当半径、或把摆线长当摆长）。"}, {"q": "单摆最低点装有光电门，摆球每次经过最低点挡光一次。测出连续 2 次挡光的间隔 Δt = 1.00 s，则周期 T 为？", "o": ["0.50 s", "1.00 s", "2.00 s", "4.00 s"], "a": 2, "e": "摆球往返经过最低点各一次才完成一个全振动，故<b>相邻两次经过最低点（挡光）的时间间隔 = 半个周期</b>：T/2 = Δt = 1.00 s → <b>T = 2.00 s</b>。选 C（易错点：误把 Δt 当周期）。"}, {"q": "测周期时，该同学将 49 次全振动误记为 50 次，则测得的 g 将？", "o": ["偏大", "偏小", "不变", "无法判断"], "a": 0, "e": "n 多记 → T = t/n 偏小；g = 4π²L/T²，T 偏小 → <b>g 偏大</b>。选 A。（若漏记则 T 偏大、g 偏小，正好相反）"}, {"q": "作 T²–L 图像（过原点直线），测得斜率 k，则重力加速度 g = ？", "o": ["g = k", "g = 4π²/k", "g = k/4π²", "g = 4π²k"], "a": 1, "e": "T² = (4π²/g)·L，即 T²–L 图斜率为 <b>k = 4π²/g</b>，所以 <b>g = 4π²/k</b>。选 B。图像法比单次测量更准确。"}], "exam": "<p>（真题改编）某同学用单摆测量当地重力加速度：摆线长 l = 98.00 cm，游标卡尺测得摆球直径 d = 2.00 cm；将摆球拉起小角度（摆角 &lt; 5°）后释放，用秒表从摆球通过最低点开始计时，测得 50 次全振动用时 t = 100.0 s。</p><p>（1）求摆长 L 与周期 T；（2）求当地 g 值；（3）若该同学误将摆线长 l 当作摆长代入公式，测得的 g 偏大还是偏小？</p><p class='ans'>答案：(1) L = l + d/2 = 98.00 + 1.00 = 99.00 cm = 0.9900 m；T = t/50 = 100.0/50 = 2.00 s。<br>(2) g = 4π²L/T² = 4×3.14²×0.99/2.00² ≈ 9.77 m/s²。<br>(3) L 偏小（少了半径 d/2）→ g = 4π²L/T² 偏小。</p><p>（真题改编·光电门）同装置中改用光电门测周期：数据采集器记录到相邻两次挡光时间间隔 Δt = 1.00 s，摆长 L = 0.9900 m，求 g。</p><p class='ans'>答案：相邻两次挡光为半个周期 → T = 2Δt = 2.00 s；g = 4π²L/T² ≈ 9.77 m/s²。注意：Δt 是半周期而非整周期。</p>"}];
+
+let cleared = JSON.parse(localStorage.getItem("mech_exp_cleared") || "[]");
+let currentLevel = -1;
+const levelsEl = document.getElementById("levels");
+const quizEl = document.getElementById("quiz");
+const examEl = document.getElementById("exam");
+const finalEl = document.getElementById("final");
+
+function updateProgress(){
+  const n = cleared.length;
+  const pct = (n / LEVELS.length * 100) + "%";
+  document.getElementById("pfill").style.width = pct;
+  document.getElementById("ptext").textContent = "已通关 " + n + " / " + LEVELS.length;
+  const pf2 = document.getElementById("pfill2"), pt2 = document.getElementById("ptext2");
+  if (pf2) pf2.style.width = pct;
+  if (pt2) pt2.textContent = "已通关 " + n + " / " + LEVELS.length;
+  if (n === LEVELS.length) finalEl.classList.add("show");
+  else finalEl.classList.remove("show");
+}
+
+function renderLevels(){
+  levelsEl.innerHTML = "";
+  LEVELS.forEach(function(lv, i){
+    const isCleared = cleared.indexOf(i) >= 0;
+    const div = document.createElement("div");
+    div.className = "lvl" + (isCleared ? " cleared" : "") + (i === currentLevel ? " active" : "");
+    const thumbBg = lv.img
+      ? 'background-image:url("' + lv.img + '")'
+      : 'background:linear-gradient(135deg,#2a3456,#3b2f5e);color:#fff';
+    const thumbTxt = lv.img ? "" : "🎯";
+    div.innerHTML =
+      '<div class="badge">' + (isCleared ? "✅" : "⭐") + '</div>' +
+      '<div class="thumb" style="' + thumbBg + '">' + thumbTxt + '</div>' +
+      '<div class="no">' + lv.no + '</div>' +
+      '<div class="ttl">' + lv.ttl + '</div>' +
+      '<div class="tag">' + lv.tag + '</div>';
+    div.onclick = function(){ openLevel(i); };
+    levelsEl.appendChild(div);
+  });
+}
+
+function openLevel(i){
+  try{ history.replaceState(null, "", "?level=" + i); }catch(e){}
+  const lv = LEVELS[i];
+  currentLevel = i;
+  renderLevels();
+
+  quizEl.classList.toggle("split", !!lv.split);
+  quizEl.classList.add("show");
+  examEl.classList.remove("show");
+  finalEl.classList.remove("show");
+
+  document.getElementById("qTitle").textContent = lv.no + " " + lv.ttl;
+  document.getElementById("qSub").textContent = "闯关要求：答对全部题目即通关";
+  const kpHtml = lv.principle.split(/<hr[^>]*>/).map(function(seg){
+    return seg.trim() ? '<div class="kp-card">' + seg + '</div>' : "";
+  }).join("");
+  document.getElementById("qPrinciple").innerHTML = kpHtml;
+
+  const imgBox = document.getElementById("qImgBox");
+  imgBox.innerHTML = "";
+  function appendImg(src, cap){
+    if (!src) return;
+    const im = document.createElement("img");
+    im.src = src;
+    im.style.maxWidth = "100%";
+    im.style.maxHeight = lv.split ? "230px" : "320px";
+    im.style.borderRadius = "10px";
+    im.style.border = "1px solid var(--line)";
+    im.style.padding = "10px";
+    im.style.background = "#fff";
+    im.style.display = "block";
+    im.style.margin = "8px auto";
+    imgBox.appendChild(im);
+    const c = document.createElement("div");
+    c.className = "imgcap";
+    c.textContent = cap || "";
+    imgBox.appendChild(c);
+  }
+  appendImg(lv.img, lv.imgCap || (lv.ttl + " 实验装置示意图"));
+  appendImg(lv.img2, lv.img2Cap);
+  appendImg(lv.img3, lv.img3Cap);
+
+  const list = document.getElementById("qList");
+  list.innerHTML = "";
+  let answered = 0;
+  const total = lv.questions.length;
+  lv.questions.forEach(function(qq, qi){
+    const qd = document.createElement("div");
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+    const multi = Array.isArray(qq.a);
+    qDiv.textContent = (qi + 1) + ". " + qq.q + (multi ? "（多选）" : "");
+    qd.appendChild(qDiv);
+    const optsDiv = document.createElement("div");
+    optsDiv.className = "opts";
+    qd.appendChild(optsDiv);
+    const exp = document.createElement("div");
+    exp.className = "explain";
+    qd.appendChild(exp);
+    list.appendChild(qd);
+
+    let confirmBtn = null;
+    if (multi){
+      confirmBtn = document.createElement("button");
+      confirmBtn.className = "confirm-btn";
+      confirmBtn.textContent = "确认本题";
+      qd.appendChild(confirmBtn);
+    }
+
+    qq.o.forEach(function(opt, oi){
+      const ob = document.createElement("div");
+      ob.className = "opt";
+      ob.textContent = opt;
+      ob.onclick = function(){
+        if (optsDiv.classList.contains("done")) return;
+        if (multi){
+          ob.classList.toggle("sel");
+        } else {
+          optsDiv.classList.add("done");
+          const all = optsDiv.querySelectorAll(".opt");
+          all.forEach(function(a, j){
+            a.classList.add("disabled");
+            if (j === qq.a) a.classList.add("correct");
+          });
+          if (oi === qq.a) ob.classList.add("correct");
+          else ob.classList.add("wrong");
+          exp.textContent = "💡 " + qq.e;
+          exp.classList.add("show");
+          answered++;
+          if (answered === total) checkClear(i);
+        }
+      };
+      optsDiv.appendChild(ob);
+    });
+
+    if (confirmBtn){
+      confirmBtn.onclick = function(){
+        if (optsDiv.classList.contains("done")) return;
+        optsDiv.classList.add("done");
+        const sel = [];
+        optsDiv.querySelectorAll(".opt").forEach(function(a, j){
+          a.classList.add("disabled");
+          if (a.classList.contains("sel")) sel.push(j);
+        });
+        const ok = sel.length === qq.a.length && qq.a.every(function(v){ return sel.indexOf(v) >= 0; });
+        const letter = ["A","B","C","D","E","F"];
+        optsDiv.querySelectorAll(".opt").forEach(function(a, j){
+          if (qq.a.indexOf(j) >= 0) a.classList.add("correct");
+          else if (a.classList.contains("sel")) a.classList.add("wrong");
+        });
+        exp.textContent = (ok ? "✅ 正确！" : "❌ 正确答案：" + qq.a.map(function(v){ return letter[v]; }).join("、") + "　") + "💡 " + qq.e;
+        exp.classList.add("show");
+        answered++;
+        if (answered === total) checkClear(i);
+      };
+    }
+  });
+
+  const nb = document.getElementById("nextBtn");
+  nb.style.display = "none";
+  nb.textContent = "下一关 →";
+  nb.onclick = function(){
+    if (i < LEVELS.length - 1) openLevel(i + 1);
+    else window.scrollTo(0, 0);
+  };
+}
+
+function checkClear(i){
+  if (cleared.indexOf(i) < 0){
+    cleared.push(i);
+    localStorage.setItem("mech_exp_cleared", JSON.stringify(cleared));
+  }
+  const nb = document.getElementById("nextBtn");
+  if (i < LEVELS.length - 1){
+    nb.textContent = "下一关 →";
+    nb.style.display = "inline-block";
+  } else {
+    nb.textContent = "查看通关 & 真题 →";
+    nb.style.display = "inline-block";
+    nb.onclick = function(){ showExam(i); };
+  }
+  renderLevels();
+  updateProgress();
+  showExam(i);
+}
+
+function showExam(i){
+  examEl.classList.add("show");
+  const lv = LEVELS[i];
+  document.getElementById("examBody").innerHTML =
+    '<p style="color:var(--sub);margin-bottom:10px">' + lv.no + " " + lv.ttl + " · 真题示例</p>" + lv.exam;
+  examEl.scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("backBtn").onclick = function(){
+  try{ history.replaceState(null, "", location.pathname); }catch(e){}
+  quizEl.classList.remove("show");
+  examEl.classList.remove("show");
+  currentLevel = -1;
+  renderLevels();
+  updateProgress();
+  window.scrollTo(0, 0);
+};
+
+document.getElementById("resetBtn").onclick = function(){
+  cleared = [];
+  localStorage.removeItem("mech_exp_cleared");
+  renderLevels();
+  updateProgress();
+  finalEl.classList.remove("show");
+};
+
+renderLevels();
+updateProgress();
+
+/* URL 直达：?level=0..7 直接打开对应关卡 */
+(function(){
+  try{
+    var q = new URLSearchParams(window.location.search).get("level");
+    if (q === null) return;
+    var n = parseInt(q, 10);
+    if (!isNaN(n) && n >= 0 && n < LEVELS.length) openLevel(n);
+  }catch(e){}
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

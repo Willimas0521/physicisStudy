@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初中物理知识库 · 思维导图导航</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: radial-gradient(1200px 800px at 50% 38%, #14331f 0%, #0f2418 55%, #0a1a12 100%);
+            color: #e8f5ec;
+            overflow: hidden;
+        }
+        .wrap { height: 100vh; display: flex; align-items: center; justify-content: center; }
+        #map { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
+        #map svg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        #map .node { position: absolute; z-index: 2; }
+
+        /* 中心节点 */
+        .center-node {
+            width: 196px; height: 196px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 25%, #2ea869 0%, #1f7a4d 55%, #14532d 100%);
+            box-shadow: 0 0 0 8px rgba(46,168,105,.16), 0 0 70px rgba(46,168,105,.4), inset 0 0 30px rgba(255,255,255,.08);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            color: #fff; text-align: center;
+            border: 2px solid rgba(255,255,255,.25);
+            transition: box-shadow .3s ease, transform .3s ease;
+        }
+        .center-node:hover { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(46,168,105,.24), 0 0 90px rgba(46,168,105,.55), inset 0 0 30px rgba(255,255,255,.1); }
+        .center-node .ce { font-size: 34px; }
+        .center-node .cn { font-size: 23px; font-weight: 800; letter-spacing: 3px; }
+        .center-node .cs { font-size: 12px; opacity: .88; margin-top: 3px; }
+        .center-node .cs b { color: #ffd54f; font-size: 14px; }
+
+        /* 分类标题 */
+        .chip {
+            height: 40px; width: 150px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            color: #fff; font-weight: 700; font-size: 15px; letter-spacing: 1px;
+            box-shadow: 0 4px 14px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
+            white-space: nowrap;
+        }
+        .chip .n {
+            font-size: 11px; font-weight: 600; background: rgba(255,255,255,.24);
+            border-radius: 999px; padding: 1px 9px;
+        }
+
+        /* 专题子节点 */
+        .item {
+            width: 190px; height: 44px; border-radius: 11px;
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.13);
+            display: flex; align-items: center; gap: 9px; padding: 0 12px;
+            color: #e8f5ec; text-decoration: none; font-size: 13.5px;
+            transition: background .18s, border-color .18s, transform .18s, box-shadow .18s;
+            backdrop-filter: blur(4px);
+        }
+        .item:hover {
+            background: rgba(255,255,255,.16);
+            transform: translateX(5px);
+            box-shadow: 0 8px 22px rgba(0,0,0,.4);
+        }
+        .item[data-side="L"]:hover { transform: translateX(-5px); }
+        .item .ic { font-size: 17px; flex-shrink: 0; }
+        .item .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 连线生长动画 */
+        path.line {
+            fill: none; stroke-width: 2.5; stroke-linecap: round; opacity: .5;
+            stroke-dasharray: 1; stroke-dashoffset: 1;
+        }
+        path.line.anim { animation: draw .8s cubic-bezier(.6,.05,.25,1) forwards; }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        .hint {
+            position: fixed; left: 18px; bottom: 14px; z-index: 9;
+            font-size: 12px; color: rgba(232,245,236,.35); letter-spacing: 1px;
+        }
+        .nav-link {
+            position: fixed; top: 20px; left: 24px; z-index: 99;
+            padding: 8px 18px; border-radius: 999px;
+            background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
+            color: #e8f5ec; text-decoration: none; font-size: 14px;
+            transition: all .2s; backdrop-filter: blur(4px);
+        }
+        .nav-link:hover { background: rgba(255,255,255,.16); transform: translateY(-1px); }
+        .nav-link .arr { color: #ffd54f; font-weight: 700; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div id="map">
+        <svg id="lines" viewBox="0 0 1600 900" preserveAspectRatio="none"></svg>
+    </div>
+</div>
+<a class="nav-link" href="../index.html"><span class="arr">←</span> 高中物理</a>
+<div class="hint">初中物理知识库 · 思维导图导航 · 点击专题节点进入</div>
+
+<script>
+const CX = 800, CY = 450;
+
+const DATA = [
+    { name: '力学篇', icon: '🏋️', color: '#51cf66', side: 'L', children: [
+        { icon: '🎈', name: '浮力基础', href: '初中物理_浮力基础知识.html', d: '阿基米德原理 · 浮沉条件' },
+        { icon: '🧮', name: '浮力交互模型', href: '初中物理_浮力交互模型.html', d: '动态模型分析' },
+        { icon: '📐', name: '压强选择题', href: '初中物理_压强选择题.html', d: '固体液体压强' },
+    ]},
+    { name: '电学篇', icon: '💡', color: '#54a0ff', side: 'R', children: [
+        { icon: '💡', name: '电学压轴题', href: '初中物理_电学压轴题.html', d: '电路综合突破' },
+        { icon: '🔧', name: '电路故障诊断', href: '初中物理_电路故障诊断.html', d: '断路短路分析' },
+    ]},
+    { name: '光学篇', icon: '🔦', color: '#ffa94d', side: 'R', children: [
+        { icon: '🔦', name: '光学基础', href: '初中物理_光学基础知识.html', d: '反射折射透镜' },
+    ]},
+];
+
+const map = document.getElementById('map');
+const svg = document.getElementById('lines');
+const NS = 'http://www.w3.org/2000/svg';
+let delay = 0;
+
+/* 中心节点 */
+const cen = document.createElement('div');
+cen.className = 'node center-node';
+cen.style.left = (CX - 98) + 'px';
+cen.style.top = (CY - 98) + 'px';
+cen.innerHTML = '<div class="ce">🎈</div><div class="cn">初中物理知识库</div><div class="cs">共 <b>6</b> 个专题 · 点击直达</div>';
+map.appendChild(cen);
+
+/* 布局参数 */
+const ROW_H = 54;
+const L_ITEM_X = 70, R_ITEM_X = 1350;
+const L_TITLE_X = 520, R_TITLE_X = 940;
+const CHIP_W = 150, CHIP_H = 40;
+const ITEM_W = 190, ITEM_H = 44;
+
+const groupH = g => g.children.length * ROW_H - 10;
+
+const Lgroups = DATA.filter(g => g.side === 'L');
+const Rgroups = DATA.filter(g => g.side === 'R');
+
+/* 左右列分组均垂直居中 */
+const Ltotal = Lgroups.reduce((s, g) => s + groupH(g), 0) + (Lgroups.length - 1) * 26;
+const Rtotal = Rgroups.reduce((s, g) => s + groupH(g), 0) + (Rgroups.length - 1) * 26;
+let ly = (900 - Ltotal) / 2;
+Lgroups.forEach(g => { g.top = ly; ly += groupH(g) + 26; });
+let ry = (900 - Rtotal) / 2;
+Rgroups.forEach(g => { g.top = ry; ry += groupH(g) + 26; });
+
+function makeLine(x1, y1, x2, y2, color, ctrl) {
+    const d = ctrl
+        ? `M${x1} ${y1} C ${ctrl[0]} ${ctrl[1]}, ${ctrl[2]} ${ctrl[3]}, ${x2} ${y2}`
+        : `M${x1} ${y1} L${x2} ${y2}`;
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('class', 'line anim');
+    p.setAttribute('stroke', color);
+    p.setAttribute('pathLength', '1');
+    p.style.animationDelay = (delay / 18) + 's';
+    svg.appendChild(p);
+}
+
+DATA.forEach(g => {
+    const side = g.side;
+    const x = side === 'L' ? L_ITEM_X : R_ITEM_X;
+    const tx = side === 'L' ? L_TITLE_X : R_TITLE_X;
+    const centerY = g.top + groupH(g) / 2;
+
+    /* 分类标题 */
+    const chip = document.createElement('div');
+    chip.className = 'node chip';
+    chip.style.cssText = `left:${tx}px;top:${centerY - CHIP_H / 2}px;background:linear-gradient(135deg,${g.color},${g.color}cc)`;
+    chip.innerHTML = `${g.icon}${g.name}<span class="n">${g.children.length}</span>`;
+    map.appendChild(chip);
+
+    /* 中心 -> 标题 */
+    const edgeX = side === 'L' ? CX - 98 : CX + 98;
+    const txEdge = side === 'L' ? tx : tx + CHIP_W;
+    makeLine(edgeX, CY, txEdge, centerY, g.color,
+        side === 'L' ? [edgeX - 46, CY, txEdge + 40, centerY]
+                     : [edgeX + 46, CY, txEdge - 40, centerY]);
+    delay += 2;
+
+    /* 子节点 */
+    g.children.forEach((c, j) => {
+        const yy = g.top + j * ROW_H;
+        const item = document.createElement('a');
+        item.className = 'item node';
+        item.href = c.href;
+        item.title = c.d;
+        item.dataset.side = side;
+        item.style.cssText = `left:${x}px;top:${yy}px;border-left:4px solid ${g.color}`;
+        item.innerHTML = `<span class="ic">${c.icon}</span><span class="tx">${c.name}</span>`;
+        map.appendChild(item);
+
+        /* 子节点 -> 标题 */
+        const iy = yy + ITEM_H / 2;
+        const iex = side === 'L' ? x + ITEM_W : x;
+        const cex = side === 'L' ? tx : tx + CHIP_W;
+        makeLine(iex, iy, cex, centerY, g.color,
+            side === 'L' ? [iex + 44, iy, tx - 34, centerY]
+                         : [iex - 44, iy, tx + CHIP_W + 34, centerY]);
+        delay += 1;
+    });
+});
+
+/* 视口缩放适配 */
+function fit() {
+    const s = Math.min(window.innerWidth / 1620, window.innerHeight / 920, 1);
+    map.style.transform = `scale(${s})`;
+}
+window.addEventListener('resize', fit);
+fit();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

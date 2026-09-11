@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 探究平抛运动规律</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 5 关 · 共 9 关</span>
+  </div>
+  <h1>探究平抛运动规律</h1>
+  <div class="tag">平抛 · 描迹</div>
+  
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>核心原理：</b>平抛运动可分解为<b>水平方向匀速直线</b>（vₓ=v₀）与<b>竖直方向自由落体</b>（y=½gt²）。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>关系：</b>水平 x=v₀t，竖直 y=½gt²，联立得 y = (g/(2v₀²)) x²（抛物线）。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>测初速：</b>由 y=½gt² 求 t，再 v₀=x/t；或用频闪照片比较相邻位置竖直位移差 Δy=gT²。<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>挡板平移法（常考点·图3装置）：</b>竖直挡板上附复写纸+白纸，挡板初始紧贴斜槽末端，记录点迹 0；挡板每次水平向右移动 x，重复释放钢球得点迹 1,2,3,4。<br>· 关键：钢球中心离斜槽末端的水平距离 = <b>挡板位移 − d/2</b>（d 为钢球直径，因钢球撞挡板时球心到末端 = x − d/2）<br>· 竖直方向：y<sub>n</sub> = ½g t<sub>n</sub>²（自由落体）；水平方向：nx − d/2 = v₀ t<sub>n</sub>（n=1,2,3,4）<br>· 求 v₀：v₀ = (nx − d/2)·√(g/(2y<sub>n</sub>))，最简用点迹 4：<b>v₀ = (4x − d/2)·√(g/(2y₄))</b></div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（2022·山东）某同学用频闪摄影研究平抛，相邻闪光间隔 T=0.1 s，测得某段水平位移 x=0.30 m，竖直方向连续三段位移分别为 4.9 cm、14.7 cm、24.5 cm。</p><p>求：(1) 初速度 v₀；(2) 验证竖直方向是否为自由落体。</p><p class='ans'>答案：(1) v₀=x/T=0.30/0.1=3.0 m/s；(2) 竖直相邻位移差 14.7−4.9=9.8 cm，24.5−14.7=9.8 cm，Δy=9.8 cm=gT²（g≈9.8 时），符合自由落体。</p><p>【综合题】"探究平抛运动的特点"实验（含图 1/2/3 三装置）三小问：</p>
+<p>（1）用图 1 装置，下列说法正确的是？A.只能探究水平分运动；B.需改变小锤击打力度多次重复；C.能同时探究水平、竖直分运动。【答案】B</p>
+<p>（2）用图 2 装置（斜槽 M + 挡板 N），下列说法正确的是？A.斜槽必须光滑且末端水平；B.挡板每次等间距移动；C.小钢球从同一位置静止滚下。【答案】C</p>
+<p>（3）用图 3 装置，挡板水平右移 x，重复得 y₁~y₄，球径 d，则 v₀ = (4x − d/2)·√(g/(2y₄))，即选项 D。</p>
+<p class='ans'>答案：(1)B；(2)C；(3)D。<br>关键：① 图 1 只能验证竖直分运动，需多次改变力度重复；② 图 2 斜槽只需末端水平 + 同位置静止释放（不要求光滑 / 等间距）；③ 图 3 球心水平距离 = 移动距离 − d/2，竖直 y₄ 对应时间 t = √(2y₄/g)，联立水平匀速 4x−d/2 = v₀t。</p></div>
+  <div class="nav">
+    <a class="prev" href="04_探究加速度与力质量关系.html">← 探究加速度与力、质量关系</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="06_验证机械能守恒定律.html">验证机械能守恒定律 →</a>
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "平抛运动在竖直方向是？", "o": ["匀速直线", "自由落体", "静止", "匀速圆周"], "a": 1, "e": "竖直方向只受重力，初速为 0，做自由落体运动。"}, {"q": "用频闪照片测 v₀，关键依据是？", "o": ["水平等距", "竖直相邻位移差 Δy=gT²", "总位移相等", "速度不变"], "a": 1, "e": "竖直方向自由落体，连续相等时间内的位移差 Δy=gT²，可求 T，再由水平等距 x=v₀T 求初速。"}, {"q": "关于平抛，正确说法是？", "o": ["水平速度随时间减小", "运动时间由高度决定", "落地速度只由初速决定", "轨迹是直线"], "a": 1, "e": "t=√(2h/g)，运动时间只由抛出高度 h 决定；水平速度不变，轨迹为抛物线。"}, {"q": "用图 1 装置（小锤打两小桌+两小球）探究平抛运动，下列说法正确的是？", "o": ["只能探究平抛运动水平分运动的特点", "需改变小锤击打的力度，多次重复实验", "能同时探究平抛运动水平、竖直分运动的特点"], "a": 1, "e": "图 1 是用小锤同时打击两球（A 球做平抛、B 球同时自由落体），只能对比竖直分运动，验证两者同时落地。<b>不能<\/b>研究水平分运动，所以 A/C 错。<br>实验中需要<b>多次改变小锤击打力度<\/b>，观察两球是否每次都同时落地，才能得出普遍结论，所以 B 对。"}, {"q": "用图 2 装置（斜槽 M + 可调挡板 N）进行实验，下列说法正确的是？", "o": ["斜槽轨道 M 必须光滑且其末端水平", "上下调节挡板 N 时必须每次等间距移动", "小钢球从斜槽 M 上同一位置静止滚下"], "a": 2, "e": "① 斜槽末端必须水平（保证抛体方向水平），但<b>不必光滑<\/b>——只要每次小球从<b>同一位置静止释放<\/b>，到末端速度就相同，所以 A 错。<br>② 调节挡板 N 是为了描出平抛轨迹，每次<b>不必等间距<\/b>移动——只要多次描点即可，所以 B 错。<br>③ 同位置静止释放 → 每次抛出的初速度 v₀ 相同，C 对。"}, {"q": "用图 3 装置，竖直挡板依次水平向右移动 x 重复实验，得点迹 0,1,2,3,4，竖直坐标 y₁~y₄，钢球直径 d。求 v₀？", "o": ["v₀ = (x + d/2)·√(g/(2y₁))", "v₀ = x·√(g/(y₂ − 2y₁))", "v₀ = (3x − d/2)·√(g/(2y₄))", "v₀ = (4x − d/2)·√(g/(2y₄))"], "a": 3, "e": "挡板 4 次右移距离共 4x，球心水平距离 = 4x − d/2（要扣掉钢球半径）。<br>竖直方向自由落体：y₄ = ½g t⁴，水平匀速：4x − d/2 = v₀ t。<br>联立得 <b>v₀ = (4x − d/2)·√(g/(2y₄))<\/b>，即 D。<br>A 错在用 +d/2 且用了点迹 1；B 错在水平用 x（未减 d/2），且 y₂−2y₁ 不是逐差法正确形式；C 错在水平用 3x−d/2（应是 4x−d/2）。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

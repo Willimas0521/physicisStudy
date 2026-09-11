@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 磁场圆圆心的确定（自由学习）</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa; color: #2c3e50; line-height: 1.9; font-size: 18px;
+        }
+        .header {
+            background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%);
+            color: white; padding: 42px 20px 30px; text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 8px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.05em; }
+        .progress-wrap { max-width: 760px; margin: 22px auto 0; text-align: left; }
+        .progress-label { font-size: 0.9em; margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .progress-bar { height: 14px; background: rgba(255,255,255,0.25); border-radius: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#7ee8a4,#27ae60); transition: width 0.5s ease; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card {
+            background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5;
+            transition: filter 0.3s, opacity 0.3s;
+        }
+        .card h2 {
+            color: #1e3c72; font-size: 1.85em; margin-bottom: 15px; padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.8em; flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.35em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .card img { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin: 10px 0; }
+        .formula {
+            background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px;
+            padding: 18px 20px; margin: 12px 0; font-size: 1.3em; color: #1a2a3a;
+            text-align: center; overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0; border-left: 4px solid #ff9800;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        .danger {
+            background: #ffebee; border-left: 4px solid #e74c3c;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 1em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 15px 20px; margin: 15px 0; border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .nav {
+            position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100;
+            background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+            border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+            max-height: calc(100vh - 140px); overflow-y: auto;
+        }
+        .nav .nav-title {
+            color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px;
+            padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px;
+        }
+        .nav a {
+            display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em;
+            padding: 7px 10px; border-radius: 6px; transition: background 0.25s;
+            border-left: 3px solid transparent;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .nav a.disabled { opacity: 0.45; cursor: not-allowed; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .level-nav {
+            display: flex; justify-content: space-between; margin-top: 18px;
+            padding-top: 16px; border-top: 1px dashed #dce4ee;
+        }
+        .level-nav button {
+            border: none; padding: 9px 20px; border-radius: 8px; cursor: pointer;
+            font-size: 0.95em; font-weight: 600; transition: background 0.2s;
+        }
+        .level-nav .prev { background: #eceff1; color: #546e7a; }
+        .level-nav .prev:hover { background: #cfd8dc; }
+        .level-nav .prev:disabled { opacity: 0.4; cursor: not-allowed; }
+        .level-nav .next { background: #3a7bd5; color: #fff; }
+        .level-nav .next:hover { background: #2a5298; }
+        .level-nav .next:disabled { background: #b0bec5; cursor: not-allowed; }
+        .level-nav .next-strong { background: linear-gradient(135deg,#27ae60,#2ecc71); }
+        .level-nav .next-strong:hover { filter: brightness(1.05); }
+        .card.level { display: block; }
+        .card.level.active-level { display: block; }
+        .quiz {
+            margin: 22px 0 4px; padding: 18px 20px; border-radius: 10px;
+            background: linear-gradient(135deg,#fff8e1,#fffdf5); border: 1px solid #ffe082;
+        }
+        .quiz .quiz-title { font-weight: 700; color: #b8860b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .quiz .q { margin: 12px 0 6px; font-weight: 600; color: #2c3e50; }
+        .quiz label.opt {
+            display: block; padding: 8px 12px; margin: 6px 0; border: 1px solid #e0e0e0;
+            border-radius: 8px; cursor: pointer; transition: background 0.2s; background: #fff;
+        }
+        .quiz label.opt:hover { background: #fffde7; }
+        .quiz label.opt.correct { background: #e8f5e9; border-color: #4caf50; }
+        .quiz label.opt.wrong { background: #ffebee; border-color: #e74c3c; }
+        .quiz input[type=radio] { margin-right: 8px; }
+        .quiz .submit-btn {
+            margin-top: 12px; background: #f39c12; color: white; border: none; padding: 8px 22px;
+            border-radius: 6px; cursor: pointer; font-size: 1em;
+        }
+        .quiz .submit-btn:hover { background: #d68910; }
+        .quiz .quiz-feedback {
+            margin-top: 12px; padding: 10px 14px; border-radius: 6px; font-weight: 600; display: none;
+        }
+        .quiz .quiz-feedback.ok { background: #e8f5e9; color: #1b5e20; border-left: 4px solid #4caf50; }
+        .quiz .quiz-feedback.no { background: #ffebee; color: #c0392b; border-left: 4px solid #e74c3c; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px; padding: 18px;
+            margin: 16px 0; text-align: center;
+        }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0;
+                display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧭 磁场圆圆心的确定 · 自由学习</h1>
+    <p>高中物理 · 带电粒子在匀强磁场中的运动 —— 解题第一步：先把圆心找出来</p>
+    <div class="progress-wrap">
+        <div class="progress-label"><span>学习进度</span><span id="pTxt">0 / 8 节</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+    </div>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">知识框架</a>
+    <a href="#principle">① 核心原理</a>
+    <a href="#method1">② 双速度垂线法</a>
+    <a href="#method2">③ 弦中垂线法</a>
+    <a href="#method3">④ 混合条件</a>
+    <a href="#angle">⑤ 圆心角与偏转角</a>
+    <a href="#gaokao">⑥ 高考经典</a>
+    <a href="#ring">⑦ 托卡马克磁笼</a>
+</nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 知识框架 -->
+<div class="card level" id="overview">
+    <h2><span class="num">▶</span>知识框架</h2>
+    <p style="color:#7f8c8d;font-size:0.92em;margin-bottom:10px;">带电粒子垂直射入匀强磁场后做匀速圆周运动。解这类题有固定的"三步"：<b>找圆心 → 求半径 $R=\dfrac{mv}{qB}$ → 求圆心角（或偏转角、时间）</b>。本页专攻第一步——圆心怎么找。</p>
+    <div class="key-point">
+        <b>📌 一条判断主线：</b>
+        <ol style="padding-left:25px; margin:8px 0;">
+            <li><b>洛伦兹力永远垂直于速度</b>，且指向圆心（提供向心力）；</li>
+            <li>所以<b>圆心一定在"速度方向的垂线"上</b>；</li>
+            <li>再结合另一个条件（另一条速度垂线 / 弦的中垂线 / 已知 point 位置）即可唯一确定圆心。</li>
+        </ol>
+    </div>
+    <div class="anim-wrap">
+        <svg width="460" height="220" viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="磁场圆圆心确定总览">
+            <defs><marker id="a0" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#27ae60"/></marker></defs>
+            <!-- 磁场向里 -->
+            <g fill="#90caf9" font-size="13">
+                <text x="60" y="30">⊗ ⊗ ⊗</text><text x="180" y="30">⊗ ⊗ ⊗</text><text x="300" y="30">⊗ ⊗ ⊗</text>
+                <text x="60" y="200">⊗ ⊗ ⊗</text><text x="180" y="200">⊗ ⊗ ⊗</text><text x="300" y="200">⊗ ⊗ ⊗</text>
+            </g>
+            <text x="330" y="22" fill="#1565c0" font-size="12">B 垂直纸面向里</text>
+            <!-- 圆与轨迹 -->
+            <circle cx="150" cy="115" r="80" fill="none" stroke="#c0392b" stroke-width="3"/>
+            <text x="150" y="115" fill="#1e3c72" font-size="13" text-anchor="middle" dominant-baseline="middle">O</text>
+            <circle cx="150" cy="35" r="4" fill="#1e3c72"/>
+            <circle cx="230" cy="115" r="4" fill="#1e3c72"/>
+            <text x="158" y="33" fill="#2e7d32" font-size="12">A</text>
+            <text x="238" y="113" fill="#2e7d32" font-size="12">B</text>
+            <!-- 速度 -->
+            <line x1="150" y1="35" x2="200" y2="35" stroke="#27ae60" stroke-width="3" marker-end="url(#a0)"/>
+            <text x="160" y="28" fill="#27ae60" font-size="12">v₁</text>
+            <line x1="230" y1="115" x2="230" y2="65" stroke="#27ae60" stroke-width="3" marker-end="url(#a0)"/>
+            <text x="236" y="90" fill="#27ae60" font-size="12">v₂</text>
+        </svg>
+    </div>
+    <p style="margin-top:10px;color:#7f8c8d;font-size:0.9em;">💡 本页为自由学习模式，所有小节都能直接查看；每节底部配小测验，仅作自我检测。</p>
+    <div class="level-nav">
+        <button class="prev" data-prev="overview" disabled>← 返回总览</button>
+        <button class="next" data-next="principle">下一节 →</button>
+    </div>
+</div>
+
+<!-- ① 核心原理 -->
+<div class="card level" id="principle">
+    <h2><span class="num">1</span>核心原理：为什么圆心在速度垂线上</h2>
+    <p>带电粒子以速度 $v$ 垂直进入磁感应强度为 $B$ 的匀强磁场，受洛伦兹力</p>
+    <div class="formula">$$F = qvB$$</div>
+    <p>洛伦兹力的方向始终<b>垂直于速度 $v$</b>，且指向圆周的<b>圆心</b>（它正是提供向心力的力）。由牛顿第二定律：</p>
+    <div class="formula">$$qvB = m\frac{v^2}{R} \quad\Rightarrow\quad R = \frac{mv}{qB}$$</div>
+    <div class="key-point">
+        <b>📌 关键结论：</b>因为洛伦兹力 $\perp v$ 且指向圆心，所以<b>过粒子所在点、作速度方向的垂线，这条垂线一定经过圆心</b>（它就是半径所在的直线）。
+    </div>
+    <p>这就是所有"找圆心"方法的几何依据：先用速度垂线得到一条"必过圆心"的直线，再用第二个条件把它唯一确定下来。</p>
+    <div class="quiz" data-quiz="1">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">1. 带电粒子在匀强磁场中做匀速圆周运动，某时刻速度方向如图，则圆心位于（　）</div>
+        <label class="opt"><input type="radio" name="q1" value="a"> 过该点、沿速度方向的直线上</label>
+        <label class="opt"><input type="radio" name="q1" value="b"> 过该点、垂直速度方向的直线上</label>
+        <label class="opt"><input type="radio" name="q1" value="c"> 过该点、与磁场平行的直线上</label>
+        <label class="opt"><input type="radio" name="q1" value="d"> 任意位置都有可能</label>
+        <button class="submit-btn" onclick="checkQuiz(1, 'b', 'method1')">提交答案</button>
+        <div class="quiz-feedback" id="fb-1"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="overview">← 返回总览</button>
+        <button class="next" data-next="method1">下一节 →</button>
+    </div>
+</div>
+
+<!-- ② 双速度垂线法 -->
+<div class="card level" id="method1">
+    <h2><span class="num">2</span>方法一：双速度垂线法</h2>
+    <p>已知粒子<b>入射速度方向 $v_1$</b>与<b>出射速度方向 $v_2$</b>（通常对应两次偏转边界的切线方向），且知道入射点 $A$、出射点 $B$。</p>
+    <div class="key-point">
+        <b>📌 步骤：</b>
+        <ol style="padding-left:25px; margin:8px 0;">
+            <li>过入射点 $A$ 作 $v_1$ 的垂线 $l_1$（半径方向，必过圆心）；</li>
+            <li>过出射点 $B$ 作 $v_2$ 的垂线 $l_2$（同样必过圆心）；</li>
+            <li>$l_1$ 与 $l_2$ 的<b>交点即为圆心 $O$</b>。</li>
+        </ol>
+    </div>
+    <div class="anim-wrap">
+        <svg width="460" height="220" viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="双速度垂线法找圆心">
+            <defs><marker id="a1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#27ae60"/></marker></defs>
+            <g fill="#90caf9" font-size="12">
+                <text x="40" y="24">⊗ ⊗</text><text x="120" y="24">⊗ ⊗</text><text x="300" y="24">⊗ ⊗</text>
+                <text x="40" y="205">⊗ ⊗</text><text x="300" y="205">⊗ ⊗</text>
+            </g>
+            <!-- 轨迹弧 -->
+            <path d="M 90 180 A 130 130 0 0 1 220 50" fill="none" stroke="#c0392b" stroke-width="3"/>
+            <!-- 速度垂线（半径方向）虚线 -->
+            <line x1="90" y1="50" x2="90" y2="180" stroke="#1e3c72" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <line x1="90" y1="50" x2="220" y2="50" stroke="#1e3c72" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <text x="96" y="120" fill="#1e3c72" font-size="11">l₁⊥v₁</text>
+            <text x="140" y="44" fill="#1e3c72" font-size="11">l₂⊥v₂</text>
+            <!-- 点 -->
+            <circle cx="90" cy="180" r="5" fill="#2e7d32"/>
+            <text x="62" y="200" fill="#2e7d32" font-size="13">A</text>
+            <circle cx="220" cy="50" r="5" fill="#2e7d32"/>
+            <text x="228" y="48" fill="#2e7d32" font-size="13">B</text>
+            <circle cx="90" cy="50" r="4" fill="#e74c3c"/>
+            <text x="98" y="48" fill="#e74c3c" font-size="13">O</text>
+            <!-- 速度 -->
+            <line x1="90" y1="180" x2="150" y2="180" stroke="#27ae60" stroke-width="3" marker-end="url(#a1)"/>
+            <text x="100" y="172" fill="#27ae60" font-size="12">v₁</text>
+            <line x1="220" y1="50" x2="220" y2="10" stroke="#27ae60" stroke-width="3" marker-end="url(#a1)"/>
+            <text x="226" y="34" fill="#27ae60" font-size="12">v₂</text>
+        </svg>
+    </div>
+    <div class="warn">
+        <b>⚠️ 易错：</b>垂线是"垂直速度方向"，不是垂直边界！很多同学把"垂直入射边界"误当成半径方向。记住：<b>半径永远垂直于速度，不垂直于边界</b>。
+    </div>
+    <div class="quiz" data-quiz="2">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">2. 已知粒子入射速度 $v_1$ 与出射速度 $v_2$ 方向，用双速度垂线法找圆心时（　）</div>
+        <label class="opt"><input type="radio" name="q2" value="a"> 过 A 作 $v_1$ 垂线、过 B 作 $v_2$ 垂线，交点即圆心</label>
+        <label class="opt"><input type="radio" name="q2" value="b"> 过 A、B 作连线 AB 的中垂线，交点即圆心</label>
+        <label class="opt"><input type="radio" name="q2" value="c"> 过 A 作 $v_2$ 垂线、过 B 作 $v_1$ 垂线</label>
+        <label class="opt"><input type="radio" name="q2" value="d"> 直接连接 A、B 的中点即为圆心</label>
+        <button class="submit-btn" onclick="checkQuiz(2, 'a', 'method2')">提交答案</button>
+        <div class="quiz-feedback" id="fb-2"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="principle">← 上一节</button>
+        <button class="next" data-next="method2">下一节 →</button>
+    </div>
+</div>
+
+<!-- ③ 弦中垂线法 -->
+<div class="card level" id="method2">
+    <h2><span class="num">3</span>方法二：弦中垂线法</h2>
+    <p>若已知轨迹上<b>两点 $A$、$B$</b>（如粒子与边界的两个交点），则弦 $AB$ 的<b>垂直平分线必过圆心</b>（圆的性质：弦的中垂线过圆心）。</p>
+    <div class="key-point">
+        <b>📌 步骤：</b>
+        <ol style="padding-left:25px; margin:8px 0;">
+            <li>连接 $A$、$B$ 得弦，作其中垂线 $m$（圆心一定在 $m$ 上）；</li>
+            <li>再结合 $A$ 点（或 $B$ 点）的速度垂线 $l$，二者交点即圆心 $O$。</li>
+        </ol>
+    </div>
+    <div class="anim-wrap">
+        <svg width="460" height="220" viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="弦中垂线法找圆心">
+            <defs><marker id="a2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#27ae60"/></marker></defs>
+            <g fill="#90caf9" font-size="12">
+                <text x="40" y="24">⊗ ⊗</text><text x="300" y="24">⊗ ⊗</text><text x="40" y="205">⊗ ⊗</text><text x="300" y="205">⊗ ⊗</text>
+            </g>
+            <!-- 圆 -->
+            <circle cx="80" cy="60" r="120" fill="none" stroke="#c0392b" stroke-width="3"/>
+            <!-- 弦 AB -->
+            <line x1="80" y1="180" x2="184" y2="120" stroke="#34495e" stroke-width="2.5"/>
+            <circle cx="80" cy="180" r="5" fill="#2e7d32"/>
+            <circle cx="184" cy="120" r="5" fill="#2e7d32"/>
+            <text x="52" y="200" fill="#2e7d32" font-size="13">A</text>
+            <text x="192" y="118" fill="#2e7d32" font-size="13">B</text>
+            <!-- 中垂线 -->
+            <line x1="80" y1="60" x2="184" y2="120" stroke="#1e3c72" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <text x="120" y="78" fill="#1e3c72" font-size="11">中垂线 m</text>
+            <!-- v1 垂线（过A、竖直） -->
+            <line x1="80" y1="60" x2="80" y2="180" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="5,4"/>
+            <text x="86" y="130" fill="#e67e22" font-size="11">l⊥v₁</text>
+            <!-- 圆心 -->
+            <circle cx="80" cy="60" r="4" fill="#e74c3c"/>
+            <text x="88" y="58" fill="#e74c3c" font-size="13">O</text>
+            <!-- 速度 v1 水平 -->
+            <line x1="80" y1="180" x2="140" y2="180" stroke="#27ae60" stroke-width="3" marker-end="url(#a2)"/>
+            <text x="90" y="172" fill="#27ae60" font-size="12">v₁</text>
+        </svg>
+    </div>
+    <div class="warn">
+        <b>⚠️ 注意：</b>只作弦的中垂线只能得到"一条过圆心的直线"，还不能确定唯一圆心。必须再叠加一条速度垂线（或已知另一点的速度方向）才能锁定 $O$。
+    </div>
+    <div class="quiz" data-quiz="3">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">3. 已知轨迹上两点 A、B（弦），仅作弦 AB 的中垂线，能确定圆心吗？（　）</div>
+        <label class="opt"><input type="radio" name="q3" value="a"> 能，中垂线直接给出圆心</label>
+        <label class="opt"><input type="radio" name="q3" value="b"> 不能，还需结合速度垂线才能唯一确定</label>
+        <label class="opt"><input type="radio" name="q3" value="c"> 中垂线就是半径</label>
+        <label class="opt"><input type="radio" name="q3" value="d"> 圆心一定在弦 AB 上</label>
+        <button class="submit-btn" onclick="checkQuiz(3, 'b', 'method3')">提交答案</button>
+        <div class="quiz-feedback" id="fb-3"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="method1">← 上一节</button>
+        <button class="next" data-next="method3">下一节 →</button>
+    </div>
+</div>
+
+<!-- ④ 混合条件 -->
+<div class="card level" id="method3">
+    <h2><span class="num">4</span>方法三：混合条件定位</h2>
+    <p>实际题目中，已知条件常常是"残缺"的，需要灵活组合。常见两类：</p>
+    <h3>1．已知 A 点速度 $v_1$ + B 点位置（不知 $v_2$ 方向）</h3>
+    <div class="key-point">
+        <b>📌 解法：</b>过 $A$ 作 $v_1$ 垂线 $l_1$；连接 $A$、$B$ 作弦 $AB$ 的中垂线 $m$；$l_1$ 与 $m$ 的交点即圆心 $O$。
+    </div>
+    <h3>2．已知入射速度方向 + 出射点恰好在某直线边界上</h3>
+    <p>比如粒子从直线边界射入、又从同一直线边界射出。此时出射点 $B$ 在边界上，可过 $B$ 作边界的垂线（若速度与该边界有特殊关系）或结合弦中垂线。</p>
+    <div class="key-point">
+        <b>📌 记忆口诀：</b>「<b>一垂线（速度）+ 一中垂（弦）= 圆心</b>」。无论已知条件怎么变，本质都是先拿到一条"必过圆心"的直线，再拿第二条把它钉死。
+    </div>
+    <div class="warn">
+        <b>⚠️ 易错：</b>当轨迹是<b>半圆或缺口</b>时，注意圆心可能在磁场区域<b>外</b>。画图时半径线可以延长到区域外，不要被"磁场框"局限。
+    </div>
+    <div class="quiz" data-quiz="4">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">4. 已知 A 点速度 $v_1$ 和 B 点位置（不知 $v_2$ 方向），确定圆心应（　）</div>
+        <label class="opt"><input type="radio" name="q4" value="a"> 过 A 作 $v_1$ 垂线，与弦 AB 中垂线的交点</label>
+        <label class="opt"><input type="radio" name="q4" value="b"> 直接连接 A、B 的中点</label>
+        <label class="opt"><input type="radio" name="q4" value="c"> 过 B 作 $v_1$ 垂线</label>
+        <label class="opt"><input type="radio" name="q4" value="d"> 作 A、B 连线的平行线</label>
+        <button class="submit-btn" onclick="checkQuiz(4, 'a', 'angle')">提交答案</button>
+        <div class="quiz-feedback" id="fb-4"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="method2">← 上一节</button>
+        <button class="next" data-next="angle">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑤ 圆心角与偏转角 -->
+<div class="card level" id="angle">
+    <h2><span class="num">5</span>找到圆心后：圆心角与偏转角</h2>
+    <p>圆心一定，连 $OA$、$OB$，夹角 $\theta$ 就是轨迹圆弧对应的<b>圆心角</b>。它和粒子速度方向的<b>偏转角 $\varphi$</b> 相等：</p>
+    <div class="formula">$$\theta = \varphi$$</div>
+    <p>几何关系（弦长 $L$、半径 $R$）：</p>
+    <div class="formula">$$L = 2R\sin\frac{\theta}{2} = 2R\sin\frac{\varphi}{2}$$</div>
+    <p>粒子在磁场中运动的时间只与圆心角有关，与速率无关：</p>
+    <div class="formula">$$t = \frac{\theta}{2\pi}T = \frac{\theta\,m}{qB}, \quad T = \frac{2\pi m}{qB}$$</div>
+    <div class="key-point">
+        <b>📌 三步闭环：</b>① 用本页方法找圆心 → ② 由几何求 $R=\dfrac{mv}{qB}$ 与圆心角 $\theta$ → ③ 用 $L$、$t$ 公式算结果。圆心找错，后面全错，所以第一步务必画准！
+    </div>
+    <div class="quiz" data-quiz="5">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">5. 粒子速度方向偏转了 $60^\circ$，则轨迹圆弧对应的圆心角 $\theta$ 为（　）</div>
+        <label class="opt"><input type="radio" name="q5" value="a"> $30^\circ$</label>
+        <label class="opt"><input type="radio" name="q5" value="b"> $60^\circ$</label>
+        <label class="opt"><input type="radio" name="q5" value="c"> $120^\circ$</label>
+        <label class="opt"><input type="radio" name="q5" value="d"> 与偏转角无关</label>
+        <button class="submit-btn" onclick="checkQuiz(5, 'b', 'gaokao')">提交答案</button>
+        <div class="quiz-feedback" id="fb-5"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="method3">← 上一节</button>
+        <button class="next" data-next="gaokao">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑥ 高考经典 -->
+<div class="card level" id="gaokao">
+    <h2><span class="num">6</span>高考经典</h2>
+    <div class="example">
+        <div class="q">例：如图所示，匀强磁场垂直纸面向里。一质量为 $m$、电荷量为 $q$ 的粒子以速度 $v$ 从 $A$ 点垂直左边界射入，从 $B$ 点射出，入射速度水平向右、出射速度竖直向上。求圆心位置与半径。</div>
+        <p class="step">解：入射点 $A$ 处 $v_1$ 水平，过 $A$ 作竖直线（速度垂线）$l_1$；出射点 $B$ 处 $v_2$ 竖直，过 $B$ 作水平线 $l_2$；$l_1$ 与 $l_2$ 交点即圆心 $O$。</p>
+        <p class="step">半径 $R = OA = OB = \dfrac{mv}{qB}$，由 $A$、$B$ 坐标几何关系即可求出圆心具体位置。</p>
+        <p class="a"><b>要点：</b>双速度垂线法，两条垂线交点即圆心；半径由 $R=\dfrac{mv}{qB}$ 给出。</p>
+    </div>
+    <div class="quiz" data-quiz="6">
+        <div class="quiz-title">📝 综合闯关（多选，需全对）</div>
+        <div class="q">6. 关于磁场中确定圆心，下列说法正确的有（　）</div>
+        <label class="opt"><input type="radio" name="q6a" value="a"> 圆心在过粒子点且垂直速度方向的直线上</label>
+        <label class="opt"><input type="radio" name="q6b" value="b"> 已知入射、出射速度方向时，两条速度垂线的交点即圆心</label>
+        <label class="opt"><input type="radio" name="q6c" value="c"> 弦的中垂线一定过圆心</label>
+        <label class="opt"><input type="radio" name="q6d" value="d"> 速度方向偏转角等于轨迹圆心角</label>
+        <button class="submit-btn" onclick="checkQuizMulti(6, {'q6a':'a','q6b':'b','q6c':'c','q6d':'d'}, 'overview')">提交答案</button>
+        <div class="quiz-feedback" id="fb-6"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="angle">← 上一节</button>
+        <button class="next" data-next="ring">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑦ 环形/圆形磁场中的圆心 -->
+<div class="card level" id="ring">
+    <h2><span class="num">7</span>拓展：托卡马克——环形磁笼里的"圆心"</h2>
+    <p>前面都是"一块均匀磁场"的理想情况。真实的聚变装置<b>托卡马克（Tokamak）</b>则把等离子体关在一个<b>环形磁笼</b>里。这里的"磁场圆"不再是一个平面圆，而是绕成环形的磁感线；粒子也不再画平面圆周，而是<b>绕磁感线做螺旋运动</b>。我们顺着课本"找圆心"的思路，看看这里的"圆心"去哪了。</p>
+    <h3>1．粒子怎么被"关"住：螺旋运动 + 引导中心</h3>
+    <div class="key-point">
+        <b>📌 核心图像：</b>在磁场中，粒子一面<b>沿磁感线</b>前进（速度分量 $v_{\parallel}$），一面<b>垂直磁感线</b>做小圆周回旋（速度分量 $v_\perp$）。两者叠加，就变成<b>绕磁感线的螺旋线</b>。那个小圆周的"圆心"叫<b>引导中心（guiding center）</b>，它<b>落在磁感线上</b>，到粒子的距离正好是一个<b>回旋半径</b> $r_L=\dfrac{mv_\perp}{qB}$。
+    </div>
+    <p>打个比方：粒子像缠在电话线上的小弹簧——一边顺着磁感线"爬"，一边在原地转圈。<b>"圆心"不是粒子自己，而是它绕着的那个引导中心</b>，而引导中心就待在那根磁感线上。</p>
+    <div class="anim-wrap">
+        <svg width="460" height="230" viewBox="0 0 460 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="托卡马克环形磁笼与引导中心螺旋运动">
+            <defs><marker id="a7" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#27ae60"/></marker></defs>
+            <!-- 左：托卡马克环形 -->
+            <ellipse cx="108" cy="115" rx="86" ry="50" fill="#eaf2fd" stroke="#90caf9" stroke-width="3"/>
+            <ellipse cx="108" cy="115" rx="70" ry="38" fill="none" stroke="#64b5f6" stroke-width="1.6" stroke-dasharray="5,4"/>
+            <path d="M 38 115 Q 108 62 178 115 Q 108 168 38 115" fill="none" stroke="#27ae60" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.75"/>
+            <circle cx="108" cy="77" r="3.5" fill="#2e7d32"/>
+            <text x="40" y="206" fill="#1565c0" font-size="12">托卡马克环形磁笼</text>
+            <text x="118" y="72" fill="#2e7d32" font-size="11">粒子绕磁感线螺旋前进</text>
+            <!-- 右：放大——引导中心与回旋小圆 -->
+            <line x1="250" y1="115" x2="450" y2="115" stroke="#1e3c72" stroke-width="2"/>
+            <text x="350" y="206" fill="#1e3c72" font-size="12" text-anchor="middle">磁感线（B 方向 →）</text>
+            <!-- 引导中心 O -->
+            <circle cx="350" cy="115" r="4" fill="#e74c3c"/>
+            <text x="356" y="112" fill="#e74c3c" font-size="12">O 引导中心</text>
+            <circle cx="350" cy="115" r="34" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+            <!-- 粒子 P 在顶部 -->
+            <circle cx="350" cy="81" r="4.5" fill="#2e7d32"/>
+            <text x="300" y="74" fill="#2e7d32" font-size="12">P 粒子</text>
+            <!-- 回旋半径 r_L -->
+            <line x1="350" y1="115" x2="350" y2="81" stroke="#e67e22" stroke-width="1.4" stroke-dasharray="4,3"/>
+            <text x="312" y="100" fill="#e67e22" font-size="11">r_L</text>
+            <!-- 速度 v⊥ 切向（水平向右） -->
+            <line x1="350" y1="81" x2="394" y2="81" stroke="#27ae60" stroke-width="3" marker-end="url(#a7)"/>
+            <text x="398" y="78" fill="#27ae60" font-size="12">v⊥</text>
+        </svg>
+    </div>
+    <h3>2．为什么必须是"环形"还"拧成螺旋"</h3>
+    <div class="key-point">
+        <b>📌 关键：</b>如果只有沿环向的磁场（一个纯"圆环"磁场），粒子会因为磁场<b>弯曲</b>、强度<b>不均匀</b>而产生<b>漂移</b>，慢慢飘到器壁上。托卡马克的妙处是再叠加一个<b>极向场</b>，把磁感线<b>拧成螺旋形</b>——粒子被螺旋磁感线"编织"在环里，哪儿也去不了。这就是"环形囚笼"的真面目。
+    </div>
+    <h3>3．和课本"找圆心"的联系</h3>
+    <p>别以为和前面没关系！课本里"洛伦兹力垂直速度、指向圆心"的结论依然成立，只是这里的"圆心"会<b>沿着磁感线移动</b>。要找引导中心，方法本质上还是<b>速度垂线</b>：过粒子、垂直 $v_\perp$ 的那条直线，就是引导中心所在的方向（也就是磁感线的方向）。</p>
+    <div class="warn">
+        <b>⚠️ 别混淆：</b>托卡马克的"环"是三维的螺旋磁笼，不是课本平面里的圆。粒子的轨迹是<b>三维螺旋线</b>，"圆心"是沿着磁感线跑动的<b>引导中心</b>，不是固定一点。
+    </div>
+    <div class="quiz" data-quiz="7">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">7. 托卡马克环形磁笼中，带电粒子被约束时的主要运动形式是（　）</div>
+        <label class="opt"><input type="radio" name="q7" value="a"> 在某一平面内做匀速圆周运动</label>
+        <label class="opt"><input type="radio" name="q7" value="b"> 绕磁感线做螺旋运动，其"圆心"（引导中心）落在磁感线上</label>
+        <label class="opt"><input type="radio" name="q7" value="c"> 沿直线飞出磁笼</label>
+        <label class="opt"><input type="radio" name="q7" value="d"> 静止悬浮在中心</label>
+        <button class="submit-btn" onclick="checkQuiz(7, 'b', 'overview')">提交答案</button>
+        <div class="quiz-feedback" id="fb-7"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="gaokao">← 上一节</button>
+        <button class="next next-strong" data-next="overview">🏠 返回知识框架</button>
+    </div>
+</div>
+
+<div class="footer">磁场圆圆心的确定 · 高中物理磁场专题 · 自由学习模式</div>
+
+</div>
+
+<script>
+    // ===== 浏览模式（所有小节直接可见，测验仅作练习） =====
+    let currentLevel = 'overview';
+    function applyLockState() {
+        document.querySelectorAll('.card.level').forEach(card => card.classList.add('active-level'));
+    }
+    function showLevel(id) {
+        const target = document.getElementById(id);
+        if (!target) return false;
+        currentLevel = id;
+        document.querySelectorAll('.card.level').forEach(card => card.classList.add('active-level'));
+        window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+        return true;
+    }
+    function checkQuiz(level, correct) {
+        const name = 'q' + level;
+        const sel = document.querySelector('input[name="' + name + '"]:checked');
+        const fb = document.getElementById('fb-' + level);
+        if (!sel) { alert('请先选择一个答案'); return; }
+        const opts = document.querySelectorAll('input[name="' + name + '"]');
+        opts.forEach(o => o.parentElement.classList.remove('correct', 'wrong'));
+        if (sel.value === correct) {
+            sel.parentElement.classList.add('correct');
+            fb.className = 'quiz-feedback ok';
+            fb.innerHTML = '✅ 回答正确！';
+            fb.style.display = 'block';
+        } else {
+            sel.parentElement.classList.add('wrong');
+            fb.className = 'quiz-feedback no';
+            fb.innerHTML = '❌ 答案不对，再想想：' + quizHint(level);
+            fb.style.display = 'block';
+        }
+    }
+    function checkQuizMulti(level, answers) {
+        let allOk = true;
+        const fb = document.getElementById('fb-' + level);
+        for (const [name, correct] of Object.entries(answers)) {
+            const sel = document.querySelector('input[name="' + name + '"]:checked');
+            const opts = document.querySelectorAll('input[name="' + name + '"]');
+            opts.forEach(o => o.parentElement.classList.remove('correct', 'wrong'));
+            if (!sel || sel.value !== correct) {
+                allOk = false;
+                if (sel) sel.parentElement.classList.add('wrong');
+            } else {
+                sel.parentElement.classList.add('correct');
+            }
+        }
+        if (allOk) {
+            fb.className = 'quiz-feedback ok';
+            fb.innerHTML = '✅ 全部正确！';
+            fb.style.display = 'block';
+        } else {
+            fb.className = 'quiz-feedback no';
+            fb.innerHTML = '❌ 还有错误，仔细检查每一小题（提示：' + quizHint(level) + '）';
+            fb.style.display = 'block';
+        }
+    }
+    function quizHint(level) {
+        const hints = {
+            1: '洛伦兹力垂直速度并指向圆心，故圆心在速度垂线上。',
+            2: '过 A 作 v1 垂线、过 B 作 v2 垂线，交点即圆心。',
+            3: '中垂线只给一条过圆心的直线，需再叠加速度垂线。',
+            4: '过 A 作 v1 垂线与弦 AB 中垂线相交，得圆心。',
+            5: '速度偏转角等于轨迹圆弧对应的圆心角。',
+            6: '圆心在速度垂线上；双速度垂线交点；弦中垂线过圆心；偏转角=圆心角。',
+            7: '托卡马克中粒子绕磁感线做螺旋运动，小圆周的"圆心"（引导中心）落在磁感线上。'
+        };
+        return hints[level] || '';
+    }
+    // 导航：自由跳转
+    document.querySelectorAll('.nav a').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id && id.startsWith('#')) { e.preventDefault(); showLevel(id.slice(1)); }
+        });
+    });
+    // 节内上/下导航按钮
+    document.querySelectorAll('.level-nav .prev, .level-nav .next').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('next')) showLevel(btn.dataset.next);
+            else showLevel(btn.dataset.prev);
+        });
+    });
+    // 导航栏滚动高亮 + 进度条
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll('.nav a'));
+        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        const total = sections.length;
+        const pFill = document.getElementById('pFill');
+        const pTxt = document.getElementById('pTxt');
+        function onScroll() {
+            const pos = window.scrollY + 160;
+            let current = sections[0], idx = 0;
+            sections.forEach((sec, i) => { if (sec.offsetTop <= pos) { current = sec; idx = i; } });
+            navLinks.forEach(a => { const href = a.getAttribute('href'); if (href) a.classList.toggle('active', href === '#' + current.id); });
+            const pct = Math.round(((idx + 1) / total) * 100);
+            if (pFill) pFill.style.width = pct + '%';
+            if (pTxt) pTxt.textContent = (idx + 1) + ' / ' + total + ' 节';
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+    applyLockState();
+    showLevel('overview');
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

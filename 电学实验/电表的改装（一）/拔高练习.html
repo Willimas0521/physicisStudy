@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电表的改装（一）· 拔高练习</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="../mathjax/tex-svg.js"></script>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#7c5cff;--accent2:#1f9d6b;--purple:#7c5cff;--warn:#e0922e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.8;padding:0 0 40px}
+.header{background:linear-gradient(135deg,#5e35b1,#7c5cff 55%,#2196f3);color:#fff;padding:40px 20px 26px;text-align:center;box-shadow:0 4px 18px rgba(124,92,255,.3)}
+.header h1{font-size:2.1em;letter-spacing:1px}
+.header p{opacity:.92;margin-top:6px;font-size:14px}
+.nav{max-width:1000px;margin:16px auto 0;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap}
+.nav a{color:var(--accent);text-decoration:none;font-size:14px;border:1px solid #e1d5ec;background:#fff;border-radius:8px;padding:7px 16px}
+.nav a:hover{border-color:var(--accent);background:#f7f0fb}
+.container{max-width:1000px;margin:0 auto;padding:24px 20px}
+.progress-wrap{background:#fff;border-radius:12px;padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.progress-wrap .lab{font-weight:600;color:var(--accent)}
+.bar{flex:1;min-width:160px;height:12px;background:#ece3f3;border-radius:8px;overflow:hidden}
+#bar{height:100%;width:0;background:linear-gradient(90deg,#7c5cff,#5e35b1);transition:.35s}
+.level{background:#fff;border-radius:12px;margin:14px 0;border-left:5px solid var(--purple);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:16px 22px;transition:.2s}
+.level.done{border-left-color:var(--accent2);background:#f4fbf6}
+.lv-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.lv-no{background:var(--purple);color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.level.done .lv-no{background:var(--accent2)}
+.lv-type{font-size:12px;background:#f3e5f9;color:#6a1b9a;padding:2px 9px;border-radius:10px}
+.lv-diff .stars{color:var(--warn);letter-spacing:1px}
+.lv-time{font-size:12px;color:var(--sub)}
+.lv-done{margin-left:auto;font-size:13px;color:#555;cursor:pointer;user-select:none}
+.lv-q{margin:6px 0 4px;color:#34495e}
+.opts{margin:6px 0}
+.opts span{display:inline-block;margin:3px 18px 3px 0}
+.fig{display:block;max-width:78%;margin:14px auto;border:1px solid #e2e8f0;border-radius:10px;padding:8px;background:#fafcff}
+.lv-ans summary{cursor:pointer;color:var(--accent2);font-weight:700;margin-top:6px}
+.ans-box{background:#f1f8f2;border-radius:8px;padding:12px 16px;margin-top:8px}
+.ans-box .a{color:#1b5e20;font-weight:700}
+.step{margin:5px 0;padding-left:10px;border-left:2px solid #a5d6a7;color:#37474f}
+.footer{text-align:center;color:var(--sub);font-size:13px;margin:30px 0}
+</style>
+</head>
+<body>
+<div class="header"><h1>电表的改装（一）· 拔高练习</h1><p>电流表 / 电压表改装 · 9 关综合提升</p></div>
+<div class="nav">
+<a href="index.html">← 专题首页</a>
+<a href="../01_认识表头G改装基础.html">模型学习 →</a>
+<a href="基础巩固.html">基础巩固 →</a>
+</div>
+<div class="container">
+<div class="progress-wrap"><span class="lab">已掌握</span> <span id="cnt">0</span>/<span id="tot">9</span> <span class="lab">关</span><div class="bar"><div id="bar"></div></div></div>
+
+<div class="level" data-id="1">
+  <div class="lv-head"><span class="lv-no">1</span><span class="lv-type">多选</span><span class="lv-diff">难度 <span class="stars">⭐⭐</span></span><span class="lv-time">约 6 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">大量程电表由灵敏电流表 G 与变阻箱 $R$ 改装，如图。G 满偏 $I_g$、内阻 $R_g$、$R_0$ 为接入阻值。正确的是（　　）</div>
+  <img class="fig" src="bg_images/p1.png" alt="题1">
+  <div class="opts"><span>A. 甲是电流表，增 $R_0$ 量程增大</span><span>B. 甲是电流表，量程 $\dfrac{I_g(R_g+R_0)}{R_0}$</span></div>
+  <div class="opts"><span>C. 乙是电压表，量程 $I_gR_0$</span><span>D. 乙是电压表，增 $R_0$ 量程增大</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】BD　【难度】0.85</p>
+    <div class="step">甲并联分流 → 电流表，量程 $I=I_g+\dfrac{I_gR_g}{R_0}=\dfrac{I_g(R_g+R_0)}{R_0}$；$R_0$ 越大分流越小，量程越小，A 错 B 对。</div>
+    <div class="step">乙串联分压 → 电压表，量程 $U=I_gR_g+I_gR_0=I_g(R_g+R_0)$；$R_0$ 越大量程越大，C 错 D 对。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="2">
+  <div class="lv-head"><span class="lv-no">2</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐</span></span><span class="lv-time">约 6 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">用表头 G 与三定值电阻设计多量程电流表（1、2 两量程）。只增大 $R_1$ 时，正确的是（　　）</div>
+  <img class="fig" src="bg_images/p2.png" alt="题2">
+  <div class="opts"><span>A. 两量程均变大</span><span>B. 两量程均变小</span><span>C. 1 变大、2 变小</span><span>D. 1 变小、2 变大</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】A　【难度】0.85</p>
+    <div class="step">$I_1=\dfrac{I_g(R_g+R_1+R_3)}{R_2}+I_g$，$I_2=\dfrac{I_g(R_g+R_1)}{R_2+R_3}+I_g$。只增 $R_1$ 时两式分子均增大，两量程均变大。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="3">
+  <div class="lv-head"><span class="lv-no">3</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 8 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">两量程电流表内阻 $R_g=180\ \Omega$，M、P 量程 $0\sim20I_g$，M、Q 量程 $0\sim10I_g$，$R_1,R_2$ 定值。正确的是（　　）</div>
+  <img class="fig" src="bg_images/p3.png" alt="题3">
+  <div class="opts"><span>A. $R_1=9\ \Omega$</span><span>B. M、Q 总电阻 $9\ \Omega$</span><span>C. $R_2=20\ \Omega$</span><span>D. M、P 总电阻 $9.5\ \Omega$</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】D　【难度】0.62</p>
+    <div class="step">M、Q：$I_gR_g=9I_g(R_1+R_2)\Rightarrow R_1+R_2=20\ \Omega$。M、P：$I_g(R_g+R_2)=19I_gR_1\Rightarrow 180+R_2=19R_1$。联立 $R_1=10\ \Omega$、$R_2=10\ \Omega$。</div>
+    <div class="step">$R_{MQ}=\dfrac{I_gR_g}{10I_g}=18\ \Omega$；$R_{MP}=\dfrac{I_g(R_g+R_2)}{20I_g}=9.5\ \Omega$。故选 D。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="4">
+  <div class="lv-head"><span class="lv-no">4</span><span class="lv-type">多选</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 6 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">电压表、电流表都由小量程电流表改装，如图甲、乙。正确的是（　　）</div>
+  <img class="fig" src="bg_images/p4.png" alt="题4">
+  <div class="opts"><span>A. 并联 $R$，量程是原来的 $\dfrac{R_g+R}{R}$ 倍</span><span>B. 电压表示数偏小，给串联电阻并较大电阻</span></div>
+  <div class="opts"><span>C. 电流表示数偏小，给并联电阻串较大电阻</span><span>D. 逐格校准需限流式电路</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】AB　【难度】0.65</p>
+    <div class="step">A：$I=\dfrac{I_gR_g}{R}+I_g\Rightarrow \dfrac{I}{I_g}=\dfrac{R_g+R}{R}$，对。</div>
+    <div class="step">B：电压表示数偏小→表头电流小→应减小串联电阻（并大电阻），对。</div>
+    <div class="step">C：电流表示数偏小→表头电流小→应增大分流电阻（串较小电阻），错。</div>
+    <div class="step">D：逐格校准电压从零起，需分压式电路，错。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="5">
+  <div class="lv-head"><span class="lv-no">5</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 11 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">将毫安表 G₁ 改装为电压表（内阻、满偏电流未知），借 G₂（3 mA）、R₁(0~5000 Ω)、R₂(0~9999 Ω)、E(3 V)、标准电压表 V 实验。(1) 测 G₁：② 断开 S₂ 闭 S₁ 调 R₁ 使 G₁ 满偏，G₂ 示数 ______ mA（图乙）；③ 闭 S₂ 使 G₂ 同示数且 G₁ 偏 1/4，R₂=100 Ω，则 G₁ 满偏 ______ mA、内阻 ______ Ω；(2) 改装 3 V 电压表：① R₂ 调为 ______ Ω；② 校对时改装表总比标准表略小，原因可能是 G₁ 内阻测量值 ______（大于/小于）真实值。</div>
+  <img class="fig" src="bg_images/p5.png" alt="题5图1">
+  <img class="fig" src="bg_images/p6.png" alt="题5图2">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) $1.00$；$1.00$；$300$　(2) $2700$；小于　【难度】0.64</p>
+    <div class="step">(1) G₂ 量程 3 mA、分度 0.1 mA，读 $1.00\ \text{mA}$；$\frac14 I_gR_g=\frac34 I_gR_2\Rightarrow R_g=300\ \Omega$，$I_g=1.00\ \text{mA}$。</div>
+    <div class="step">(2) 串联 $R=\dfrac{U}{I_g}-R_g=2700\ \Omega$；示数偏小说明量程偏大→$R_g$ 测量值偏小。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="6">
+  <div class="lv-head"><span class="lv-no">6</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 11 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">量程 $500\ \mu\text{A}$、内阻未知的微安表改装成 $3\ \text{V}$ 电压表，先半偏法测内阻（R₁ 0~20 Ω、R₂ 0~20 kΩ，E=1.5 V）。(1) 滑动变阻器选 ______（R₁/R₂）；(2) 半偏时 R 读数为 ______ Ω；(3) 改装后按图乙连线补充完整（见答图）；(4) 标准表 $2.4\ \text{V}$ 时微安表 $405\ \mu\text{A}$，则 $R_0$ 应调至 ______ Ω（4 位有效数字）。</div>
+  <img class="fig" src="bg_images/p7.png" alt="题6图1">
+  <img class="fig" src="bg_images/p8.png" alt="题6图2">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) R₁　(2) $1500$　(3) 见答图　(4) $4574$　【难度】0.65</p>
+    <div class="step">(1) 分压式选小阻值 R₁。</div>
+    <div class="step">(2) 半偏法：$R_g=$ 电阻箱读数 $=1500\ \Omega$。</div>
+    <div class="step">(4) 准确时 $R_0=\dfrac{U-I_gR_g}{I_g}=\dfrac{3-0.75}{5\times10^{-4}}=4500\ \Omega$；标准 $2.4\ \text{V}$、微安表 $405\ \mu\text{A}$ 时 $R_{01}+R_g=\dfrac{2.4}{405\times10^{-6}}=5925.9\ \Omega$，准确应 $6000\ \Omega$，故调为 $4574\ \Omega$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="7">
+  <div class="lv-head"><span class="lv-no">7</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 11 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">将量程 $0\sim3\ \text{V}$、内阻未知的电压表 V₁ 改装成 $0\sim4\ \text{V}$，先测 $R_{V1}$。(1) 甲电路滑变选 ______（R₁/R₂），闭合前滑片置 ______（A/B）端，调零后使 V₁ 满偏 $U_g$；保持滑片、S 闭合，调电阻箱使 V₁ 指 $\frac23U_g$，此时箱示 $1500.0\ \Omega$，则 $R_{V1}=$ ______ Ω；(2) 串电阻箱调为 $R'$ 得 $0\sim4\ \text{V}$，则 $R'=$ ______ Ω；(3) 用标准表 V 并联校准，改装表指 $\frac56U_g$ 时标准表 $3.5\ \text{V}$，真实量程 ______ V。</div>
+  <img class="fig" src="bg_images/p9.png" alt="题7">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) R₂；A；$3000.0$　(2) $1000.0$　(3) $4.2$　【难度】0.65</p>
+    <div class="step">(1) 分压式选小阻 R₂，闭合前使输出为零置 A 端；$\dfrac{\frac23U_g}{R_{V1}}=\dfrac{\frac13U_g}{1500}\Rightarrow R_{V1}=3000.0\ \Omega$。</div>
+    <div class="step">(2) $\dfrac{U_g}{R_{V1}}=\dfrac{U-U_g}{R'}\Rightarrow R'=\dfrac{4-3}{3}\times3000=1000.0\ \Omega$。</div>
+    <div class="step">(3) 改装表 $\frac56U_g$ 时标准 $3.5\ \text{V}$：$\dfrac{\frac56U_g}{R_{V1}}=\dfrac{3.5-U_g}{R_{箱}}\Rightarrow R_{箱}=1200\ \Omega$；真实量程 $U=\dfrac{U_g}{R_{V1}}(R_{V1}+R_{箱})=\dfrac{3}{3000}(4200)=4.2\ \text{V}$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="8">
+  <div class="lv-head"><span class="lv-no">8</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 11 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">将 $I_g=500\ \mu\text{A}$、$R_g=1.2\ \text{k}\Omega$ 的电流表 G 改装成 $0\sim3\ \text{V}$ 与 $0\sim15\ \text{V}$ 电压表并校准。(1) R₁ 已调 $4.8\ \text{k}\Omega$，则 R₂ 应调 ______ $\text{k}\Omega$；(2) 校准 $0\sim15\ \text{V}$ 时 S₂ 接 ______（a/b），滑片调 M 端闭合 S₁ 调 P 时 G 示数始终为零而标准表非零，故障可能为 ______（A.R₁短路 B.G断路 C.P断开）；(3) 标准表 $12.1\ \text{V}$ 时 G 指针（图乙）示 $400\ \mu\text{A}$，因 $R_g$ 测不准，只需将 ______（R₁/R₂）调为 ______ $\text{k}\Omega$ 即可修正。</div>
+  <img class="fig" src="bg_images/p10.png" alt="题8">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) $24$　(2) a；B　(3) R₁；$4.55$　【难度】0.65</p>
+    <div class="step">(1) S₂ 接 a 为 15 V：$15=I_g(R_g+R_1+R_2)\Rightarrow R_2=24\ \text{k}\Omega$。</div>
+    <div class="step">(2) 校准 15 V 接 a；G 示数零而标准表有示数→G 断路，选 B。</div>
+    <div class="step">(3) 图乙 $I=400\ \mu\text{A}$：$12.1=I(R_{g$实}+R_1+R_2)\Rightarrow R_{g实}=1.45\ \text{k}\Omega$$；对 3 V 量程 $3=I_g(R_{g$实}+R_1)\Rightarrow R_1=4.55\ \text{k}\Omega$$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="9">
+  <div class="lv-head"><span class="lv-no">9</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 12 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">微安表（满偏 $100\ \mu\text{A}$）改装电压表，内阻在 $2200\sim2400\ \Omega$。(1) 小鱼法：S₂ 闭合前后 G 偏角不变，若闭合后偏角变小则将 R₂ 调 ______（大/小）；交换位置重复得 $r_1,r_2$，则 $R_g=$ ______；(2) 小唐改装 $3\ \text{V}$ 电压表，需 ______（并/串）联阻值 ______ $\Omega$ 电阻；(3) 改装表与标准表并联测未知电源，改装表半偏而标准表（图3）读 ______ V，相对误差 ______ %（两位有效数字）。</div>
+  <img class="fig" src="bg_images/p11.png" alt="题9图1">
+  <img class="fig" src="bg_images/p12.png" alt="题9图2">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) 大；$\sqrt{r_1r_2}$　(2) 串；$(30000-x)$　(3) $1.60$；$6.3$　【难度】0.65</p>
+    <div class="step">(1) 偏角变小说明 $R_2$ 偏小，应调大；交换法得 $\dfrac{r_1}{R_g}=k$、$\dfrac{R_g}{r_2}=k\Rightarrow R_g=\sqrt{r_1r_2}$。</div>
+    <div class="step">(2) 电压表串联；$R=\left(\dfrac{3-0.0001x}{0.0001x}\right)x=(30000-x)\ \Omega$。</div>
+    <div class="step">(3) 标准表读 $1.60\ \text{V}$；改装表半偏 $U_{测}=1.50\ \text{V}$，相对误差 $\dfrac{|1.50-1.60|}{1.60}\times100\%\approx6.3\%$。</div>
+  </div></details>
+</div>
+
+</div>
+<div class="footer">拔高练习 9 关 · 建议先完成「基础巩固」再挑战</div>
+<script>
+function markDone(cb){ var c=cb.closest('.level'); if(cb.checked) c.classList.add('done'); else c.classList.remove('done'); save(); }
+function save(){
+  var b=document.querySelectorAll('.lv-done input'), done=0, arr=[];
+  b.forEach(function(x,i){ if(x.checked){ done++; arr.push(i); } });
+  localStorage.setItem('elec1_bg', JSON.stringify(arr));
+  document.getElementById('cnt').textContent=done;
+  document.getElementById('bar').style.width=(done/b.length*100)+'%';
+}
+window.onload=function(){
+  var arr=[]; try{ arr=JSON.parse(localStorage.getItem('elec1_bg')||'[]'); }catch(e){}
+  var b=document.querySelectorAll('.lv-done input');
+  arr.forEach(function(i){ if(b[i]){ b[i].checked=true; b[i].closest('.level').classList.add('done'); } });
+  document.getElementById('tot').textContent=b.length;
+  var done=arr.filter(function(i){return b[i];}).length;
+  document.getElementById('cnt').textContent=done;
+  document.getElementById('bar').style.width=(done/b.length*100)+'%';
+};
+</script>
+</body>
+</html>

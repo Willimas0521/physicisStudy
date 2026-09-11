@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理：原子结构 · 原子核 · 波粒二象性 知识点与题型总结</title>
+<script>
+  MathJax = {
+    tex: { inlineMath: [['\\(', '\\)']], displayMath: [['$$', '$$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  :root{
+    --bg:#0f172a; --card:#1e293b; --accent:#38bdf8; --accent2:#a78bfa;
+    --ok:#34d399; --warn:#fbbf24; --txt:#e2e8f0; --muted:#94a3b8;
+    --line:#334155;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    background:linear-gradient(160deg,#0f172a,#1e1b4b);
+    color:var(--txt); line-height:1.7; padding:24px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+  header{
+    text-align:center;padding:32px 20px;margin-bottom:28px;
+    background:linear-gradient(135deg,#1e3a8a,#7c3aed);
+    border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.4);
+  }
+  header h1{font-size:28px;letter-spacing:1px;}
+  header p{color:#cbd5e1;margin-top:8px;font-size:15px;}
+  section{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:22px 26px;margin-bottom:22px;
+    box-shadow:0 4px 16px rgba(0,0,0,.25);
+  }
+  h2{
+    font-size:21px;color:var(--accent);margin-bottom:14px;
+    border-left:5px solid var(--accent2);padding-left:12px;
+  }
+  h3{font-size:17px;color:var(--accent2);margin:16px 0 8px;}
+  ul,ol{margin-left:22px;margin-bottom:10px;}
+  li{margin:5px 0;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0;}
+  .nav-card{display:block;background:linear-gradient(135deg,#1e293b,#312e81);
+    border:1px solid var(--line);border-radius:12px;padding:18px 16px;
+    text-decoration:none;color:var(--txt);transition:.2s;box-shadow:0 4px 14px rgba(0,0,0,.3);}
+  .nav-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 22px rgba(56,189,248,.3);}
+  .nav-num{display:inline-block;background:var(--accent);color:#0f172a;font-size:13px;
+    font-weight:bold;padding:2px 10px;border-radius:20px;margin-bottom:8px;}
+  .nav-t{font-size:19px;font-weight:bold;color:var(--accent2);margin-bottom:6px;}
+  .nav-d{font-size:13px;color:var(--muted);line-height:1.5;}
+  .box{
+    background:#0b1220;border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;
+  }
+  .box b{color:var(--ok);}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;}
+  th{background:#0b1220;color:var(--accent);}
+  code{background:#0b1220;padding:2px 6px;border-radius:5px;color:#fca5a5;font-size:14px;}
+  .formula{background:#0b1220;border-left:3px solid var(--warn);
+    padding:10px 14px;border-radius:6px;margin:10px 0;font-family:"Consolas",monospace;}
+  .tip{background:rgba(52,211,153,.1);border:1px dashed var(--ok);
+    padding:10px 14px;border-radius:8px;margin:10px 0;color:#bbf7d0;}
+  .warn{background:rgba(251,191,36,.1);border:1px dashed var(--warn);
+    padding:10px 14px;border-radius:8px;margin:10px 0;}
+  .tag{display:inline-block;background:var(--accent2);color:#1e1b4b;
+    font-size:12px;padding:1px 8px;border-radius:20px;margin-right:6px;}
+  .q{background:#0b1220;border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;margin:12px 0;}
+  .q .stem{font-weight:bold;color:#fde68a;margin-bottom:8px;}
+  .q .ans{color:#bbf7d0;font-size:14px;}
+  .q .ans b{color:var(--accent);}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;}
+  /* ===== 左侧导航改造 ===== */
+  .sidenav{
+    position:fixed; top:96px; left:16px; width:170px; z-index:250;
+    background:rgba(15,23,42,.97); border:1px solid var(--line);
+    border-radius:14px; padding:14px 12px; box-shadow:0 6px 24px rgba(0,0,0,.45);
+    max-height:calc(100vh - 120px); overflow-y:auto;
+  }
+  .sidenav .sn-title{font-size:13px;font-weight:800;color:var(--accent);text-align:center;
+    padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:8px;letter-spacing:1px;}
+  .sidenav a{display:block;color:var(--txt);text-decoration:none;font-size:13px;
+    padding:7px 10px;border-radius:8px;margin:2px 0;border-left:3px solid transparent;transition:.2s;}
+  .sidenav a:hover{background:rgba(56,189,248,.12);color:var(--accent);border-left-color:var(--accent);}
+  @media (min-width:1101px){ .wrap{margin-left:max(206px, calc((100% - 1080px) / 2)); margin-right:calc((100% - 1080px) / 2);} }
+  @media (max-width:1100px){
+    .sidenav{position:sticky;top:0;left:0;width:auto;max-height:none;overflow:visible;
+      display:flex;flex-wrap:wrap;gap:4px;margin-bottom:18px;align-items:center;justify-content:center;}
+    .sidenav .sn-title{width:100%;text-align:center;margin-bottom:4px;}
+    .sidenav a{display:inline-block;padding:5px 10px;margin:2px;}
+    .wrap{margin-left:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>高中物理 · 近代物理基础</h1>
+  <p>原子结构 &nbsp;|&nbsp; 原子核 &nbsp;|&nbsp; 波粒二象性 &nbsp;—&nbsp; 知识点梳理与常见题型总结</p>
+</header>
+
+<div class="sidenav">
+  <div class="sn-title">📖 目录</div>
+  <a href="#c0">考点导航</a>
+  <a href="#c1">一、波粒二象性</a>
+  <a href="#c2">二、原子结构</a>
+  <a href="#c3">三、原子核</a>
+  <a href="#c4">四、题型精析</a>
+  <a href="#c5">四续 · 真题练习</a>
+  <a href="#c6">五、速记清单</a>
+</div>
+
+<section id="c0">
+  <h2>考点导航</h2>
+  <div class="grid">
+    <a class="nav-card" href="#c1"><div class="nav-num">考点 1</div><div class="nav-t">波粒二象性</div><div class="nav-d">光子说 · 光电效应 · 物质波 · 康普顿效应</div></a>
+    <a class="nav-card" href="#c2"><div class="nav-num">考点 2</div><div class="nav-t">原子结构</div><div class="nav-d">枣糕/核式模型 · 玻尔模型 · 氢原子能级与跃迁</div></a>
+    <a class="nav-card" href="#c3"><div class="nav-num">考点 3</div><div class="nav-t">原子核</div><div class="nav-d">核组成 · 衰变 · 核反应 · 核能 · 半衰期</div></a>
+  </div>
+</section>
+
+<!-- ============ 一、波粒二象性 ============ -->
+<section id="c1">
+  <h2>一、波粒二象性（光的本性）</h2>
+
+  <h3>1. 光子说与能量量子化</h3>
+  <ul>
+    <li>普朗克能量子假说：带电微粒辐射/吸收能量是<b>不连续</b>的，\(E = h\nu\)（\(h = 6.63\times10^{-34}\ \mathrm{J\cdot s}\)）。</li>
+    <li>爱因斯坦光子说：光是一份份的光子，单个光子能量 \(\varepsilon = h\nu = \dfrac{hc}{\lambda}\)。</li>
+    <li>光既有波动性（干涉、衍射），又有粒子性（光电效应、康普顿效应）。频率越高，粒子性越显著。</li>
+  </ul>
+
+  <h3>2. 光电效应</h3>
+  <div class="formula">
+    爱因斯坦光电效应方程：<br>
+    \(E_k = h\nu - W_0\)　（\(W_0\) 为逸出功，\(W_0 = h\nu_c\)，\(\nu_c\) 为极限频率）<br>
+    遏止电压：\(eU_c = E_k = h\nu - W_0\)<br>
+    饱和光电流 \(\propto\) 入射光强度（与频率无关）
+  </div>
+  <div class="warn">易错点：
+    <ul>
+      <li>能否发生光电效应只由<b>入射光频率 ν</b> 决定（ν &gt; ν_c），与光强无关。</li>
+      <li>光电子的最大初动能只随 ν 增大而增大，与光强无关。</li>
+      <li>光强增大 → 单位时间逸出光电子数增多 → 饱和光电流增大。</li>
+      <li>光电效应瞬时性（&lt;10⁻⁹ s），经典波动理论无法解释。</li>
+    </ul>
+  </div>
+
+  <h3>3. 物质波（德布罗意波）</h3>
+  <div class="formula">\(\lambda = \dfrac{h}{p} = \dfrac{h}{mv}\)　（\(p\) 为动量）</div>
+  <ul>
+    <li>一切运动的实物粒子都具有波动性，λ 与动量成反比。</li>
+    <li>电子衍射实验证实了实物粒子的波动性。</li>
+  </ul>
+
+  <h3>4. 康普顿效应</h3>
+  <ul>
+    <li>X 射线散射后波长变长，表明光子不仅具有能量还具有动量，进一步证明光的粒子性。</li>
+  </ul>
+</section>
+
+<!-- ============ 二、原子结构 ============ -->
+<section id="c2">
+  <h2>二、原子结构</h2>
+
+  <h3>1. 汤姆孙（枣糕/西瓜模型）</h3>
+  <ul><li>原子是"正电荷均匀分布的球，电子像枣镶嵌其中"。后被 α 粒子散射实验否定。</li></ul>
+
+  <h3>2. 卢瑟福原子核式结构模型（α 粒子散射实验）</h3>
+  <ul>
+    <li>绝大多数 α 粒子穿过；少数发生大角度偏转；极少数反弹。</li>
+    <li>结论：原子中心有一个很小的<b>原子核</b>，集中了几乎全部质量和全部正电荷。</li>
+    <li>原子核半径约 10⁻¹⁵ m，原子半径约 10⁻¹⁰ m。</li>
+  </ul>
+
+  <h3>3. 玻尔原子模型（氢原子）</h3>
+  <div class="formula">
+    三条假设：<br>
+    ① 定态假设：原子只能处于一系列不连续的能量状态（定态），不辐射能量。<br>
+    ② 跃迁假设：\(h\nu = E_m - E_n\)（\(m&gt;n\) 发射光子，\(m&lt;n\) 吸收光子）<br>
+    ③ 轨道量子化：\(r_n = n^2 r_1\)，\(v_n = \dfrac{v_1}{n}\)
+  </div>
+  <div class="grid">
+    <div class="box">
+      <b>氢原子能级</b><br>
+      \(E_n = \dfrac{E_1}{n^2} = -\dfrac{13.6}{n^2}\ \mathrm{eV}\)<br>
+      （\(E_1 = -13.6\ \mathrm{eV}\) 为基态）
+    </div>
+    <div class="box">
+      <b>半径</b><br>
+      \(r_n = n^2 r_1\)<br>
+      （\(r_1 = 0.53\ \text{Å}\)）
+    </div>
+    <div class="box">
+      <b>跃迁光谱</b><br>
+      \(1/n^2\) 系列：<br>
+      莱曼(\(n\to1\),紫外)<br>
+      巴耳末(\(n\to2\),可见光)<br>
+      帕邢(\(n\to3\),红外)
+    </div>
+    <div class="box">
+      <b>电离</b><br>
+      基态电离能 \(= 13.6\ \mathrm{eV}\)<br>
+      第 \(n\) 态电离能 \(= \dfrac{13.6}{n^2}\ \mathrm{eV}\)
+    </div>
+  </div>
+  <div class="tip">玻尔模型的局限性：仅成功解释氢及类氢离子（单电子），无法解释多电子原子，是半经典半量子理论。</div>
+
+  <h3>4. 氢原子跃迁的两类问题</h3>
+  <ul>
+    <li><b>自发辐射</b>：一群氢原子从 \(n\) 激发态向下跃迁，最多发出 \(C_n^2 = \dfrac{n(n-1)}{2}\) 种频率的光。</li>
+    <li><b>吸收</b>：用光照射，只有光子能量等于两能级差才能被吸收；用电子碰撞激发则不受此严格限制（电子可损失部分动能）。</li>
+  </ul>
+</section>
+
+<!-- ============ 三、原子核 ============ -->
+<section id="c3">
+  <h2>三、原子核</h2>
+
+  <h3>1. 原子核的组成</h3>
+  <ul>
+    <li>原子核由<b>质子</b>（¹₁H）和<b>中子</b>（¹₀n）组成，统称<b>核子</b>。</li>
+    <li>符号 \({}^A_Z\mathrm{X}\)：\(A\) = 质量数（质子+中子），\(Z\) = 电荷数（质子数）。</li>
+    <li>同位素：质子数相同、中子数不同的原子（如 ¹H、²H、³H）。</li>
+  </ul>
+
+  <h3>2. 三种射线对比</h3>
+  <table>
+    <tr><th>射线</th><th>本质</th><th>电荷</th><th>穿透能力</th><th>电离能力</th></tr>
+    <tr><td>α 射线</td><td>氦核 ⁴₂He</td><td>+2e</td><td>最弱（纸可挡）</td><td>最强</td></tr>
+    <tr><td>β 射线</td><td>高速电子 ⁰₋₁e</td><td>−e</td><td>较强（铝板）</td><td>较弱</td></tr>
+    <tr><td>γ 射线</td><td>高频光子</td><td>0</td><td>最强（厚铅）</td><td>最弱</td></tr>
+  </table>
+
+  <h3>3. 衰变规律</h3>
+  <div class="formula">
+    质量数守恒、电荷数守恒：<br>
+    \(\alpha\) 衰变：\({}^A_Z\mathrm{X} \to {}^{A-4}_{Z-2}\mathrm{Y} + {}^4_2\mathrm{He}\)<br>
+    \(\beta\) 衰变：\({}^A_Z\mathrm{X} \to {}^A_{Z+1}\mathrm{Y} + {}^0_{-1}\mathrm{e} + \bar{\nu}\)（反中微子）<br>
+    （\(\beta\) 衰变中一个中子变质子：\({}^1_0\mathrm{n} \to {}^1_1\mathrm{p} + {}^0_{-1}\mathrm{e}\)）
+  </div>
+  <ul>
+    <li><b>半衰期</b> \(T\)：放射性元素半数原子核衰变所需时间。\(N = N_0\left(\dfrac{1}{2}\right)^{t/T}\)，\(m = m_0\left(\dfrac{1}{2}\right)^{t/T}\)。</li>
+    <li>半衰期由<b>原子核内部</b>决定，与温度、压强、化学状态无关。</li>
+  </ul>
+
+  <h3>4. 核反应方程（四大类型）</h3>
+  <ul>
+    <li><b>衰变</b>（自发）：α、β 衰变。</li>
+    <li><b>人工核转变</b>：卢瑟福发现质子 \({}^{14}_7\mathrm{N} + {}^4_2\mathrm{He} \to {}^{17}_8\mathrm{O} + {}^1_1\mathrm{H}\)；查德威克发现中子 \({}^9_4\mathrm{Be} + {}^4_2\mathrm{He} \to {}^{12}_6\mathrm{C} + {}^1_0\mathrm{n}\)。</li>
+    <li><b>裂变</b>：重核分裂，如 \({}^{235}_{92}\mathrm{U} + {}^1_0\mathrm{n} \to {}^{144}_{56}\mathrm{Ba} + {}^{89}_{36}\mathrm{Kr} + 3\,{}^1_0\mathrm{n}\)（链式反应，核电站）。</li>
+    <li><b>聚变</b>：轻核结合，如 \({}^2_1\mathrm{H} + {}^3_1\mathrm{H} \to {}^4_2\mathrm{He} + {}^1_0\mathrm{n}\)（太阳能量来源）。</li>
+  </ul>
+
+  <h3>5. 核能</h3>
+  <div class="formula">
+    质能方程：\(E = mc^2\)<br>
+    结合能：\(\Delta E = \Delta m\cdot c^2\)（\(\Delta m\) 为质量亏损）<br>
+    比结合能越大，原子核越稳定（中等质量核最稳定）
+  </div>
+  <ul>
+    <li>质量亏损不是质量消失，而是静止质量转化为释放的能量。</li>
+    <li>单位换算：\(1\ \mathrm{u} = 931.5\ \mathrm{MeV}/c^2\)（常用：\(1\ \mathrm{u}\) 对应 \(931.5\ \mathrm{MeV}\)）。</li>
+  </ul>
+  <div class="tip">写核反应方程：先根据"电荷数、质量数守恒"补齐未知核，再查元素周期表确定元素符号。严禁凭空编造！</div>
+</section>
+
+<!-- ============ 四、常见题型 ============ -->
+<section id="c4">
+  <h2>四、常见题型精析</h2>
+
+  <div class="q" style="border-left:4px solid var(--accent);">
+    <div class="stem" style="color:var(--accent);">【母题 · 光电效应实验】如图1所示，真空玻璃管内阴极 K 与阳极 A 构成光电管电路。可见光 P、Q、R 分别由窗口射向阴极 K。调节滑动变阻器，记录电流表与电压表示数，两者关系如图2所示（\(I\!-\!U\) 曲线）。请回答：
+      <br>(1) 图2中哪条曲线对应<b>最大入射光强</b>？哪条对应<b>最高频率</b>？
+      <br>(2) 如何从图2中读出各光的<b>遏止电压</b>和<b>饱和光电流</b>？
+      <br>(3) 若已知普朗克常量 \(h\) 和电子电荷量 \(e\)，如何求出阴极材料的<b>逸出功</b>？
+      <br>(4) 若将电源正负极对调（反向电压），曲线会如何变化？
+    </div>
+    <div class="ans">
+      <b>【母题解析】</b><br>
+      (1) <b>光强 → 饱和电流</b>：饱和光电流大小反映单位时间内逸出的光电子数，即反映入射光强度。图中 P 的饱和电流最大 → <b>P 光强最大</b>。<br>
+      &nbsp;&nbsp;&nbsp;<b>频率 → 遏止电压</b>：由 \(eU_c = h\nu - W_0\) 知，\(\nu\) 越大则 \(U_c\) 越大（曲线与横轴交点越靠左/越负）。图中 R 的遏止电压绝对值最大 → <b>R 频率最高</b>。<br>
+      (2) 曲线与横轴（\(U\) 轴）的交点横坐标即为<b>遏止电压 \(-U_c\)</b>；曲线趋于水平的纵坐标值即为<b>饱和光电流 \(I_s\)</b>。<br>
+      (3) 由 \(W_0 = h\nu - eU_c\)，任选一条曲线读出其 \(U_c\) 并知道该光频率 \(\nu\) 即可算出 \(W_0\)；或用两条不同频率的光分别测得 \(U_{c1}, U_{c2}\)，联立：<br>
+      &nbsp;&nbsp;&nbsp;\(h(\nu_1 - \nu_2) = e(U_{c1} - U_{c2})\)，可求出 \(h\) 再代回求 \(W_0\)（此即<b>密立根法</b>测普朗克常量的原理）。<br>
+      (4) 电源反接后，加在 K-A 间的是<b>正向加速电压</b>：所有光电子均被拉向阳极，无反向截止效果，电流随电压增大迅速达到饱和，曲线形状变为单调上升趋平。
+      <div class="formula" style="margin-top:10px;">
+        核心公式链：<br>
+        光电效应方程：\(E_k = h\nu - W_0\)　→　遏止电压：\(eU_c = E_k = h\nu - W_0\)　→　饱和电流：\(I_s \propto\) 入射光强
+      </div>
+      <b>【母题衍生方向】</b>
+      <ul>
+        <li>换用不同金属阴极（改变 \(W_0\)），比较曲线变化。</li>
+        <li>给定其中两光的参数求第三光的参数。</li>
+        <li>结合德布罗意波长或玻尔能级综合考查。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 1（光电效应）：用频率为 \(\nu\) 的光照射某金属，遏止电压为 \(U_c\)。若改用频率为 \(2\nu\) 的光，遏止电压变为多少？（已知逸出功 \(W_0 = h\nu_0\)）</div>
+    <div class="ans"><b>解析：</b>由 \(eU_c = h\nu - W_0\) 得原 \(U_c = \dfrac{h\nu-W_0}{e}\)。新情况下 \(eU_c' = h\cdot 2\nu - W_0 = 2h\nu - W_0\)，故 <b>\(U_c' = \dfrac{2h\nu - W_0}{e}\)</b>。注意不能直接加倍，因为存在逸出功常数项。</div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 2（氢原子跃迁）：大量氢原子处于 \(n=4\) 激发态，向低能级跃迁时可发出几种不同频率的光？其中有几种属于巴耳末系？</div>
+    <div class="ans"><b>解析：</b>种数 \(= C_4^2 = 6\) 种。巴耳末系要求终态为 \(n=2\)，即从 \(n=4\to2\)、\(3\to2\) 共 <b>2 种</b>（还有 \(4\to3\)、\(3\to1\)、\(2\to1\)、\(4\to1\) 不属于巴耳末系）。</div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 3（能级计算）：氢原子从 \(n=2\) 跃迁到 \(n=1\) 发出光子的能量、频率、波长各是多少？</div>
+    <div class="ans"><b>解析：</b>\(\Delta E = E_2 - E_1 = \left(-\dfrac{13.6}{4}\right) - (-13.6) = 10.2\ \mathrm{eV} = 10.2\times1.6\times10^{-19}\ \mathrm{J} \approx 1.63\times10^{-18}\ \mathrm{J}\)。\(\nu = \dfrac{\Delta E}{h} \approx 2.46\times10^{15}\ \mathrm{Hz}\)，\(\lambda = \dfrac{c}{\nu} \approx\) <b>\(1.22\times10^{-7}\ \mathrm{m}\)（122 nm，紫外）</b>。</div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 4（衰变次数）：\({}^{238}_{92}\mathrm{U}\) 衰变为 \({}^{206}_{82}\mathrm{Pb}\)，共发生多少次 \(\alpha\) 衰变和 \(\beta\) 衰变？</div>
+    <div class="ans"><b>解析：</b>质量数减少 \(238-206 = 32\)，每次 \(\alpha\) 减 4，故 \(\alpha\) 次数 \(= 32/4 =\) <b>8 次</b>。电荷数因 \(\alpha\) 减少 \(8\times2=16\)，实际减少 \(92-82=10\)，少减了 6，每次 \(\beta\) 增 1，故 \(\beta\) 次数 \(=\) <b>6 次</b>。</div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 5（半衰期）：某放射性元素初始质量 10 g，半衰期 5 天，20 天后还剩多少？衰变了多少？</div>
+    <div class="ans"><b>解析：</b>经历 \(20/5 = 4\) 个半衰期。\(m = 10\times\left(\dfrac{1}{2}\right)^4 = 10/16 =\) <b>0.625 g</b>；已衰变 \(= 10 - 0.625 =\) <b>9.375 g</b>。</div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 6（核能计算）：已知 \({}^1\mathrm{H}\)(1.0078 u)、\(n\)(1.0087 u)、\({}^2\mathrm{H}\)(2.0141 u)，求 \({}^1\mathrm{H} + n \to {}^2\mathrm{H}\) 的释放能量。</div>
+    <div class="ans"><b>解析：</b>\(\Delta m = (1.0078+1.0087) - 2.0141 = 0.0024\ \mathrm{u}\)。\(\Delta E = 0.0024\times931.5 \approx\) <b>2.24 MeV</b>。</div>
+  </div>
+
+  <div class="q">
+    <div class="stem">题型 7（物质波）：电子经 100 eV 加速后，其德布罗意波长约为多少？</div>
+    <div class="ans"><b>解析：</b>非相对论，\(p = \sqrt{2mE_k}\)。可用简化公式 \(\lambda(\text{Å}) \approx \dfrac{12.27}{\sqrt{U(\mathrm{V})}}\)（\(U\) 为加速电压伏特）。\(\lambda \approx \dfrac{12.27}{\sqrt{100}} =\) <b>1.23 Å = 0.123 nm</b>。</div>
+  </div>
+</section>
+
+<!-- ============ 四·续、真题练习 ============ -->
+<section id="c5">
+  <h2>四（续）· 高考真题练习</h2>
+
+  <div class="q">
+    <div class="stem">（2023·海南·高考真题）已知一个激光发射器功率为 \(P\)，发射波长为 \(\lambda\) 的光，光速为 \(c\)，普朗克常量为 \(h\)，则（&nbsp;&nbsp;&nbsp;&nbsp;）
+      <br>A．光的频率为 \(\dfrac{c}{\lambda}\)　　B．光子的能量为 \(h\lambda\)
+      <br>C．光子的动量为 \(\dfrac{h}{\lambda}\)　D．在时间 \(t\) 内激光器发射的光子数为 \(\dfrac{Pt\lambda}{hc}\)
+    </div>
+    <div class="ans">
+      <b>【答案】AC</b>　【难度】0.85
+      <div class="formula" style="margin-top:10px;">
+        A．光的频率　\(\nu = \dfrac{c}{\lambda}\)　　→ 选项 A 正确<br>
+        B．光子的能量　\(E = h\nu = \dfrac{hc}{\lambda}\)　　→ 选项 B 错误（不是 \(h\lambda\)）<br>
+        C．光子的动量　\(p = \dfrac{h}{\lambda}\)　　→ 选项 C 正确<br>
+        D．时间 \(t\) 内发射光子数　\(n = \dfrac{Pt}{E} = \dfrac{Pt\lambda}{hc}\)　　→ 选项 D 错误（分子分母写反）
+      </div>
+      <b>【易错辨析】</b>
+      <ul>
+        <li>波长与频率关系用 \(\nu = \dfrac{c}{\lambda}\)（注意是 \(c\) 除以 \(\lambda\)，不是相乘）。</li>
+        <li>光子能量 \(E = \dfrac{hc}{\lambda}\)，动量 \(p = \dfrac{h}{\lambda}\)，两者都正比于 \(1/\lambda\)；B 项漏了 \(c\) 故错。</li>
+        <li>光子数 = 总能量 / 单个光子能量 = \(Pt \div \dfrac{hc}{\lambda} = \dfrac{Pt\lambda}{hc}\)，D 项把分母分子颠倒故错。</li>
+        <li>本题实质考查光子频率、能量、动量及光子数四个基本关系，属基础送分题。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="stem">（2023·上海·高考真题）关于 α 粒子散射实验正确的是（　　）
+      <br>A．实验要在真空中进行
+      <br>B．荧光屏是为了阻挡 α 粒子
+      <br>C．实验中显微镜必须正对放射源
+      <br>D．证明了原子核中有质子存在
+    </div>
+    <div class="ans">
+      <b>【答案】A</b>　【难度】0.85
+      <ul>
+        <li>A．α 粒子散射实验要求在<b>真空中</b>进行，避免空气分子对 α 粒子的阻挡，A 正确；</li>
+        <li>B．荧光屏是为了让 α 粒子打在屏上，通过<b>观察亮点</b>来记录散射后的位置，并非阻挡，B 错误；</li>
+        <li>C．荧光屏和显微镜能围绕金箔在一个圆周上运动，可观测各个方向的散射，<b>不必须正对放射源</b>，C 错误；</li>
+        <li>D．该实验证明了原子的<b>全部正电荷和几乎全部质量集中在很小的原子核</b>上，并未证明核内有质子（质子由卢瑟福人工核转变发现），D 错误。</li>
+      </ul>
+      <b>【易错辨析】</b>
+      <ul>
+        <li>α 粒子散射实验的结论是"核式结构"，即正电荷和质量集中于原子核；"发现质子"是另一实验（\({}^{14}_7\mathrm{N} + {}^4_2\mathrm{He} \to {}^{17}_8\mathrm{O} + {}^1_1\mathrm{H}\)），不要混淆。</li>
+        <li>荧光屏 + 显微镜是<b>探测记录</b>装置，显微镜可转动以统计大角度散射比例。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="stem">（2025·四川·高考真题）某多晶薄膜晶格结构可以等效成缝宽约为 \(3.5\times10^{-10}\ \mathrm{m}\) 的狭缝。下列粒子束穿过该多晶薄膜时，衍射现象最明显的是（　　）
+      <br>A．德布罗意波长约为 \(7.9\times10^{-13}\ \mathrm{m}\) 的中子
+      <br>B．德布罗意波长约为 \(8.7\times10^{-12}\ \mathrm{m}\) 的质子
+      <br>C．德布罗意波长约为 \(2.6\times10^{-11}\ \mathrm{m}\) 的氮分子
+      <br>D．德布罗意波长约为 \(1.5\times10^{-10}\ \mathrm{m}\) 的电子
+    </div>
+    <div class="ans">
+      <b>【答案】D</b>　【难度】0.85
+      <ul>
+        <li>当波通过尺寸与其波长相近的障碍物或狭缝时，会发生明显的衍射现象。</li>
+        <li>对实物粒子，其波动性由<b>德布罗意波长 \(\lambda\)</b> 决定；衍射明显程度与比值 \(\dfrac{\lambda}{d}\) 相关，当 \(\dfrac{\lambda}{d}\) 接近或大于 1 时衍射非常明显（\(d = 3.5\times10^{-10}\ \mathrm{m}\) 为狭缝宽度）。</li>
+        <li>逐项比值：
+          \(\dfrac{\lambda_A}{d} \approx \dfrac{7.9\times10^{-13}}{3.5\times10^{-10}} \approx 2.3\times10^{-3}\)，
+          \(\dfrac{\lambda_B}{d} \approx 2.5\times10^{-2}\)，
+          \(\dfrac{\lambda_C}{d} \approx 7.4\times10^{-2}\)，
+          \(\dfrac{\lambda_D}{d} \approx \dfrac{1.5\times10^{-10}}{3.5\times10^{-10}} \approx 0.43\)。
+        </li>
+        <li>D 项电子的 \(\lambda/d\) 最大、最接近 1，故<b>衍射现象最明显</b>。故选 D。</li>
+      </ul>
+      <b>【易错辨析】</b>
+      <ul>
+        <li>考查<b>物质波（德布罗意波）的衍射条件</b>：波长与障碍物/狭缝尺寸越接近，衍射越明显，并非能量或质量越大越明显。</li>
+        <li>注意比较的是 \(\lambda\) 与 \(d\) 的<b>相对大小</b>，直接看四个 \(\lambda\) 谁最接近 \(d=3.5\times10^{-10}\ \mathrm{m}\) 即可——电子 \(1.5\times10^{-10}\ \mathrm{m}\) 最接近。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="stem">（2025·陕晋青宁卷·高考真题）我国首台拥有自主知识产权的场发射透射电镜 TH—F120 实现了超高分辨率成像，其分辨率提高利用了高速电子束波长远小于可见光波长的物理性质。一个静止的电子经 100 V 电压加速后，其德布罗意波长为 \(\lambda\)，若加速电压为 10 kV，不考虑相对论效应，则其德布罗意波长为（　　）
+      <br>A．\(100\lambda\)　B．\(10\lambda\)　C．\(\dfrac{1}{10}\lambda\)　D．\(\dfrac{1}{100}\lambda\)
+    </div>
+    <div class="ans">
+      <b>【答案】C</b>　【难度】0.85
+      <ul>
+        <li>设电子经电压 \(U\) 加速后速度大小为 \(v\)，由动能定理：\(eU = \dfrac{1}{2}mv^2\)。</li>
+        <li>电子动量：\(p = mv\)；德布罗意波长：\(\lambda = \dfrac{h}{p}\)。</li>
+        <li>联立得：\(\lambda = \dfrac{h}{p} = \dfrac{h}{\sqrt{2meU}}\)，即 \(\lambda \propto \dfrac{1}{\sqrt{U}}\)。</li>
+        <li>加速电压由 \(U\) 变到 \(U' = 10\ \mathrm{kV}\)，比值 \(U':U = 100:1\)。</li>
+        <li>故 \(\lambda' = \lambda\sqrt{\dfrac{U}{U'}} = \lambda\sqrt{\dfrac{1}{100}} = \dfrac{1}{10}\lambda\)。</li>
+        <li>C 正确，A、B、D 错误。故选 C。</li>
+      </ul>
+      <b>【易错辨析】</b>
+      <ul>
+        <li>关键结论：非相对论下电子经电压 \(U\) 加速后的德布罗意波长 \(\lambda \propto 1/\sqrt{U}\)（常用近似式 \(\lambda(\text{Å}) \approx 12.27/\sqrt{U(\mathrm{V})}\)）。</li>
+        <li>电压增大 100 倍，波长变为原来的 <b>\(1/10\)</b>，而非 10 倍或 100 倍——注意是平方根反比关系，且方向别搞反。</li>
+        <li>10 kV 仍属非相对论范围（电子静能约 511 keV），题干已提示"不考虑相对论效应"，直接用经典公式即可。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="q">
+    <div class="stem">（2024·湖南·高考真题）量子技术是当前物理学应用研究的热点，下列关于量子论的说法正确的是（　　）
+      <br>A．普朗克认为黑体辐射的能量是连续的
+      <br>B．光电效应实验中，红光照射可以让电子从某金属表面逸出，若改用紫光照射也可以让电子从该金属表面逸出
+      <br>C．康普顿研究石墨对 X 射线散射时，发现散射后仅有波长小于原波长的射线成分
+      <br>D．德布罗意认为质子具有波动性，而电子不具有波动性
+    </div>
+    <div class="ans">
+      <b>【答案】B</b>　【难度】0.85
+      <ul>
+        <li>A．普朗克认为黑体辐射的能量是<b>一份一份的、量子化</b>的，并非连续，故 A 错误；</li>
+        <li>B．产生光电效应的条件是入射光频率 <b>大于</b>金属的极限频率。紫光频率 \(\nu_{\text{紫}} > \nu_{\text{红}}\)，若红光能使该金属发生光电效应，则紫光一定能，故 B 正确；</li>
+        <li>C．石墨对 X 射线散射遵循动量守恒；光子与电子碰撞后电子获得动量，光子动量变小，由 \(\lambda = \dfrac{h}{p}\) 知波长<b>变长</b>（\(\lambda' > \lambda\)），并非"仅有小于原波长"的成分，故 C 错误；</li>
+        <li>D．德布罗意认为<b>一切运动的实物粒子</b>都具有波动性，质子、电子都有，故 D 错误。</li>
+      </ul>
+      <b>【易错辨析】</b>
+      <ul>
+        <li>本题考查量子论四大基础结论的<b>正误判断</b>：普朗克量子化、光电效应频率条件、康普顿效应（波长变长）、德布罗意物质波（普适性）。</li>
+        <li>康普顿散射中光子"损失"能量、动量减小 → 波长变长，这是证明光具有粒子性的关键实验，注意是<b>变长</b>而非变短。</li>
+        <li>光电效应"能否发生"只看频率是否超极限频率；红光能发生则更高频的紫光必然能发生。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 五、速记清单 ============ -->
+<section id="c6">
+  <h2>五、考前速记清单</h2>
+  <ul>
+    <li><span class="tag">常数</span>\(h = 6.63\times10^{-34}\ \mathrm{J\cdot s}\)；\(e = 1.6\times10^{-19}\ \mathrm{C}\)；\(c = 3\times10^8\ \mathrm{m/s}\)；\(1\ \mathrm{eV} = 1.6\times10^{-19}\ \mathrm{J}\)；\(1\ \mathrm{u} = 931.5\ \mathrm{MeV}\)。</li>
+    <li><span class="tag">氢原子</span>\(E_n = -\dfrac{13.6}{n^2}\ \mathrm{eV}\)，\(r_n = n^2\cdot0.53\ \text{Å}\)。</li>
+    <li><span class="tag">光电效应</span>看频率定能否发生，看频率定最大初动能，看光强定光电流。</li>
+    <li><span class="tag">玻尔</span>跃迁 \(h\nu = |E_m - E_n|\)；大量原子 \(n\) 态辐射 \(C_n^2\) 种频率。</li>
+    <li><span class="tag">衰变</span>\(\alpha\) 质量−4电荷−2；\(\beta\) 质量不变电荷+1；半衰期与温度压强无关。</li>
+    <li><span class="tag">核反应</span>电荷数、质量数双守恒；方程不能乱编。</li>
+    <li><span class="tag">核能</span>\(\Delta E = \Delta m\cdot c^2\)；比结合能越大越稳定。</li>
+  </ul>
+</section>
+
+<footer>整理自高中物理（人教版）选修近代物理模块 · 仅供学习复习使用</footer>
+
+</div>
+<script src="../nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动学闯关 · 斜面内圆周运动的临界问题</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav a {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; text-align: left; text-decoration: none;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s;
+        }
+        .level-nav a::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav a.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav a.active::before { background: #ff6a00; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5;
+        }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .section-title { color: #1e3c72; font-size: 1.35em; margin: 28px 0 10px; font-weight: 700; }
+        .sub-title { color: #34495e; font-size: 1.15em; font-weight: 700; margin: 16px 0 8px; }
+        .scene-svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 12px auto; }
+        .svg-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        .svg-row .scene-svg { max-width: 360px; margin: 0; }
+        .ul-list { margin: 8px 0 8px 22px; }
+        .ul-list li { margin: 6px 0; }
+
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .opt.selected { border-color: #3a7bd5; background: #eef4ff; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav a { width: auto; flex: 1; min-width: 84px; white-space: nowrap; }
+            .level-nav a::before { display: none; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+            .svg-row { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏃 高考物理 · 运动学闯关</h1>
+    <p>直线运动 &amp; 曲线运动 · 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 本关闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">1</span> &nbsp;|&nbsp; 已答 <b id="doneVal">0</b> 题</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 知识点导航</div>
+            <div class="level-nav">
+            <a class="level-link" href="运动的描述.html">运动的描述</a>
+            <a class="level-link" href="匀变速直线运动基本公式.html">匀变速直线运动基本公式</a>
+            <a class="level-link" href="自由落体与竖直上抛.html">自由落体与竖直上抛</a>
+            <a class="level-link" href="匀变速推论与图像.html">匀变速推论与图像</a>
+            <a class="level-link" href="追及与相遇.html">追及与相遇</a>
+            <a class="level-link" href="曲线运动基础.html">曲线运动基础</a>
+            <a class="level-link" href="平抛运动.html">平抛运动</a>
+            <a class="level-link" href="斜抛运动.html">斜抛运动</a>
+            <a class="level-link" href="圆周运动.html">圆周运动</a>
+            <a class="level-link" href="圆周运动临界问题.html">圆周运动临界问题</a>
+            <a class="level-link" href="关联速度分解.html">关联速度分解</a>
+            <a class="level-link" href="接触物类.html">接触物类</a>
+            <a class="level-link" href="斜面上的平抛运动.html">斜面上的平抛运动</a>
+            <a class="level-link" href="弹簧与木块分离问题.html">弹簧与木块分离问题</a>
+            <a class="level-link" href="竖直平面内的圆周运动.html">竖直平面内的圆周运动</a>
+            <a class="level-link" href="水平面内圆周运动的临界问题.html">水平面内圆周运动的临界问题</a>
+            <a class="level-link active" href="斜面内圆周运动的临界问题.html">斜面内圆周运动的临界问题</a>
+            <a class="level-link" href="变力做功.html">变力做功</a>
+        </div>
+</div>
+
+<div class="container" id="container">
+    <div class="level active" id="lvInclineCircle">
+        <div class="level-head">
+            <span class="level-badge">圆周 · 方法</span>
+            <h2>斜面内圆周运动的临界问题</h2>
+        </div>
+        <p class="level-intro">在斜面上做圆周运动的物体，因控制因素不同（静摩擦力、轻杆、轻绳等），受力情况和遵循规律也不同。关键是把重力正交分解到“垂直斜面”和“沿斜面”两个方向。</p>
+
+        <div class="formula-box">
+            <div class="ftitle">📘 模型定义</div>
+            <div class="formula-note">物体在倾角为 $\theta$ 的斜面上做圆周运动时，重力垂直斜面的分力 $mg\cos\theta$ 与物体受到的支持力 $N$ 平衡；沿斜面向下的分力 $mg\sin\theta$ 会参与提供沿斜面方向的向心力。</div>
+        </div>
+
+        <div class="svg-row">
+            <img src="images/斜面分解示意图.png" alt="斜面分解示意图" class="scene-svg" style="max-width:100%;width:520px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">✏️ 解题方法</div>
+            <div class="formula-note">在垂直于斜面方向合力为零：$N=mg\cos\theta$。</div>
+            <div class="formula-note">在斜面方向的合力提供向心力：$F_\text{向心}=m\dfrac{v^2}{r}=m\omega^2 r$。</div>
+            <div class="formula-note">下面分三种情况讨论。</div>
+        </div>
+
+        <div class="section-title">1. 静摩擦力控制下的斜面圆周运动</div>
+        <p class="level-intro">倾斜的匀质圆盘绕垂直于盘面的固定对称轴以恒定角速度 $\omega$ 转动，盘面上离转轴距离 $r=2.5\ \text{m}$ 处有一小物体与圆盘始终保持相对静止，物体与盘面间的动摩擦因数 $\mu=\dfrac{\sqrt{3}}{2}$（最大静摩擦力等于滑动摩擦力），盘面与水平面间的夹角为 $30°$，$g=10\ \text{m/s}^2$。求 $\omega$ 的最大值。</p>
+        <div class="svg-row">
+            <img src="images/斜面圆盘静摩擦临界.png" alt="倾斜圆盘静摩擦临界" class="scene-svg" style="max-width:100%;width:300px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="example">
+            <div class="q">解析</div>
+            <div class="step">物块在圆盘最低点时最容易滑动，此时圆心在物块上方，向心力沿斜面向上。</div>
+            <div class="step">沿斜面方向：$f_m-mg\sin\theta=m\omega_m^2 r$</div>
+            <div class="step">最大静摩擦力：$f_m=\mu N=\mu mg\cos\theta$</div>
+            <div class="step">联立得：$\omega_m=\sqrt{\dfrac{g(\mu\cos\theta-\sin\theta)}{r}}=\sqrt{\dfrac{10\times(\frac{\sqrt{3}}{2}\times\frac{\sqrt{3}}{2}-\frac{1}{2})}{2.5}}=\sqrt{\dfrac{10\times0.25}{2.5}}=1.0\ \text{rad/s}$</div>
+            <div class="step"><b>答案：C．$1.0\ \text{rad/s}$</b></div>
+        </div>
+
+        <div class="section-title">2. 轻杆控制下的斜面圆周运动</div>
+        <p class="level-intro">在倾角为 $\alpha=30°$ 的光滑斜面上有一长 $L=0.8\ \text{m}$ 的轻杆，杆一端固定在 $O$ 点，可绕 $O$ 点自由转动，另一端系一质量 $m=0.05\ \text{kg}$ 的小球，小球在斜面上做圆周运动，$g=10\ \text{m/s}^2$。要使小球能到达最高点 $A$，小球在最低点 $B$ 的最小速度是多少？</p>
+        <div class="svg-row">
+            <img src="images/斜面轻杆圆周运动.png" alt="轻杆控制斜面圆周运动" class="scene-svg" style="max-width:100%;width:320px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="example">
+            <div class="q">解析</div>
+            <div class="step">轻杆可以提供拉力或支持力，故小球在最高点 $A$ 的最小速度可以为 $0$。</div>
+            <div class="step">从 $A$ 到 $B$，重力沿斜面向下的分力做正功，由动能定理：</div>
+            <div class="step">$\dfrac{1}{2}mv_B^2-\dfrac{1}{2}mv_A^2=mg\cdot 2L\sin\alpha$</div>
+            <div class="step">代入 $v_A=0$，$\alpha=30°$，$L=0.8\ \text{m}$，$g=10\ \text{m/s}^2$：</div>
+            <div class="step">$v_B=\sqrt{4gL\sin\alpha}=\sqrt{4\times10\times0.8\times0.5}=4\ \text{m/s}$</div>
+            <div class="step"><b>答案：A．$4\ \text{m/s}$</b></div>
+        </div>
+
+        <div class="section-title">3. 轻绳控制下的斜面圆周运动</div>
+        <p class="level-intro">在倾角为 $\theta$ 的光滑斜面上，长为 $L$ 的细线一端固定，另一端连接质量为 $m$ 的小球，小球在斜面上做圆周运动，$A$、$B$ 分别是圆弧的最高点和最低点。若小球在 $A$、$B$ 点做圆周运动的最小速度分别为 $v_A$、$v_B$，重力加速度为 $g$，则（　　）</p>
+        <div class="svg-row">
+            <img src="images/斜面轻绳圆周运动.png" alt="轻绳控制斜面圆周运动" class="scene-svg" style="max-width:100%;width:320px;border:1px solid #e0e6ed;border-radius:8px;background:#fff;">
+        </div>
+        <div class="example">
+            <div class="q">解析</div>
+            <div class="step">最高点 $A$：绳拉力可以为零，重力沿斜面向下的分力提供向心力：</div>
+            <div class="step">$mg\sin\theta=m\dfrac{v_A^2}{L}\;\Rightarrow\;v_A=\sqrt{gL\sin\theta}$</div>
+            <div class="step">最低点 $B$：从 $A$ 到 $B$ 用动能定理：</div>
+            <div class="step">$\dfrac{1}{2}mv_B^2-\dfrac{1}{2}mv_A^2=mg\cdot 2L\sin\theta$</div>
+            <div class="step">$v_B=\sqrt{v_A^2+4gL\sin\theta}=\sqrt{5gL\sin\theta}$</div>
+            <div class="step"><b>结论：</b>$v_A=\sqrt{gL\sin\theta}$，$v_B=\sqrt{5gL\sin\theta}$。</div>
+        </div>
+
+        <div class="challenge">
+            <span class="ctag">🎮 闯关挑战</span>
+            <div class="cq">在倾角为 $\theta$ 的光滑斜面上，长为 $L$ 的轻绳拉着小球做圆周运动。若小球恰能通过最高点，则最高点速度为？</div>
+            <div class="opts" id="optsIC_0">
+                <div class="opt" data-i="IC_0" data-j="0"><span class="key">A</span><span>$0$</span></div>
+                <div class="opt" data-i="IC_0" data-j="1"><span class="key">B</span><span>$\sqrt{gL}$</span></div>
+                <div class="opt" data-i="IC_0" data-j="2"><span class="key">C</span><span>$\sqrt{gL\sin\theta}$</span></div>
+                <div class="opt" data-i="IC_0" data-j="3"><span class="key">D</span><span>$\sqrt{5gL\sin\theta}$</span></div>
+            </div>
+            <button class="cbtn" id="btnIC_0">提交答案</button>
+            <div class="cresult" id="resIC_0"></div>
+            <div class="cexplain" id="expIC_0"><b>📝 解析：</b>轻绳最高点临界时绳拉力为零，重力沿斜面向下的分力 $mg\sin\theta$ 提供向心力，即 $mg\sin\theta=m\dfrac{v^2}{L}$，得 $v=\sqrt{gL\sin\theta}$。故选 C。</div>
+        </div>
+
+        <div class="keymemo">🔑 <b>本关记忆要点：</b>斜面内圆周运动 — 把重力分解为垂直斜面和沿斜面两个方向；垂直斜面方向平衡，沿斜面方向合力提供向心力。绳模型最高点最小速度 $v=\sqrt{gL\sin\theta}$；杆模型最高点最小速度为 $0$；摩擦临界要找最容易滑动的位置（通常是最低点）。</div>
+        <div class="level-actions">
+            <a class="btn" href="水平面内圆周运动的临界问题.html">← 上一关</a>
+            <a class="btn" href="index.html">📑 目录</a>
+            <a class="btn btn-next" href="index.html">🏠 回到目录</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理运动学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+<script>
+let score = 0, done = 0;
+const total = 1;
+const ANS = { "IC_0": 2 };
+let answered = {};
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const correct = ANS[cid];
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65 + correct);
+    }
+    done++;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('progFill').style.width = (done / total * 100) + '%';
+}
+</script>
+
+</body>
+</html>

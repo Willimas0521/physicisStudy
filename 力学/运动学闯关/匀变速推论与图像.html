@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动学闯关 · 匀变速推论与图像</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .level-nav button::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active::before { background: #ff6a00; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done::before { background: #4caf50; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 84px; white-space: nowrap; }
+            .level-nav button::before { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    
+        .level-nav a {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; text-align: left; text-decoration: none;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s;
+        }
+        .level-nav a::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav a.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav a.active::before { background: #ff6a00; }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏃 高考物理 · 运动学闯关</h1>
+    <p>直线运动 &amp; 曲线运动 · 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 本关闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">1</span> &nbsp;|&nbsp; 已答 <b id="doneVal">0</b> 题</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 知识点导航</div>        <div class="level-nav">
+            <a class="level-link" href="运动的描述.html">运动的描述</a>
+            <a class="level-link" href="匀变速直线运动基本公式.html">匀变速直线运动基本公式</a>
+            <a class="level-link" href="自由落体与竖直上抛.html">自由落体与竖直上抛</a>
+            <a class="level-link active" href="匀变速推论与图像.html">匀变速推论与图像</a>
+            <a class="level-link" href="追及与相遇.html">追及与相遇</a>
+            <a class="level-link" href="曲线运动基础.html">曲线运动基础</a>
+            <a class="level-link" href="平抛运动.html">平抛运动</a>
+            <a class="level-link" href="斜抛运动.html">斜抛运动</a>
+            <a class="level-link" href="圆周运动.html">圆周运动</a>
+            <a class="level-link" href="圆周运动临界问题.html">圆周运动临界问题</a>
+            <a class="level-link" href="关联速度分解.html">关联速度分解</a>
+            <a class="level-link" href="接触物类.html">接触物类</a>
+            <a class="level-link" href="斜面上的平抛运动.html">斜面上的平抛运动</a>
+            <a class="level-link" href="弹簧与木块分离问题.html">弹簧与木块分离问题</a>
+            <a class="level-link" href="竖直平面内的圆周运动.html">竖直平面内的圆周运动</a>
+            <a class="level-link" href="水平面内圆周运动的临界问题.html">水平面内圆周运动的临界问题</a>
+            <a class="level-link" href="斜面内圆周运动的临界问题.html">斜面内圆周运动的临界问题</a>
+            <a class="level-link" href="变力做功.html">变力做功</a>
+        </div>
+</div>
+
+<div class="container" id="container">
+    
+    <div class="level active" id="lv3">
+        <div class="level-head">
+            <span class="level-badge">直线运动 · 考点04</span>
+            <h2>匀变速推论与图像</h2>
+        </div>
+        <p class="level-intro">高考高频考点：连续相等时间内的位移差、中间时刻速度，以及 v–t 图像的面积含义。</p>
+    
+        <div class="formula-box">
+            <div class="ftitle">📘 📊 逐差相等（ΔT 为时间间隔）</div>
+            <div class="formula">$$\Delta x = x_{n+1}-x_n = a\Delta T^2$$</div>
+            <div class="formula-note">打点计时器纸带问题的核心，常用来求加速度。</div>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 ⏱ 中间时刻速度</div>
+            <div class="formula">$$v_{\frac{t}{2}} = \dfrac{v_0+v}{2} = \bar v$$</div>
+            <div class="formula-note">匀变速中，中间时刻的瞬时速度等于整段时间的平均速度。</div>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 📈 中间位置速度</div>
+            <div class="formula">$$v_{\frac{x}{2}} = \sqrt{\dfrac{v_0^2+v^2}{2}}$$</div>
+            <div class="formula-note">注意与中间时刻速度区分，且 $v_{x/2} &gt; v_{t/2}$。</div>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 🖼 v–t 图像</div>
+            <div class="formula">$$\text{斜率}=a,\quad \text{面积}=x$$</div>
+            <div class="formula-note">图像斜率表示加速度，图线与 t 轴围成面积表示位移（时间轴上方为正）。</div>
+        </div><div class="example"><div class="q">💡 例题</div><div class="step">由逐差公式 $a = (x_3 - x_1)/(2T^2)$（隔项相减减小误差）</div><div class="step">$a = (3.2 - 2.0)×10^{-2} / (2×0.1^2)$</div><div class="step">$= 1.2×10^{-2}/0.02 = 0.6\ \text{m/s}^2$</div></div>
+        <div class="challenge">
+            <span class="ctag">🎮 闯关挑战</span>
+            <div class="cq">关于 v–t 图像，下列说法正确的是？</div>
+            <div class="opts" id="opts3_0"><div class="opt" data-i="3_0" data-j="0"><span class="key">A</span><span>图线斜率表示位移</span></div><div class="opt" data-i="3_0" data-j="1"><span class="key">B</span><span>图线与 t 轴围成的面积表示加速度</span></div><div class="opt" data-i="3_0" data-j="2"><span class="key">C</span><span>图线斜率表示加速度，面积表示位移</span></div><div class="opt" data-i="3_0" data-j="3"><span class="key">D</span><span>水平图线表示物体静止</span></div></div>
+            <button class="cbtn" id="btn3_0">提交答案</button>
+            <div class="cresult" id="res3_0"></div>
+            <div class="cexplain" id="exp3_0"><b>📝 解析：</b>v–t 图像斜率 = 加速度，面积 = 位移。水平图线表示匀速（a=0）而非静止。</div>
+        </div>
+    <div class="keymemo">🔑 <b>本关记忆要点：</b>匀变速推论与图像 — 熟记上方公式，理解例题思路，再做题巩固。</div><div class="level-actions"><a class="btn" href="自由落体与竖直上抛.html">← 上一关</a><a class="btn" href="index.html">📑 目录</a><a class="btn btn-next" href="追及与相遇.html">下一关 →</a></div></div>
+</div>
+
+<div class="footer">
+    📚 高考物理运动学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+<script>
+let score = 0, done = 0;
+const total = 1;
+const ANS = {
+        "3_0": 2
+};
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+let answered = {};
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const correct = ANS[cid];
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65 + correct);
+    }
+    done++;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('progFill').style.width = (done / total * 100) + '%';
+}
+</script>
+
+</body>
+</html>

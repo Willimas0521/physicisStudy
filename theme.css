@@ -1,0 +1,74 @@
+/* ============================================================
+   浅色明亮主题 · 全局覆盖样式
+   通过 !important 覆盖各页内联 <style>，统一把站点做成浅色明亮风格。
+   所有模块页在 <head> 中引入： <link rel="stylesheet" href="/topics/theme.css">
+   ============================================================ */
+
+/* 1) 覆盖暗色变量模板页（如力学实验闯关）的整套变量 */
+:root {
+  --bg: #f5f9fe !important;
+  --card: #ffffff !important;
+  --card2: #eef4fb !important;
+  --line: #e3ebf4 !important;
+  --txt: #1f2d3d !important;
+  --text: #1f2d3d !important;
+  --sub: #586a7d !important;
+  --muted: #586a7d !important;
+  --border: #e3ebf4 !important;
+  --accent: #2f6fd6 !important;
+  --accent2: #1f9e7a !important;
+  --header-bg: linear-gradient(135deg, #eaf2fd, #d6e7fb, #c5defa) !important;
+  --header-text: #143a6b !important;
+}
+
+/* 2) 全局底色与默认文字 */
+html, body {
+  background: #f5f9fe !important;
+  color: #1f2d3d !important;
+}
+
+/* 2.5) 全局放大正文字号：统一把各模块页正文字号提到 18px（基准 16px → 18px，
+   其余用 em 的标题/公式会等比放大）；用 !important 覆盖各页内联 <style> 的设定 */
+body {
+  font-size: 18px !important;
+  line-height: 1.9 !important;
+}
+
+/* 3) 横幅（class 或 元素 header）明亮化 */
+.header, header {
+  background: linear-gradient(135deg, #eaf2fd 0%, #d6e7fb 50%, #c5defa 100%) !important;
+  color: #143a6b !important;
+  box-shadow: 0 4px 18px rgba(58, 123, 213, 0.18) !important;
+}
+.header h1, .header h2, .header h3, .header p, .header span, .header a, .header div,
+header h1, header h2, header h3, header p, header span, header a, header div {
+  color: #143a6b !important;
+}
+.header p, header p { opacity: 1 !important; }
+
+/* 4) 卡片类翻白（变量页与非变量页通用） */
+.card, .panel, .box, .knowledge-card, .summary-box, .order, .warn, .good {
+  background: var(--card, #ffffff) !important;
+  color: var(--txt, #1f2d3d) !important;
+  border-color: var(--line, #e3ebf4) !important;
+}
+
+/* 5) 写死深色的暗卡片（如原子物理 summary 的 .nav-card）直接翻白 */
+.nav-card {
+  background: linear-gradient(135deg, #ffffff, #eef4fb) !important;
+  color: #1f2d3d !important;
+  border: 1px solid #e3ebf4 !important;
+}
+
+/* 6) 站点首页白字翻深（topics/index.html、初中物理/index.html 等） */
+.item, .nav-link { color: #1f2d3d !important; }
+
+/* 7) 浅色明亮风格下的链接默认色 */
+a { color: #2f6fd6 !important; }
+
+/* 8) 通用：明亮浅色输入框/边框（避免深色输入框在浅底上看不见） */
+input, textarea, select {
+  background: #ffffff !important;
+  color: #1f2d3d !important;
+  border: 1px solid #d6e2ef !important;
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 多用电表（欧姆表）</title>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:10px 0}
+.imgbox svg{max-width:100%;height:auto}
+.imgcap{color:var(--sub);font-size:12px;margin-top:4px}
+.formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:1px 8px;margin:0 2px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle .red{color:var(--danger)}
+.principle .warn{color:var(--warn)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../高考物理_电学实验闯关.html">← 电学实验闯关目录</a>
+    <span class="pos">第 7 关 · 共 11 关</span>
+  </div>
+  <h1>多用电表（欧姆表）</h1>
+  <div class="tag">调零 · 中值电阻</div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><div class="imgbox">
+<svg width="400" height="160" viewBox="0 0 400 160">
+  <line x1="40" y1="45" x2="72" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="90" cy="45" r="16" fill="none" stroke="#2196f3" stroke-width="2"/>
+  <text x="90" y="51" text-anchor="middle" font-size="14" font-weight="bold" fill="#2196f3">G</text>
+  <line x1="106" y1="45" x2="135" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <polyline points="135,45 143,35 151,55 159,35 167,55 175,35 183,55 191,45" fill="none" stroke="#1f9d6b" stroke-width="2"/>
+  <line x1="191" y1="45" x2="220" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="220" y1="45" x2="240" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="245" y1="37" x2="260" y2="37" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="245" y1="53" x2="260" y2="53" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="253" y1="45" x2="253" y2="35" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="260" y1="45" x2="360" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <text x="163" y="70" text-anchor="middle" font-size="10" fill="#1f9d6b">R₀ 调零电阻</text>
+  <text x="250" y="24" text-anchor="middle" font-size="11" fill="#5a6b7b">E</text>
+  <line x1="40" y1="45" x2="40" y2="115" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="360" y1="45" x2="360" y2="115" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="40" y1="115" x2="70" y2="115" stroke="#5a6b7b" stroke-width="2"/>
+  <polyline points="70,115 78,105 86,125 94,105 102,125 110,105 118,125 126,115" fill="none" stroke="#1f2a3d" stroke-width="2"/>
+  <line x1="126" y1="115" x2="360" y2="115" stroke="#5a6b7b" stroke-width="2"/>
+  <text x="98" y="145" text-anchor="middle" font-size="11" fill="#1f2a3d">Rₓ 被测电阻（外接）</text>
+  <text x="32" y="100" font-size="10" fill="#e5484d">红表笔</text>
+  <text x="368" y="100" font-size="10" fill="#1f9d6b">黑表笔</text>
+</svg>
+<div class="imgcap">图 7-1：欧姆表内部电路（红表笔接电池负极，黑表笔接电池正极）</div>
+</div>
+<hr>
+<b>欧姆表原理：</b>闭合电路欧姆定律 <b>I = E/(R<sub>内</sub> + R<sub>x</sub>)</b>，其中 <b>R<sub>内</sub> = R<sub>g</sub> + r + R₀</b>。R<sub>x</sub> 变化 → 电流变化 → 表头指针偏角不同，表盘按欧姆刻度。
+<hr>
+<b>关键点：</b><br>
+· <b>调零：</b>红黑表笔<b>短接</b>（R<sub>x</sub>=0），调 R₀ 使指针<b>满偏</b>（I=I<sub>g</sub>），此时电流最大；<br>
+· <b>中值电阻：</b>指针<b>半偏</b>时 R<sub>x</sub> = R<sub>内</sub>，表盘中央刻度值 = 欧姆表内阻；<br>
+· <b>表笔极性：</b><span class="red">黑表笔接内部电池正极</span>（电流从黑表笔流出经 R<sub>x</sub> 回到红表笔）；<br>
+· <b>读数：</b>读数 = 指针示数 × 倍率；指针在<b>中值附近（中央刻度带）</b>时误差最小。<br>
+· <b>换挡：</b>换倍率挡后<b>必须重新欧姆调零</b>；测量时手不能碰表笔金属杆（人体电阻并入）。
+<hr>
+<span class="warn">⚠ 偏角与挡位：</span>指针偏角太小（接近左侧「∞」）→ R<sub>x</sub> 太大 → 换<b>更大倍率</b>；指针偏角太大（接近右侧 0）→ R<sub>x</sub> 太小 → 换<b>更小倍率</b>。</div></div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（真题改编）多用电表欧姆挡「×10」挡测电阻，指针停在表盘「15」刻度处。求：(1) 被测电阻的阻值；(2) 若此时指针恰好半偏（指在「15」即中值），欧姆表内阻 R<sub>内</sub> 为多少？</p>
+<p class='ans'>答案：(1) 读数 = 示数 × 倍率 = 15 × 10 = 150 Ω。<br>(2) 指针半偏时 R<sub>x</sub> = R<sub>内</sub> = 中值电阻 = 15 × 10 = 150 Ω（注意：中值电阻读数也要乘倍率）。</p></div>
+  <div class="nav">
+    <a class="prev" href="06_滑动变阻器限流分压.html">← 滑动变阻器：限流 vs 分压</a>
+    <a class="mid" href="../高考物理_电学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="08_测定电源电动势和内阻.html">测定电源电动势和内阻 →</a>
+  </div>
+  <div class="footer">电学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "欧姆表使用前「调零」的正确操作是？", "o": ["红黑表笔短接，调节调零电阻使指针满偏", "把表笔分别接电源两极", "旋转选择开关", "轻敲表头"], "a": 0, "e": "欧姆调零：红黑表笔短接（Rₓ=0），调节 R₀ 使流过表头的电流达到 I_g（指针满偏，即欧姆刻度 0 处）。"}, {"q": "关于欧姆表内部电源，下列说法正确的是？", "o": ["红表笔接电池正极", "黑表笔接电池正极", "欧姆表内部没有电源", "表笔不分正负极"], "a": 1, "e": "为保证电流从红表笔流入、从黑表笔流出，黑表笔必须接内部电池的<b>正极<\/b>。这与电流从表头正接线柱流入的约定一致。"}, {"q": "欧姆表的「中值电阻」等于？", "o": ["表头内阻 R_g", "欧姆表内阻 R_内", "电源内阻 r", "调零电阻 R₀"], "a": 1, "e": "指针半偏时流过表头电流 = I_g/2，由 I_g = E/R_内、I_g/2 = E/(R_内+R_x) 解得 R_x = R_内。中央刻度值即内阻。"}, {"q": "用欧姆表测电阻时指针偏角太小（接近「∞」刻度），说明？", "o": ["被测电阻很大，应换更大倍率挡", "被测电阻很小，应换更小倍率挡", "电池没电了，应换电池", "无需处理，直接读数"], "a": 0, "e": "偏角小 → 电流小 → Rₓ 大 → 指针靠近无穷大端。应换<b>更大的倍率<\/b>使指针回到中值附近，然后重新调零再测。"}, {"q": "（2024·北京节选）用多用电表粗测电压表内阻时，操作步骤的顺序是？①选挡（×10）②红黑表笔短接③欧姆调零", "o": ["①②③", "①③②", "②①③", "③①②"], "a": 0, "e": "正确顺序：①选挡 → ②红黑表笔短接 → ③欧姆调零（对应选项 CAB）。这是欧姆表每次使用前必做的「三步曲」。本题指针位置 Ⅰ 偏转小，说明所选倍率过小，需先重新选更大倍率，再重复 ②③ 重新调零测量。"}, {"q": "（2024·北京节选）多用电表欧姆挡测电压表内阻时，红、黑表笔应与待测电压表如何相连？", "o": ["红接正极、黑接负极（电流从电压表正极流入）", "红接负极、黑接正极（使电流从红表笔流入多用电表）", "可任意连接，欧姆表不分极性", "只能串联不能并联"], "a": 1, "e": "多用电表欧姆挡内部电池正极接<b>黑表笔<\/b>，电流从<b>红表笔流入<\/b>多用电表（“红入黑出”）。电压表有 +、- 接线柱，电流应从正接线柱流入，故<b>红表笔接电压表负极、黑表笔接正极<\/b>。"}, {"q": "（2024·北京节选）粗测时指针偏角较小（位置 Ⅰ），为减少误差应将选择开关置于？", "o": ["×1", "×10", "×100", "×1k"], "a": 2, "e": "指针偏转小说明倍率过小（被测电阻远大于中值电阻），应换<b>更大倍率<\/b>。由图 2 移到位置 Ⅱ 时光标约指 16，且 16×100 = 1600 Ω ≈ 1.6 kΩ，与粗测结果吻合；×1k 倍率过大，×1 倍率过小，故选 <b>×100<\/b>。"}, {"q": "（2024·北京节选）图（b）电路中 V 与 R₀ 串联，V 测待测电压表，V₁ 测两端总电压 U₁，则待测电压表内阻 R_V = ?", "o": ["U·R₀/(U₁−U)", "U₁·R₀/U", "U·R₀/U₁", "(U₁−U)·R₀/U"], "a": 0, "e": "V 与 R₀ 串联 → 电流相同 I = (U₁−U)/R₀；待测电压表两端电压为 U，故 R<sub>V<\/sub> = U/I = <b>U·R₀/(U₁−U)<\/b>。代入 U₁=4.20 V、U=2.78 V、R₀=800 Ω：R<sub>V<\/sub> = 2.78×800/(4.20−2.78) ≈ 1566 Ω ≈ 1.57 kΩ。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

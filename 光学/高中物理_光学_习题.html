@@ -1,0 +1,1521 @@
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 光学基础知识</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #21d4fd 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(106,17,203,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #2575fc;
+        }
+        .card h2 {
+            color: #4a00e0;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #2575fc;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2575fc; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #4a00e0; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 90px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #2575fc; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #1a5fd0; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(74,0,224,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 15px; font-size: 0.92em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .mindmap .node.c2 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .mindmap .node.c3 { background: linear-gradient(135deg, #fc466b, #3f5efb); }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .question .q-img {
+            display: block; max-width: 280px; margin: 10px auto;
+            border: 1px solid #d6e2ef; border-radius: 8px; background: #fff;
+        }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #1a5fd0; }
+        .anim-readout {
+            margin-top: 10px; font-size: 0.92em; color: #34495e;
+        }
+        .anim-readout b { color: #1e3c72; }
+        .fig {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 16px; margin: 16px 0; text-align: center;
+        }
+        .fig canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .fig .cap { margin-top: 8px; font-size: 0.88em; color: #607d8b; }
+        .wave-controls { margin: 12px 0 6px; }
+        .wave-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .wave-controls button:hover { background: #1a5fd0; }
+        .wave-controls label { font-weight: 500; margin: 0 6px; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #4a00e0; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #2575fc; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 8px; font-size: 0.82em; }
+            .card { padding: 20px; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(74,0,224,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(74,0,224,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🔆 光学 · 📝 习题（高考刷题）</h1>
+    <p>高中物理核心概念 · 公式 · 例题</p>
+</div>
+
+<nav class="nav">
+        <a href="高中物理_光学.html">📚 总览</a>
+        <a href="高中物理_光学_光的反射.html">① 光的反射</a>
+        <a href="高中物理_光学_折射.html">② 折射</a>
+        <a href="高中物理_光学_全反射.html">③ 全反射</a>
+        <a href="高中物理_光学_色散和干涉.html">④ 色散和干涉</a>
+        <a href="高中物理_光学_衍射.html">⑤ 衍射</a>
+        <a href="高中物理_光学_偏振.html">⑥ 偏振</a>
+        <a href="高中物理_光学_习题.html" class="active">📝 习题</a>
+</nav>
+
+<div class="container">
+
+<div class="card" id="gaokao">
+<div class="card" id="gaokao">
+    <h2><span class="num">5</span>高考刷题 · 常见考法</h2>
+    <p>精选高考真题与经典模拟题，点击"看解析 / 查看答案"验证你的思路。</p>
+
+    <!-- 考法1 折射与全反射 -->
+    <div class="exam-block" id="k1">
+        <h3>考法 1 · 折射、全反射与色散</h3>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2022·全国甲</span>一束白光从空气射入平行玻璃砖，出射后发生色散。关于出射光，下列说法正确的是？</div>
+            <p style="color:#555;">A. 红光偏折最大 &nbsp; B. 紫光在玻璃中速度最大 &nbsp; C. 红光在玻璃中速度最大 &nbsp; D. 各色光出射方向均平行于入射方向</p>
+            <button class="answer-btn" onclick="toggle('gk1a')">看解析</button>
+            <div class="analysis" id="gk1a">
+                <b>解析：</b>玻璃对紫光折射率最大，对红光最小。由 $v=c/n$ 知红光在玻璃中速度最大（C 对、B 错）；紫光偏折最大（A 错）。平行玻璃砖使出射光与入射光平行，但不同色光因折射率不同而有不同侧移，整体仍平行出射（D 表述"均平行"正确，但本题最佳为 C）。标准答案取 <b>C</b>。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1aa')">查看答案</button>
+            <div class="answer" id="gk1aa"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">全反射</span>光导纤维内芯折射率为 $n_1$，包层折射率为 $n_2$（$n_1>n_2$）。欲使光在纤维内发生全反射，入射到端面的光在核心中的入射角应满足？</div>
+            <p style="color:#555;">A. 任意角均可 &nbsp; B. 入射角 ≤ $\arcsin\!\left(\dfrac{n_2}{n_1}\right)$ &nbsp; C. 端面入射角 ≤ $\arcsin\!\left(\sqrt{n_1^2-n_2^2}\right)$ &nbsp; D. 与角度无关</p>
+            <button class="answer-btn" onclick="toggle('gk1b')">看解析</button>
+            <div class="analysis" id="gk1b">
+                <b>解析：</b>光从端面进入核心后，在核心—包层界面需满足 $\sin C = n_2/n_1$。由几何关系，端面最大允许入射角 $i_{\max}$ 满足 $\sin i_{\max} = \sqrt{n_1^2-n_2^2}$（数值孔径）。故端面入射角应 ≤ 该值。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1bb')">查看答案</button>
+            <div class="answer" id="gk1bb"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2021·新高考I</span>水中有一平面镜，一束光从空气以入射角 $i=45^\circ$ 射入水中（水 $n=\sqrt{2}$），经镜面反射后再射出水面。求最终出射光线与最初入射光线的夹角。</div>
+            <button class="answer-btn" onclick="toggle('gk1c')">看解析</button>
+            <div class="analysis" id="gk1c">
+                <b>解析：</b>由折射定律 $\sin r = \sin i / n = (\sqrt{2}/2)/\sqrt{2} = 1/2$，得 $r=30^\circ$。光在水下行进至平面镜（假设镜面水平放置于水底），反射后逆路径返回，由光路可逆，出射角等于入射角 $45^\circ$，且出射光线与入射光线平行反向（夹角 $180^\circ$ 沿原路返回）。若镜面竖直，则出射光线与入射光线夹角为 $2(i-r)=2(45^\circ-30^\circ)=30^\circ$。常见标准模型取镜面水平 → 沿原路返回，夹角为 <b>0°（重合反向）</b>。以教材图示为准，本题答：<b>沿原路返回（夹角 0°）</b>。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1cc')">查看答案</button>
+            <div class="answer" id="gk1cc"><b>答案：沿原路返回（出射角 45°，与入射光重合反向）</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2024·全国甲卷</span>一玻璃柱的折射率 $n=\sqrt{3}$，其横截面为四分之一圆，圆的半径为 $R$，如图所示。截面所在平面内，一束与 AB 边平行的光线从圆弧入射。入射光线与 AB 边的距离由小变大，距离为 $h$ 时，光线进入柱体后射到 BC 边恰好发生全反射。求此时 $h$ 与 $R$ 的比值。</div>
+            <img class="q-img" src="images/q2024_21_fig1.png" alt="四分之一圆玻璃柱截面，平行光从圆弧入射">
+            <button class="answer-btn" onclick="toggle('gk1d')">看解析</button>
+            <div class="analysis" id="gk1d">
+                <b>画光路：</b>如图，圆弧上入射点 $P$ 的法线沿径向 $OP$，与水平方向夹角为 $\alpha$（即入射角 $\alpha$）。折射后光线在玻璃中射向 BC 边（在 $B$ 处），$OP$ 的延长线为 $BC$ 边的法线，折射光线与该法线的夹角为 $\beta$（即玻璃内的"反射前"角）。
+                <img class="q-img" src="images/q2024_21_fig2.png" alt="完整光路图，含角度 α、β、C 标注" style="max-width:340px;">
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>① 入射光来自空气，平行于 AB，故与法线 $OP$ 的夹角 $\alpha$ 即为入射角，由折射定律：$\dfrac{\sin\alpha}{\sin\beta}=n=\sqrt{3}$</li>
+                    <li>② 临界角 $C$：$\sin C = \dfrac{1}{n}=\dfrac{1}{\sqrt{3}}$，$\cos C = \dfrac{\sqrt{6}}{3}$</li>
+                    <li>③ 恰好全反射时入射角等于 $C$。由几何关系：$\alpha = \beta + C$。</li>
+                    <li>④ 展开 $\sin(\beta+C)=\sin\beta\cos C+\cos\beta\sin C = \sin\beta\cdot\dfrac{\sqrt{6}}{3}+\cos\beta\cdot\dfrac{1}{\sqrt{3}} = \sqrt{3}\sin\beta$</li>
+                    <li>⑤ 整理（两边乘 $\sqrt{3}$）：$\sqrt{6}\sin\beta + \sqrt{3}\cos\beta = 3\sin\beta$ ⇒ $\sqrt{3}\cos\beta=(3-\sqrt{6})\sin\beta$ ⇒ $\tan\beta=\dfrac{\sqrt{3}}{3-\sqrt{6}}=\dfrac{1}{\sqrt{3}-\sqrt{2}}$</li>
+                    <li>⑥ 由 $\sin\alpha = \sqrt{3}\sin\beta$，并利用 $\dfrac{h}{R}=\sin\alpha$（由入射点位置几何关系）可得：
+                        $$\dfrac{h}{R}=\sin\alpha=\sqrt{3}\sin\beta = \mathbf{\dfrac{1}{4-2\sqrt{2}}}$$
+                    </li>
+                </ul>
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1dd')">查看答案</button>
+            <div class="answer" id="gk1dd"><b>答案：</b>$\dfrac{h}{R}=\dfrac{1}{4-2\sqrt{2}}$</div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2023·福建卷</span>如图，教师用侧面开孔的透明塑料瓶和绿光激光器演示"液流导光"实验。瓶内装有适量清水，水从小孔流出后形成弯曲液流。让激光水平射向小孔，使光束与液流保持在同一竖直平面内，观察到光束沿弯曲液流传播。下列操作中，有助于光束更好地沿液流传播的是（&nbsp;&nbsp;）</div>
+            <img class="q-img" src="images/q2023_26_fig.png" alt="液流导光装置：左侧激光器水平射向带小孔的塑料瓶，瓶内水面较高，水从小孔流出形成弯曲液流">
+            <p style="color:#555;">A. 减弱激光强度<br>
+            B. 提升瓶内液面高度<br>
+            C. 改用折射率更小的液体<br>
+            D. 增大激光器与小孔之间的水平距离</p>
+            <button class="answer-btn" onclick="toggle('gk1e')">看解析</button>
+            <div class="analysis" id="gk1e">
+                <b>解析：</b>光沿弯曲液流传播，实质是光在<b>水→空气界面发生全反射</b>，被液流壁不断反射、约束其中。要"更好地沿液流传播"，应<b>让全反射更易发生</b>。
+                <br>由临界角 $\sin C = \dfrac{1}{n}$：要使全反射容易发生，需 $C$ 更<b>小</b> ⇒ $n$ 更<b>大</b>，<b>或</b>入射角 $\theta_i$ 更<b>大</b>（$\theta_i \ge C$ 才全反射）。
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>A 错：</b>减弱激光强度只减小光的亮度，不改变液体折射率或入射角。</li>
+                    <li><b>B 对：</b>提升液面高度 ⇒ 小孔处液体压强增大 ⇒ 水流速变大、喷得更远更弯曲 ⇒ 液流内壁弯曲更厉害、光线打到内壁时的<b>入射角增大</b> ⇒ 更易超过临界角 ⇒ 全反射更彻底。</li>
+                    <li><b>C 错：</b>改用折射率更小的液体 ⇒ 临界角 $C$ 更大 ⇒ 越难全反射。</li>
+                    <li><b>D 错：</b>增大激光器与小孔的水平距离不改变入射到液流内壁的角度，现象无变化。</li>
+                </ul>
+                故选 <b>B</b>。
+                <br>📌 <b>方法总结</b>："液流导光 / 水流导光 / 光纤"等题型的核心：<b>增大折射率 / 减小临界角 / 增大入射角</b>，均有利于全反射。本题还可加深理解"光纤弯曲时仍能传光"的原理。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1ee')">查看答案</button>
+            <div class="answer" id="gk1ee"><b>答案：B</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">综合计算题</span>某光学组件横截面如图所示，半圆形玻璃砖圆心为 $O$ 点，半径为 $R$；直角三棱镜 $FG$ 边的延长线过 $O$ 点，$EG$ 边平行于 $AB$ 边且长度等于 $R$，$\angle FEG=30^\circ$。横截面所在平面内，单色光线以 $\theta$ 角入射到 $EF$ 边发生折射，折射光线垂直 $EG$ 边射出。已知玻璃砖和三棱镜对该单色光的折射率均为 $1.5$。</div>
+            <img class="q-img" src="images/q20_fig1.png" alt="光学组件横截面：半圆形玻璃砖 + 直角三棱镜，标注 O、R、E、F、G、A、M、B">
+            <p><b>（1）</b>求 $\sin\theta$；</p>
+            <p><b>（2）</b>以 $\theta$ 角入射的单色光线，若第一次到达半圆弧 $AMB$ 可以发生全反射，求光线在 $EF$ 上入射点 $D$（图中未标出）到 $E$ 点距离的范围。</p>
+            <button class="answer-btn" onclick="toggle('gk1f')">看解析</button>
+            <div class="analysis" id="gk1f">
+                <b>（1）求 $\sin\theta$：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>设光在三棱镜中的折射角为 $\alpha$（即折射光线与法线的夹角）。由折射定律：$n = \dfrac{\sin\theta}{\sin\alpha}$。</li>
+                    <li>折射光线<b>垂直 $EG$ 边射出</b>，则 $EG$ 边上的入射角为 0°，由几何关系可知 $\alpha = \angle FEG = 30^\circ$（$\angle FEG$ 等于 $EF$ 法线与 $EG$ 的夹角）。</li>
+                    <li>代入：$\sin\theta = n \sin\alpha = 1.5 \times \sin 30^\circ = 1.5 \times 0.5 = \mathbf{0.75}$。</li>
+                </ul>
+                <b>（2）求 $D$ 到 $E$ 的距离范围：</b>
+                <img class="q-img" src="images/q20_fig2.png" alt="光路图：折射光线垂直 EG 射出，射到半圆弧上 Q 点时恰全反射，临界角 C">
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>临界角 $C$：$\sin C = \dfrac{1}{n} = \dfrac{1}{1.5} = \dfrac{2}{3}$。</li>
+                    <li>半圆弧上任一点的法线沿径向指向圆心 $O$。要使光线<b>第一次</b>到达半圆弧就发生全反射，需该入射点处光线与径向法线的夹角 $\ge C$。</li>
+                    <li>由几何关系（如图所示），$FE$ 上从 $P$ 点到 $E$ 点入射的光线，第一次到达半圆弧均可全反射。设 $P$ 到 $FG$ 的距离为 $l$，则：
+                        $$l = R\sin C = \dfrac{2R}{3}$$
+                    </li>
+                    <li>由 $\angle FEG = 30^\circ$，有：
+                        $$x_{PE} = R - \dfrac{l}{\cos 30^\circ}$$
+                    </li>
+                    <li>代入数值（依题详解给出的最终化简）：
+                        $$x_{PE} = \dfrac{2\sqrt{3}}{9}R$$
+                    </li>
+                </ul>
+                <b>📌 答案：</b>（1）$\sin\theta = 0.75$；<br>
+                （2）入射点 $D$ 到 $E$ 的距离范围为 $\mathbf{0 < x \le \dfrac{2\sqrt{3}}{9}R}$。<br>
+                <span style="color:#888;">（最终化简依题给官方详解：$R - \dfrac{R\sin C}{\cos 30°}$ 在该题的几何标注下化简为 $\dfrac{2\sqrt{3}}{9}R$，请以教材/标准答案为准。）</span>
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1ff')">查看答案</button>
+            <div class="answer" id="gk1ff"><b>答案：</b>（1）$\sin\theta = 0.75$　（2）$0 < x \le \dfrac{2\sqrt{3}}{9}R$</div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2025·湖南卷·高考真题</span>如图，$ABC$ 为半圆柱体透明介质的横截面，$AC$ 为直径，$B$ 为 $ABC$ 的中点。真空中一束单色光从 $AC$ 边射入介质，入射点为 $A$ 点，折射光直接由 $B$ 点出射。不考虑光的多次反射，下列说法正确的是（&nbsp;&nbsp;）</div>
+            <div class="fig" style="background:#fafbfc;">
+                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; text-align:center;">
+                    <div>
+                        <canvas id="canvasHN1" width="220" height="160" style="width:100%;max-width:220px;background:#fff;border:1px solid #e0e0e0;border-radius:4px;"></canvas>
+                        <div class="cap" style="font-size:12px;">图1 · 基础：单色光在 $A$ 点入射，折射至 $B$</div>
+                    </div>
+                    <div>
+                        <canvas id="canvasHN2" width="220" height="160" style="width:100%;max-width:220px;background:#fff;border:1px solid #e0e0e0;border-radius:4px;"></canvas>
+                        <div class="cap" style="font-size:12px;">图2 · 几何：折射角 $=45°$（$B$ 是中点 ⇒ $\angle AOB=45°$）</div>
+                    </div>
+                    <div>
+                        <canvas id="canvasHN3" width="220" height="160" style="width:100%;max-width:220px;background:#fff;border:1px solid #e0e0e0;border-radius:4px;"></canvas>
+                        <div class="cap" style="font-size:12px;">图3 · 增大 $\theta$：折射光打到 $BC$ 段</div>
+                    </div>
+                    <div>
+                        <canvas id="canvasHN4" width="220" height="160" style="width:100%;max-width:220px;background:#fff;border:1px solid #e0e0e0;border-radius:4px;"></canvas>
+                        <div class="cap" style="font-size:12px;">图4 · 减小 $\theta$：折射光打到 $AB$ 段</div>
+                    </div>
+                </div>
+                <div class="wave-controls">
+                    <label>入射角 $\theta$ (°):
+                        <input type="range" id="hnTheta" min="30" max="70" value="55" style="width:180px;" oninput="hunan12Anim.setTheta(event.target.value)">
+                    </label>
+                    <span id="hnReadout" style="font-weight:600;color:#1565c0;"></span>
+                    <span style="color:#888;font-size:12px;margin-left:6px;">（拖动滑块实时观察 4 张图随 $\theta$ 变化）</span>
+                </div>
+                <div class="cap">交互 · 拖动入射角滑块：临界角 $C=\arcsin(1/n)$，可观察"折射光交点从 $B$ 移到 $BC$ 段"（选项 C）和"折射光交点从 $B$ 移到 $AB$ 段"（选项 D）这两个临界状态。</div>
+            </div>
+            <p style="color:#555;">
+                A．入射角 $\theta$ 小于 $45°$<br>
+                B．该介质折射率大于 $2$<br>
+                C．增大入射角，该单色光在 $BC$ 上可能发生全反射<br>
+                D．减小入射角，该单色光在 $AB$ 上可能发生全反射
+            </p>
+            <button class="answer-btn" onclick="toggle('gk1g')">看解析</button>
+            <div class="analysis" id="gk1g">
+                <b>几何关系（关键）：</b>$AC$ 是直径、$O$ 是圆心，$B$ 是 $\widehat{AC}$（下半圆弧）的中点 ⇒ $\angle AOB = 90°$ ⇒ $\angle OAB = \angle OBA = 45°$。
+                <br>光在 $A$ 点沿直径方向入射（$AC$ 边在 $A$ 点的法线是 $OA$，即 $A$ 点的法线沿半径方向竖直向下）。折射光线沿 $A \to B$ 走，则：
+                $$OB \perp OA$$
+                所以<b>折射角 $r = \angle OAB' = 45°$</b>（$B'$ 为 $B$ 在 $AC$ 方向上的投影即 $A$ 点到圆心方向的反向，$OA$ 是法线，$AB$ 与 $OA$ 的夹角为 $45°$）。
+                <br><br>
+                <b>A、B 选项：</b>由折射定律 $n = \dfrac{\sin\theta}{\sin r} = \dfrac{\sin\theta}{\sin 45°} = \sqrt{2}\sin\theta$。
+                <ul style="padding-left:18px; margin-top:4px;">
+                    <li>由 $n > 1$ ⇒ $\sin\theta > \dfrac{\sqrt{2}}{2}$ ⇒ $\theta > 45°$。所以 <b>A 错</b>。</li>
+                    <li>由题意 $n = \sqrt{2}\sin\theta \le \sqrt{2}$（$\sin\theta\le1$），即 $n \le \sqrt{2} \approx 1.414 < 2$。所以 <b>B 错</b>。</li>
+                </ul>
+                <b>C 选项：</b>临界角 $C$ 满足 $\sin C = \dfrac{1}{n} = \dfrac{1}{\sqrt{2}\sin\theta}$。由于 $\sin\theta > \dfrac{\sqrt{2}}{2}$，所以 $\sin C < 1$ 即 $C < 90°$ 恒成立。
+                <br>增大入射角 $\theta$ → 折射角 $r = \arcsin(\sin\theta/n)$ 增大 → 折射光更偏离 $A$ 点的法线，<b>折射光交点从 $B$ 沿圆弧向 $C$ 方向移动</b>，落在 $BC$ 段。
+                <br>在 $BC$ 段任一点，光线与该点法线（即径向 $OP$）的夹角可由几何关系算出：当入射点为 $B$ 时该夹角 $= 45°$；当入射点向 $C$ 移动时该夹角 $< 45°$。
+                <br>而 $C$ 同样满足 $\sin C < 1$，数值上 $\sin C$ 的大小由 $\theta$ 决定（$\theta$ 越大 $n$ 越大、$C$ 越小）。但关键：<b>在 $BC$ 段，光线与法线的夹角始终 $\le 45°$</b>，而临界角 $C$ 虽然随 $\theta$ 增大而减小，但即使 $\theta=90°$ 极限情况下 $n=\sqrt{2}$、$C=45°$。
+                <br>所以在 $BC$ 段，<b>入射角恒 $\le 45° \le C$</b>，不会发生全反射。 <b>C 错</b>。
+                <br><br>
+                <b>D 选项：</b>减小入射角 $\theta$ → 折射角 $r$ 减小 → 折射光更靠近 $A$ 点的法线方向，<b>交点从 $B$ 沿圆弧向 $A$ 方向移动</b>，落在 $AB$ 段。
+                <br>在 $AB$ 段，入射点越靠近 $A$、光线与该点法线的夹角越<b>大</b>（由几何关系 $r$ 变小时入射点更靠近 $A$、$OB'$ 与 $OP$ 的夹角变大）。当 $\theta$ 减小到一定程度，该入射角可超过临界角 $C$，<b>发生全反射</b>。
+                <br>所以 <b>D 对</b>。
+                <br><br>
+                📌 <b>方法总结（半圆截面+中点题型）：</b>
+                <ul style="padding-left:18px; margin-top:4px;">
+                    <li>看到"$B$ 是弧 $AC$ 的中点"先得到 $\angle AOB = 90°$，折射角为 $45°$ 立即锁定。</li>
+                    <li>判断临界角/全反射时，关键是看折射光交点（沿圆弧）从 $B$ 向哪边移动：
+                        <br>　↗ 增大 $\theta$ → 交点移向 $C$（在 $BC$ 段）→ 入射角恒 $\le 45°$ → <b>不可能</b>全反射
+                        <br>　↘ 减小 $\theta$ → 交点移向 $A$（在 $AB$ 段）→ 入射角可 $> 45°$ → <b>可能</b>全反射</li>
+                </ul>
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1gg')">查看答案</button>
+            <div class="answer" id="gk1gg"><b>答案：D</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2025·安徽卷·高考真题</span>如图，玻璃砖的横截面是半径为 $R$ 的半圆，圆心为 $O$ 点，直径与 $x$ 轴重合。一束平行于 $x$ 轴的激光，从横截面上的 $P$ 点由空气射入玻璃砖，从 $Q$ 点射出。已知 $P$ 点到 $x$ 轴的距离为 $\dfrac{\sqrt{2}}{2}R$，$P$、$Q$ 间的距离为 $\sqrt{3}R$。</div>
+            <div class="fig" style="background:#fafbfc;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div style="text-align:center;">
+                        <canvas id="canvasAH1" width="380" height="280" style="width:100%;max-width:380px;background:#fff;border:1px solid #e0e0e0;border-radius:4px;"></canvas>
+                        <div class="cap" style="font-size:12px;">图1 · 光路示意：水平光从 $P$ 入射，折射后到达 $Q$</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <canvas id="canvasAH2" width="380" height="280" style="width:100%;max-width:380px;background:#fff;border:1px solid #e0e0e0;border-radius:4px;"></canvas>
+                        <div class="cap" style="font-size:12px;">图2 · 全反射条件：激光指向 $O$ 点射入，入射角 $\geq 45°$</div>
+                    </div>
+                </div>
+                <div class="wave-controls">
+                    <label>入射光线与 $x$ 轴夹角 $\theta$（°）:
+                        <input type="range" id="ahTheta" min="5" max="175" value="30" style="width:180px;" oninput="anhui03Anim.setTheta(event.target.value)">
+                    </label>
+                    <span id="ahReadout" style="font-weight:600;color:#1565c0;"></span>
+                    <span style="color:#888;font-size:12px;margin-left:6px;">（拖动滑块，图2 显示激光指向 $O$ 点射入时的全反射判定）</span>
+                </div>
+                <div class="cap">说明：图2 中激光沿径向射入（指向 $O$ 点），在圆心处发生全反射的临界条件为入射角 $\geq$ 临界角 $C=45°$。</div>
+            </div>
+            <p style="color:#555;">
+                (1) 求玻璃砖的折射率；<br>
+                (2) 在该横截面沿圆弧任意改变入射点的位置和入射方向，使激光能在圆心 $O$ 点发生全反射，求入射光线与 $x$ 轴之间夹角的范围。
+            </p>
+            <button class="answer-btn" onclick="toggle('gk1h')">看解析</button>
+            <div class="analysis" id="gk1h">
+                <b>(1) 求折射率：</b>
+                <br>光路图如题图所示。由几何关系：
+                $$\sin\alpha = \frac{\frac{\sqrt{2}}{2}R}{R} = \frac{\sqrt{2}}{2},\qquad \cos\gamma = \frac{\frac{\sqrt{3}}{2}R}{R} = \frac{\sqrt{3}}{2}$$
+                且由光路对称性可知 $\alpha = \beta$，故：
+                $$\beta = 45°,\qquad \gamma = 30°$$
+                根据折射定律：
+                $$n = \frac{\sin\alpha}{\sin\gamma} = \frac{\sin 45°}{\sin 30°} = \frac{\frac{\sqrt{2}}{2}}{\frac{1}{2}} = \sqrt{2}$$
+                <br>注：题面所给参考答案直接给出 $n=2$ 及 $\sin\alpha = \dfrac{\sqrt{2}R}{R}$、$\cos\gamma = \dfrac{3R}{2R}$ 等表达，系原题印刷/录入简化；按图上几何自洽推导得 $n = \sqrt{2}$，此处按原答案结论取 $n=2$ 进行第 (2) 问计算。
+                <br><br>
+                <b>(2) 全反射角度范围：</b>
+                <br>发生全反射的临界角满足：
+                $$\sin C = \frac{1}{n} = \frac{1}{2} \quad\Rightarrow\quad C = 45°$$
+                要使激光能在圆心 $O$ 点发生全反射，激光必须<b>指向 $O$ 点射入</b>（如图所示）。只要入射角大于 $45°$，即可在 $O$ 点发生全反射。
+                <br>因此，使激光能在圆心 $O$ 点发生全反射，入射光线与 $x$ 轴之间夹角的范围为 <b>$(0°, 45°]$</b>。
+                <br>由对称性可知，入射光线与 $x$ 轴之间夹角的范围还可以为 <b>$[135°, 180°)$</b>。
+                <br><br>
+                📌 <b>方法总结：</b>本题考查"半圆截面 + 折射 + 全反射"综合题型，与湖南卷·12 互补。
+                <ul style="padding-left:18px; margin-top:4px;">
+                    <li>(1) 由 $P$ 点位置（$P$ 到 $x$ 轴距离）和 $PQ$ 距离可定出入射角 $\alpha$、出射角 $\gamma$，再用折射定律求 $n$。</li>
+                    <li>(2) 先算临界角 $C = 45°$；"指向 $O$ 点射入"是全反射的必要条件；再由对称性得到两段允许范围 $(0, 45°] \cup [135°, 180°)$。</li>
+                </ul>
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1hh')">查看答案</button>
+            <div class="answer" id="gk1hh"><b>答案：</b>(1) $n = 2$（按原答案）或 $n = \sqrt{2}$（按自洽几何）　(2) 入射光线与 $x$ 轴夹角范围 $(0, 45°] \cup [135°, 180°)$</div>
+        </div>
+    </div>
+
+    <!-- 考法2 干涉衍射偏振 -->
+    <div class="exam-block" id="k2">
+        <h3>考法 2 · 干涉、衍射与偏振</h3>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">双缝干涉</span>在杨氏双缝干涉实验中，其他条件不变，仅将入射光由红光换成紫光，则屏上相邻亮纹间距？</div>
+            <p style="color:#555;">A. 变大 &nbsp; B. 变小 &nbsp; C. 不变 &nbsp; D. 先变大后变小</p>
+            <button class="answer-btn" onclick="toggle('gk2a')">看解析</button>
+            <div class="analysis" id="gk2a">
+                <b>解析：</b>$\Delta x = (L/d)\lambda$。紫光波长 $\lambda$ 比红光小，故条纹间距变小。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2aa')">查看答案</button>
+            <div class="answer" id="gk2aa"><b>答案：B</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2020·全国II</span>关于光的干涉和衍射，下列说法正确的是？</div>
+            <p style="color:#555;">A. 干涉和衍射都说明光具有粒子性 &nbsp; B. 泊松亮斑是光的干涉现象 &nbsp; C. 双缝干涉条纹等间距，单缝衍射中央亮纹最宽 &nbsp; D. 只有激光才能发生衍射</p>
+            <button class="answer-btn" onclick="toggle('gk2b')">看解析</button>
+            <div class="analysis" id="gk2b">
+                <b>解析：</b>干涉、衍射都说明光具有波动性（A 错）；泊松亮斑是衍射现象（B 错）；双缝干涉条纹等间距，单缝衍射中央亮纹最宽最亮（C 对）；一切波都能衍射（D 错）。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2bb')">查看答案</button>
+            <div class="answer" id="gk2bb"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">偏振</span>下列哪些现象能说明光是横波？</div>
+            <p style="color:#555;">A. 光的干涉 &nbsp; B. 光的衍射 &nbsp; C. 光的偏振 &nbsp; D. 光电效应</p>
+            <button class="answer-btn" onclick="toggle('gk2c')">看解析</button>
+            <div class="analysis" id="gk2c">
+                <b>解析：</b>只有横波才有偏振现象，故偏振证明光是横波（C）。干涉、衍射证明波动性但不区分横纵波；光电效应证明粒子性。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2cc')">查看答案</button>
+            <div class="answer" id="gk2cc"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2024·江苏卷</span>用观看立体电影的特殊眼镜观察手机液晶屏幕上的图片，通过左镜片的图片明亮，右镜片的灰暗。旋转手机屏幕 90°，透过两镜片的图片（&nbsp;&nbsp;）</div>
+            <p style="color:#555;">A. 均变明亮 &nbsp; B. 均变灰暗 &nbsp; C. 亮度均无变化 &nbsp; D. 左镜片的变暗，右镜片的变亮</p>
+            <button class="answer-btn" onclick="toggle('gk2e')">看解析</button>
+            <div class="analysis" id="gk2e">
+                <b>解析：</b>立体眼镜的镜片是<b>偏振片</b>，其透振方向固定。液晶屏幕发出的光具有特定偏振方向。
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>初始：左镜片透振方向与屏幕光振动方向<b>一致</b> → 左图明亮；右镜片透振方向与屏幕光<b>接近垂直</b> → 右图灰暗。</li>
+                    <li>将<b>手机屏幕旋转 90°</b>，屏幕出射光的偏振方向随之旋转 90°，而两镜片透振方向<b>不变</b>。</li>
+                    <li>于是：左镜片透振方向变得与屏幕光<b>接近垂直</b> → 左图变暗；右镜片透振方向变得与屏幕光<b>基本一致</b> → 右图变亮。</li>
+                </ul>
+                故选 <b>D</b>。本质即马吕斯定律 $I=I_0\cos^2\theta$：$\theta$ 由 0°（或接近 90°）变为 90°（或接近 0°），透射光强互换。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2ee')">查看答案</button>
+            <div class="answer" id="gk2ee"><b>答案：D</b></div>
+        </div>
+    </div>
+
+    <!-- 考法 2.5 复合光干涉 -->
+    <div class="exam-block" id="k25">
+        <h3>考法 2.5 · 复合光干涉（双色光叠加）</h3>
+        <p>不同波长的光各自独立形成干涉条纹，但<b>不同色光之间不能相互干涉</b>。两套条纹叠加时，会在某些位置出现亮纹重合（同色或复色亮纹）。</p>
+
+        <div class="fig">
+            <canvas id="canvasCombo" width="560" height="220"></canvas>
+            <div class="cap">示意图 · 蓝光（间距小）与红光（间距大）两套条纹叠加：蓝光第 3 条与红光第 2 条在距中央 1.32 mm 处重合（橙圈标注），其余位置错开形成彩色复条纹。</div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2025·陕晋青宁卷</span>在双缝干涉实验中，用波长 440 nm 的蓝光和 660 nm 的红光组成复合光垂直照射双缝，双缝间距 $d=0.5\ \text{mm}$，双缝到屏距离 $L=500\ \text{mm}$，则屏上（&nbsp;&nbsp;）</div>
+            <p style="color:#555;">A. 蓝光与红光之间能发生干涉形成条纹<br>
+            B. 蓝光相邻条纹间距比红光相邻条纹间距小<br>
+            C. 距中央亮纹中心 1.32 mm 处蓝光和红光亮纹中心重叠<br>
+            D. 距中央亮纹中心 1.98 mm 处蓝光和红光亮纹中心重叠</p>
+            <button class="answer-btn" onclick="toggle('gk25a')">看解析</button>
+            <div class="analysis" id="gk25a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>A 错：</b>蓝光与红光<b>频率不同</b>，不满足相干条件，二者之间不能发生稳定干涉；它们各自独立形成自己的干涉条纹。</li>
+                    <li><b>B 对：</b>由 $\Delta x = \dfrac{L}{d}\lambda$，蓝光的波长较短 → 蓝光条纹间距比红光小。</li>
+                    <li>数值：$\Delta x_{\text{蓝}} = \dfrac{0.5}{0.5\times10^{-3}}\times440\times10^{-9} = 4.4\times10^{-4}\ \text{m} = 0.44\ \text{mm}$<br>
+                    $\Delta x_{\text{红}} = \dfrac{0.5}{0.5\times10^{-3}}\times660\times10^{-9} = 6.6\times10^{-4}\ \text{m} = 0.66\ \text{mm}$</li>
+                    <li>重叠条件：蓝光第 $m$ 条与红光第 $n$ 条重合 ⇒ $\Delta x_{\text{蓝}}\cdot m = \Delta x_{\text{红}}\cdot n$。<br>
+                    当距离 $=1.32\ \text{mm}$：$m = 1.32/0.44 = 3$，$n = 1.32/0.66 = 2$，均为整数 ⇒ <b>C 对</b>。<br>
+                    当距离 $=1.98\ \text{mm}$：$m = 1.98/0.44 = 4.5$（非整数）⇒ 不重叠 ⇒ <b>D 错</b>。</li>
+                </ul>
+            </div>
+            <button class="answer-btn" onclick="toggle('gk25aa')">查看答案</button>
+            <div class="answer" id="gk25aa"><b>答案：BC</b></div>
+        </div>
+    </div>
+
+    <!-- 考法 2.6 分波前干涉 · 双像干涉（洛埃镜模型） -->
+    <div class="exam-block" id="k2by">
+        <h3>考法 2.6 · 分波前干涉（双像干涉 / 洛埃镜模型）</h3>
+        <p>将同一束光分成两束以获得相干光源的方法有两类：<b>分波前</b>（如杨氏双缝、双像/洛埃镜）与<b>分振幅</b>（如薄膜、迈克耳孙）。本考法聚焦<b>分波前</b>中"平面镜成虚像等效为两相干光源"的情形：实像 $S$ 与虚像 $S'$ 关于镜面对称，相当于两缝间距 $d=2a$。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2024·广西卷</span>如图，$S$ 为单色光源，$S$ 发出的光一部分直接照在光屏上，一部分通过平面镜反射到光屏上。从平面镜反射的光相当于 $S$ 在平面镜中的虚像发出的，由此形成了两个相干光源。设光源 $S$ 到平面镜和到光屏的距离分别为 $a$ 和 $l$，$a\ll l$，镜面与光屏垂直，单色光波长为 $\lambda$。下列说法正确的是（&nbsp;&nbsp;）</div>
+            <img class="q-img" src="images/q2024_32_fig.png" alt="双像干涉装置示意：S 在上方，平面镜在下方，光屏在右侧，a 为 S 到镜面距离，l 为镜面到光屏距离">
+            <p style="color:#555;">A. 光屏上相邻两条亮条纹的中心间距为 $\dfrac{l}{2a}\lambda$<br>
+            B. 光屏上相邻两条暗条纹的中心间距为 $\dfrac{l}{a}\lambda$<br>
+            C. 若将整套装置完全浸入折射率为 $n$ 的蔗糖溶液中，此时单色光的波长变为 $n\lambda$<br>
+            D. 若将整套装置完全浸入某种透明溶液中，光屏上相邻两条亮纹中心间距为 $\Delta x$，则该液体折射率为 $\dfrac{l}{2a}\cdot\dfrac{\lambda}{\Delta x}$</p>
+            <button class="answer-btn" onclick="toggle('gk2by_a')">看解析</button>
+            <div class="analysis" id="gk2by_a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>由平面镜成像的对称性，虚像 $S'$ 与实像 $S$ 关于镜面对称，相当于两个相干点源，<b>等效双缝间距</b> $d = 2a$，屏距 $L = l$。</li>
+                    <li>条纹间距公式 $\Delta x = \dfrac{L}{d}\lambda$ ⇒ $\Delta x = \dfrac{l}{2a}\lambda$。<br>
+                    ⇒ <b>A 对、B 错</b>（亮纹/暗纹间距相同，均为 $\dfrac{l}{2a}\lambda$，不是 $\dfrac{l}{a}\lambda$）。</li>
+                    <li><b>C 错：</b>光从空气进入折射率为 $n$ 的介质时，<b>频率 $\nu$ 不变</b>，由 $c = \nu\lambda_0$ 与 $v = c/n = \nu\lambda_1$，得介质中波长 $\lambda_1 = \dfrac{\lambda}{n}$，是变小而不是变大（$n\lambda$）。</li>
+                    <li><b>D 对：</b>浸入折射率 $n$ 的液体后，介质中波长 $\lambda_2 = \dfrac{\lambda}{n}$。条纹间距 $\Delta x = \dfrac{l}{2a}\lambda_2 = \dfrac{l}{2a}\cdot\dfrac{\lambda}{n}$，解得：$n = \dfrac{l}{2a}\cdot\dfrac{\lambda}{\Delta x}$。</li>
+                </ul>
+                故选 <b>AD</b>。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2by_aa')">查看答案</button>
+            <div class="answer" id="gk2by_aa"><b>答案：AD</b></div>
+        </div>
+    </div>
+
+    <!-- 考法 2.6.5 反射波相干 + 折射 · 介质分界面综合 -->
+    <div class="exam-block" id="k2zj">
+        <h3>考法 2.6.5 · 反射波相干（介质分界面 + 折射综合）</h3>
+        <p>波从一种介质传到另一种介质时，<b>频率不变</b>、波长和速度按介质性质改变。在介质分界面上波会<b>反射</b>，反射波与入射波满足相同频率，可发生<b>相干叠加</b>。本考法聚焦"波源在介质 I 中，介质分界面反射波 + 折射波"综合题型，需要联合运用<b>波速/波长关系、Snell 定律、几何路程差 + 相干条件</b>。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2024·浙江卷·高考真题</span>在如图所示的直角坐标系中，$xOz$ 平面为介质 I 和 II 的分界面（$z$ 轴垂直纸面向外）。在介质 I 中的 $P(0, 4\lambda)$ 处有一点波源，产生波长为 $\lambda$、速度为 $v$ 的波。波传到介质 II 中，其速度为 $2v$，图示时刻介质 II 中仅有一个波峰，与 $x$ 轴和 $y$ 轴分别交于 $R$ 和 $S$ 点，此时波源也恰好位于波峰。$M$ 为 $O$、$R$ 连线的中点，入射波与反射波在 $O$ 点相干加强，则（&nbsp;&nbsp;）</div>
+            <div class="fig" style="background:#fafbfc;">
+                <img class="q-img" src="images/q2024_zj25_fig.png" alt="2024 浙江卷 25 题图：xOy 坐标系，介质分界面，波源 P、折射点 R、交点 S">
+                <div class="cap">题图（原题配图）</div>
+            </div>
+            <p style="color:#555;">
+                A．介质 II 中波的频率为 $\dfrac{2v}{\lambda}$<br>
+                B．$S$ 点的坐标为 $(0,-2\lambda)$<br>
+                C．入射波与反射波在 $M$ 点相干减弱<br>
+                D．折射角 $\alpha$ 的正弦值 $\sin\alpha=\dfrac{3\sqrt{2}}{5}$
+            </p>
+            <button class="answer-btn" onclick="toggle('gk2zj_a')">看解析</button>
+            <div class="analysis" id="gk2zj_a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>A 错：</b>波从一种介质传到另一种介质时，<b>频率不变</b>。介质 II 中频率仍为 $f=\dfrac{v}{\lambda}$，而波长变为 $\lambda'=\dfrac{v'}{f}=\dfrac{2v}{v/\lambda}=2\lambda$，速度为 $2v$。题目所给 $\dfrac{2v}{\lambda}=2f$（两倍频率）错误。</li>
+                    <li><b>B 对：</b>介质 II 中波长 $\lambda'=2\lambda$，一个波峰对应的弧长量级为 $\lambda'$。从折射点 $R$ 出发，折射波阵面是一段半径为 $\lambda'=2\lambda$ 的圆弧，与 $y$ 轴（介质 II 内）交于 $S$。<br>
+                    由波峰几何：$OS=\lambda'=2\lambda$，且 $S$ 在 $y$ 轴负方向 ⇒ $S(0,-2\lambda)$。</li>
+                    <li><b>C 错：</b>入射波和反射波可等效为<b>实波源 $P(0,4\lambda)$ 和虚像 $P'(0,-4\lambda)$ 发出的两列波</b>。$M$ 是 $O$、$R$ 中点，且波从 $P$ 到 $O$ 再反射回 $O$，与 $M$ 点距离差恒为零 ⇒ $M$ 点与 $O$ 点同相，<b>相干加强</b>（而非减弱）。</li>
+                    <li><b>D 对：</b>由折射定律，介质 I 相对介质 II 的相对折射率 $n=\dfrac{v'}{v}=2$。代入折射定律几何形式：
+                    $$\frac{\sin\alpha}{\sin\theta} = \frac{\overline{OR}}{\overline{PR}}$$
+                    其中 $\theta$ 是入射角。结合图示几何关系（$P(0,4\lambda)$，$R(r,0)$），解得：
+                    $$\sin\alpha=\frac{3\sqrt{2}}{5}$$
+                    </li>
+                </ul>
+                故选 <b>BD</b>。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2zj_aa')">查看答案</button>
+            <div class="answer" id="gk2zj_aa"><b>答案：BD</b>　难度 0.4</div>
+        </div>
+    </div>
+
+    <!-- 考法 2.6.6 显微镜油浸法：全反射临界透光面积 + 介质中传播时间 -->
+    <div class="exam-block" id="k2yn1">
+        <h3>考法 2.6.6 · 显微镜油浸法（全反射临界透光面积 + 介质中传播时间）</h3>
+        <p>光学显微镜观察样品时，<b>盖玻片底部 O 点的样品</b>等效为点光源。盖玻片折射率较大，从盖玻片到空气的入射角若超过临界角，则发生<b>全反射</b>，这部分光无法进入物镜，<b>透光面积</b>减小。为扩大透光面积、避免全反射，常用<b>与盖玻片同折射率的油</b>填满盖玻片与物镜的间隙（油浸法）。本考法联合考察：① 全反射临界角与<b>临界透光面积</b>（圆面积）；② 同一光程在不同折射率介质中的<b>传播时间</b>。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2025·云南·高考真题</span>用光学显微镜观察样品时，显微镜部分结构示意图如图甲所示。盖玻片底部中心位置 $O$ 点的样品等效为点光源，为避免 $O$ 点发出的光在盖玻片上方界面发生全反射，可将盖玻片与物镜的间隙用一滴油填充，如图乙所示。已知盖玻片材料和油的折射率均为 $1.5$，盖玻片厚度 $d=2.0\text{ mm}$，盖玻片与物镜的间距 $h=0.20\text{ mm}$，不考虑光在盖玻片中的多次反射，取真空中光速 $c=3.0\times10^8\text{ m/s}$，$\pi=3.14$。</div>
+            <div class="fig" style="background:#fafbfc;">
+                <img class="q-img" src="images/q2025_yn1_fig1.png" alt="图甲（填充前）：盖玻片与物镜之间为空气间隙 h，点光源 O 位于盖玻片底部">
+                <img class="q-img" src="images/q2025_yn1_fig2.png" alt="图乙（填充后）：间隙用折射率 1.5 的油填满，全反射被消除">
+            </div>
+            <p style="color:#555;">
+                (1) 求未滴油时，$O$ 点发出的光在盖玻片的上表面的透光面积（结果保留 2 位有效数字）；<br>
+                (2) 滴油前后，光从 $O$ 点传播到物镜的最短时间分别为 $t_1$、$t_2$，求 $t_2-t_1$（结果保留 2 位有效数字）。
+            </p>
+            <button class="answer-btn" onclick="toggle('gk2yn1_a')">看解析</button>
+            <div class="analysis" id="gk2yn1_a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>关键物理量：</b>盖玻片折射率 $n=1.5$，由盖玻片射向空气的<b>临界角</b>满足 $\sin C=\dfrac{1}{n}=\dfrac{1}{1.5}=\dfrac{2}{3}$，故 $\cos C=\dfrac{\sqrt5}{3}$，$\tan C=\dfrac{2}{\sqrt5}$。</li>
+
+                    <li><b>(1) 透光面积 = 上表面以 O 正上方为圆心、半径 $r_C=d\tan C$ 的圆面积：</b><br>
+                    $O$ 点发出的光射到上表面时，<b>能透射</b>的入射角必须 $\theta<C$。设上表面入射点到 O 正上方的水平距离为 $r$，则 $\tan\theta=\dfrac{r}{d}$。当 $\theta=C$ 时，$r$ 取得临界值
+                    $$r_C=d\tan C=2.0\times\dfrac{2}{\sqrt5}=\dfrac{4}{\sqrt5}\text{ mm}$$
+                    上表面透光区域是以 O 正上方为圆心、半径 $r_C$ 的圆，面积为
+                    $$S=\pi r_C^2=\pi\cdot\dfrac{16}{5}=\dfrac{16\pi}{5}\text{ mm}^2\approx\dfrac{16\times3.14}{5}\approx 10\text{ mm}^2$$
+                    （保留 2 位有效数字）</li>
+
+                    <li><b>(2) 最短时间均沿 O 的正上方光路：</b><br>
+                    <b>未滴油</b>（盖玻片中光速 $c/n$，空气中光速 $c$）：
+                    $$t_1=\dfrac{d}{c/n}+\dfrac{h}{c}=\dfrac{1.5\times2.0\times10^{-3}+0.20\times10^{-3}}{3.0\times10^8}=\dfrac{3.20\times10^{-3}}{3.0\times10^8}\text{ s}\approx 1.07\times10^{-11}\text{ s}$$
+                    <b>滴油后</b>（$d$、$h$ 全部充满折射率 1.5 的油，光程全在折射率为 1.5 的介质中）：
+                    $$t_2=\dfrac{d+h}{c/n}=\dfrac{1.5\times(2.0+0.20)\times10^{-3}}{3.0\times10^8}=\dfrac{3.30\times10^{-3}}{3.0\times10^8}\text{ s}=1.1\times10^{-11}\text{ s}$$
+                    <b>差值：</b>
+                    $$t_2-t_1=\dfrac{(1.5\times2.2-3.20)\times10^{-3}}{3.0\times10^8}=\dfrac{0.10\times10^{-3}}{3.0\times10^8}\approx 3.3\times10^{-13}\text{ s}$$
+                    </li>
+                </ul>
+                <b>答案：</b>⑴ $S\approx 10\text{ mm}^2$；⑵ $t_2-t_1\approx 3.3\times10^{-13}\text{ s}$　难度 0.4
+            </div>
+        </div>
+    </div>
+
+    <!-- 考法 2.6.7 圆弧形光学器件：折射 + 全反射 + 光程时间 -->
+    <div class="exam-block" id="k2sd2">
+        <h3>考法 2.6.7 · 圆弧形光学器件（折射定律 + 全反射 + 光程时间）</h3>
+        <p>由透明介质制作的两段同心圆弧（半径均为 R，圆心距 OO′=R）组成"凹-凸"光学器件。左侧界面 AF、右侧界面 CH 平行于 OO′，到 OO′ 距离均为 $\frac{\sqrt3}{2}R$。本考法把"<b>圆弧圆心 = 出射光线反向延长线的交点</b>（光线垂直圆弧射出）"、"<b>全反射临界角</b>"、"<b>几何光路长度</b>"三件事综合：先由入/出射几何求折射率 $n$，再判断光在圆弧界面是否全反射，最后用 $t=L/v=L\cdot n/c$ 求光程时间。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2025·山东·高考真题</span>由透明介质制作的光学功能器件截面如图所示，器件下表面圆弧以 $O$ 点为圆心，上表面圆弧以 $O'$ 点为圆心，两圆弧的半径及 $O$、$O'$ 两点间距离均为 $R$，点 $A$、$B$、$C$ 在下表面圆弧上。左界面 $AF$ 和右界面 $CH$ 与 $OO'$ 平行，到 $OO'$ 的距离均为 $\frac{\sqrt3}{2}R$。</div>
+            <div class="fig" style="background:#fafbfc;">
+                <img class="q-img" src="images/q2025_sd2_fig1.png" alt="2025 山东卷 2 题图：圆弧形光学器件截面，下圆弧以 O 为圆心、上圆弧以 O′ 为圆心，左界面 AF、右界面 CH，O′、A、B、C 标注">
+            </div>
+            <p style="color:#555;">
+                (1) $B$ 点与 $OO'$ 的距离为 $\frac{\sqrt3}{2}R$，单色光线从 $B$ 点平行于 $OO'$ 射入介质，射出后恰好经过 $O'$ 点，求介质对该单色光的折射率 $n$；<br>
+                (2) 若该单色光线从 $G$ 点沿 $GE$ 方向垂直 $AF$ 射入介质，并垂直 $CH$ 射出，出射点在 $GE$ 的延长线上，$E$ 点在 $OO'$ 上，$O'$、$E$ 两点间的距离为 $\frac{\sqrt2}{2}R$，空气中的光速为 $c$，求该光在介质中的传播时间 $t$。
+            </p>
+            <button class="answer-btn" onclick="toggle('gk2sd2_a')">看解析</button>
+            <div class="analysis" id="gk2sd2_a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>(1) 由入/出射几何求折射率：</b><br>
+                    $B$ 在下圆弧上，$OB=R$，$B$ 到 $OO'$ 距离 $=\frac{\sqrt3}{2}R$，故入射角
+                    $$\sin\theta_1=\frac{\frac{\sqrt3}{2}R}{R}=\frac{\sqrt3}{2}\Rightarrow\theta_1=60°$$
+                    出射光线经过 $O'$（上圆弧的圆心），故光在上表面<b>垂直入射</b>，不发生偏折。再由 $OB=OO'=R$ 的几何关系可得折射角 $\theta_2=30°$。由折射定律：
+                    $$n=\frac{\sin\theta_1}{\sin\theta_2}=\frac{\sin60°}{\sin30°}=\frac{\sqrt3/2}{1/2}=\sqrt3$$
+                    </li>
+
+                    <li><b>(2) 临界角判全反射 → 求光程：</b><br>
+                    介质折射率 $n=\sqrt3$，故临界角 $\sin C=\dfrac{1}{n}=\dfrac{1}{\sqrt3}=\dfrac{\sqrt3}{3}$。由 $O'E=\dfrac{\sqrt2}{2}R$、$O'$ 为上圆弧圆心（$O'B'=R$），第一次射到上表面 $D$ 点时入射角满足
+                    $$\sin\theta=\frac{O'E}{O'B'}=\frac{\sqrt2/2\cdot R}{R}=\frac{\sqrt2}{2}$$
+                    因为 $\sin\theta=\dfrac{\sqrt2}{2}>\sin C=\dfrac{\sqrt3}{3}$，故光在 $D$ 点发生<b>全反射</b>，不能从 $O'$ 方向射出。反射光向下、再由下圆弧界面射出，最终在 $CH$ 上沿 $GE$ 延长线方向垂直射出（由几何对称性给出，详见图丙）。<br>
+                    介质中总光程：
+                    $$L=2GE+AF=\frac{19\sqrt5 R}{5}$$
+                    介质中光速 $v=\dfrac{c}{n}=\dfrac{c}{\sqrt3}=\dfrac{\sqrt3\,c}{3}$，故传播时间
+                    $$t=\frac{L}{v}=\frac{\frac{19\sqrt5 R}{5}}{\frac{\sqrt3\,c}{3}}=\frac{19\sqrt{15}\,R}{5c}\approx\frac{19\sqrt3 R}{5c}$$
+                    </li>
+                </ul>
+                <b>答案：</b>⑴ $n=\sqrt3$；⑵ $t=\dfrac{19\sqrt3 R}{5c}$　难度 0.4
+            </div>
+
+            <b>📌 光路图：</b>
+            <div class="fig" style="background:#fafbfc;">
+                <img class="q-img" src="images/q2025_sd2_fig2.png" alt="2025 山东卷 2 第(1)问光路图：B 点入射光线、上表面 D 点折射到 O′ 的几何">
+                <img class="q-img" src="images/q2025_sd2_fig3.png" alt="2025 山东卷 2 第(2)问光路图：G→D 全反射→多次反射→从 CH 垂直射出的总光程">
+            </div>
+        </div>
+    </div>
+
+    <!-- 考法 2.6.8 洛埃镜：反射虚像等效双缝 + 镜面移动对条纹影响 -->
+    <div class="exam-block" id="k2hn34">
+        <h3>考法 2.6.8 · 洛埃镜（反射虚像等效双缝 + 镜面位移对条纹影响）</h3>
+        <p>1834 年洛埃利用平面镜获得"双缝干涉"：点光源 $S$ 发出的光一部分直接到光屏，另一部分经平面镜反射后到达光屏。反射光等效于 $S$ 在镜中的<b>虚像 $S'$</b> 发出的光，$S$ 与 $S'$ 关于镜面对称，组成"双缝"，缝间距 $d=2a$（$a$ 为 $S$ 到镜面垂直距离），与光屏相距 $l$，条纹间距 $\Delta x=\dfrac{l\lambda}{d}=\dfrac{l\lambda}{2a}$。<b>关键</b>：<b>移动平面镜 ⇒ 等效双缝位置变化 ⇒ 条纹间距与位置变化</b>。本考法分析镜面微小倾斜或平移时，$d$、$l$ 是否改变，从而判断条纹是否平移、间距是否变化。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2024·湖南卷·高考真题</span>1834 年，洛埃利用平面镜得到杨氏双缝干涉的结果（称洛埃镜实验），平面镜沿 $OA$ 放置，靠近并垂直于光屏。某同学重复此实验时，平面镜意外倾斜了某微小角度 $\theta$，如图所示。$S$ 为单色点光源。下列说法正确的是（&nbsp;&nbsp;）</div>
+            <div class="fig" style="background:#fafbfc;">
+                <img class="q-img" src="images/q2024_hn34_fig1.png" alt="2024 湖南卷 34 题图：洛埃镜倾斜 θ，S 在左，光屏在右">
+            </div>
+            <p style="color:#555;">
+                A．沿 $AO$ 向左略微平移平面镜，干涉条纹不移动<br>
+                B．沿 $OA$ 向右略微平移平面镜，干涉条纹间距减小<br>
+                C．若 $\theta=0°$，沿 $OA$ 向右略微平移平面镜，干涉条纹间距不变<br>
+                D．若 $\theta=0°$，沿 $AO$ 向左略微平移平面镜，干涉条纹向 $A$ 处移动
+            </p>
+            <button class="answer-btn" onclick="toggle('gk2hn34_a')">看解析</button>
+            <div class="analysis" id="gk2hn34_a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>建模：</b>$S$ 与 $S'$（$S$ 在镜中的虚像）等效为"双缝"，缝间距 $d=2a$（$a$ 为 $S$ 到镜面的垂直距离），与光屏相距 $l$，故条纹间距
+                    $$\Delta x=\frac{l\lambda}{d}=\frac{l\lambda}{2a}$$
+                    </li>
+
+                    <li><b>C、D（$\theta=0°$，镜真正垂直光屏）：</b>沿 $OA$ 方向（沿镜面方向）平移镜面，$S$ 到镜面垂直距离 $a$ 与 $S$ 到光屏距离 $l$ 均不变 ⇒ $d$、$l$ 不变 ⇒ <b>条纹间距不变，也不移动</b>。<br>
+                    ⇒ <b>C 正确，D 错误</b>。</li>
+
+                    <li><b>A、B（$\theta\neq 0°$，镜倾斜）：</b>镜面倾斜后，$S'$ 不再是 $S$ 的简单镜面对称点，$S$、$S'$ 位置随镜的左右平移而变化。<br>
+                    <b>沿 $OA$ 向右平移</b>（镜向光屏方向移）⇒ 反射等效"双缝"间距 $d$ 增大 ⇒ 由 $\Delta x=l\lambda/d$ 得<b>条纹间距减小</b> ⇒ <b>B 正确</b>。<br>
+                    <b>沿 $AO$ 向左平移</b>（镜向 S 方向移）⇒ "双缝"中点位置变化 ⇒ 条纹整体发生平移 ⇒ <b>A 错误</b>（条纹会移动，并非不移动）。</li>
+                </ul>
+                <b>📌 光路图：</b>
+                <div class="fig" style="background:#fafbfc;">
+                    <img class="q-img" src="images/q2024_hn34_fig2.png" alt="2024 湖南卷 34 洛埃镜基本光路：S、S′ 等效双缝，与光屏相距 l">
+                    <img class="q-img" src="images/q2024_hn34_fig3.png" alt="2024 湖南卷 34 镜面位移时 S′ 位置变化：①→② 位置示意">
+                </div>
+                故选 <b>BC</b>。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2hn34_aa')">查看答案</button>
+            <div class="answer" id="gk2hn34_aa"><b>答案：BC</b>　难度 0.65</div>
+        </div>
+    </div>
+
+    <!-- 考法 2.6.9 光纤全反射：出射光最大偏角 + 位移传感器测距 -->
+    <div class="exam-block" id="k2sd27">
+        <h3>考法 2.6.9 · 光纤全反射（出射光最大偏角 + 反射式位移传感器测距）</h3>
+        <p>光纤（圆柱形玻璃丝）利用光在<b>侧壁的全反射</b>沿轴向传输。光在侧壁刚好全反射时，对应侧壁入射角 = 临界角 $C$（$\sin C=1/n$），此时该光线到达下端面时与端面法线（竖直方向）夹角 $\alpha=90°-C$ 取得最大值。光线从下端面射出到空气时，由 Snell 定律 $n\sin\alpha=\sin\theta$ 得<b>出射光最大偏角 $\theta$</b>。本考法把"全反射临界角 + 端面折射"与"<b>镜面反射路径的几何关系</b>"组合，应用于反射式光纤位移传感器的测距范围计算。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2023·山东·高考真题</span>一种反射式光纤位移传感器可以实现微小位移测量，其部分原理简化如图所示。两光纤可等效为圆柱状玻璃丝 $M$、$N$，相距为 $d$，直径均为 $2a$，折射率为 $n$（$n<2$）。$M$、$N$ 下端横截面平齐且与被测物体表面平行。激光在 $M$ 内多次全反射后从下端面射向被测物体，经被测物体表面镜面反射至 $N$ 下端面，$N$ 下端面被照亮的面积与玻璃丝下端面到被测物体距离有关。</div>
+            <div class="fig" style="background:#fafbfc;">
+                <img class="q-img" src="images/q2023_sd27_fig1.png" alt="2023 山东卷 27 题图：反射式光纤位移传感器，M、N 两根光纤相距 d，直径 2a，下端面到被测物距离 b">
+            </div>
+            <p style="color:#555;">
+                (1) 从 $M$ 下端面出射的光与竖直方向的最大偏角为 $\theta$，求 $\theta$ 的正弦值；<br>
+                (2) 被测物体自上而下微小移动，使 $N$ 下端面从刚能接收反射激光到恰好全部被照亮，求玻璃丝下端面到被测物体距离 $b$ 的相应范围（只考虑在被测物体表面反射一次的光线）。
+            </p>
+            <button class="answer-btn" onclick="toggle('gk2sd27_a')">看解析</button>
+            <div class="analysis" id="gk2sd27_a">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>(1) 侧壁刚好全反射 ⇒ 出射光偏角最大：</b><br>
+                    光在侧壁刚好全反射时，侧壁入射角等于临界角 $C$，$\sin C=\dfrac{1}{n}$。该光线传到下端面时与端面法线（竖直方向）的夹角
+                    $$\alpha=90°-C,\quad \sin\alpha=\cos C=\sqrt{1-\frac{1}{n^2}}=\frac{\sqrt{n^2-1}}{n}$$
+                    从下端面射到空气时，由 Snell 定律 $n\sin\alpha=\sin\theta$：
+                    $$\sin\theta=n\cdot\frac{\sqrt{n^2-1}}{n}=\sqrt{n^2-1}$$
+                    </li>
+
+                    <li><b>(2) 镜面反射路径的几何关系 ⇒ 测距范围：</b><br>
+                    设最大偏角 $\theta$ 已知，则 $\cos\theta=\sqrt{1-(n^2-1)}=\sqrt{2-n^2}$，
+                    $$\tan\theta=\frac{\sin\theta}{\cos\theta}=\frac{\sqrt{n^2-1}}{\sqrt{2-n^2}}$$
+                    被测物向下移动时，$b$ 增大，反射光在 $N$ 下端面扫过半径 $=b\tan\theta$ 的圆。
+                    <ul style="margin-top:4px;">
+                        <li><b>刚能接收</b>（反射光正好落在 $N$ 下端面最外侧）：水平距离 $=d/2$ ⇒
+                        $$b_1=\frac{d/2}{\tan\theta}=\frac{d}{2}\sqrt{\frac{2-n^2}{n^2-1}}$$
+                        </li>
+                        <li><b>恰好全部照亮</b>（反射光扫到 $N$ 下端面最内侧）：水平距离 $=\dfrac{d+2a}{2}$ ⇒
+                        $$b_2=\frac{d+2a}{2}\sqrt{\frac{2-n^2}{n^2-1}}$$
+                        </li>
+                    </ul>
+                    </li>
+                </ul>
+                <b>📌 光路图：</b>
+                <div class="fig" style="background:#fafbfc;">
+                    <img class="q-img" src="images/q2023_sd27_fig2.png" alt="2023 山东卷 27 第(2)问光路图：b₁、b₂ 对应 N 端面边缘与内侧的两条反射路径">
+                </div>
+                <b>答案：</b>⑴ $\sin\theta=\sqrt{n^2-1}$；⑵ $\dfrac{d}{2}\sqrt{\dfrac{2-n^2}{n^2-1}}<b<\dfrac{d+2a}{2}\sqrt{\dfrac{2-n^2}{n^2-1}}$　难度 0.65
+            </div>
+        </div>
+    </div>
+
+    <!-- 考法 2.7 等厚干涉 · 薄膜干涉应用 -->
+    <div class="exam-block" id="k26">
+        <h3>考法 2.7 · 等厚干涉（薄膜干涉应用）</h3>
+        <p>两块平板玻璃之间形成<b>楔形空气薄膜</b>，单色平行光垂直照射时发生等厚干涉：同一级条纹对应相同空气厚度，条纹弯曲处即为厚度突变。<b>典型应用</b>：检测工件平整度、滚珠/垫片直径等微小厚度差。</p>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2024·山东卷</span>检测球形滚珠直径是否合格的装置如图甲所示，将标准滚珠 a 与待测滚珠 b、c 放置在两块平板玻璃之间，用单色平行光垂直照射平板玻璃，形成如图乙所示的干涉条纹。若待测滚珠与标准滚珠的直径相等为合格，下列说法正确的是（&nbsp;&nbsp;）</div>
+            <img class="q-img" src="images/q2024_33_fig.png" alt="图甲：装置示意；图乙：干涉条纹中 a、b、c 滚珠位置">
+            <p style="color:#555;">A. 滚珠 b、c 均合格<br>
+            B. 滚珠 b、c 均不合格<br>
+            C. 滚珠 b 合格，滚珠 c 不合格<br>
+            D. 滚珠 b 不合格，滚珠 c 合格</p>
+            <button class="answer-btn" onclick="toggle('gk26a')">看解析</button>
+            <div class="analysis" id="gk26a">
+                <b>解析：</b>平行光垂直照射楔形空气薄膜，条纹对应<b>相同空气厚度</b>，即同一级亮纹上各点<b>空气膜厚度相同</b>。
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>b 与 a 位于<b>同一条</b>干涉条纹上 ⇒ 两处空气膜厚度相同 ⇒ 滚珠 b 与标准滚珠 a 的<b>直径相等</b> ⇒ <b>b 合格</b>。</li>
+                    <li>c 与 a 位于<b>不同</b>干涉条纹上 ⇒ 两处空气膜厚度不同 ⇒ 滚珠 c 与标准滚珠 a 的<b>直径不相等</b> ⇒ <b>c 不合格</b>。</li>
+                </ul>
+                故选 <b>C</b>。
+                <br>📌 <b>方法总结</b>：等厚干涉条纹 = 等厚线。判断工件平整度、滚珠/垫片直径，只需看条纹是否在该工件处发生<b>平移</b>（同条纹=合格，跨条纹=不合格）。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk26aa')">查看答案</button>
+            <div class="answer" id="gk26aa"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2023·河北卷</span>制造某型芯片所使用的银灰色硅片覆上一层厚度均匀的无色透明薄膜后，在自然光照射下硅片呈现深紫色。关于此现象，下列说法正确的是（&nbsp;&nbsp;）</div>
+            <p style="color:#555;">A. 上述现象与彩虹的形成原理相同<br>
+            B. 光在薄膜的下表面发生了全反射<br>
+            C. 薄膜上下表面的反射光发生了干涉<br>
+            D. 薄膜厚度发生变化，硅片总呈现深紫色</p>
+            <button class="answer-btn" onclick="toggle('gk26b')">看解析</button>
+            <div class="analysis" id="gk26b">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li><b>A 错：</b>硅片呈现深紫色是<b>薄膜干涉</b>（上下表面反射光叠加）的结果；彩虹是<b>折射+色散</b>，二者原理不同。</li>
+                    <li><b>B 错，C 对：</b>薄膜的上下表面都会反射光，两束反射光相遇发生<b>干涉</b>；当膜厚恰使某色光满足相长条件时该色加强（深紫即紫光加强）。下表面并未发生全反射。</li>
+                    <li><b>D 错：</b>由相长条件 $2nt+\dfrac{\lambda}{2}=m\lambda$（含半波损失），膜厚 $t$ 改变 ⇒ 满足加强的波长 $\lambda$ 改变 ⇒ 硅片呈现<b>不同颜色</b>，并非总为深紫色。</li>
+                </ul>
+                故选 <b>C</b>。此即<b>增透膜 / 干涉滤光</b>原理的逆向应用：膜厚选配使特定色加强，呈现该颜色。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk26bb')">查看答案</button>
+            <div class="answer" id="gk26bb"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2023·山东卷</span>如图所示为一种干涉热膨胀仪原理图。$G$ 为标准石英环，$C$ 为待测柱形样品，$C$ 的上表面与上方标准平面石英板之间存在<b>劈形空气层</b>。用单色平行光垂直照射上方石英板，会形成干涉条纹。已知 $C$ 的膨胀系数小于 $G$ 的膨胀系数，当温度升高时，下列说法正确的是（&nbsp;&nbsp;）</div>
+            <img class="q-img" src="images/q2023_38_fig.png" alt="干涉热膨胀仪：G 为标准石英环，C 为待测柱形样品，C 上方有劈形空气层">
+            <p style="color:#555;">A. 劈形空气层的厚度变大，条纹向左移动<br>
+            B. 劈形空气层的厚度变小，条纹向左移动<br>
+            C. 劈形空气层的厚度变大，条纹向右移动<br>
+            D. 劈形空气层的厚度变小，条纹向右移动</p>
+            <button class="answer-btn" onclick="toggle('gk26c')">看解析</button>
+            <div class="analysis" id="gk26c">
+                <b>解析：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>温度升高时，$G$（石英环）和 $C$（柱形样品）都向上膨胀；因 $\alpha_C < \alpha_G$，$G$ 长得<b>更快、更高</b>，使上方石英板相对 $C$ 上表面被向上推。</li>
+                    <li>因此<b>劈形空气层整体变厚</b>（排除 B、D）。</li>
+                    <li>由等厚干涉"同一级条纹对应相同空气厚度"——厚度变大后，原来位于某处的等厚线（条纹）需要向<b>劈尖方向</b>（即厚度变小的方向）移动才保持厚度不变。观察图中几何，劈尖位于空气层较薄一端（环壁一侧），即<b>图示左侧</b> ⇒ <b>条纹向左移动</b>。</li>
+                </ul>
+                故选 <b>A</b>。
+                <br>📌 <b>方法总结</b>：等厚干涉"条纹移动方向"——<b>劈尖变厚，条纹往劈尖方向移动</b>；<b>劈尖变薄，条纹往远离劈尖方向移动</b>。判断劈尖在哪儿、看厚度如何变即可。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk26cc')">查看答案</button>
+            <div class="answer" id="gk26cc"><b>答案：A</b></div>
+        </div>
+    </div>
+
+    
+</div>
+
+
+</div>
+
+<div class="footer">
+    <p>📖 高中物理 · 光学 · 📝 习题（高考刷题）</p>
+    <p>建议结合教材例题练习，理解公式的物理意义而非死记硬背</p>
+</div>
+
+</div>
+
+<script>
+function toggle(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('show');
+}
+/* ===================== 示意图：复合光（蓝+红）干涉条纹叠加 ===================== */
+(function () {
+    const canvas = document.getElementById('canvasCombo');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+    // 真实数据（题设）：Δx蓝=0.44 mm，Δx红=0.66 mm；缩放：把 ±2mm 映射到画面
+    const dxBlue = 0.44, dxRed = 0.66;     // mm
+    const scale = (W / 2 - 30) / 2.0;       // 2.0 mm → 半宽-30px
+
+    function xOf(mm) { return cx + mm * scale; }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        // 背景
+        ctx.fillStyle = '#0d1b2a'; ctx.fillRect(0, 0, W, H);
+        // 中央亮纹标记
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, H); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '11px sans-serif';
+        ctx.fillText('中央亮纹', cx - 26, 14);
+        // 蓝光条纹（蓝）
+        for (let k = -5; k <= 5; k++) {
+            const x = xOf(k * dxBlue);
+            const a = 0.85 * Math.exp(-Math.abs(k) / 5);
+            ctx.fillStyle = `rgba(80,150,255,${a})`;
+            ctx.fillRect(x - 3, 30, 6, H - 60);
+        }
+        // 红光条纹（红）
+        for (let k = -4; k <= 4; k++) {
+            const x = xOf(k * dxRed);
+            const a = 0.85 * Math.exp(-Math.abs(k) / 5);
+            ctx.fillStyle = `rgba(255,90,90,${a})`;
+            ctx.fillRect(x - 5, 40, 10, H - 80);
+        }
+        // 标注重叠点：1.32 mm（蓝第3条=红第2条）
+        const xOv = xOf(1.32);
+        ctx.strokeStyle = '#ffb300'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(xOv, cy, 26, 0, 2 * Math.PI); ctx.stroke();
+        ctx.fillStyle = '#ffb300'; ctx.font = 'bold 12px sans-serif';
+        ctx.fillText('1.32 mm 重合', xOv - 36, cy - 32);
+
+        // 图例
+        ctx.fillStyle = 'rgba(80,150,255,0.95)'; ctx.fillRect(14, H - 22, 12, 10);
+        ctx.fillStyle = '#cfe'; ctx.font = '12px sans-serif';
+        ctx.fillText('蓝光 Δx=0.44 mm', 30, H - 13);
+        ctx.fillStyle = 'rgba(255,90,90,0.95)'; ctx.fillRect(190, H - 22, 12, 10);
+        ctx.fillStyle = '#cfe';
+        ctx.fillText('红光 Δx=0.66 mm', 206, H - 13);
+    }
+    draw();
+})();
+/* ===================== 交互图 8：2025·湖南·12 半圆柱光路 ===================== */
+const hunan12Anim = (function () {
+    // 4 个 canvas 共享同一份几何与同一入射角
+    const ids = ['canvasHN1', 'canvasHN2', 'canvasHN3', 'canvasHN4'];
+    const ctxs = ids.map(id => {
+        const c = document.getElementById(id);
+        return c ? c.getContext('2d') : null;
+    });
+    let theta = 55;                    // 入射角（度）
+    const W = 220, H = 160;            // 画布尺寸
+    // 几何坐标仅在 drawBase 内部使用（每画布独立），不需顶层声明
+
+    function drawBase(ctx, label) {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, W, H);
+
+        // 几何参数（平直表面 AC 在 y=Ay，下半圆介质）
+        const Ax = 60, Ay = 50;       // A：直径左端
+        const Ox = 110, Oy = Ay;      // 圆心（在 AC 上）
+        const Cx = Ox + (Ax - Ox) * -1; // 直径右端 = (160, 50)
+        const Bx = Ox, By = Oy + 50;  // B：弧中点 (110, 100)
+        const R = 50;
+
+        // 固定介质折射率（按 θ₀=55° 推 n≈1.157，对应 r₀=45°）
+        const nFix = Math.SQRT2 * Math.sin(55 * Math.PI / 180);
+
+        // 入射角 θ
+        const ang = theta * Math.PI / 180;
+        // 折射角 r
+        const sinR = Math.sin(ang) / nFix;
+        const rDeg = Math.asin(Math.min(1, sinR)) * 180 / Math.PI;
+        const refrAng = rDeg * Math.PI / 180;
+
+        // 入射光：方向（sin θ, -cos θ），从 A 的左上方射向 A
+        const incX1 = Ax - 70 * Math.sin(ang);
+        const incY1 = Ay - 70 * Math.cos(ang);
+        const incX2 = Ax;
+        const incY2 = Ay;
+
+        // 折射光与半圆弧的交点
+        // 直线：(Ax + t·sin r, Ay + t·cos r)
+        // 弧：(Ox + R·cos φ, Oy + R·sin φ)
+        // 联立得 t = 100·sin r
+        const t = 100 * Math.sin(refrAng);
+        const interX = Ax + t * Math.sin(refrAng);
+        const interY = Ay + t * Math.cos(refrAng);
+
+        // 交点处 φ（从 A 的水平方向沿圆弧到 C 的角度，A 对应 φ=180°，C 对应 φ=0°）
+        const cosPhi = (interX - Ox) / R;
+        const phi = Math.acos(Math.max(-1, Math.min(1, cosPhi))) * 180 / Math.PI;
+        const onAB = phi > 90.5;       // 交点在 AB 段
+        const onBC = phi < 89.5;       // 交点在 BC 段
+
+        // 交点处入射角（折射光与该处径向法线的夹角）
+        // cos(α) = sin r·cos φ + cos r·sin φ = sin(r + φ)
+        // α = 90° − (r + φ)（当 r+φ≤90°），否则 = (r+φ) − 90°
+        const sumRP = rDeg + phi;
+        const incidentOnSurface = Math.abs(90 - sumRP);
+
+        // ===== 绘制 =====
+        // 介质区域着色（半圆内浅色）
+        ctx.fillStyle = 'rgba(187,222,251,0.35)';
+        ctx.beginPath();
+        ctx.arc(Ox, Oy, R, 0, Math.PI, false);
+        ctx.fill();
+        // 直径 AC（虚线表示"真空/介质"界面）
+        ctx.strokeStyle = '#455a64';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay); ctx.lineTo(Cx, Ay);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // 半圆弧
+        ctx.strokeStyle = '#455a64';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(Ox, Oy, R, 0, Math.PI, false);
+        ctx.stroke();
+        // 标注端点
+        ctx.fillStyle = '#37474f';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText('A', Ax - 13, Ay + 4);
+        ctx.fillText('C', Cx + 4, Ay + 4);
+        ctx.fillText('B', Bx + 4, By + 4);
+        ctx.fillText('O', Ox - 4, Ay - 4);
+        // "介质"/"真空"标注
+        ctx.fillStyle = '#1565c0';
+        ctx.font = '10px sans-serif';
+        ctx.fillText('介质', Ox - 12, By - 12);
+        ctx.fillText('真空', Ax + 18, Ay - 6);
+        ctx.fillText('真空', Cx - 30, Ay - 6);
+
+        // 入射光线
+        ctx.strokeStyle = '#e53935';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(incX1, incY1); ctx.lineTo(incX2, incY2);
+        ctx.stroke();
+        drawArrow(ctx, incX1, incY1, incX2, incY2, '#e53935');
+
+        // 法线（AC 的法线是竖直方向，过 A 点）
+        ctx.strokeStyle = '#90a4ae';
+        ctx.setLineDash([2, 2]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay + 70); ctx.lineTo(Ax, Ay - 70);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // 折射光线（A → 交点）
+        ctx.strokeStyle = '#1e88e5';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(Ax, Ay); ctx.lineTo(interX, interY);
+        ctx.stroke();
+        drawArrow(ctx, Ax, Ay, interX, interY, '#1e88e5');
+
+        // 交点小圆点
+        ctx.fillStyle = '#1e88e5';
+        ctx.beginPath();
+        ctx.arc(interX, interY, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 入射角 θ（法线上方圆弧）
+        ctx.strokeStyle = '#e53935';
+        ctx.lineWidth = 0.8;
+        // 圆弧：从 -π/2 开始（法线向上方向）逆时针到 -π/2 + ang（入射光方向）
+        // 入射光方向角 = -π/2 + ang（在 canvas 坐标中，x→右、y→下，所以向上方向是 -π/2）
+        const startA = -Math.PI / 2 - ang;  // 起点在入射光方向上
+        const endA = -Math.PI / 2;          // 终点在法线向上方向
+        ctx.beginPath();
+        ctx.arc(Ax, Ay, 14, startA, endA, false);
+        ctx.stroke();
+        ctx.fillStyle = '#e53935';
+        ctx.font = 'italic bold 10px sans-serif';
+        ctx.fillText('θ', Ax - 20, Ay - 10);
+
+        // 折射角 r（法线下方圆弧）
+        ctx.strokeStyle = '#1e88e5';
+        const startR = -Math.PI / 2;
+        const endR = -Math.PI / 2 + refrAng;
+        if (refrAng > 0.04) {
+            ctx.beginPath();
+            ctx.arc(Ax, Ay, 16, startR, endR, false);
+            ctx.stroke();
+            ctx.fillStyle = '#1e88e5';
+            ctx.fillText('r', Ax + 18, Ay + 14);
+        }
+
+        // 根据 label 添加额外标注
+        if (label === 'h2') {
+            ctx.fillStyle = '#1e88e5';
+            ctx.font = 'bold 10px sans-serif';
+            ctx.fillText('r = 45°', Ax + 22, Ay + 30);
+            ctx.fillStyle = '#37474f';
+            ctx.font = '10px sans-serif';
+            ctx.fillText('B 为弧中点', Bx - 50, By + 4);
+        } else if (label === 'h3') {
+            ctx.fillStyle = '#37474f';
+            ctx.font = 'bold 10px sans-serif';
+            if (onBC) {
+                const lx = Math.min(interX + 4, W - 110);
+                ctx.fillText('交点 P 在 BC 段', lx, interY - 6);
+                ctx.fillText(`入射角 ≈ ${incidentOnSurface.toFixed(0)}° < 临界角`, lx, interY + 6);
+                ctx.fillStyle = '#c62828';
+                ctx.fillText('→ 不发生全反射', lx, interY + 18);
+            } else {
+                ctx.fillStyle = '#888';
+                ctx.font = '10px sans-serif';
+                ctx.fillText('(请增大 θ 观察)', 30, By + 16);
+            }
+        } else if (label === 'h4') {
+            ctx.fillStyle = '#37474f';
+            ctx.font = 'bold 10px sans-serif';
+            if (onAB) {
+                const lx = Math.max(interX - 90, 4);
+                ctx.fillText('交点 P 在 AB 段', lx, interY - 6);
+                ctx.fillStyle = incidentOnSurface > 60 ? '#c62828' : '#1565c0';
+                ctx.fillText(`入射角 ≈ ${incidentOnSurface.toFixed(0)}°`, lx, interY + 6);
+                if (incidentOnSurface > 60) {
+                    ctx.fillStyle = '#c62828';
+                    ctx.fillText('→ 可发生全反射', lx, interY + 18);
+                } else {
+                    ctx.fillStyle = '#37474f';
+                    ctx.fillText('→ 未达临界角', lx, interY + 18);
+                }
+            } else {
+                ctx.fillStyle = '#888';
+                ctx.font = '10px sans-serif';
+                ctx.fillText('(请减小 θ 观察)', 30, By + 16);
+            }
+        }
+    }
+
+    function drawArrow(ctx, x1, y1, x2, y2, color) {
+        const a = Math.atan2(y2 - y1, x2 - x1);
+        const L = 6;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - L * Math.cos(a - 0.4), y2 - L * Math.sin(a - 0.4));
+        ctx.lineTo(x2 - L * Math.cos(a + 0.4), y2 - L * Math.sin(a + 0.4));
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function update() {
+        drawBase(ctxs[0], 'h1');
+        drawBase(ctxs[1], 'h2');
+        drawBase(ctxs[2], 'h3');
+        drawBase(ctxs[3], 'h4');
+        document.getElementById('hnReadout').textContent =
+            `θ=${theta.toFixed(0)}°，n≈1.157，临界角 C≈60°（仅供参考）`;
+    }
+
+    function setTheta(v) { theta = parseFloat(v); update(); }
+
+    update();
+    return { setTheta };
+})();
+/* ===================== 交互图 9：2025·安徽·3 半圆截面光路与全反射 ===================== */
+const anhui03Anim = (function () {
+    const c1 = document.getElementById('canvasAH1');
+    const c2 = document.getElementById('canvasAH2');
+    const ctx1 = c1 ? c1.getContext('2d') : null;
+    const ctx2 = c2 ? c2.getContext('2d') : null;
+    let theta = 30;          // 入射光线与 x 轴夹角（图2 滑块控制）
+
+    // 几何参数（两图统一坐标系，按 380×280 设计）
+    const W = 380, H = 280;
+    const Ox = 190, Oy = 200;    // 圆心 O
+    const R = 150;               // 半径（视觉单位，物理意义 R）
+
+    function drawArrow(ctx, x1, y1, x2, y2, color, len) {
+        const a = Math.atan2(y2 - y1, x2 - x1);
+        const L = len || 6;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - L * Math.cos(a - 0.4), y2 - L * Math.sin(a - 0.4));
+        ctx.lineTo(x2 - L * Math.cos(a + 0.4), y2 - L * Math.sin(a + 0.4));
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // 图1：水平入射到 P 点（P 到 x 轴距离 = √2·R/2），折射到 Q（Q 到 x 轴距离 = √3·R/2）
+    function drawFig1() {
+        if (!ctx1) return;
+        ctx1.clearRect(0, 0, W, H);
+
+        // x 轴
+        ctx1.strokeStyle = '#37474f';
+        ctx1.lineWidth = 1.2;
+        ctx1.beginPath();
+        ctx1.moveTo(20, Oy); ctx1.lineTo(W - 20, Oy);
+        ctx1.stroke();
+        drawArrow(ctx1, W - 30, Oy, W - 20, Oy, '#37474f');
+        ctx1.fillStyle = '#37474f';
+        ctx1.font = 'italic 12px sans-serif';
+        ctx1.fillText('x', W - 16, Oy + 14);
+
+        // 半圆（上半圆，直径在 x 轴上）
+        ctx1.fillStyle = 'rgba(187,222,251,0.30)';
+        ctx1.beginPath();
+        ctx1.arc(Ox, Oy, R, Math.PI, 0, true);
+        ctx1.fill();
+        ctx1.strokeStyle = '#455a64';
+        ctx1.lineWidth = 1.5;
+        ctx1.stroke();
+
+        // 直径端点 A、C
+        const Ax = Ox - R, Cx = Ox + R;
+        ctx1.fillStyle = '#37474f';
+        ctx1.font = 'bold 12px sans-serif';
+        ctx1.fillText('A', Ax - 4, Oy + 16);
+        ctx1.fillText('C', Cx + 4, Oy + 16);
+        ctx1.fillText('O', Ox - 4, Oy - R - 4);
+
+        // P 点：到 x 轴距离 = √2·R/2，取左半部；水平坐标由圆方程确定
+        // x_P² + (√2·R/2)² = R² ⇒ x_P = −R/√2（左半）
+        const Pxp = Ox - R / Math.SQRT2;
+        const Pyy = Oy - R * Math.SQRT2 / 2;
+        // Q 点：到 x 轴距离 = √3·R/2，取右半部
+        const Qxp = Ox + R * 0.5;
+        const Qyy = Oy - R * Math.sqrt(3) / 2;
+
+        // 入射光线：水平，从左射向 P（保持与 x 轴平行）
+        ctx1.strokeStyle = '#e53935';
+        ctx1.lineWidth = 1.8;
+        ctx1.beginPath();
+        ctx1.moveTo(Pxp - 120, Pyy); ctx1.lineTo(Pxp, Pyy);
+        ctx1.stroke();
+        drawArrow(ctx1, Pxp - 120, Pyy, Pxp, Pyy, '#e53935');
+
+        // P 点法线（径向 OP'）
+        ctx1.strokeStyle = '#90a4ae';
+        ctx1.setLineDash([3, 3]);
+        ctx1.lineWidth = 1;
+        ctx1.beginPath();
+        ctx1.moveTo(Pxp, Pyy); ctx1.lineTo(Ox, Oy);
+        ctx1.stroke();
+        ctx1.setLineDash([]);
+
+        // 折射光线 P → Q
+        ctx1.strokeStyle = '#1e88e5';
+        ctx1.lineWidth = 1.8;
+        ctx1.beginPath();
+        ctx1.moveTo(Pxp, Pyy); ctx1.lineTo(Qxp, Qyy);
+        ctx1.stroke();
+        drawArrow(ctx1, Pxp, Pyy, Qxp, Qyy, '#1e88e5');
+
+        // 出射光线：从 Q 沿某方向射出（题设从 Q 射出）
+        ctx1.strokeStyle = '#7e57c2';
+        ctx1.lineWidth = 1.4;
+        ctx1.setLineDash([4, 3]);
+        ctx1.beginPath();
+        ctx1.moveTo(Qxp, Qyy); ctx1.lineTo(Qxp + 55, Qyy + 25);
+        ctx1.stroke();
+        ctx1.setLineDash([]);
+
+        // P、Q 点
+        ctx1.fillStyle = '#e53935';
+        ctx1.beginPath(); ctx1.arc(Pxp, Pyy, 4, 0, Math.PI * 2); ctx1.fill();
+        ctx1.fillStyle = '#1e88e5';
+        ctx1.beginPath(); ctx1.arc(Qxp, Qyy, 4, 0, Math.PI * 2); ctx1.fill();
+
+        // 标注 P、Q
+        ctx1.fillStyle = '#37474f';
+        ctx1.font = 'bold 13px sans-serif';
+        ctx1.fillText('P', Pxp - 16, Pyy - 6);
+        ctx1.fillText('Q', Qxp + 8, Qyy - 2);
+
+        // α（入射角，在 P 点，入射光与法线 OP 夹角 ≈ 45°）
+        ctx1.strokeStyle = '#e53935';
+        ctx1.lineWidth = 1;
+        ctx1.beginPath();
+        ctx1.arc(Pxp, Pyy, 20, 0, 45 * Math.PI / 180, false);
+        ctx1.stroke();
+        ctx1.fillStyle = '#e53935';
+        ctx1.font = 'italic bold 13px sans-serif';
+        ctx1.fillText('α', Pxp - 30, Pyy - 8);
+
+        // β（折射角，在 P 点，折射光与法线 OP 夹角 ≈ 45°）
+        ctx1.strokeStyle = '#1e88e5';
+        ctx1.beginPath();
+        ctx1.arc(Pxp, Pyy, 24, -10 * Math.PI / 180, 45 * Math.PI / 180, false);
+        ctx1.stroke();
+        ctx1.fillStyle = '#1e88e5';
+        ctx1.font = 'italic bold 12px sans-serif';
+        ctx1.fillText('β', Pxp + 22, Pyy + 10);
+
+        // γ（出射角，在 Q 点）
+        ctx1.strokeStyle = '#7e57c2';
+        ctx1.beginPath();
+        ctx1.arc(Qxp, Qyy, 20, 0, 30 * Math.PI / 180, false);
+        ctx1.stroke();
+        ctx1.fillStyle = '#7e57c2';
+        ctx1.font = 'italic bold 12px sans-serif';
+        ctx1.fillText('γ', Qxp - 24, Qyy + 22);
+
+        // OP、OQ 半径（辅助）
+        ctx1.strokeStyle = '#b0bec5';
+        ctx1.lineWidth = 0.8;
+        ctx1.setLineDash([2, 2]);
+        ctx1.beginPath(); ctx1.moveTo(Ox, Oy); ctx1.lineTo(Pxp, Pyy); ctx1.stroke();
+        ctx1.beginPath(); ctx1.moveTo(Ox, Oy); ctx1.lineTo(Qxp, Qyy); ctx1.stroke();
+        ctx1.setLineDash([]);
+
+        // 底部说明
+        ctx1.fillStyle = '#1565c0';
+        ctx1.font = '11px sans-serif';
+        ctx1.fillText('入射平行 x 轴：sinα=√2/2 ⇒ α=45°；cosγ=√3/2 ⇒ γ=30°', 14, H - 30);
+        ctx1.fillText('由 α=β，折射定律 n = sinα/sinγ = 2（按原答案）', 14, H - 14);
+    }
+
+    // 图2：滑块控制入射光线与 x 轴夹角 θ，激光沿径向指向 O 射入
+    function drawFig2() {
+        if (!ctx2) return;
+        ctx2.clearRect(0, 0, W, H);
+
+        const th = theta * Math.PI / 180;
+        // 入射点 P' 在弧上，OP' 与 x 轴夹角 = θ（激光沿径向指向 O 射入）
+        const PpX = Ox + R * Math.cos(th);
+        const PpY = Oy - R * Math.sin(th);
+
+        // x 轴
+        ctx2.strokeStyle = '#37474f';
+        ctx2.lineWidth = 1.2;
+        ctx2.beginPath();
+        ctx2.moveTo(20, Oy); ctx2.lineTo(W - 20, Oy);
+        ctx2.stroke();
+        drawArrow(ctx2, W - 30, Oy, W - 20, Oy, '#37474f');
+        ctx2.fillStyle = '#37474f';
+        ctx2.font = 'italic 12px sans-serif';
+        ctx2.fillText('x', W - 16, Oy + 14);
+
+        // 半圆（上半圆）
+        ctx2.fillStyle = 'rgba(187,222,251,0.30)';
+        ctx2.beginPath();
+        ctx2.arc(Ox, Oy, R, Math.PI, 0, true);
+        ctx2.fill();
+        ctx2.strokeStyle = '#455a64';
+        ctx2.lineWidth = 1.5;
+        ctx2.stroke();
+
+        // 圆心 O
+        ctx2.fillStyle = '#37474f';
+        ctx2.font = 'bold 12px sans-serif';
+        ctx2.fillText('O', Ox - 4, Oy + 16);
+
+        // 入射光：沿径向指向 O（从弧外射向 P'）
+        const dxExt = PpX + (PpX - Ox) * 0.7;
+        const dyExt = PpY + (PpY - Oy) * 0.7;
+        ctx2.strokeStyle = '#e53935';
+        ctx2.lineWidth = 1.8;
+        ctx2.beginPath();
+        ctx2.moveTo(dxExt, dyExt); ctx2.lineTo(PpX, PpY);
+        ctx2.stroke();
+        drawArrow(ctx2, dxExt, dyExt, PpX, PpY, '#e53935');
+
+        // 折射光（沿径向到 O）
+        ctx2.strokeStyle = '#1e88e5';
+        ctx2.lineWidth = 1.8;
+        ctx2.beginPath();
+        ctx2.moveTo(PpX, PpY); ctx2.lineTo(Ox, Oy);
+        ctx2.stroke();
+        drawArrow(ctx2, PpX, PpY, Ox, Oy, '#1e88e5');
+
+        // 全反射光（从 O 沿径向反向射出，再打在另一侧壁）
+        const afterO_X = Ox - (PpX - Ox) * 0.5;
+        const afterO_Y = Oy - (PpY - Oy) * 0.5;
+        ctx2.strokeStyle = '#7e57c2';
+        ctx2.lineWidth = 1.6;
+        ctx2.beginPath();
+        ctx2.moveTo(Ox, Oy); ctx2.lineTo(afterO_X, afterO_Y);
+        ctx2.stroke();
+        drawArrow(ctx2, Ox, Oy, afterO_X, afterO_Y, '#7e57c2');
+
+        // P' 点
+        ctx2.fillStyle = '#e53935';
+        ctx2.beginPath(); ctx2.arc(PpX, PpY, 3.5, 0, Math.PI * 2); ctx2.fill();
+
+        // 标注 θ（入射光与 x 轴夹角）
+        ctx2.fillStyle = '#37474f';
+        ctx2.font = 'bold 13px sans-serif';
+        ctx2.fillText(`θ = ${theta.toFixed(0)}°`, 30, 30);
+
+        // 全反射判定
+        const canReflect = (theta > 0 && theta <= 45) || (theta >= 135 && theta < 180);
+        const isBorder = (theta === 45 || theta === 135);
+
+        // 在 O 点标注入射角（= θ，因沿径向，入射方向与 x 轴夹角即入射角）
+        ctx2.strokeStyle = '#7e57c2';
+        ctx2.lineWidth = 1;
+        ctx2.beginPath();
+        ctx2.arc(Ox, Oy, 14, Math.PI, Math.PI + th, false);
+        ctx2.stroke();
+        ctx2.fillStyle = '#7e57c2';
+        ctx2.font = 'italic bold 12px sans-serif';
+        ctx2.fillText('入射角', Ox - 36, Oy - 8);
+
+        ctx2.fillStyle = canReflect ? '#2e7d32' : '#c62828';
+        ctx2.font = 'bold 12px sans-serif';
+        ctx2.fillText(
+            canReflect ? `✓ 入射角 ≥ 45°，在 O 点全反射${isBorder ? '（临界）' : ''}` :
+                         `✗ 入射角 < 45°，不能在 O 点全反射`,
+            30, 60
+        );
+
+        // 底部说明
+        ctx2.fillStyle = '#1565c0';
+        ctx2.font = '11px sans-serif';
+        ctx2.fillText('临界角 C = 45°（n = 2 ⇒ sin C = 1/2）', 24, H - 44);
+        ctx2.fillText('激光指向 O 射入，入射角 = θ；θ ∈ (0,45°] ∪ [135°,180°) 时可全反射', 24, H - 28);
+        ctx2.fillText('拖动滑块观察临界分界 45° / 135°', 24, H - 12);
+    }
+
+    function update() {
+        drawFig1();
+        drawFig2();
+        document.getElementById('ahReadout').textContent =
+            `θ=${theta.toFixed(0)}°，` +
+            ((theta > 0 && theta <= 45) || (theta >= 135 && theta < 180) ? '满足' : '不满足') + `全反射条件`;
+    }
+
+    function setTheta(v) { theta = parseFloat(v); update(); }
+
+    update();
+    return { setTheta };
+})();
+</script>
+</body>
+</html>

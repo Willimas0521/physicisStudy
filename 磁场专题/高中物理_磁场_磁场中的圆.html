@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 磁场中的圆（放缩圆与旋转圆）</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+        .header { background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%); color: white; padding: 50px 20px; text-align: center; box-shadow: 0 4px 20px rgba(30,60,114,0.3); }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5; }
+        .card h2 { color: #1e3c72; font-size: 1.6em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px; }
+        .card h2 .num { background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8em; flex-shrink: 0; }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula { background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px; padding: 18px 20px; margin: 12px 0; font-size: 1.15em; color: #1a2a3a; text-align: center; overflow-x: auto; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point { background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .warn { background: #fff3e0; border-left: 4px solid #ff9800; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .danger { background: #ffebee; border-left: 4px solid #e74c3c; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; vertical-align: top; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        td.rowname { font-weight: 600; color: #1e3c72; white-space: nowrap; background: #f8fafc; width: 90px; }
+        .figure { text-align: center; margin: 16px 0; }
+        .figure img { max-width: 100%; border: 1px solid #e3e8ee; border-radius: 10px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+        .figure figcaption { color: #7f8c8d; font-size: 0.9em; margin-top: 8px; }
+        .fig-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; align-items: flex-start; }
+        .fig-row .figure { flex: 1 1 280px; max-width: 700px; margin: 0; }
+        .example { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px 20px; margin: 15px 0; border-radius: 6px; }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .nav { position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100; background: rgba(30,60,114,0.96); backdrop-filter: blur(10px); border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22); max-height: calc(100vh - 140px); overflow-y: auto; }
+        .nav .nav-title { color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px; padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px; }
+        .nav a { display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em; padding: 7px 10px; border-radius: 6px; transition: background 0.25s; border-left: 3px solid transparent; }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+        .compare .box { border-radius: 12px; padding: 16px 14px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .compare .box .box-num { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; font-size: 0.95em; font-weight: 700; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .compare .box h4 { margin: 0 0 6px; font-size: 1.18em; letter-spacing: 1px; }
+        .compare .box .sub { font-size: 0.74em; font-weight: 700; letter-spacing: 2px; margin: 10px 0 4px; opacity: 0.85; border-top: 1px dashed rgba(0,0,0,0.12); padding-top: 8px; }
+        .compare .box ul { padding-left: 0; margin: 0; list-style: none; }
+        .compare .box ul li { padding: 3px 0; font-size: 0.92em; color: #34495e; position: relative; padding-left: 14px; }
+        .compare .box ul li::before { content: ""; position: absolute; left: 0; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.55; }
+        .compare .box.fs { background: #ede7f6; border-left: 4px solid #7e57c2; }
+        .compare .box.fs h4 { color: #5e35b1; }
+        .compare .box.fs .box-num { background: #7e57c2; color: white; }
+        .compare .box.fs .sub { color: #5e35b1; }
+        .compare .box.fs ul li { color: #4a2c8b; }
+        .compare .box.xz { background: #e0f2f1; border-left: 4px solid #00897b; }
+        .compare .box.xz h4 { color: #00695c; }
+        .compare .box.xz .box-num { background: #00897b; color: white; }
+        .compare .box.xz .sub { color: #00695c; }
+        .compare .box.xz ul li { color: #004d40; }
+        .compare .box.py { background: #fff8e1; border-left: 4px solid #f9a825; }
+        .compare .box.py h4 { color: #f57f17; }
+        .compare .box.py .box-num { background: #f9a825; color: white; }
+        .compare .box.py .sub { color: #f57f17; }
+        .compare .box.py ul li { color: #8d5a00; }
+        .question { background: #fff; border: 1px solid #e3e8ee; border-radius: 10px; padding: 18px 22px; margin-bottom: 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag { display: inline-block; font-size: 0.78em; color: white; background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px; vertical-align: middle; }
+        .question .analysis { margin-top: 10px; padding: 12px 16px; background: #fdf6ec; border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00; display: none; }
+        .question .analysis.show { display: block; }
+        .question .answer-btn { margin-top: 10px; background: #e74c3c; color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em; }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer { margin-top: 10px; padding: 12px 16px; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20; display: none; font-size: 0.95em; }
+        .question .answer.show { display: block; }
+        .anim-wrap { background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px; padding: 18px; margin: 16px 0; text-align: center; }
+        .anim-wrap canvas { background: #fff; border-radius: 8px; border: 1px solid #e3e8ee; max-width: 100%; display: block; margin: 0 auto; }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button { background: #3a7bd5; color: white; border: none; padding: 7px 18px; border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px; }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls button.mode-on { background: #2e7d32; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0; display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+            .compare { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🎯 磁场中的圆：放缩圆、旋转圆与平移圆</h1>
+    <p>高中物理 · 带电粒子在磁场中运动的临界问题三大核心方法</p>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">方法总览</a>
+    <a href="#fangsuo">一、放缩圆</a>
+    <a href="#xuanzhuan">二、旋转圆</a>
+    <a href="#pingyi">三、平移圆</a>
+    <a href="#sanyuan">三种圆辨析</a>
+    <a href="#compare">对比总结</a>
+    <a href="#gaokao">高考刷题</a>
+    <a href="#anim">动画演示</a>
+</nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 方法总览 -->
+<div class="card" id="overview">
+    <h2><span class="num">★</span>方法总览：什么时候用什么圆</h2>
+    <div class="compare">
+        <div class="box fs">
+            <span class="box-num">1</span>
+            <h4>放缩圆</h4>
+            <div class="sub">速度条件</div>
+            <ul>
+                <li>速度<b>方向一定</b></li>
+                <li>速度<b>大小不同</b></li>
+            </ul>
+            <div class="sub">几何特征</div>
+            <ul>
+                <li>圆心<b>共线</b>（垂直于初速度）</li>
+                <li>半径 $r=\dfrac{mv}{qB}$ 随 $v$ 变</li>
+                <li>轨迹圆<b>相切</b>于入射点 $P$</li>
+            </ul>
+        </div>
+        <div class="box xz">
+            <span class="box-num">2</span>
+            <h4>旋转圆</h4>
+            <div class="sub">速度条件</div>
+            <ul>
+                <li>速度<b>大小一定</b></li>
+                <li>速度<b>方向不同</b></li>
+            </ul>
+            <div class="sub">几何特征</div>
+            <ul>
+                <li>圆心<b>共圆</b>（以入射点为圆心）</li>
+                <li>半径 $r=\dfrac{mv_0}{qB}$ 不变</li>
+                <li>轨迹圆<b>绕</b>入射点 $P$ 旋转</li>
+            </ul>
+        </div>
+        <div class="box py">
+            <span class="box-num">3</span>
+            <h4>平移圆</h4>
+            <div class="sub">速度条件</div>
+            <ul>
+                <li>速度大小方向均<b>一定</b></li>
+                <li>入射点在<b>同一直线</b>上</li>
+            </ul>
+            <div class="sub">几何特征</div>
+            <ul>
+                <li>圆心<b>共线</b>（平行于入射点连线）</li>
+                <li>半径 $r=\dfrac{mv_0}{qB}$ 不变</li>
+                <li>轨迹圆沿<b>边界平移</b></li>
+            </ul>
+        </div>
+    </div>
+    <div class="key-point">
+        <b>📌 共同本质：</b>洛伦兹力始终垂直于速度，圆心必在过入射点、<span class="highlight">垂直于初速度方向</span>的直线上。抓住"圆心在哪条线上"，就抓住了三种方法的几何根源。
+    </div>
+</div>
+
+<!-- 一、放缩圆 -->
+<div class="card" id="fangsuo">
+    <h2><span class="num">1</span>放缩圆</h2>
+    <h3>【模型定义】</h3>
+    <table>
+        <tr><th style="width:90px;">项目</th><th>内容</th></tr>
+        <tr>
+            <td class="rowname">适用条件</td>
+            <td><b>速度方向一定、大小不同</b>。粒子源发射速度方向一定、大小不同的带电粒子进入匀强磁场时，这些带电粒子在磁场中做匀速圆周运动的轨迹半径随速率的变化而变化。</td>
+        </tr>
+        <tr>
+            <td class="rowname">轨迹特点</td>
+            <td><b>轨迹圆圆心共线</b>。速度 $v$ 越大，运动半径也越大。这些带电粒子射入磁场后，它们运动轨迹的圆心在<b>垂直于初速度方向的直线 $PP'$</b> 上。</td>
+        </tr>
+        <tr>
+            <td class="rowname">界定方法</td>
+            <td>以入射点 $P$ 为定点，圆心位于 $PP'$ 直线上，将半径<b>放缩</b>作轨迹圆，从而探索出临界条件，这种方法称为<span class="highlight">"放缩圆"法</span>。</td>
+        </tr>
+    </table>
+    <figure class="figure">
+        <img src="磁场_images/mq_fangsuoyuan.png" alt="放缩圆：各轨迹圆相切于入射点P，圆心分布在PP'直线上" style="max-width:320px;">
+        <figcaption>图1 放缩圆：轨迹圆有公共切点 P，圆心 $O_1,O_2,\dots$ 共线于 $PP'$</figcaption>
+    </figure>
+    <div class="key-point">
+        <b>【要点点拨】</b>当带电粒子射入磁场的方向确定，但射入时速度 $v$ 的大小或磁感应强度 $B$ 的大小变化时，粒子做圆周运动的轨道半径 $r$ 随之变化。在确定粒子运动的临界情境时，可以以<span class="highlight">入射方向所在直线为切线，入射点为切点</span>，作出半径不同的一系列轨迹，从而探索出临界条件。
+    </div>
+    <h3>【解题方法】</h3>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>各带电粒子的圆轨迹有一个<b>公共切点</b>，且各圆的圆心分布在<b>同一条直线</b>上；</li>
+        <li>各带电粒子做匀速圆周运动的<b>周期相等</b>（$T=\dfrac{2\pi m}{qB}$ 与 $v$ 无关）；</li>
+        <li><b>速率大的带电粒子所走过的路程大，对应大圆</b>。</li>
+    </ul>
+    <div class="example">
+        <div class="q">【例】真空中有一匀强磁场区域（垂直纸面向里），一粒子源位于边界上的 $P$ 点，沿平行于边界的同一方向发射速率不同的质子。已知磁感应强度为 $B$，质子质量 $m$、电荷量 $q$。要使质子不能从对侧边界（距离为 $d$）射出，求发射速率的取值范围。</div>
+        <div class="a">
+            <div class="step">解：各质子轨迹圆相切于 $P$，圆心均在垂直于初速度方向的直线 $PP'$ 上 —— 典型的放缩圆模型。</div>
+            <div class="step">半径 $r=\dfrac{mv}{qB}$ 随 $v$ 增大而增大。"恰好不打到对侧边界"对应轨迹圆与对侧边界<b>相切</b>，此时 $r=d$。</div>
+            <div class="step">故要求 $r&lt;d$，即 $v&lt;\dfrac{qBd}{m}$。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 二、旋转圆 -->
+<div class="card" id="xuanzhuan">
+    <h2><span class="num">2</span>旋转圆</h2>
+    <h3>【模型定义】</h3>
+    <table>
+        <tr><th style="width:90px;">项目</th><th>内容</th></tr>
+        <tr>
+            <td class="rowname">适用条件</td>
+            <td><b>速度大小一定，方向不同</b>。粒子源发射速度大小一定、方向不同的同种带电粒子进入匀强磁场时，它们在磁场中做匀速圆周运动的半径相同。若射入初速度大小为 $v_0$，则圆周运动半径为 $r=\dfrac{mv_0}{qB}$。</td>
+        </tr>
+        <tr>
+            <td class="rowname">轨迹特点</td>
+            <td><b>轨迹圆圆心共圆</b>。带电粒子在磁场中做匀速圆周运动的圆心在以入射点 $P$ 为圆心、半径 $R=\dfrac{mv_0}{qB}$ 的圆上。</td>
+        </tr>
+        <tr>
+            <td class="rowname">界定方法</td>
+            <td>将半径为 $r=\dfrac{mv_0}{qB}$ 的轨迹圆以<b>入射点为圆心进行旋转</b>，从而探索粒子的临界条件，这种方法称为<span class="highlight">"旋转圆"法</span>。</td>
+        </tr>
+    </table>
+    <div class="fig-row">
+        <figure class="figure">
+            <img src="磁场_images/mq_xuanzhuan_sheji.png" alt="旋转圆：速度大小一定、方向不同，轨迹圆绕入射点P旋转">
+            <figcaption>图2 旋转圆：速度方向改变，等半径的轨迹圆绕 $P$ 旋转</figcaption>
+        </figure>
+        <figure class="figure">
+            <img src="磁场_images/mq_yuanxinyuan.png" alt="圆心圆：各轨迹圆圆心的轨迹是以P为圆心、半径等于r的圆">
+            <figcaption>图3 圆心圆：各轨迹圆的圆心 $O_1\sim O_5$ 位于以 $P$ 为圆心的虚线圆上</figcaption>
+        </figure>
+    </div>
+    <div class="key-point">
+        <b>【要点点拨】</b>当带电粒子射入磁场时的速率 $v$ 一定，但射入的方向变化时，可以以<span class="highlight">入射点为定点，将轨迹圆旋转</span>，作出一系列轨迹，从而探索出临界条件。
+    </div>
+    <h3>【解题方法】要准确把握这一几何模型，需要认识和区分三种圆：</h3>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li><b>轨迹圆</b>：每个粒子在磁场中均以半径 $R_1=r=\dfrac{mv_0}{qB}$ 做匀速圆周运动。随着入射点 $P$ 处速度方向的改变，这些轨迹圆可以看作是以点 $P$ 为圆心旋转构成的<b>一系列动态旋转圆</b>；</li>
+        <li><b>圆心圆</b>：在轨迹圆旋转过程中，这些轨迹圆的<b>圆心的轨迹</b>在以 $P$ 为圆心、半径与轨迹圆半径相等（$R_2=r$）的圆上（图中虚线）；</li>
+        <li><b>边界圆</b>：在轨迹圆旋转过程中，各轨迹圆上<b>离圆心最远的点</b>构成的轨迹也是一个圆，这个圆也是<b>粒子能够到达的区域边界</b>，其圆心是 $P$，半径为轨迹圆半径的两倍（$R_3=2r$），如图乙中外围黑体实线所示。</li>
+    </ul>
+    <figure class="figure">
+        <img src="磁场_images/mq_sanzhongyuan.png" alt="三种圆：轨迹圆、圆心圆（虚线，半径r）、边界圆（外围实线，半径2r）" style="max-width:420px;">
+        <figcaption>图4 三种圆：内虚线为圆心圆（$R_2=r$），外围粗实线为边界圆（$R_3=2r$）</figcaption>
+    </figure>
+    <div class="formula">
+        $$R_1 = r = \frac{mv_0}{qB} \quad\quad R_2 = r = \frac{mv_0}{qB} \quad\quad R_3 = 2r = \frac{2mv_0}{qB}$$
+    </div>
+    <div class="warn">
+        <b>⚠️ 易错提醒：</b>
+        <ul style="padding-left:25px; margin:8px 0;">
+            <li>圆心圆的半径等于<b>轨迹圆半径</b> $r$，不是 $2r$；</li>
+            <li>边界圆的半径是<b>轨迹圆直径</b> $2r$ —— 粒子离入射点最远只能到达 $2r$ 处；</li>
+            <li>旋转圆中所有粒子的<b>周期相同</b>，在磁场中运动时间由<b>圆心角</b>决定。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 三、平移圆 -->
+<div class="card" id="pingyi">
+    <h2><span class="num">3</span>平移圆</h2>
+    <h3>【模型定义】</h3>
+    <table>
+        <tr><th style="width:90px;">项目</th><th>内容</th></tr>
+        <tr>
+            <td class="rowname">适用条件</td>
+            <td><b>速度大小一定，方向一定，但入射点在同一直线上</b>。粒子源发射速度大小、方向一定、入射点不同但在同一直线上的同种带电粒子进入匀强磁场时，它们做匀速圆周运动的半径相同，若入射速度大小为 $v_0$，则轨迹半径 $r=\dfrac{mv_0}{qB}$。</td>
+        </tr>
+        <tr>
+            <td class="rowname">轨迹特点</td>
+            <td><b>轨迹圆圆心共线</b>。带电粒子在磁场中做匀速圆周运动的圆心在同一直线上，该直线<span class="highlight">与入射点的连线平行</span>。</td>
+        </tr>
+        <tr>
+            <td class="rowname">界定方法</td>
+            <td>将半径为 $r=\dfrac{mv_0}{qB}$ 的圆<b>沿边界平移</b>，从而探索粒子的临界条件，这种方法叫<span class="highlight">"平移圆"法</span>。</td>
+        </tr>
+    </table>
+    <figure class="figure">
+        <img src="磁场_images/mq_pingyiyuan.png" alt="平移圆：速度大小方向一定、入射点沿同一直线分布，等半径轨迹圆沿边界平移" style="max-width:520px;">
+        <figcaption>图5 平移圆：各轨迹圆半径相同、形状相同，沿直线边界依次平移</figcaption>
+    </figure>
+    <div class="key-point">
+        <b>【要点点拨】</b>速度大小和方向相同的一排相同粒子从同一直线边界进入匀强磁场，各粒子的轨迹圆弧可以由<span class="highlight">一个粒子的轨迹圆弧沿着边界平移</span>得到。
+    </div>
+    <div class="formula">
+        $$r = \frac{mv_0}{qB} \quad（所有粒子轨迹半径相同，仅位置沿边界平移）$$
+    </div>
+    <div class="warn">
+        <b>⚠️ 与放缩圆的区别：</b>放缩圆是"同一点入射、半径各不相同"（<b>形状变</b>）；平移圆是"不同点入射、半径全部相同"（<b>形状不变、位置平移</b>）。两者的圆心都共线，但平移圆的圆心分布在<span class="highlight">与入射点连线平行的直线上</span>。
+    </div>
+    <div class="example">
+        <div class="q">【例】匀强磁场上方有一排等间距的发射源，位于同一直线上，各发射源以相同速率 $v_0$、沿相同的竖直向下方向发射同种带电粒子进入磁场。证明：这些粒子在磁场中的轨迹圆弧彼此全等，且各圆心的连线平行于入射点连线。</div>
+        <div class="a">
+            <div class="step">证：所有电子速率、方向相同，故半径均为 $r=\dfrac{mv_0}{qB}$；</div>
+            <div class="step">圆心均在过入射点、垂直于入射速度的直线上 —— 这组直线彼此平行，故各圆心<b>共线且平行于入射点连线</b>；</div>
+            <div class="step">半径相同、圆心等间距平移，故轨迹圆弧可由某一圆弧沿边界平移得到，彼此全等。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 对比总结 -->
+<div class="card" id="sanyuan">
+    <h2><span class="num">4</span>对比总结</h2>
+    <table>
+        <tr><th>项目</th><th>放缩圆</th><th>旋转圆</th><th>平移圆</th></tr>
+        <tr><td class="rowname">变量</td><td>$v$ 大小变、方向一定</td><td>$v$ 大小一定、方向变</td><td>入射点沿直线变，$v$ 大小、方向均一定</td></tr>
+        <tr><td class="rowname">轨迹半径</td><td>各不相同（$r\propto v$）</td><td>全部相同（$r=\dfrac{mv_0}{qB}$）</td><td>全部相同（$r=\dfrac{mv_0}{qB}$）</td></tr>
+        <tr><td class="rowname">圆心轨迹</td><td><b>一条直线</b>（$PP'$，垂直于初速度）</td><td><b>一个圆</b>（圆心圆，半径 $r$）</td><td><b>一条直线</b>（平行于入射点连线）</td></tr>
+        <tr><td class="rowname">周期</td><td>相同</td><td>相同</td><td>相同</td></tr>
+        <tr><td class="rowname">临界操作</td><td>固定切点，放大 / 缩小半径</td><td>固定半径，绕入射点旋转</td><td>固定半径，沿边界平移</td></tr>
+        <tr><td class="rowname">典型问题</td><td>恰好不打到边界、最大速度</td><td>恰好射出边界、可达区域、最长时间</td><td>一排粒子打在边界上的范围、临界入射点</td></tr>
+    </table>
+    <div class="danger">
+        <b>⚠️ 判断口诀：</b>"<span class="highlight">变大小 → 放缩（圆心共线）；变方向 → 旋转（圆心共圆）；变位置 → 平移（圆心沿线平移）</span>"。拿到临界问题先问自己：题目中变的是速度的<b>大小</b>、<b>方向</b>，还是<b>入射点的位置</b>？
+    </div>
+</div>
+
+<!-- 高考刷题 -->
+<div class="card" id="gaokao">
+    <h2><span class="num">5</span>高考刷题（精选）</h2>
+    <div class="question">
+        <div class="q-title"><span class="tag">选择</span>一粒子源向右发射速率不同的同种带电粒子进入下方匀强磁场，关于各粒子在磁场中的运动，下列说法正确的是（　）</div>
+        <div>A. 各粒子轨迹圆的圆心在同一条直线上</div>
+        <div>B. 各粒子轨迹半径相同</div>
+        <div>C. 速率大的粒子在磁场中运动周期更长</div>
+        <div>D. 速率大的粒子轨迹是更小的圆</div>
+        <button class="answer-btn" onclick="toggleAnswer('q1a')">显示解析</button>
+        <div class="analysis" id="q1a">解析：速度方向一定、大小不同，属<b>放缩圆</b>模型：圆心共线于垂直初速度的直线（A对）；半径 $r=\dfrac{mv}{qB}$ 各不相同（B错）；周期 $T=\dfrac{2\pi m}{qB}$ 与 $v$ 无关（C错）；速率大对应大圆（D错）。故选 <b>A</b>。</div>
+    </div>
+    <div class="question">
+        <div class="q-title"><span class="tag">选择</span>粒子源位于 $P$ 点，向各个方向发射速率均为 $v_0$ 的同种带电粒子（垂直射入匀强磁场）。粒子在磁场中可能到达的区域边界是以 $P$ 为圆心、半径为多少的圆（　）</div>
+        <div>A. $\dfrac{mv_0}{qB}$　B. $\dfrac{2mv_0}{qB}$　C. $\dfrac{mv_0}{2qB}$　D. $\dfrac{4mv_0}{qB}$</div>
+        <button class="answer-btn" onclick="toggleAnswer('q2a')">显示解析</button>
+        <div class="analysis" id="q2a">解析：速度大小一定、方向不同，属<b>旋转圆</b>模型。轨迹圆半径 $r=\dfrac{mv_0}{qB}$，各轨迹圆上离 $P$ 最远的点构成<b>边界圆</b>，半径为 $2r=\dfrac{2mv_0}{qB}$。故选 <b>B</b>。</div>
+    </div>
+    <div class="question">
+        <div class="q-title"><span class="tag">选择</span>一排同种带电粒子以<b>相同的速率、相同的方向</b>，从同一直线边界上不同位置射入匀强磁场，关于它们的运动，下列说法正确的是（　）</div>
+        <div>A. 各粒子轨迹圆的圆心在同一条直线上，该直线平行于入射点连线</div>
+        <div>B. 各粒子轨迹半径不同</div>
+        <div>C. 各粒子的轨迹圆弧形状不同，不能由平移得到</div>
+        <div>D. 入射点位置越靠右，粒子轨迹半径越大</div>
+        <button class="answer-btn" onclick="toggleAnswer('q4a')">显示解析</button>
+        <div class="analysis" id="q4a">解析：速度大小、方向一定、入射点共线，属<b>平移圆</b>模型。圆心均在过入射点、垂直于速度的直线上，这组直线平行，故圆心共线且平行于入射点连线（A对）；半径 $r=\dfrac{mv_0}{qB}$ 全部相同（B、D错）；各轨迹圆弧可由一个圆弧沿边界平移得到，彼此全等（C错）。故选 <b>A</b>。</div>
+    </div>
+    <div class="question">
+        <div class="q-title"><span class="tag">解答</span>（放缩圆 + 旋转圆综合）真空中 $P$ 点有一粒子源。①若沿同一方向发射速率不同的电子，求轨迹圆心分布在什么图形上；②若向各方向发射速率均为 $v_0$ 的电子，写出圆心圆半径与边界圆半径的表达式。</div>
+        <button class="answer-btn" onclick="toggleAnswer('q3a')">显示答案</button>
+        <div class="answer" id="q3a">
+            ① 放缩圆模型：圆心均在<b>过 $P$ 点、垂直于发射方向的直线</b>上（圆心共线）；<br>
+            ② 旋转圆模型：轨迹半径 $r=\dfrac{mv_0}{qB}$，圆心圆半径 $R_2=r=\dfrac{mv_0}{qB}$，边界圆半径 $R_3=2r=\dfrac{2mv_0}{qB}$。
+        </div>
+    </div>
+</div>
+
+<!-- 动画演示 -->
+<div class="card" id="anim">
+    <h2><span class="num">6</span>动画演示</h2>
+    <p>切换"放缩圆 / 旋转圆 / 平移圆"三种模式：放缩圆模式下轨迹圆半径逐渐增大（圆心沿 $PP'$ 上移）；旋转圆模式下等半径轨迹圆绕入射点 $P$ 旋转，同时显示圆心圆（虚线）与边界圆（大圆）；平移圆模式下等半径轨迹圆沿直线边界依次平移。</p>
+    <div class="anim-wrap">
+        <canvas id="circCanvas" width="460" height="400"></canvas>
+        <div class="anim-controls">
+            <button id="btnFS" class="mode-on" onclick="setMode('fs')">放缩圆</button>
+            <button id="btnXZ" onclick="setMode('xz')">旋转圆</button>
+            <button id="btnPY" onclick="setMode('py')">平移圆</button>
+            <button onclick="togglePlay()">⏸ 暂停 / 播放</button>
+        </div>
+        <div class="anim-readout" id="circReadout"></div>
+    </div>
+</div>
+
+<div class="footer">
+    📖 高中物理 · 磁场中的圆：放缩圆、旋转圆与平移圆 &nbsp;|&nbsp; 变大小→放缩，变方向→旋转，变位置→平移
+</div>
+
+</div>
+
+<script>
+    function toggleAnswer(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('show');
+    }
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll('.nav a'));
+        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        function onScroll() {
+            const pos = window.scrollY + 160;
+            let current = sections[0];
+            for (const sec of sections) if (sec.offsetTop <= pos) current = sec;
+            navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    // ===== 动画：放缩圆 / 旋转圆 =====
+    const canvas = document.getElementById('circCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const P = { x: 130, y: H - 80 };           // 入射点
+    const vDir = -Math.PI / 3;                  // 初速度方向（向右上方 60°）
+    let t = 0, playing = true, mode = 'fs';
+    const COLORS = ['#e74c3c', '#2980b9', '#27ae60', '#8e44ad', '#e67e22', '#16a085'];
+
+    function setMode(m) {
+        mode = m; t = 0;
+        document.getElementById('btnFS').classList.toggle('mode-on', m === 'fs');
+        document.getElementById('btnXZ').classList.toggle('mode-on', m === 'xz');
+        document.getElementById('btnPY').classList.toggle('mode-on', m === 'py');
+    }
+    function togglePlay() { playing = !playing; }
+
+    function drawArrow(x1, y1, x2, y2, color, lw) {
+        const head = 9, ang = Math.atan2(y2 - y1, x2 - x1);
+        ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = lw || 2.5;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - head * Math.cos(ang - Math.PI / 6), y2 - head * Math.sin(ang - Math.PI / 6));
+        ctx.lineTo(x2 - head * Math.cos(ang + Math.PI / 6), y2 - head * Math.sin(ang + Math.PI / 6));
+        ctx.closePath(); ctx.fill();
+    }
+    function drawField() {
+        ctx.fillStyle = '#555'; ctx.font = '14px sans-serif';
+        for (let gx = 20; gx < W; gx += 44) {
+            for (let gy = 20; gy < H; gy += 44) {
+                ctx.fillText('×', gx, gy);
+            }
+        }
+    }
+    function drawCircle(c, r, color, dashed, lw) {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+        ctx.strokeStyle = color; ctx.lineWidth = lw || 1.6;
+        ctx.setLineDash(dashed ? [6, 5] : []);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.beginPath(); ctx.arc(c.x, c.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = color; ctx.fill();
+    }
+    // n 个轨迹圆：mode='fs' 半径递增（圆心沿 PP' 共线）；mode='xz' 半径固定、绕 P 旋转
+    function circles(n) {
+        const arr = [];
+        if (mode === 'fs') {
+            const rmax = 85;
+            const dir = vDir + Math.PI / 2; // 圆心方向：垂直于初速度
+            for (let i = 0; i < n; i++) {
+                const r = rmax * (0.35 + 0.65 * ((i + (t % 1)) / n));
+                arr.push({ c: { x: P.x + r * Math.cos(dir), y: P.y + r * Math.sin(dir) }, r: r });
+            }
+        } else if (mode === 'xz') {
+            const r = 70;
+            for (let i = 0; i < n; i++) {
+                const a = (i / n) * Math.PI * 2 + t * 0.6;
+                arr.push({ c: { x: P.x + r * Math.cos(a), y: P.y + r * Math.sin(a) }, r: r });
+            }
+        }
+        return arr;
+    }
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        drawField();
+        const cs = circles(5);
+        cs.forEach(function (o, i) { drawCircle(o.c, o.r, COLORS[i % COLORS.length], false, 1.6); });
+        if (mode === 'py') {
+            const r = 70;
+            const off = (t * 200) % r; // 轨迹圆沿边界连续平移
+            ctx.strokeStyle = '#2c3e50'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(15, P.y); ctx.lineTo(W - 15, P.y); ctx.stroke();
+            for (let k = -1; k < 6; k++) {
+                const ccx = P.x + k * r + off;
+                if (ccx + r < 0 || ccx - r > W) continue;
+                ctx.beginPath();
+                ctx.arc(ccx, P.y, r, Math.PI, 2 * Math.PI);
+                ctx.strokeStyle = COLORS[((k % COLORS.length) + COLORS.length) % COLORS.length];
+                ctx.lineWidth = 1.8; ctx.stroke();
+                ctx.beginPath(); ctx.arc(ccx, P.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#2c3e50'; ctx.fill();
+            }
+            for (let k = 0; k < 3; k++) {
+                const x0 = P.x + 20 + k * 90;
+                drawArrow(x0, P.y, x0, P.y - 45, '#e74c3c', 2.2);
+            }
+            ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 13px sans-serif';
+            ctx.fillText('入射点沿边界分布，速度大小、方向均相同', 20, P.y + 24);
+        } else if (mode === 'xz') {
+            const r = 70;
+            drawCircle(P, r, '#888', true, 1.4);      // 圆心圆 R2 = r
+            drawCircle(P, 2 * r, '#c0392b', false, 2.4); // 边界圆 R3 = 2r
+            ctx.fillStyle = '#c0392b'; ctx.font = '13px sans-serif';
+            ctx.fillText('边界圆 R₃ = 2r', P.x + 2 * r - 130, P.y - 2 * r - 6);
+            ctx.fillStyle = '#888';
+            ctx.fillText('圆心圆 R₂ = r（虚线）', P.x + r - 40, P.y - r - 6);
+        } else {
+            // PP' 直线（圆心共线）
+            const dir = vDir + Math.PI / 2;
+            ctx.strokeStyle = '#888'; ctx.lineWidth = 1.4; ctx.setLineDash([6, 5]);
+            ctx.beginPath();
+            ctx.moveTo(P.x - 120 * Math.cos(dir), P.y - 120 * Math.sin(dir));
+            ctx.lineTo(P.x + 170 * Math.cos(dir), P.y + 170 * Math.sin(dir));
+            ctx.stroke(); ctx.setLineDash([]);
+            ctx.fillStyle = '#888'; ctx.font = '13px sans-serif';
+            ctx.fillText("P'", P.x + 160 * Math.cos(dir), P.y + 160 * Math.sin(dir) - 6);
+        }
+        drawArrow(P.x, P.y, P.x + 55 * Math.cos(vDir), P.y + 55 * Math.sin(vDir), '#e74c3c', 3);
+        ctx.beginPath(); ctx.arc(P.x, P.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#2c3e50'; ctx.fill();
+        ctx.fillStyle = '#2c3e50'; ctx.font = 'bold 15px sans-serif';
+        ctx.fillText('P', P.x + 8, P.y + 18);
+        ctx.fillStyle = '#7f8c8d'; ctx.font = '13px sans-serif';
+        ctx.fillText(mode === 'fs' ? '放缩圆：圆心共线，半径递增（× 磁场垂直纸面向里）' : '旋转圆：圆心共圆，轨迹圆绕 P 旋转（× 磁场垂直纸面向里）', 12, H - 10);
+        const readout = document.getElementById('circReadout');
+        readout.innerHTML = mode === 'fs'
+            ? '各轨迹圆相切于 <b>P</b>，圆心均在直线 <b>PP\'</b> 上；周期 <b>T 与 v 无关</b>'
+            : mode === 'xz'
+            ? '轨迹半径 <b>r = mv₀/qB</b> 不变　·　圆心圆 <b>R₂ = r</b>　·　边界圆 <b>R₃ = 2r</b>'
+            : '各轨迹圆<b>半径相同、沿边界平移</b>　·　圆心共线且<b>平行于入射点连线</b>';
+    }
+    function loop() {
+        if (playing) t += 0.008;
+        draw();
+        requestAnimationFrame(loop);
+    }
+    loop();
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

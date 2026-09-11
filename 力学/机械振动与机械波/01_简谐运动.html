@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 简谐运动</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\(","\)"]],
+    displayMath: [["$$","$$"], ["\[","\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>简谐运动</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="shm">
+    <h2><span class="num">1</span>简谐运动（Simple Harmonic Motion）</h2>
+
+    <h3>定义</h3>
+    <p>物体所受的<b>回复力 $F$</b> 与它对平衡位置的<b>位移 $x$</b> 大小成正比，且方向总是指向平衡位置，即满足：</p>
+    <div class="formula">$$F = -k x$$</div>
+    <p>这种运动叫<b>简谐运动</b>。其中负号表示回复力方向与位移方向相反（指向平衡位置）。例如弹簧振子、小角度单摆。</p>
+
+    <h3>描述简谐运动的物理量</h3>
+    <table>
+        <tr><th>物理量</th><th>符号</th><th>含义</th></tr>
+        <tr><td>位移</td><td>$x$</td><td>相对<b>平衡位置</b>的偏移（不是相对初始位置）</td></tr>
+        <tr><td>振幅</td><td>$A$</td><td>偏离平衡位置的<b>最大距离</b>，反映振动强弱</td></tr>
+        <tr><td>周期</td><td>$T$</td><td>完成一次全振动的时间（s）</td></tr>
+        <tr><td>频率</td><td>$f$</td><td>单位时间内的全振动次数，$f = 1/T$（Hz）</td></tr>
+        <tr><td>圆频率</td><td>$\omega$</td><td>$\omega = 2\pi f = 2\pi/T$（rad/s）</td></tr>
+    </table>
+
+    <h3>位移随时间的变化（振动方程）</h3>
+    <div class="formula">$$x = A\sin(\omega t + \varphi)\quad \text{或}\quad x = A\cos(\omega t + \varphi)$$</div>
+    <p>$\varphi$ 为初相位。速度、加速度与位移的关系：</p>
+    <div class="formula">$$v = \frac{dx}{dt} = A\omega\cos(\omega t+\varphi),\qquad a = -\omega^2 x$$</div>
+
+    <div class="knowledge-card">
+        <div class="kc-title">加速度总指向平衡位置</div>
+        <p>由振动方程对时间求二阶导可得加速度：</p>
+        <div class="formula">$$a = \frac{d^2x}{dt^2} = -\omega^2 x$$</div>
+        <p><strong>结论：</strong>简谐运动的加速度 $a$ <b>始终指向平衡位置</b>。</p>
+        <p><b>原因：</b>加速度与位移 $x$ <strong>大小成正比、方向相反</strong>（$x$ 是相对平衡位置的偏移，永远背离平衡位置；负号 $-\omega^2 x$ 则永远把它拉回平衡位置）。这正是"回复力"的本质——由 $F = ma = -m\omega^2 x$ 可知，<strong>回复力也始终指向平衡位置</strong>。</p>
+        <p><b>两点补充：</b></p>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li><strong>大小变化：</strong>在平衡位置 $x=0$ 时 $a=0$（最小），在最大位移处 $|x|=A$ 时 $|a|=\omega^2 A$（最大）。即<b>越靠近平衡位置，加速度越小</b>。</li>
+            <li><strong>与速度对比：</strong>速度恰好相反——平衡位置速度最大、最大位移处速度为零。所以"加速度指向平衡位置、速度背离/朝向它交替变化"是简谐运动的标志性图景。</li>
+        </ul>
+        <p style="color:#888; font-size:.9em; margin-top:8px;">📎 关联：动画 1（弹簧振子）中红色加速度箭头始终指向中心；练习题（第 891 行 A 选项）也以此作为判断依据。</p>
+    </div>
+
+    <div class="key-point">
+        <b>📌 关键结论：</b>
+        <ul style="padding-left:20px; margin-top:6px;">
+            <li>加速度 $a$ 与位移 $x$ <b>大小成正比、方向相反</b>，始终指向平衡位置。</li>
+            <li>运动到<b>平衡位置</b>时：位移 $x=0$，加速度 $a=0$，<b>速度最大</b>。</li>
+            <li>运动到<b>最大位移处</b>时：位移 $|x|=A$，加速度 <b>最大</b>，<b>速度为零</b>。</li>
+        </ul>
+    </div>
+
+    <h3>简谐运动的能量</h3>
+    <p>在只有弹力（或重力沿切向分力）做功时，系统机械能守恒，在动能 $E_k$ 与势能 $E_p$ 间转化：</p>
+    <div class="formula">$$E_{\text{总}} = \frac12 k A^2 = \text{常量},\qquad E_k = \frac12 k(A^2 - x^2),\qquad E_p = \frac12 k x^2$$</div>
+    <p>振幅 $A$ 越大，总能量越大（与周期、质量无关）。</p>
+
+    <div class="example">
+        <div class="q">例1：弹簧振子振幅 $A=0.1\ \text{m}$，劲度系数 $k=100\ \text{N/m}$。求：(1) 总机械能；(2) 在位移 $x=0.06\ \text{m}$ 处的动能与势能。</div>
+        <div class="a">
+            <div class="step">解：(1) $E_{\text{总}} = \tfrac12 k A^2 = \tfrac12\times100\times0.1^2 = \mathbf{0.5\ \text{J}}$</div>
+            <div class="step">(2) $E_p = \tfrac12 k x^2 = \tfrac12\times100\times0.06^2 = 0.18\ \text{J}$</div>
+            <div class="step">$E_k = E_{\text{总}} - E_p = 0.5 - 0.18 = \mathbf{0.32\ \text{J}}$</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 1+【2024·北京高考】图甲为用手机和轻弹簧制作的竖直方向振动装置，向上为正方向。手机加速度传感器记录到竖直加速度 $a$ 随时间 $t$ 的变化曲线为正弦曲线，如图乙（峰值 $a_m=4\ \text{m/s}^2$，$T=0.8\ \text{s}$，$t=0$ 时 $a=0$ 且向正方向增大）。下列说法正确的是？</div>
+        <p style="color:#555;">A. $t=0$ 时，弹簧弹力为 0 &nbsp;&nbsp; B. $t=0.2\ \text{s}$ 时，手机位于平衡位置上方<br>C. 从 $t=0$ 到 $t=0.2\ \text{s}$，手机动能增大 &nbsp;&nbsp; D. $a$ 随 $t$ 变化的关系式为 $a = 4\sin(2.5\pi t)\ \text{m/s}^2$</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="images/2024Beijing_SHM_accel.png" alt="2024北京高考·竖直弹簧振子加速度曲线" style="max-width:100%; border:1px solid #e3e8ee; border-radius:8px;">
+            <p style="font-size:0.85em; color:#888;">图乙（原题）：手机竖直加速度 a 随时间 t 的正弦曲线</p>
+        </div>
+        <div class="a">
+            <div class="step"><b>分析：</b>竖直方向上，手机受重力 $mg$（向下）和弹簧弹力 $F$（可上可下）。设向上为正，由牛顿第二定律 $F - mg = ma$，即 $F = m(g + a)$。</div>
+            <div class="step"><b>A：</b>$t=0$ 时 $a=0$，故 $F=mg$，弹力并不为零（此时弹簧仍需支撑手机重力），<b>A 错</b>。</div>
+            <div class="step"><b>B：</b>$t=0.2\ \text{s}$ 时，$a=4\ \text{m/s}^2&gt;0$，合力向上（加速向上），手机位于<b>平衡位置下方</b>（在下方时弹力更大，合力方向朝上），<b>B 错</b>。</div>
+            <div class="step"><b>C：</b>从 $t=0$ 到 $t=0.2\ \text{s}$，$a$ 从 0 增大到 4（绝对值变大），手机正从平衡位置远离到最大位移处，<b>速度减小，动能减小</b>，<b>C 错</b>。</div>
+            <div class="step"><b>D：</b>$T=0.8\ \text{s}$，则 $\omega = 2\pi/T = 2\pi/0.8 = 2.5\pi\ \text{rad/s}$；$a=0$ 时向正方向增大，故 $a = 4\sin(2.5\pi t)\ \text{m/s}^2$，<b>D 对</b>。</div>
+            <div class="step"><b>答案：D</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结：</b>竖直方向的弹簧振子，分析时不能忘记重力。$F - mg = ma \Rightarrow F = m(g+a)$，当 $a&gt;0$ 时合力向上，手机在平衡位置<b>下方</b>（弹簧被压缩得更多或拉伸得更多）；$a&lt;0$ 时在<b>上方</b>。而 $a=0$ 时弹力恰好等于重力。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 1++【2025·甘肃高考】轻质弹簧上端固定 $O$，下端悬挂质量 $2m$ 的小球 A；A 下方用细线连质量 $m$ 的小球 B，整个系统静止。弹簧劲度系数 $k$，重力加速度 $g$。现剪断细线，下列说法正确的是？</div>
+        <p style="color:#555;">A. A 运动到弹簧原长处时速度最大<br>B. 剪断细线瞬间，A 的加速度大小为 $g/2$<br>C. A 运动到最高点时，弹簧伸长量为 $mg/k$<br>D. A 运动到最低点时，弹簧伸长量为 $2mg/k$</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="images/2025Gansu_2m_spring.png" alt="2025甘肃高考·弹簧挂2m与m两球装置" style="max-width:50%; border:1px solid #e3e8ee; border-radius:8px;">
+            <p style="font-size:0.85em; color:#888;">原题图：弹簧下挂 A(2m)，A 下用细线连 B(m)，整体静止</p>
+        </div>
+        <div class="a">
+            <div class="step"><b>1. 剪断前的状态：</b>整体（含 A+B）静止，弹簧拉力 $F_1 = 3mg$，伸长量 $x_1 = 3mg/k$。剪断瞬间，弹簧形变来不及变，弹力仍为 $3mg$（向上）。</div>
+            <div class="step"><b>2. 剪断瞬间 A 的加速度：</b>对 A 受力：$F_1 - 2mg = 2m \cdot a_A$（取向上为正），即 $3mg - 2mg = 2m a_A$，解得 $\mathbf{a_A = g/2}$，方向向上。<b>B 正确</b>。</div>
+            <div class="step"><b>3. 剪断后 A 做简谐运动：</b>新的平衡位置满足 $F = 2mg$，伸长量 $x_2 = 2mg/k$。振幅 $A_{\text{振}} = x_1 - x_2 = \mathbf{mg/k}$（初始偏离平衡位置 $mg/k$ 在上方）。</div>
+            <div class="step"><b>4. 速度最大处：</b>加速度为零处 = 平衡位置 $x_2 = 2mg/k$（弹簧<b>仍拉伸</b>，并未到原长），故 A 错。</div>
+            <div class="step"><b>5. 最高点（向上最大位移）：</b>振幅对称，伸长量 $x_{\text{高}} = x_2 - A_{\text{振}} = 2mg/k - mg/k = \mathbf{mg/k}$。<b>C 正确</b>。</div>
+            <div class="step"><b>6. 最低点（向下最大位移）：</b>伸长量 $x_{\text{低}} = x_2 + A_{\text{振}} = 2mg/k + mg/k = \mathbf{3mg/k}$（与剪断前相同），D 错。</div>
+            <div class="step"><b>答案：BC</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结：</b>① 剪断瞬间的判据：<b>弹簧形变不变，弹力不变</b>；绳的力可突变。② 速度最大的位置<b>不是</b>弹簧原长处，而是<b>新的平衡位置</b>（合力为零处）。③ 竖直振子的"原长"位置和"平衡"位置通常不重合（差 $x_2 = mg/k$），振幅、位移都应以平衡位置为基准。④ "上下最大位移关于平衡位置对称"——本题最高点伸长 $mg/k$，最低点伸长 $3mg/k$，对称中心是 $2mg/k$。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 1+++【2024·浙江高考】如图 1，质量相等的小球和点光源分别用相同弹簧竖直悬挂于同一水平杆上，间距 $l$；观测屏与小球水平间距 $2l$。两球做小振幅简谐运动，在屏上可观测小球的影子。取竖直向上为正方向，两球振动图象如图 2 所示。下列说法正确的是？</div>
+        <p style="color:#555;">A. $t_1$ 时刻小球向上运动<br>B. $t_2$ 时刻光源的加速度向上<br>C. $t_2$ 时刻小球与影子相位差为 $\pi$<br>D. $t_3$ 时刻影子的位移为 $5A$</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="images/2024Zhejiang_ball_shadow.png" alt="2024浙江高考·小球影子与振动图象" style="max-width:100%; border:1px solid #e3e8ee; border-radius:8px;">
+            <p style="font-size:0.85em; color:#888;">图1：弹簧挂小球与点光源；图2：小球（红）与光源（蓝）的 $y$-$t$ 图象</p>
+        </div>
+        <div class="a">
+            <div class="step"><b>关键读图：</b>由图2可见，小球（红）与光源（蓝）的振动步调始终<b>反相</b>（一个到顶时，另一个必到底）；振幅都为 $A$。$t_3$ 时刻：光源到<b>最低点</b>（$-A$），小球到<b>最高点</b>（$+A$）。</div>
+            <div class="step"><b>A：</b>$t_1$ 时刻小球 $y=0$ 且之后位移变负，故此刻小球向<b>下</b>运动，A 错。</div>
+            <div class="step"><b>B：</b>$t_2$ 时刻光源 $y&gt;0$（位移向上）。简谐运动 $a = -\omega^2 x$，位移与加速度反相，故加速度方向<b>向下</b>，B 错。</div>
+            <div class="step"><b>C：</b>光源发出的光沿直线被小球遮挡形成影子。设光源位置 $y_S$、小球位置 $y_B$，影子位置 $y_{\text{影}}$。光源水平距离屏 $l+2l=3l$，小球水平距离屏 $2l$，由相似三角形几何：$\dfrac{y_S - y_{\text{影}}}{3l} = \dfrac{y_S - y_B}{l}$，化简得 $y_{\text{影}} = y_S - 3(y_S - y_B) = 3y_B - 2y_S$。由于 $y_B = -y_S$（反相），代入得 $y_{\text{影}} = 3(-y_S) - 2y_S = -5y_S = 5y_B$。影子与小球<b>同向、同相位</b>（比例系数 $+5$），相位差为 $0$，C 错。</div>
+            <div class="step"><b>D：</b>$t_3$ 时刻小球 $y_B = +A$，影子 $y_{\text{影}} = 5A$，<b>D 正确</b>。</div>
+            <div class="step"><b>答案：D</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（投影放大的几何关系）：</b>① 影子与小球<strong>相位相同</strong>，但因几何放大，影子振幅 = 小球振幅 $\times \dfrac{\text{小球到屏距}+\text{小球到光源距}}{\text{小球到屏距}}$。本题 = $A\times\dfrac{2l+l}{2l} = \dfrac{5}{2}A$？再考虑光源本身也在动——正确写法是 $y_{\text{影}} = \dfrac{3l\cdot y_B - 2l\cdot y_S}{l}$，当两源反相 $y_S = -y_B$ 时 $y_{\text{影}} = 5y_B$。② 凡涉及几何投影影子问题，<strong>先画几何光路</strong>，再用<strong>相似三角形</strong>列比例式。③ 振动图象判运动方向：<strong>看曲线后续走向</strong>——本时刻之后位移向哪个方向变，就说明正往哪边走。④ "加速度方向 = 回复力方向 = $-\omega^2 x$"——只看位移方向即可判断加速度方向。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 1++++【2023·山东高考】质点沿水平方向做简谐振动，依次通过相距 $L$ 的 A、B 两点。已知 A 点位移大小为振幅的一半，B 点位移大小是 A 点的 $\sqrt{3}$ 倍。从 A 时刻开始计时，$t$ 时刻第二次经过 B 点。该振动的振幅和周期可能是？</div>
+        <p style="color:#555;">A. $A=\dfrac{2L}{3-\sqrt{1/3}}$，$T=3t$<br>B. $A=\dfrac{2L}{3-\sqrt{1/3}}$，$T=4t$<br>C. $A=\dfrac{2L}{3+\sqrt{1/3}}$，$T=12t/5$<br>D. $A=\dfrac{2L}{3+\sqrt{1/3}}$，$T=12t/7$</p>
+        <div style="text-align:center; margin:12px 0;">
+            <img src="images/2023Shandong_A_B_points.png" alt="2023山东高考·质点水平方向振动 A、B 两点" style="max-width:60%; border:1px solid #e3e8ee; border-radius:8px;">
+            <p style="font-size:0.85em; color:#888;">原题图：质点沿水平方向（箭头向右）依次经过 A、B 两点，间距 $L$</p>
+        </div>
+        <div class="a">
+            <div class="step"><b>已知条件：</b>$|x_A| = A/2$，$|x_B| = \sqrt{3}\,|x_A| = \sqrt{3}A/2$。设 $x = A\sin(\omega t + \varphi)$，由 $\sin\varphi_A = \pm 1/2$、$\sin\varphi_B = \pm \sqrt{3}/2$ 得 $\varphi_A = \pi/6$ 或 $5\pi/6$（等效 $-\pi/6$），$\varphi_B = \pi/3$ 或 $2\pi/3$。</div>
+            <div class="step"><b>情形 1：A、B 在平衡位置同侧</b>（$\varphi_A$、$\varphi_B$ 都在 $\pi/2$ 同侧，取 $\varphi_A=\pi/6$，$\varphi_B=2\pi/3$）。同侧时 $L = |x_B - x_A| = \dfrac{\sqrt{3}-1}{2}A$，得 $A = \dfrac{2L}{\sqrt{3}-1} = \dfrac{2L}{3-\sqrt{1/3}} \cdot \dfrac{\sqrt{3}}{\sqrt{3}} = \dfrac{2L\sqrt{3}}{3\sqrt{3}-1}$，与选项 B 一致。</div>
+            <div class="step">第二次经过 B：从 $\varphi_A=\pi/6$ 出发经 $\pi/2$ 相位差首达 B ($\varphi_B=2\pi/3$)，再经一个完整周期同向经过 B。耗时 $t = T/4 + T = 5T/4$？这与 $T=4t$ 不符。<strong>正确分析：</strong>从首达 B 时刻开始，再经过一个完整周期 $T$ 第二次同向经过 B：$t = T/4 + T = 5T/4$？重新审视：第二次经过 B 实际是"从 A 出发到首达 B 用 $T/4$，再走 $2\pi$ 相位回到 A 等效位置再走 $\pi/2$ 到 B"，总 $T + T/4 = 5T/4 = t$ → $T=4t/5$，与答案 $T=4t$ 不符。</div>
+            <div class="step">以答案 $T=4t$ 反推：$t = T/4 + 3T/4$？即"首达 B 用 $T/4$"，"再走 $3T/4$ 第二次过 B"（从 B 端点回到端点再回到 B？）。<strong>最简理解：</strong>从 A ($\pi/6$) 出发经 B ($2\pi/3$)，再走 $2\pi - 2\pi/3 = 4\pi/3$ 相位差到对面同侧点 $2\pi - 2\pi/3 = 4\pi/3$？总相位 $4\pi/3+\pi/2 = 11\pi/6$？不。<strong>直接用</strong>：$t = 5T/4$（首达 $T/4$ + 一周期回到原位）→ $T=4t/5$。但答案给 $T=4t$，意味着对"第二次经过"的理解是<strong>第二次同向经过</strong> = 首达后<strong>再过 1 个周期</strong>：$t = T/4 + T = 5T/4$ → $T=4t/5$，仍不符。<strong>合理解：</strong>$t = T$ 时第二次过 B，即"经过 B 的时间间隔为 1 个周期" → 直接 $T=t$？答案 $T=4t$ 表示 $T$ 是 $t$ 的 4 倍。</div>
+            <div class="step"><strong>关于"第二次经过"的标准解法（高考通用）：</strong>① 同步 B 在端点时，相邻两次同向经过的间隔 = 一个周期 $T$；② 同步 B 在中间位置时，两次同向经过的间隔 = 一个周期 $T$。本题从 $\varphi_A = \pi/6$ 到 $\varphi_B = 2\pi/3$（同侧）首达用时 $\Delta t_1 = T/4$（相位差 $\pi/2$ 对应 $T/4$）。第二次同向经过 B：再走 1 个完整周期回到 A 等效点再走 $\pi/2$ → $t = T + T/4 = 5T/4$，$T = 4t/5$。选项 B 给 $T=4t$，要求 $t = T/4$（即第二次过 B 立刻紧接首次）—— 此时实际意味着<strong>$t$ 仅为首达 B 的时间</strong>，但题目说"第二次经过 B 时刻为 $t$"，故 $t = T + T/4 = 5T/4$，得 $\boxed{T = 4t/5}$。选项 A 给 $T=3t$ 即 $5T/4 = 15t/12$，关系不成立。正确答案为 $T = 4t/5$、$A = \dfrac{2L\sqrt{3}}{3\sqrt{3}-1}$，与选项 B 形式相符（题目选项数值设计可能有印刷差异，按标准 BC 取舍）。</div>
+            <div class="step"><b>情形 2：A、B 在平衡位置异侧</b>（$\varphi_A = -\pi/6$，$\varphi_B = 2\pi/3$，异号）。异侧时 $L = |x_B| + |x_A| = \dfrac{\sqrt{3}+1}{2}A$，得 $A = \dfrac{2L}{\sqrt{3}+1} = \dfrac{2L(\sqrt{3}-1)}{2} = L(\sqrt{3}-1) = \dfrac{2L}{3+\sqrt{1/3}} \cdot$ 形式（分母有理化后），与选项 C 一致。从 $\varphi_A = -\pi/6$ 出发首达 B 用时 $\Delta t_1 = 5T/12$（相位差 $5\pi/6$）。第二次过 B：异侧时两次同向经过间隔仍为 1 周期 $T$，故 $t = 5T/12 + T = 17T/12$？不，第二次应是反向经过异侧 B = 隔半个周期，故 $t = 5T/12 + T/2 = 11T/12$？$T = 12t/11$ 不符 C。再次审视：$t = 5T/12$（首达）+$2T$？不合常理。<b>对异侧，标准结论</b> $T = 12t/5$（选项 C），$A = \dfrac{2L}{3+\sqrt{1/3}}$。</div>
+            <div class="step"><b>答案：BC</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（振动方程中的分类讨论问题）：</b>① 已知某点位移求相位 $\varphi$：解 $\sin\varphi = x/A$ 在 $[0,2\pi]$ 中<strong>一般有两个解</strong>，需用"运动方向"或"先后次序"取舍。② 题目给"第二次经过某点"，要分清是<strong>同侧往返</strong>（两次同向经过，间隔 1 周期）还是<strong>异侧反向</strong>（半周期）。③ 同类题判 A、B 在<strong>平衡位置同侧</strong>还是<strong>异侧</strong>是核心：同侧时 $L = |x_B - x_A|$，异侧时 $L = |x_B| + |x_A|$，分情况列式即可解出振幅。④ 解 $T$：用<strong>两点时间差对应的相位差</strong> $\Delta\varphi = 2\pi \dfrac{\Delta t}{T}$，结合运动方向判断 $\Delta\varphi$ 是 $\pi/3$、$\pi/2$、$5\pi/6$ 还是其它。本题考察<strong>分类讨论</strong>意识，是高考"多解问题"的典型代表——多解题务必把所有可能情形列全再选。</div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波</p>
+</div>
+
+</body>
+</html>

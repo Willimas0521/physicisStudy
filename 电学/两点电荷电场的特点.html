@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>两点电荷电场的特点 · 静电场闯关</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        /* 概念型公式（纯文本/流程图，不走 MathJax） */
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    
+.level-nav a {
+  width: 100%; text-align: left; background: #f0f4f8; color: #34495e;
+  border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5; border-radius: 8px;
+  padding: 8px 12px; cursor: pointer; font-size: 0.86em; transition: all 0.25s;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; text-decoration: none;
+}
+.level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+.level-nav a.active { background: #fff3cd; color: #5d4037; border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25); }
+.level-nav a.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+.level-nav a.done.active { background: #fff3cd; }
+.btn.disabled { opacity: 0.4; pointer-events: none; }
+
+.method-card { background:#fff; border-radius:14px; padding:22px; margin:20px 0; box-shadow:0 3px 14px rgba(0,0,0,0.07); border-left:5px solid #3a7bd5; }
+.method-card h2 { color:#1e3c72; font-size:1.35em; margin-bottom:12px; }
+.method-card h3 { color:#2a5298; font-size:1.1em; margin:16px 0 8px; }
+.method-card p, .method-card li { color:#2c3e50; line-height:1.8; }
+.method-card ul { padding-left:22px; }
+.method-card li { margin-bottom:8px; }
+figure { margin:16px 0; text-align:center; }
+figure svg { max-width:100%; height:auto; border:1px solid #e0e6ed; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.06); background:#fff; }
+figcaption { color:#5a6b7c; font-size:0.9em; margin-top:8px; }
+.conclusion { background:#f0f6ff; border-left:4px solid #3a7bd5; padding:12px 16px; margin:12px 0; border-radius:0 10px 10px 0; }
+.conclusion strong { color:#1e3c72; }
+.rule { display:inline-block; background:#e8f0fe; color:#1e3c72; border-radius:6px; padding:2px 8px; margin:2px 0; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="header"><h1>🏆 高考物理 · 静电场闯关</h1><p>方法专题 · 两点电荷电场的特点</p></div>
+<div class="side-nav"><div class="side-title">🗂 知识点导航</div><div class="level-nav">
+<a class="level-link" href="index.html">📑 目录</a>
+<a class="level-link" href="库仑定律.html">考点01 · 库仑定律</a>
+<a class="level-link" href="电场强度.html">考点02 · 电场强度</a>
+<a class="level-link" href="电场线与典型电场.html">考点03 · 电场线与典型电场</a>
+<a class="level-link" href="电势与电势能.html">考点04 · 电势与电势能</a>
+<a class="level-link" href="电场力做功与电势差.html">考点05 · 电场力做功与电势差</a>
+<a class="level-link" href="匀强电场 U = Ed.html">考点06 · 匀强电场 U = Ed</a>
+<a class="level-link" href="静电平衡与电容器.html">考点07 · 静电平衡与电容器</a>
+<a class="level-link" href="带电粒子在电场中的运动.html">考点08 · 带电粒子在电场中的运动</a>
+<a class="level-link" href="静电场中的图象问题.html">考点09 · 静电场中的图象问题</a>
+<a class="level-link" href="静电场综合与真题演练.html">考点10 · 静电场综合与真题演练</a>
+<a class="level-link" href="轨迹线电场线等势线三线问题.html">方法 · 轨迹线、电场线、等势线</a>
+<a class="level-link" href="等分法正交分解法巧解电场强度.html">方法 · 等分法、正交分解法</a>
+<a class="level-link" href="电场中常见的图像.html">方法 · 电场中常见的图像</a>
+<a class="level-link" href="非点电荷电场强度的计算.html">方法 · 非点电荷电场强度</a>
+<a class="level-link" href="带电粒子在电场中的类平抛运动.html">模型 · 类平抛运动</a>
+<a class="level-link" href="库仑力作用下电荷的平衡及加速问题.html">模型 · 库仑力平衡与加速</a>
+<a class="level-link active" href="两点电荷电场的特点.html">方法 · 两点电荷电场特点</a>
+</div></div>
+<div class="container" id="container">
+<div class="level active" id="lv-method">
+  <div class="level-head">
+    <span class="level-badge">方法专题 · 两点电荷电场特点</span>
+    <h2>两点电荷电场的特点</h2>
+  </div>
+  <p class="level-intro">两个点电荷形成的电场具有鲜明的对称性和规律性。掌握等量异种、等量同种以及不等量电荷的场强分布与合场强为零的位置，是快速判断电场强度大小、方向的关键。</p>
+
+  <div class="method-card">
+    <h2>一、等量异种点电荷电场的分布</h2>
+    <figure>
+      <svg viewBox="0 0 620 340" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arropp" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker>
+  </defs>
+  <line x1="60" y1="170" x2="560" y2="170" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="310" y1="20" x2="310" y2="320" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <!-- charges -->
+  <circle cx="155" cy="170" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="143" y1="170" x2="167" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="155" y1="158" x2="155" y2="182" stroke="#333" stroke-width="2"/>
+  <text x="147" y="208" font-size="17" fill="#333" font-weight="600">+Q</text>
+  <circle cx="465" cy="170" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="457" y1="170" x2="473" y2="170" stroke="#333" stroke-width="2"/>
+  <text x="453" y="208" font-size="17" fill="#333" font-weight="600">-Q</text>
+  <text x="320" y="45" font-size="17" fill="#333">O</text>
+  <!-- central line -->
+  <line x1="173" y1="170" x2="447" y2="170" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <!-- upper field lines from + to - -->
+  <path d="M170,156 C220,120 260,70 310,70 C360,70 400,120 450,156" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M170,140 C210,90 240,40 310,40 C380,40 410,90 450,140" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M170,120 C200,70 220,20 310,20 C400,20 420,70 450,120" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <!-- lower field lines (mirror) -->
+  <path d="M170,184 C220,220 260,270 310,270 C360,270 400,220 450,184" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M170,200 C210,250 240,300 310,300 C380,300 410,250 450,200" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M170,220 C200,270 220,320 310,320 C400,320 420,270 450,220" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <!-- outer field lines bending back -->
+  <path d="M137,170 C90,120 50,80 30,50" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M137,170 C90,220 50,260 30,290" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M483,170 C530,120 570,80 590,50" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+  <path d="M483,170 C530,220 570,260 590,290" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arropp)"/>
+</svg>
+      <figcaption>等量异种点电荷电场线示意图</figcaption>
+    </figure>
+    <ul>
+      <li><strong>连线上</strong>：由左向右，两点电荷之间连线上的电场强度先变小后变大。中点 $O$ 处场强最小但不为零，方向由正电荷指向负电荷。</li>
+      <li><strong>中垂线上</strong>：从连线中点 $O$ 沿中垂线到无限远，电场强度逐渐变小。中垂线上的场强方向与中垂线垂直（即与连线平行），由正电荷一侧指向负电荷一侧。</li>
+      <li><strong>对称性</strong>：关于 $O$ 点对称的两点，电场强度<strong>等大同向</strong>。</li>
+    </ul>
+  </div>
+
+  <div class="method-card">
+    <h2>二、等量同种点电荷电场的分布</h2>
+    <figure>
+      <svg viewBox="0 0 620 340" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrsame" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker>
+  </defs>
+  <line x1="60" y1="170" x2="560" y2="170" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <line x1="310" y1="20" x2="310" y2="320" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <!-- charges -->
+  <circle cx="155" cy="170" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="143" y1="170" x2="167" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="155" y1="158" x2="155" y2="182" stroke="#333" stroke-width="2"/>
+  <text x="147" y="208" font-size="17" fill="#333" font-weight="600">+Q</text>
+  <circle cx="465" cy="170" r="18" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="453" y1="170" x2="477" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="465" y1="158" x2="465" y2="182" stroke="#333" stroke-width="2"/>
+  <text x="457" y="208" font-size="17" fill="#333" font-weight="600">+Q</text>
+  <text x="320" y="45" font-size="17" fill="#333">O</text>
+  <!-- left side outward -->
+  <line x1="137" y1="170" x2="30" y2="170" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M145,155 C90,120 60,90 30,80" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M145,140 C90,100 60,60 30,50" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M145,185 C90,220 60,250 30,260" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M145,200 C90,240 60,280 30,290" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <!-- right side outward -->
+  <line x1="483" y1="170" x2="590" y2="170" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M475,155 C530,120 560,90 590,80" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M475,140 C530,100 560,60 590,50" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M475,185 C530,220 560,250 590,260" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M475,200 C530,240 560,280 590,290" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <!-- repelling central top/bottom -->
+  <path d="M173,170 C220,120 260,70 310,70 C360,70 400,120 447,170" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M173,170 C220,220 260,270 310,270 C360,270 400,220 447,170" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M173,170 C210,110 240,40 310,40 C380,40 410,110 447,170" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+  <path d="M173,170 C210,230 240,300 310,300 C380,300 410,230 447,170" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#arrsame)"/>
+</svg>
+      <figcaption>等量同种点电荷电场线示意图</figcaption>
+    </figure>
+    <ul>
+      <li><strong>连线上</strong>：由左向右，两点电荷之间连线上的电场强度先变小后变大；连线中点 $O$ 处电场强度为零。</li>
+      <li><strong>中垂线上</strong>：从连线中点 $O$ 沿中垂线到无限远，电场强度先变大后变小。方向沿中垂线向外。</li>
+      <li><strong>对称性</strong>：关于 $O$ 点对称的两点，电场强度<strong>等大反向</strong>。</li>
+    </ul>
+  </div>
+
+  <div class="method-card">
+    <h2>三、两个点电荷合场强为零的位置特点</h2>
+
+    <h3>1. 两个等量异种电荷</h3>
+    <p>周围空间没有合场强为零的点。因为每个点的两个分场强方向相同或夹角不为 $180°$，无法完全抵消。</p>
+
+    <h3>2. 两个等量同种电荷</h3>
+    <p>合场强为零的点在二者连线的<strong>中点 $O$</strong>。</p>
+
+    <h3>3. 两个不等量异种电荷</h3>
+    <p>合场强为零的点只有一个，位于二者连线的<strong>外侧</strong>，且靠近电荷量较小的电荷。</p>
+    <figure>
+      <svg viewBox="0 0 520 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="80" x2="480" y2="80" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <circle cx="130" cy="80" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="122" y1="80" x2="138" y2="80" stroke="#333" stroke-width="2"/>
+  <text x="112" y="118" font-size="16" fill="#333">-q</text>
+  <text x="142" y="118" font-size="16" fill="#333">(q≤Q)</text>
+  <circle cx="390" cy="80" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="382" y1="80" x2="398" y2="80" stroke="#333" stroke-width="2"/>
+  <line x1="390" y1="72" x2="390" y2="88" stroke="#333" stroke-width="2"/>
+  <text x="378" y="118" font-size="16" fill="#333">+Q</text>
+  <text x="242" y="70" font-size="16" fill="#e74c3c" font-weight="600">E=0</text>
+  <circle cx="70" cy="80" r="5" fill="#e74c3c"/>
+</svg>
+      <figcaption>不等量异种电荷：$-q$ 与 $+Q$（$q\le Q$），$E=0$ 在 $-q$ 左侧</figcaption>
+    </figure>
+
+    <h3>4. 两个不等量同种电荷</h3>
+    <p>合场强为零的点只有一个，位于二者连线之间，且靠近电荷量较小的电荷。</p>
+    <figure>
+      <svg viewBox="0 0 520 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="80" x2="480" y2="80" stroke="#333" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <circle cx="130" cy="80" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="122" y1="80" x2="138" y2="80" stroke="#333" stroke-width="2"/>
+  <line x1="130" y1="72" x2="130" y2="88" stroke="#333" stroke-width="2"/>
+  <text x="120" y="118" font-size="16" fill="#333">q</text>
+  <text x="142" y="118" font-size="16" fill="#333">(q≤Q)</text>
+  <circle cx="390" cy="80" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="382" y1="80" x2="398" y2="80" stroke="#333" stroke-width="2"/>
+  <line x1="390" y1="72" x2="390" y2="88" stroke="#333" stroke-width="2"/>
+  <text x="380" y="118" font-size="16" fill="#333">Q</text>
+  <text x="240" y="70" font-size="16" fill="#e74c3c" font-weight="600">E=0</text>
+  <text x="260" y="100" font-size="14" fill="#5a6b7c">O</text>
+  <circle cx="200" cy="80" r="5" fill="#e74c3c"/>
+  <line x1="260" y1="70" x2="260" y2="90" stroke="#333" stroke-width="1" stroke-dasharray="4,3"/>
+</svg>
+      <figcaption>不等量同种电荷：$q$ 与 $Q$（$q\le Q$），$E=0$ 在 $Oq$ 之间</figcaption>
+    </figure>
+  </div>
+
+  <div class="method-card" style="border-left-color:#27ae60;">
+    <h2>📝 解题方法总结</h2>
+    <ul>
+      <li>判断场强方向：沿电场线切线方向，或根据“同斥异吸”判断两个点电荷在该点产生的场强方向，再矢量合成。</li>
+      <li>判断场强大小：根据电场线疏密，或利用 $E=kQ/r^2$ 及矢量叠加计算。</li>
+      <li>寻找 $E=0$ 的位置：先判断是在两电荷之间还是外侧，再用“靠近小电荷”原则缩小范围，最后列 $E_1=E_2$ 求解距离。</li>
+    </ul>
+  </div>
+
+  <div class="level-actions"><a class="btn" href="库仑力作用下电荷的平衡及加速问题.html">← 上一关</a><span id="status16"></span><span class="btn btn-next disabled">下一关 →</span></div>
+</div>
+</div>
+<div class="footer">📚 高考物理静电场专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！</div>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 光学基础知识</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #21d4fd 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(106,17,203,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #2575fc;
+        }
+        .card h2 {
+            color: #4a00e0;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #2575fc;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2575fc; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #4a00e0; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 90px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #2575fc; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #1a5fd0; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(74,0,224,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 15px; font-size: 0.92em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .mindmap .node.c2 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .mindmap .node.c3 { background: linear-gradient(135deg, #fc466b, #3f5efb); }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .question .q-img {
+            display: block; max-width: 280px; margin: 10px auto;
+            border: 1px solid #d6e2ef; border-radius: 8px; background: #fff;
+        }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #1a5fd0; }
+        .anim-readout {
+            margin-top: 10px; font-size: 0.92em; color: #34495e;
+        }
+        .anim-readout b { color: #1e3c72; }
+        .fig {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 16px; margin: 16px 0; text-align: center;
+        }
+        .fig canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .fig .cap { margin-top: 8px; font-size: 0.88em; color: #607d8b; }
+        .wave-controls { margin: 12px 0 6px; }
+        .wave-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .wave-controls button:hover { background: #1a5fd0; }
+        .wave-controls label { font-weight: 500; margin: 0 6px; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #4a00e0; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #2575fc; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 8px; font-size: 0.82em; }
+            .card { padding: 20px; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(74,0,224,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(74,0,224,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🔆 光学 · ④ 色散和干涉</h1>
+    <p>高中物理核心概念 · 公式 · 例题</p>
+</div>
+
+<nav class="nav">
+        <a href="高中物理_光学.html">📚 总览</a>
+        <a href="高中物理_光学_光的反射.html">① 光的反射</a>
+        <a href="高中物理_光学_折射.html">② 折射</a>
+        <a href="高中物理_光学_全反射.html">③ 全反射</a>
+        <a href="高中物理_光学_色散和干涉.html" class="active">④ 色散和干涉</a>
+        <a href="高中物理_光学_衍射.html">⑤ 衍射</a>
+        <a href="高中物理_光学_偏振.html">⑥ 偏振</a>
+        <a href="高中物理_光学_习题.html">📝 习题</a>
+</nav>
+
+<div class="container">
+
+<div class="card" id="topic">
+<h3>⑤ 光的色散</h3>
+    <p>白光通过棱镜后分解为七色光。原因是同一介质对不同色光的<b>折射率不同</b>：紫光 $n$ 最大、偏折最大；红光 $n$ 最小、偏折最小。</p>
+    <table>
+        <tr><th>色光</th><th>频率 ν</th><th>折射率 n</th><th>介质中速度</th><th>偏折程度</th></tr>
+        <tr><td>红光</td><td>最小</td><td>最小</td><td>最大</td><td>最小</td></tr>
+        <tr><td>紫光</td><td>最大</td><td>最大</td><td>最小</td><td>最大</td></tr>
+    </table>
+
+    <h3>① 光的干涉</h3>
+    <p>两列<b>频率相同、相位差恒定</b>的光叠加，出现明暗相间的条纹。证明光具有<b>波动性</b>。</p>
+    <div class="key-point">
+        <b>📌 双缝干涉（杨氏干涉）：</b>
+        <ul style="padding-left:20px;">
+            <li>中央为亮纹；条纹<b>等间距、明暗相间</b>。</li>
+            <li>相邻亮（或暗）条纹间距：$\Delta x = \dfrac{L}{d}\lambda$</li>
+            <li>$L$：双缝到屏距离；$d$：双缝间距；$\lambda$：光波长。</li>
+            <li>红光 $\lambda$ 大 → 条纹间距大；紫光 $\lambda$ 小 → 条纹间距小。</li>
+        </ul>
+    </div>
+    <div class="formula">$$\Delta x = \dfrac{L}{d}\,\lambda$$</div>
+    <p><b>薄膜干涉</b>：肥皂膜、水面油膜、镜头增透膜的彩色条纹，由前后表面反射光干涉形成。</p>
+
+    <!-- 薄膜干涉彩色条纹示意图 -->
+    <div class="fig">
+        <canvas id="canvasFilm" width="520" height="200"></canvas>
+        <div class="wave-controls">
+            <label>膜厚基准 t₀ (nm):
+                <input type="range" id="filmT" min="50" max="800" value="200" style="width:160px;" oninput="filmAnim.setT(event.target.value)">
+            </label>
+            <label>膜厚梯度:
+                <input type="range" id="filmG" min="0" max="1200" value="600" style="width:160px;" oninput="filmAnim.setG(event.target.value)">
+            </label>
+            <span id="filmReadout" style="font-weight:600;color:#1565c0;"></span>
+        </div>
+        <div class="cap">交互 · 薄膜干涉彩色条纹：拖动滑块改变膜厚基准与梯度，观察彩虹色条纹如何随厚度变化（膜厚趋于 0 处相消变暗，即"增透膜"原理）。</div>
+    </div>
+
+    <!-- 干涉动画 -->
+    <div class="fig">
+        <canvas id="canvasInterf2" width="520" height="300"></canvas>
+        <div class="wave-controls">
+            <button onclick="interf2Anim.restart()">重置</button>
+            <button onclick="interf2Anim.toggle()">暂停 / 继续</button>
+            <label>波长 λ (nm):
+                <input type="range" id="wl2" min="400" max="700" value="500" style="width:160px;" oninput="interf2Anim.setWl(event.target.value)">
+            </label>
+            <span id="wl2Readout" style="font-weight:600;color:#1565c0;">500 nm</span>
+        </div>
+        <div class="anim-readout" id="interf2Readout"></div>
+        <div class="cap">动画 · 双缝干涉：上方为两缝发出的相干波前，下方为屏上明暗相间的干涉条纹（可拖动波长观察条纹疏密变化）。</div>
+    </div>
+
+    <div class="example">
+        <div class="q">例3：双缝干涉实验中，$L=1.0\ \text{m}$，$d=0.2\ \text{mm}$，用波长 $\lambda=500\ \text{nm}$ 的光，求相邻亮纹间距。</div>
+        <div class="a">
+            <div class="step">解：$\Delta x = \dfrac{L}{d}\lambda = \dfrac{1.0}{0.2\times10^{-3}} \times 500\times10^{-9}$</div>
+            <div class="step">$= 5000 \times 5\times10^{-7} = 2.5\times10^{-3}\ \text{m} = \mathbf{2.5\ \text{mm}}$</div>
+        
+</div>
+
+<div class="footer">
+    <p>📖 高中物理 · 光学 · ④ 色散和干涉</p>
+    <p>建议结合教材例题练习，理解公式的物理意义而非死记硬背</p>
+</div>
+
+</div>
+
+<script>
+/* ===================== 交互图 6：薄膜干涉彩色条纹 ===================== */
+const filmAnim = (function () {
+    const canvas = document.getElementById('canvasFilm');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    let t0 = 200, grad = 600;       // 膜厚基准 / 梯度 (nm)
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const n = 1.33;
+        for (let x = 0; x < W; x++) {
+            const t = t0 + grad * (x / W);          // 膜厚沿 x 变化 (nm)
+            const rgb = [700, 530, 450].map((lam) => {
+                const path = 2 * n * t;             // 往返光程
+                const phase = 2 * Math.PI * path / lam + Math.PI; // 反射半波损失
+                const I = 0.5 + 0.5 * Math.cos(phase);
+                return Math.round(255 * I);
+            });
+            ctx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+            ctx.fillRect(x, 0, 1, H);
+        }
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 13px sans-serif';
+        ctx.fillText('膜薄', 8, 20);
+        ctx.fillText('膜厚 →', W - 60, 20);
+        ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(20, 12); ctx.lineTo(40, 12); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(36, 8); ctx.lineTo(40, 12); ctx.lineTo(36, 16); ctx.stroke();
+    }
+    function setT(v) { t0 = parseFloat(v); update(); }
+    function setG(v) { grad = parseFloat(v); update(); }
+    function update() {
+        draw();
+        document.getElementById('filmReadout').textContent =
+            `t₀=${t0} nm，梯度=${grad} nm ｜ 厚度→0 处相消变暗（增透膜原理）`;
+    }
+    update();
+    return { setT, setG };
+})();
+/* ===================== 动画 3：双缝干涉（波前 + 条纹） ===================== */
+const interf2Anim = (function () {
+    const canvas = document.getElementById('canvasInterf2');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const sx = 90, sy = H / 2;          // 双缝位置（屏幕上两缝）
+    const d = 26;                       // 双缝间距（像素）
+    const slit1 = sy - d / 2, slit2 = sy + d / 2;
+    const screenX = W - 60;             // 屏位置
+    let lam = 500, phase = 0, running = true, lastT = 0, raf = null;
+
+    function waveHue() {
+        return (700 - lam) / 300 * 270;
+    }
+
+    function drawWaves() {
+        const hue = waveHue();
+        // 两缝发出的同心圆波前
+        for (let s of [slit1, slit2]) {
+            for (let r = 8; r < 260; r += 12) {
+                const a = 0.22 * (1 - r / 260);
+                ctx.strokeStyle = `hsla(${hue}, 90%, 50%, ${a})`;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(sx, s, r, -Math.PI/2, Math.PI/2);
+                ctx.stroke();
+            }
+        }
+        // 双缝
+        ctx.fillStyle = '#333';
+        ctx.fillRect(sx - 4, slit1 - 4, 8, 8);
+        ctx.fillRect(sx - 4, slit2 - 4, 8, 8);
+        // 屏
+        ctx.strokeStyle = '#90a4ae'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(screenX, 0); ctx.lineTo(screenX, H); ctx.stroke();
+    }
+
+    function drawScreen() {
+        const col = `hsl(${waveHue()}, 90%, 50%)`;
+        // 屏上强度：两缝到屏上点 p 的光程差
+        for (let y = 10; y < H - 10; y++) {
+            const r1 = Math.sqrt((screenX - sx) ** 2 + (y - slit1) ** 2);
+            const r2 = Math.sqrt((screenX - sx) ** 2 + (y - slit2) ** 2);
+            const dp = (r2 - r1) / (lam / 25);   // 换算成相位（缩放）
+            const I = Math.cos(dp * Math.PI) ** 2;
+            const px = screenX + 6;
+            ctx.fillStyle = col;
+            ctx.globalAlpha = I;
+            ctx.fillRect(px, y, 18, 1);
+        }
+        ctx.globalAlpha = 1;
+    }
+
+    function loop(ts) {
+        if (!lastT) lastT = ts;
+        let dt = (ts - lastT) / 1000; lastT = ts;
+        if (dt > 0.05) dt = 0.05;
+        if (running) {
+            phase += dt * 3;
+            ctx.clearRect(0, 0, W, H);
+            drawWaves();
+            drawScreen();
+        }
+        raf = requestAnimationFrame(loop);
+    }
+    function start() { if (!raf) raf = requestAnimationFrame(loop); }
+
+    function setWl(nm) {
+        lam = parseFloat(nm);
+        document.getElementById('wl2Readout').textContent = nm + ' nm';
+        document.getElementById('interf2Readout').innerHTML =
+            `λ = ${nm} nm，波长越短（偏紫）条纹越密；波长越长（偏红）条纹越疏。`;
+    }
+    setWl(500);
+    return {
+        start, restart() { phase = 0; }, toggle() { running = !running; }, setWl
+    };
+})();
+interf2Anim.start();
+interf2Anim.start();
+</script>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 高考刷题</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\(","\)"]],
+    displayMath: [["$$","$$"], ["\[","\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>高考刷题</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="gaokao">
+    <h2><span class="num">10</span>高考刷题</h2>
+    <p>精选高考真题与经典模拟题，点击"看解析 / 查看答案"验证你的思路。</p>
+
+    <div class="exam-block">
+        <h3>考点 1 · 简谐运动与单摆</h3>
+        <div class="question">
+            <div class="q-title"><span class="tag">经典模拟</span>关于简谐运动，下列说法正确的是？</div>
+            <p style="color:#555;">A. 物体做简谐运动时，加速度方向总指向平衡位置<br>B. 在平衡位置处，加速度最大<br>C. 振幅越大，周期越长<br>D. 简谐运动的回复力一定是弹力</p>
+            <button class="answer-btn" onclick="toggle('gk1a')">看解析</button>
+            <div class="analysis" id="gk1a">
+                <b>解析：</b>简谐运动 $a=-\omega^2 x$，加速度总指向平衡位置（A 正确）；平衡位置 $x=0$，加速度为 0（B 错）；周期由系统本身决定，与振幅无关（C 错）；回复力可以是重力分力（如单摆）、摩擦力等，不一定是弹力（D 错）。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1aa')">查看答案</button>
+            <div class="answer" id="gk1aa"><b>答案：A</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2020·全国II</span>将地球上周期为 2 s 的秒摆移到月球上（$g_\text{月} = g/6$），其周期变为？</div>
+            <p style="color:#555;">A. $2\sqrt6\ \text{s}$ &nbsp; B. $\sqrt6\ \text{s}$ &nbsp; C. $2/\sqrt6\ \text{s}$ &nbsp; D. 不变</p>
+            <button class="answer-btn" onclick="toggle('gk1b')">看解析</button>
+            <div class="analysis" id="gk1b">
+                <b>解析：</b>$T = 2\pi\sqrt{L/g}$，$g$ 变为原来的 1/6，故 $T$ 变为原来的 $\sqrt6$ 倍：$T' = 2\sqrt6\ \text{s}$。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk1bb')">查看答案</button>
+            <div class="answer" id="gk1bb"><b>答案：A</b></div>
+        </div>
+    </div>
+
+    <div class="exam-block">
+        <h3>考点 2 · 机械波的描述与图象</h3>
+        <div class="question">
+            <div class="q-title"><span class="tag">2022·全国甲</span>一列简谐横波沿 $x$ 轴正向传播，某时刻波形如图所示（题设：相邻波峰距 2 m，波速 4 m/s）。此时 $x=0.5\ \text{m}$ 处的质点运动方向是？</div>
+            <p style="color:#555;">A. 向上 &nbsp; B. 向下 &nbsp; C. 向左 &nbsp; D. 向右</p>
+            <button class="answer-btn" onclick="toggle('gk2a')">看解析</button>
+            <div class="analysis" id="gk2a">
+                <b>解析：</b>波向右传，用平移法将波形向右微移，该质点未来位置比现在高，故此刻向<b>上</b>运动。横波中质点不随波迁移，C、D 错。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2aa')">查看答案</button>
+            <div class="answer" id="gk2aa"><b>答案：A</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2021·新高考I</span>频率为 50 Hz 的声波在海水中的波速为 1500 m/s，其波长为？</div>
+            <p style="color:#555;">A. 30 m &nbsp; B. 15 m &nbsp; C. 7.5 m &nbsp; D. 3 m</p>
+            <button class="answer-btn" onclick="toggle('gk2b')">看解析</button>
+            <div class="analysis" id="gk2b">
+                <b>解析：</b>$\lambda = v/f = 1500/50 = 30\ \text{m}$。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk2bb')">查看答案</button>
+            <div class="answer" id="gk2bb"><b>答案：A</b></div>
+        </div>
+    </div>
+
+    <div class="exam-block">
+        <h3>考点 3 · 干涉、衍射与多普勒</h3>
+        <div class="question">
+            <div class="q-title"><span class="tag">2023·全国乙</span>关于波的干涉，下列说法正确的是？</div>
+            <p style="color:#555;">A. 任意两列波叠加都能发生干涉<br>B. 干涉加强点的位移始终最大<br>C. 两列同频、相位差恒定的波叠加才能形成稳定干涉图样<br>D. 衍射是波特有的现象，干涉不是</p>
+            <button class="answer-btn" onclick="toggle('gk3a')">看解析</button>
+            <div class="analysis" id="gk3a">
+                <b>解析：</b>干涉需同频、相位差恒定（C 正确、A 错）；加强点振幅最大，但位移随时间变化、可为零（B 错）；干涉和衍射都是波特有的现象（D 错）。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk3aa')">查看答案</button>
+            <div class="answer" id="gk3aa"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">2025·广东</span>关于受迫振动和多普勒效应，下列说法正确的是？</div>
+            <p style="color:#555;">A. 系统的固有频率与驱动力频率有关<br>B. 只要驱动力足够大，共振就能发生<br>C. 应用多普勒效应可以测量车辆的速度<br>D. 观察者与波源相互远离时，接收到的波的频率比波源的频率大</p>
+            <button class="answer-btn" onclick="toggle('gk3c')">看解析</button>
+            <div class="analysis" id="gk3c">
+                <b>解析：</b>系统的固有频率由系统本身（如质量、劲度系数、摆长）决定，与驱动力频率无关（A 错）；共振的条件是驱动力的频率<b>等于</b>系统的固有频率，并不是驱动力越大越容易发生（B 错）；多普勒效应可用于测速（如交警测速仪、医学彩超），C 正确；观察者与波源相互远离时，接收到的频率比波源频率<b>小</b>（音调变低），D 错。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk3cc')">查看答案</button>
+            <div class="answer" id="gk3cc"><b>答案：C</b></div>
+        </div>
+
+        <div class="question">
+            <div class="q-title"><span class="tag">经典模拟</span>火车鸣笛驶向站台，站在站台上的旅客听到的汽笛声调将如何变化？</div>
+            <p style="color:#555;">A. 变高 &nbsp; B. 变低 &nbsp; C. 不变 &nbsp; D. 先变高后变低</p>
+            <button class="answer-btn" onclick="toggle('gk3b')">看解析</button>
+            <div class="analysis" id="gk3b">
+                <b>解析：</b>波源（火车）与观察者相互靠近，发生多普勒效应，接收频率升高，音调变高。
+            </div>
+            <button class="answer-btn" onclick="toggle('gk3bb')">查看答案</button>
+            <div class="answer" id="gk3bb"><b>答案：A</b></div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波</p>
+</div>
+<script>
+function toggle(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('show');
+}
+</script>
+</body>
+</html>

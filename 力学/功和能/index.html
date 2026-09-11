@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动量守恒闯关 · 目录</title>
+<script>
+window.MathJax = { tex: { inlineMath:[['$','$ '],['\\(','\\)']] } };
+</script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            /* 宽屏下内容区在可视区域居中，同时给左侧固定导航栏留出最小 210px 空间 */
+            .container {
+                margin-left: max(210px, calc((100vw - 1040px) / 2));
+                margin-right: max(0px, calc((100vw - 1040px) / 2));
+            }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        /* 概念型公式（纯文本/流程图，不走 MathJax） */
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        /* 模型示意图 */
+        .model-figure {
+            margin: 18px 0; text-align: center;
+        }
+        .model-figure img {
+            max-width: 100%; max-height: 320px;
+            border-radius: 10px; background: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            border: 1px solid #e0e6ed; padding: 10px;
+        }
+        .model-figure figcaption {
+            margin-top: 8px; font-size: 0.9em; color: #5a6b7b;
+        }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    
+        .index-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .index-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 3px 18px rgba(0,0,0,0.08); border-top: 5px solid #3a7bd5; }
+        .index-card .idx-badge { display:inline-block; background: linear-gradient(135deg, #ff6a00, #ee0979); color: white; font-weight: 700; font-size: 0.82em; padding: 5px 12px; border-radius: 16px; margin-bottom: 12px; }
+        .index-card h3 { color: #1e3c72; font-size: 1.35em; margin-bottom: 8px; }
+        .index-card p { color: #5a6b7b; margin-bottom: 16px; }
+        .index-title { text-align: center; color: #1e3c72; font-size: 1.8em; margin: 10px 0 24px; }
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🏆 高考物理 · 动量守恒闯关</h1>
+<p>动量 · 冲量 · 碰撞 · 反冲 · 共 12 关 · 公式 → 例题 → 闯关答题</p>
+</div>
+<div class="container">
+<h2 class="index-title">📚 知识点目录</h2>
+<div class="index-grid">
+<div class="index-card"><span class="idx-badge">动量与冲量 · 考点01</span><h3>动量与冲量</h3><p>动量守恒的一切从这里开始：动量描述物体运动的'量'，冲量描述力的时间积累效果。</p><a class="btn btn-next" href="动量与冲量.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量与冲量 · 考点02</span><h3>动量定理</h3><p>动量定理是连接力与运动状态变化的桥梁，也是'缓冲'现象的理论依据。</p><a class="btn btn-next" href="动量定理.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点03</span><h3>动量守恒定律</h3><p>动量守恒是本章的核心定律：系统不受外力（或合外力为零）时，总动量保持不变。</p><a class="btn btn-next" href="动量守恒定律.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点04</span><h3>弹性碰撞</h3><p>碰撞中最'完美'的一种：不仅动量守恒，动能也守恒（无机械能损失）。</p><a class="btn btn-next" href="弹性碰撞.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点05</span><h3>非弹性碰撞与完全非弹性碰撞</h3><p>现实中大多数碰撞都要损失动能。完全非弹性碰撞（碰后粘在一起）损失最大。</p><a class="btn btn-next" href="非弹性碰撞与完全非弹性碰撞.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">反冲与爆炸 · 考点06</span><h3>反冲与爆炸</h3><p>炮弹发射、火箭升空、爆炸分裂——这些都是内力驱动的典型过程，动量守恒依然成立。</p><a class="btn btn-next" href="反冲与爆炸.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">反冲与爆炸 · 考点07</span><h3>人船模型</h3><p>反冲思想的经典模型：人在船上走，船向后退——系统总动量恒为零。</p><a class="btn btn-next" href="人船模型.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">滑块木板 · 考点08</span><h3>滑块—木板模型</h3><p>水平面光滑，滑块 m 以初速度 v₀ 从木板 M 左侧边缘滑上木板。系统（滑块+木板）所受合外力为零，水平动量守恒；滑块与木板间存在滑动摩擦力，摩擦生热使系统机械能减少。该模型与子弹打木块本质相同，均为滑动摩擦作用下的板块互动、动能转化为内能，规律可互通使用。<br><svg width='300' height='120' viewBox='0 0 300 120' xmlns='http://www.w3.org/2000/svg'><line x1='20' y1='108' x2='280' y2='108' stroke='#90a4ae' stroke-width='2'/><rect x='60' y='74' width='190' height='22' fill='#cfd8dc' stroke='#607d8b' stroke-width='1.5'/><rect x='90' y='42' width='46' height='28' fill='#ff8a65' stroke='#e64a19' stroke-width='1.5'/><line x1='113' y1='32' x2='165' y2='32' stroke='#e64a19' stroke-width='2.5'/><polygon points='165,26 177,32 165,38' fill='#e64a19'/><text x='120' y='24' font-size='12' fill='#e64a19'>v₀</text><text x='100' y='66' font-size='11' fill='#e64a19'>m</text><text x='130' y='98' font-size='11' fill='#455a64'>M（木板）</text></svg></p><a class="btn btn-next" href="滑块—木板模型.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点09</span><h3>子弹打木块</h3><p>动量守恒在摩擦力（非保守内力）作用下的经典应用：动量守恒、机械能必然损失。</p><a class="btn btn-next" href="子弹打木块.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点10</span><h3>弹簧连接体</h3><p>弹簧碰撞是弹性碰撞的动态版：压缩时动能转弹性势能，恢复时弹性势能又转回动能。</p><a class="btn btn-next" href="弹簧连接体.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点11</span><h3>小球—曲面模型</h3><p>小球滑上光滑水平面上可自由滑动的曲面：上升过程等价于完全非弹性碰撞（共速、动能损失最大），返回底端过程等价于弹性碰撞（动量守恒且动能守恒）。</p><a class="btn btn-next" href="小球—曲面模型.html">开始闯关 →</a></div><div class="index-card"><span class="idx-badge">动量守恒 · 考点12</span><h3>碰撞综合与真题演练</h3><p>综合运用动量守恒 + 能量关系判断碰撞类型与可能性，是高考压轴题常客。</p><a class="btn btn-next" href="碰撞综合与真题演练.html">开始闯关 →</a></div>
+</div>
+</div>
+<div class="footer">📚 高考物理动量专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！</div>
+</body>
+</html>

@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初中物理 · 浮力基础知识</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.85;
+        }
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 50%, #0f9b8e 100%);
+            color: white;
+            padding: 55px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(17,153,142,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 12px; letter-spacing: 2px; }
+        .header p { opacity: 0.92; font-size: 1.1em; }
+        .nav {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 12px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            z-index: 100;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .nav a {
+            color: #0f9b8e;
+            text-decoration: none;
+            font-size: 0.92em;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid #b8ecd9;
+            transition: all 0.2s;
+        }
+        .nav a:hover { background: #11998e; color: white; border-color: #11998e; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #11998e;
+            scroll-margin-top: 70px;
+        }
+        .card h2 {
+            color: #0b7a6e;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d6f3ea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #11998e;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #0f9b8e; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e8f8f2, #f4fdf9);
+            border-left: 4px solid #11998e;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid #e8eef5;
+        }
+        th { background: #e8f8f2; color: #0b7a6e; font-weight: 600; }
+        tr:nth-child(even) { background: #fafafa; }
+        .diagram {
+            background: #fbfdff;
+            border: 2px dashed #b8ecd9;
+            border-radius: 10px;
+            padding: 16px 16px 4px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .diagram svg { max-width: 100%; height: auto; }
+        .caption { font-size: 0.88em; color: #888; margin-top: 8px; }
+        /* ===== 动画样式 ===== */
+        @keyframes pulseUp {
+            0%, 100% { opacity: 0.55; }
+            50%      { opacity: 1; }
+        }
+        @keyframes pulseDown {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.45; }
+        }
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-6px); }
+        }
+        @keyframes waveMove {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-20px); }
+        }
+        @keyframes rise {
+            0%   { transform: translateY(0); opacity: 0.9; }
+            80%  { opacity: 0.9; }
+            100% { transform: translateY(-58px); opacity: 0; }
+        }
+        @keyframes sink {
+            0%   { transform: translateY(0); }
+            85%  { transform: translateY(82px); }
+            100% { transform: translateY(82px); }
+        }
+        @keyframes stay {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-3px); }
+        }
+        .anim-up   { animation: pulseUp 1.6s ease-in-out infinite; }
+        .anim-down { animation: pulseDown 1.6s ease-in-out infinite; }
+        .anim-float { animation: floatY 2.4s ease-in-out infinite; transform-origin: center; }
+        .anim-wave { animation: waveMove 2.2s linear infinite; }
+        .anim-rise { animation: rise 3s ease-in-out infinite; }
+        .anim-sink { animation: sink 3.2s ease-in infinite; }
+        .anim-stay { animation: stay 3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+            .anim-up, .anim-down, .anim-float, .anim-wave, .anim-rise, .anim-sink, .anim-stay { animation: none; }
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 0.9em;
+        }
+        /* ===== 习题样式 ===== */
+        .quiz-source { font-size: 0.85em; color: #888; margin-bottom: 12px; }
+        .quiz-options { margin: 12px 0; }
+        .quiz-options li { margin: 6px 0; }
+        .quiz-meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; font-size: 0.88em; }
+        .quiz-tag { background: #e8f8f2; color: #0b7a6e; border: 1px solid #b8ecd9; padding: 2px 10px; border-radius: 12px; }
+        .quiz-tag.diff { background: #fff4e0; color: #c0741b; border-color: #ffd9a6; }
+        .quiz-tag.ans { background: #e8f6ff; color: #1a5fa6; border-color: #b8d8f3; }
+        details.quiz-detail {
+            margin-top: 14px;
+            background: #f6faf7;
+            border: 1px solid #d6efe2;
+            border-radius: 8px;
+            padding: 10px 14px;
+        }
+        details.quiz-detail summary {
+            cursor: pointer;
+            color: #0f9b8e;
+            font-weight: 600;
+            user-select: none;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        details.quiz-detail summary::-webkit-details-marker { display: none; }
+        details.quiz-detail summary::before {
+            content: "▶";
+            font-size: 0.75em;
+            transition: transform 0.2s;
+        }
+        details.quiz-detail[open] summary::before { transform: rotate(90deg); }
+        details.quiz-detail p { margin: 10px 0 0; color: #34495e; }
+        details.quiz-detail .ans-line {
+            color: #c0392b;
+            font-weight: 600;
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(255,255,255,0.97); backdrop-filter: blur(10px);
+                padding: 14px 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+                display: flex; flex-direction: column; align-items: stretch;
+                gap: 6px; flex-wrap: nowrap; justify-content: flex-start;
+            }
+            .nav a { display: block; margin: 0; padding: 7px 10px; text-align: left; border-radius: 8px; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 12px; border-radius: 0; max-height: none; overflow: visible;
+                display: flex; flex-direction: row; flex-wrap: wrap;
+                justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 14px; }
+            .container { margin-left: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>初中物理 · 浮力基础知识</h1>
+    <p>浮力概念 · 阿基米德原理 · 物体的浮沉条件 · 浮力的应用</p>
+</div>
+
+<div class="nav">
+    <a href="#s1">浮力与产生原因</a>
+    <a href="#s2">浮力方向</a>
+    <a href="#s3">阿基米德原理</a>
+    <a href="#s4">浮沉条件</a>
+    <a href="#s5">浮力计算</a>
+    <a href="#s6">浮力的应用</a>
+    <a href="#s7">典型习题</a>
+</div>
+
+<div class="container">
+
+    <!-- 1 浮力与产生原因 -->
+    <div class="card" id="s1">
+        <h2><span class="num">1</span>浮力与产生原因</h2>
+        <p>浸在液体（或气体）中的物体受到液体（或气体）对它 <b>向上托的力</b>，这个力叫做 <b>浮力</b>。一切浸入液体中的物体都受到浮力。</p>
+        <div class="key-point">
+            <b>浮力产生的原因：</b>浸在液体中的物体，上、下表面受到液体的 <b>压强差</b>（深度不同导致压力不同）。<br>
+            下表面受到的向上的压力 <b>大于</b> 上表面受到的向下的压力，这两个压力的差就是浮力。
+        </div>
+        <div class="formula">
+            $$F_{\text{浮}} = F_{\text{向上}} - F_{\text{向下}}$$
+        </div>
+        <div class="warn">如果物体下表面与容器底部紧密接触（没有液体），上下表面没有压强差，则 <b>不受浮力</b>（如桥墩、深陷泥底的物体）。</div>
+        <div class="diagram">
+            <svg viewBox="0 0 420 250" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="water1" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#eaf6fb"/>
+                        <stop offset="100%" stop-color="#cfeaf6"/>
+                    </linearGradient>
+                    <linearGradient id="arrUp1" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#1abc9c"/>
+                        <stop offset="100%" stop-color="#16a085"/>
+                    </linearGradient>
+                    <linearGradient id="arrDn1" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ff6b6b"/>
+                        <stop offset="100%" stop-color="#e74c3c"/>
+                    </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="420" height="250" fill="#ffffff"/>
+                <!-- 水体背景 -->
+                <rect x="0" y="60" width="420" height="190" fill="url(#water1)"/>
+                <!-- 液面（波动） -->
+                <g class="anim-wave">
+                    <line x1="-20" y1="60" x2="440" y2="60" stroke="#3498db" stroke-width="2.5"/>
+                </g>
+                <text x="398" y="53" font-size="13" fill="#3498db" text-anchor="end" font-weight="bold">液面</text>
+                <!-- 立方体（浸没在水中） -->
+                <rect x="160" y="85" width="100" height="100" rx="8" fill="#ffffff" fill-opacity="0.55" stroke="#16a085" stroke-width="2.5"/>
+
+                <!-- 上表面压力箭头（向下，较小）：细长楔形 -->
+                <g class="anim-down">
+                    <polygon points="182,85 176,55 180,55 180,49 184,49 184,55 188,55"
+                             fill="url(#arrDn1)" stroke="#a73828" stroke-width="1" stroke-linejoin="round"/>
+                    <polygon points="238,85 232,55 236,55 236,49 240,49 240,55 244,55"
+                             fill="url(#arrDn1)" stroke="#a73828" stroke-width="1" stroke-linejoin="round"/>
+                </g>
+                <!-- 下表面压力箭头（向上，较大）：细长楔形，更粗 -->
+                <g class="anim-up">
+                    <polygon points="182,215 176,245 180,245 180,251 184,251 184,245 188,245"
+                             fill="url(#arrUp1)" stroke="#0e6b58" stroke-width="1.2" stroke-linejoin="round"/>
+                    <polygon points="238,215 232,245 236,245 236,251 240,251 240,245 244,245"
+                             fill="url(#arrUp1)" stroke="#0e6b58" stroke-width="1.2" stroke-linejoin="round"/>
+                </g>
+
+                <!-- 标签：左侧引出，浅色背景 + 边框，更精致 -->
+                <line x1="176" y1="70" x2="100" y2="70" stroke="#e74c3c" stroke-width="1"/>
+                <rect x="14" y="56" width="88" height="28" rx="14" fill="#fdecea" stroke="#e74c3c" stroke-width="1.5"/>
+                <text x="58" y="75" font-size="12.5" fill="#a73828" text-anchor="middle" font-weight="bold">F 向下</text>
+                <text x="58" y="98" font-size="11" fill="#a73828" text-anchor="middle">（上表面压力）</text>
+
+                <line x1="176" y1="230" x2="100" y2="230" stroke="#16a085" stroke-width="1"/>
+                <rect x="14" y="200" width="88" height="28" rx="14" fill="#e8f8f2" stroke="#16a085" stroke-width="1.5"/>
+                <text x="58" y="219" font-size="12.5" fill="#0b7a6e" text-anchor="middle" font-weight="bold">F 向上</text>
+                <text x="58" y="242" font-size="11" fill="#0b7a6e" text-anchor="middle">（下表面，更大）</text>
+            </svg>
+            <div class="caption">浮力产生原因：下表面向上的压力大于上表面向下的压力，压力差即浮力</div>
+        </div>
+    </div>
+
+    <!-- 2 浮力方向 -->
+    <div class="card" id="s2">
+        <h2><span class="num">2</span>浮力的方向</h2>
+        <div class="key-point">
+            <b>浮力的方向总是竖直向上</b>，与重力方向相反。
+        </div>
+        <div class="diagram">
+            <svg viewBox="0 0 380 230" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="water2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#eaf6fb"/>
+                        <stop offset="100%" stop-color="#cfeaf6"/>
+                    </linearGradient>
+                    <linearGradient id="arrUpG" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#1abc9c"/>
+                        <stop offset="100%" stop-color="#16a085"/>
+                    </linearGradient>
+                    <linearGradient id="arrDnR" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ff6b6b"/>
+                        <stop offset="100%" stop-color="#e74c3c"/>
+                    </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="380" height="230" fill="#ffffff"/>
+                <!-- 水体 -->
+                <rect x="0" y="125" width="380" height="105" fill="url(#water2)"/>
+                <g class="anim-wave"><line x1="-20" y1="125" x2="400" y2="125" stroke="#3498db" stroke-width="2.5"/></g>
+                <text x="358" y="118" font-size="13" fill="#3498db" text-anchor="end" font-weight="bold">液面</text>
+                <!-- 上升气泡 -->
+                <circle cx="80" cy="205" r="3" fill="#9fd3e8" class="anim-rise"/>
+                <circle cx="320" cy="215" r="4" fill="#9fd3e8" class="anim-rise" style="animation-delay:1.2s"/>
+                <circle cx="260" cy="200" r="2.5" fill="#9fd3e8" class="anim-rise" style="animation-delay:2.1s"/>
+
+                <!-- 漂浮球 + 力（整体浮动） -->
+                <g class="anim-float">
+                    <!-- 漂浮球（一部分露出水面） -->
+                    <circle cx="190" cy="112" r="44" fill="#16a085" opacity="0.18" stroke="#16a085" stroke-width="3"/>
+                    <!-- 球体高光 -->
+                    <ellipse cx="175" cy="92" rx="14" ry="8" fill="#ffffff" opacity="0.4"/>
+                    <!-- 重心位置 -->
+                    <circle cx="190" cy="112" r="3" fill="#2c3e50"/>
+
+                    <!-- 浮力箭头（向上）：细长楔形 + 渐变 -->
+                    <polygon points="190,32 184,62 188,62 188,76 192,76 192,62 196,62"
+                             fill="url(#arrUpG)" stroke="#0e6b58" stroke-width="1.2" stroke-linejoin="round"/>
+
+                    <!-- 重力箭头（向下）：细长楔形 + 渐变 -->
+                    <polygon points="190,192 184,162 188,162 188,148 192,148 192,162 196,162"
+                             fill="url(#arrDnR)" stroke="#a73828" stroke-width="1.2" stroke-linejoin="round"/>
+
+                    <!-- 浮力标签：右侧引出，浅绿底+绿描边 -->
+                    <line x1="196" y1="50" x2="260" y2="50" stroke="#16a085" stroke-width="1"/>
+                    <rect x="258" y="36" width="100" height="28" rx="14" fill="#e8f8f2" stroke="#16a085" stroke-width="1.5"/>
+                    <text x="308" y="55" font-size="13" fill="#0b7a6e" text-anchor="middle" font-weight="bold">F<sub>浮</sub> 浮力</text>
+
+                    <!-- 重力标签：右侧引出，浅红底+红描边 -->
+                    <line x1="196" y1="170" x2="260" y2="170" stroke="#e74c3c" stroke-width="1"/>
+                    <rect x="258" y="156" width="100" height="28" rx="14" fill="#fdecea" stroke="#e74c3c" stroke-width="1.5"/>
+                    <text x="308" y="175" font-size="13" fill="#a73828" text-anchor="middle" font-weight="bold">G 重力</text>
+                </g>
+
+                <!-- 竖直参考虚线 -->
+                <line x1="190" y1="22" x2="190" y2="200" stroke="#bbb" stroke-width="1" stroke-dasharray="4"/>
+            </svg>
+            <div class="caption">浮力方向始终竖直向上，与重力方向相反</div>
+        </div>
+    </div>
+
+    <!-- 3 阿基米德原理 -->
+    <div class="card" id="s3">
+        <h2><span class="num">3</span>阿基米德原理</h2>
+        <p>浸在液体中的物体受到向上的浮力，浮力的大小 <b>等于它排开的液体所受的重力</b>。</p>
+        <div class="formula">
+            $$F_{\text{浮}} = G_{\text{排}} = m_{\text{排}}\,g = \rho_{\text{液}}\,g\,V_{\text{排}}$$
+        </div>
+        <div class="key-point">
+            <b>公式说明：</b><br>
+            • $\rho_{\text{液}}$：液体密度（物体密度无关）；<br>
+            • $V_{\text{排}}$：物体 <b>排开液体的体积</b>（即浸入液体的体积）；<br>
+            • $g$：取 $9.8\ \text{N/kg}$（或粗略取 $10\ \text{N/kg}$）。
+        </div>
+        <div class="warn">
+            浮力大小只与 <b>液体密度</b> 和 <b>排开液体的体积</b> 有关，与物体的密度、形状、浸没深度 <b>无关</b>。<br>
+            阿基米德原理对 <b>气体</b> 同样适用（如热气球）。
+        </div>
+        <table>
+            <tr><th>情况</th><th>$V_{\text{排}}$</th><th>浮力</th></tr>
+            <tr><td>部分浸入（漂浮）</td><td>$V_{\text{排}} &lt; V_{\text{物}}$</td><td>$F_{\text{浮}} = \rho_{\text{液}} g V_{\text{排}}$</td></tr>
+            <tr><td>完全浸没</td><td>$V_{\text{排}} = V_{\text{物}}$</td><td>$F_{\text{浮}} = \rho_{\text{液}} g V_{\text{物}}$</td></tr>
+        </table>
+    </div>
+
+    <!-- 4 浮沉条件 -->
+    <div class="card" id="s4">
+        <h2><span class="num">4</span>物体的浮沉条件</h2>
+        <p>物体的浮沉取决于它受到的 <b>浮力 $F_{\text{浮}}$</b> 与 <b>重力 $G$</b> 的大小关系（完全浸没时 $V_{\text{排}}=V_{\text{物}}$）。</p>
+        <table>
+            <tr><th>状态</th><th>受力关系</th><th>密度关系（$\rho_{\text{物}}$ 与 $\rho_{\text{液}}$）</th><th>最终位置</th></tr>
+            <tr><td>上浮</td><td>$F_{\text{浮}} &gt; G$</td><td>$\rho_{\text{物}} &lt; \rho_{\text{液}}$</td><td>最终漂浮</td></tr>
+            <tr><td>漂浮</td><td>$F_{\text{浮}} = G$</td><td>$\rho_{\text{物}} &lt; \rho_{\text{液}}$</td><td>部分露出液面</td></tr>
+            <tr><td>悬浮</td><td>$F_{\text{浮}} = G$</td><td>$\rho_{\text{物}} = \rho_{\text{液}}$</td><td>可停在液体任意深度</td></tr>
+            <tr><td>下沉</td><td>$F_{\text{浮}} &lt; G$</td><td>$\rho_{\text{物}} &gt; \rho_{\text{液}}$</td><td>沉到容器底部</td></tr>
+        </table>
+        <div class="key-point">
+            <b>记忆要点：</b><br>
+            • 浮力 &gt; 重力 → 上浮；<br>
+            • 浮力 = 重力 → 漂浮或悬浮（静止平衡）；<br>
+            • 浮力 &lt; 重力 → 下沉。<br>
+            用密度判断：物体密度比液体小则浮，比液体大则沉，相等则悬浮。
+        </div>
+        <div class="diagram">
+            <svg viewBox="0 0 440 230" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="water3" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#eaf6fb"/>
+                        <stop offset="100%" stop-color="#cfeaf6"/>
+                    </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="440" height="230" fill="#ffffff"/>
+
+                <!-- 卡片1：漂浮（物体上浮到位后轻微浮动） -->
+                <g>
+                    <rect x="20" y="20" width="120" height="190" rx="12" fill="#f7fbfd" stroke="#e1eef5" stroke-width="1.5"/>
+                    <rect x="35" y="60" width="90" height="130" rx="8" fill="url(#water3)" stroke="#3498db" stroke-width="2"/>
+                    <g class="anim-float">
+                        <rect x="62" y="68" width="36" height="44" rx="6" fill="#16a085" opacity="0.85"/>
+                    </g>
+                    <text x="80" y="175" font-size="12.5" fill="#0b7a6e" text-anchor="middle" font-weight="bold">漂浮</text>
+                    <text x="80" y="193" font-size="11" fill="#777" text-anchor="middle">ρ物 &lt; ρ液</text>
+                </g>
+
+                <!-- 卡片2：悬浮（物体居中轻微浮动） -->
+                <g>
+                    <rect x="160" y="20" width="120" height="190" rx="12" fill="#f7fbfd" stroke="#e1eef5" stroke-width="1.5"/>
+                    <rect x="175" y="60" width="90" height="130" rx="8" fill="url(#water3)" stroke="#3498db" stroke-width="2"/>
+                    <g class="anim-stay">
+                        <rect x="197" y="92" width="36" height="40" rx="8" fill="#e67e22" opacity="0.85"/>
+                    </g>
+                    <text x="220" y="175" font-size="12.5" fill="#0b7a6e" text-anchor="middle" font-weight="bold">悬浮</text>
+                    <text x="220" y="193" font-size="11" fill="#777" text-anchor="middle">ρ物 = ρ液</text>
+                </g>
+
+                <!-- 卡片3：下沉（物体从顶部下沉到底部，循环） -->
+                <g>
+                    <rect x="300" y="20" width="120" height="190" rx="12" fill="#f7fbfd" stroke="#e1eef5" stroke-width="1.5"/>
+                    <rect x="315" y="60" width="90" height="130" rx="8" fill="url(#water3)" stroke="#3498db" stroke-width="2"/>
+                    <g class="anim-sink">
+                        <rect x="332" y="68" width="36" height="32" rx="6" fill="#7f8c8d" opacity="0.85"/>
+                    </g>
+                    <text x="360" y="175" font-size="12.5" fill="#0b7a6e" text-anchor="middle" font-weight="bold">下沉</text>
+                    <text x="360" y="193" font-size="11" fill="#777" text-anchor="middle">ρ物 &gt; ρ液</text>
+                </g>
+            </svg>
+            <div class="caption">三种浮沉状态对比：ρ物 与 ρ液 的密度关系决定物体最终位置</div>
+        </div>
+    </div>
+
+    <!-- 5 浮力计算 -->
+    <div class="card" id="s5">
+        <h2><span class="num">5</span>浮力的计算方法</h2>
+        <h3>方法一：称重法（实验法）</h3>
+        <p>先用弹簧测力计测出物体在空气中的重力 $G$，再测出物体浸在液体中时弹簧测力计的示数 $F'$，两者之差即为浮力。</p>
+        <div class="formula">
+            $$F_{\text{浮}} = G - F'$$
+        </div>
+        <h3>方法二：压力差法</h3>
+        <div class="formula">
+            $$F_{\text{浮}} = F_{\text{向上}} - F_{\text{向下}}$$
+        </div>
+        <h3>方法三：阿基米德原理法（最常用）</h3>
+        <div class="formula">
+            $$F_{\text{浮}} = \rho_{\text{液}}\,g\,V_{\text{排}}$$
+        </div>
+        <h3>方法四：二力平衡法（漂浮、悬浮）</h3>
+        <p>当物体漂浮或悬浮时，浮力与重力平衡：</p>
+        <div class="formula">
+            $$F_{\text{浮}} = G_{\text{物}}$$
+        </div>
+        <div class="key-point">
+            <b>选用建议：</b><br>
+            已知 $G$ 和 $F'$ → 称重法；<br>
+            已知 $\rho_{\text{液}}$、$V_{\text{排}}$ → 阿基米德原理法；<br>
+            漂浮/悬浮静止 → 二力平衡法最简便。
+        </div>
+    </div>
+
+    <!-- 6 浮力的应用 -->
+    <div class="card" id="s6">
+        <h2><span class="num">6</span>浮力的应用</h2>
+        <h3>轮船</h3>
+        <p>用密度大于水的钢铁制造，采用 <b>空心</b> 的办法增大可利用的浮力，使 $F_{\text{浮}} = G$ 而漂浮。轮船的 <b>排水量</b> 指满载时排开水的质量。</p>
+        <div class="formula">
+            $$m_{\text{排}} = m_{\text{船}} + m_{\text{货}},\quad F_{\text{浮}} = m_{\text{排}}\,g$$
+        </div>
+        <h3>潜水艇</h3>
+        <p>通过 <b>向水舱充水或排水</b> 改变自身重力：充水时重力增大，下沉；排水时重力减小，上浮。潜水艇浸没时浮力不变，靠改变 <b>重力</b> 实现浮沉。</p>
+        <h3>气球和飞艇</h3>
+        <p>充入密度 <b>小于空气</b> 的气体（如氦气、热空气），使 $F_{\text{浮}} &gt; G$ 而上升。靠改变 <b>自身体积（排开空气的体积）</b> 调节升降。</p>
+        <h3>密度计</h3>
+        <p>用来测量液体密度，在液体中 <b>漂浮</b>，满足 $F_{\text{浮}} = G_{\text{计}}$（浮力不变）。液体密度越大，密度计露出液面部分越 <b>多</b>（刻度上疏下密）。</p>
+        <div class="key-point">
+            <b>应用对比：</b><br>
+            轮船：空心增大 $V_{\text{排}}$；<br>
+            潜水艇：改变自身 <b>重力</b>；<br>
+            气球：改变 <b>排开气体体积</b>；<br>
+            密度计：利用 <b>漂浮</b>，$F_{\text{浮}} = G$ 恒定。
+        </div>
+    </div>
+
+    <!-- 7 典型习题 -->
+    <div class="card" id="s7">
+        <h2><span class="num">7</span>典型习题</h2>
+        <p class="quiz-source">1．（2025·上海静安·二模）水中的乒乓球在细线剪断前后，均能处于静止状态，如图（a）（b）所示。与图（a）相比，则乒乓球在图（b）中所受的（　　）</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q1_pingpang.png" alt="图(a)：细线拉着浸没的乒乓球；图(b)：细线剪断后球漂浮" style="max-width: 460px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">图(a)：细线拉着浸没的乒乓球；图(b)：细线剪断后球漂浮</div>
+        </div>
+
+        <ul class="quiz-options">
+            <li>A．浮力一定变大</li>
+            <li>B．浮力可能不变</li>
+            <li>C．合力可能变大</li>
+            <li>D．合力一定不变</li>
+        </ul>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】D</span>
+            <span class="quiz-tag diff">【难度】0.65</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+            <p><b>AB．</b>图示（a）中，乒乓球浸没水中，排开水的体积等于自身的体积；图（b）中乒乓球漂浮水中，排开水的体积小于自身体积，即（a）中乒乓球排开水的体积比（b）中的大。据阿基米德原理 $F_{\text{浮}} = \rho_{\text{液}} g V_{\text{排}}$ 知，与（a）相比，在图（b）中乒乓球所受的浮力变小，故 A、B 不符合题意。</p>
+            <p><b>CD．</b>两图中，乒乓球都处于静止，所受的力都是平衡力，合力都为零，所以合力一定不变，故 C 不符合题意，D 符合题意。</p>
+            <p class="ans-line">故选 D。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 2 -->
+        <p class="quiz-source">2．（2025·上海崇明·二模）如图所示，图（a）是一个装满酒精的薄壁圆柱形容器甲，图（b）是一个正方体物块乙。将重为 $G_{\text{乙}}$ 的物块乙轻放入容器甲中，溢出的酒精重为 $G_{\text{溢酒精}}$，且存在 $G_{\text{乙}} > G_{\text{溢酒精}}$。（$\rho_{\text{酒精}} = 0.8 \times 10^3\ \text{kg/m}^3$）</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q2_alcohol.png" alt="图(a)：装满酒精的薄壁圆柱形容器甲；图(b)：正方体物块乙" style="max-width: 460px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">图(a)：装满酒精的薄壁圆柱形容器甲；图(b)：正方体物块乙</div>
+        </div>
+
+        <p style="color:#34495e; font-weight:600; margin: 10px 0 4px;">问：</p>
+        <ol style="padding-left: 24px; color:#34495e; margin-bottom: 12px;">
+            <li style="margin: 4px 0;">若乙物块的边长为 $h$，求乙物块的密度 $\rho_{\text{乙}}$；</li>
+            <li style="margin: 4px 0;">若甲容器高 $0.2\ \text{m}$，求酒精对容器底部的压强 $p_{\text{酒精}}$；</li>
+            <li style="margin: 4px 0;">若在甲容器中装满水，将乙物块轻放入容器甲中，求溢出水的重力 $G_{\text{溢水}}$ 与 $G_{\text{乙}}$、$G_{\text{溢酒精}}$ 的关系。</li>
+        </ol>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】(1) $\dfrac{G_{\text{乙}}}{h^3 g}$；(2) 1568 Pa；(3) $G_{\text{溢酒精}} &lt; G_{\text{溢水}} &lt; G_{\text{乙}}$</span>
+            <span class="quiz-tag diff">【难度】0.65</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+            <p><b>（1）</b>乙物块为正方体，体积为 $V_{\text{乙}} = h^3$。<br>
+            密度为 $\rho_{\text{乙}} = \dfrac{m_{\text{乙}}}{V_{\text{乙}}} = \dfrac{G_{\text{乙}}}{h^3 g}$。</p>
+            <p><b>（2）</b>酒精对容器底部的压强：<br>
+            $p_{\text{酒精}} = \rho_{\text{酒精}}\,g\,h = 0.8 \times 10^3\ \text{kg/m}^3 \times 9.8\ \text{N/kg} \times 0.2\ \text{m} = 1568\ \text{Pa}$。</p>
+            <p><b>（3）</b>对乙在水中浮沉情况逐项讨论：</p>
+            <p>① 漂浮：$G_{\text{溢水}} = G_{\text{排水}} = F_{\text{浮}} = G_{\text{乙}}$；<br>
+            ② 悬浮：$G_{\text{溢水}} = G_{\text{排水}} = F_{\text{浮}} = G_{\text{乙}}$；<br>
+            ③ 沉底：$G_{\text{溢水}} = G_{\text{排水}} = F_{\text{浮}} &lt; G_{\text{乙}}$。</p>
+            <p>因为 $G_{\text{乙}} > G_{\text{溢酒精}}$，乙在酒精中 <b>沉底</b>，所以 $V_{\text{排水}} = V_{\text{排酒精}}$。<br>
+            又 $\rho_{\text{水}} > \rho_{\text{酒精}}$，由 $m = \rho V$ 可得 $m_{\text{排水}} > m_{\text{排酒精}}$，<br>
+            因此 $G_{\text{排水}} > G_{\text{排酒精}} = G_{\text{溢酒精}}$。</p>
+            <p class="ans-line">综上：$G_{\text{溢酒精}} &lt; G_{\text{溢水}} &lt; G_{\text{乙}}$。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 3 -->
+        <p class="quiz-source">3．（23-24 九年级下·广西桂林·阶段检测）如图所示，有一密度为 $0.5 \times 10^3\ \text{kg/m}^3$、体积为 $1000\ \text{cm}^3$ 的正方体木块，用一条细绳将木块浸没水中。细绳质量和体积可忽略不计，容器底面积为 $100\ \text{cm}^2$。剪断绳子，木块静止，水面________（选填"上升""不变"或"下降"），水对容器底部的压强变化了________$\text{Pa}$。</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q3_wood.png" alt="细绳拉着正方体木块浸没在水中" style="max-width: 460px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">细绳拉着正方体木块浸没在水中（容器底面积 $S = 100\ \text{cm}^2$）</div>
+        </div>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】下降；500 Pa</span>
+            <span class="quiz-tag diff">【难度】0.4</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+            <p><b>【分析】</b>根据阿基米德原理和浮沉条件计算浮力、排开液体的体积、判断液面变化；再根据液体压强公式求压强变化量。</p>
+            <p><b>[1] 水面变化：</b>由于木块密度 $\rho_{\text{木}} = 0.5 \times 10^3\ \text{kg/m}^3$ 小于水的密度，剪断绳子后木块会上浮，最终 <b>漂浮</b> 在水面。漂浮时木块排开水的体积 $V_{\text{排}}$ 小于原来浸没时的 $V_{\text{排}} = V_{\text{木}}$，因此水面 <b>下降</b>。</p>
+            <p><b>[2] 压强变化：</b></p>
+            <p>① 木块体积 $V = 1000\ \text{cm}^3 = 1 \times 10^{-3}\ \text{m}^3$</p>
+            <p>② 木块质量 $m = \rho_{\text{木}} V = 0.5 \times 10^3\ \text{kg/m}^3 \times 1 \times 10^{-3}\ \text{m}^3 = 0.5\ \text{kg}$</p>
+            <p>③ 木块重力 $G = mg = 0.5\ \text{kg} \times 10\ \text{N/kg} = 5\ \text{N}$</p>
+            <p>④ 木块漂浮时浮力等于重力：$F_{\text{浮}} = G = 5\ \text{N}$</p>
+            <p>⑤ 由阿基米德原理得漂浮时排开水的体积：
+            $V_{\text{排}} = \dfrac{F_{\text{浮}}}{\rho_{\text{水}} g} = \dfrac{5\ \text{N}}{1 \times 10^3\ \text{kg/m}^3 \times 10\ \text{N/kg}} = 5 \times 10^{-4}\ \text{m}^3$</p>
+            <p>⑥ 排开水的体积变化量：$\Delta V_{\text{排}} = V - V_{\text{排}} = 1 \times 10^{-3}\ \text{m}^3 - 5 \times 10^{-4}\ \text{m}^3 = 5 \times 10^{-4}\ \text{m}^3 = 500\ \text{cm}^3$</p>
+            <p>⑦ 水面下降高度：$\Delta h = \dfrac{\Delta V_{\text{排}}}{S} = \dfrac{500\ \text{cm}^3}{100\ \text{cm}^2} = 5\ \text{cm} = 0.05\ \text{m}$</p>
+            <p>⑧ 水对容器底压强变化量：
+            $\Delta p = \rho_{\text{水}} g \Delta h = 1 \times 10^3\ \text{kg/m}^3 \times 10\ \text{N/kg} \times 0.05\ \text{m} = 500\ \text{Pa}$</p>
+            <p class="ans-line">故答案为：水面 <b>下降</b>，水对容器底部压强变化了 <b>500 Pa</b>。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 4 -->
+        <p class="quiz-source">4．（2025·上海闵行·二模）如图所示，盛有水的轻质薄壁圆柱形容器甲置于水平地面上，容器底面积为 $4 \times 10^{-2}\ \text{m}^2$，其内部中央放有一个圆柱形物体乙。现分三次从容器中抽水，每次抽水后容器底受到水的压强 $p_{\text{水}}$ 及容器对地面的压强 $p_{\text{容}}$ 如表 2 所示。</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q4_pump.png" alt="盛有水的圆柱形容器甲，中央放有圆柱形物体乙" style="max-width: 460px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">盛有水的圆柱形容器甲，中央放有圆柱形物体乙</div>
+        </div>
+
+        <p style="color:#34495e; font-weight:600; margin: 10px 0 4px;">表 2　分次抽水时的压强数据</p>
+        <table>
+            <tr>
+                <th>序号</th>
+                <th>1（未抽水）</th>
+                <th>2（第一次）</th>
+                <th>3（第二次）</th>
+                <th>4（第三次）</th>
+            </tr>
+            <tr>
+                <td>容器底受到水的压强 $p_{\text{水}}/\text{Pa}$</td>
+                <td>2500</td>
+                <td>2100</td>
+                <td>1700</td>
+                <td>1300</td>
+            </tr>
+            <tr>
+                <td>容器对地面的压强 $p_{\text{容}}/\text{Pa}$</td>
+                <td>3100</td>
+                <td>2700</td>
+                <td>2375</td>
+                <td>2075</td>
+            </tr>
+        </table>
+
+        <p style="color:#34495e; font-weight:600; margin: 12px 0 4px;">问：</p>
+        <ol style="padding-left: 24px; color:#34495e; margin-bottom: 12px;">
+            <li style="margin: 4px 0;">求未抽水时容器对地面压力大小 $F_{\text{容}}$。</li>
+            <li style="margin: 4px 0;">关于每次抽出水的深度和质量：小王认为每次抽出水的 <b>深度</b> 相同；小红认为每次抽出水的 <b>质量</b> 相同。判断两位同学说法是否正确，并说明理由。</li>
+            <li style="margin: 4px 0;">根据上述信息还可推断：（a）第__________次抽水后乙上表面开始露出水面；（b）甲、乙底面积之比 $S_{\text{甲}} : S_{\text{乙}}$ 为__________。</li>
+        </ol>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】(1) 124 N；(2) 小王正确，小红错误；(3)(a) 二；(b) 4∶1</span>
+            <span class="quiz-tag diff">【难度】0.4</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+            <p><b>（1）</b>未抽水时容器对地面压强 $p_{\text{容}} = 3100\ \text{Pa}$，由 $p = \dfrac{F}{S}$ 得：
+            $$F_{\text{容}} = p_{\text{容}}\,S_{\text{容}} = 3100\ \text{Pa} \times 4 \times 10^{-2}\ \text{m}^2 = 124\ \text{N}$$</p>
+
+            <p><b>（2）</b>由表格数据，每次抽出水后容器底受到水的压强变化量相等：
+            $$\Delta p = 2500 - 2100 = 2100 - 1700 = 1700 - 1300 = 400\ \text{Pa}$$
+            由 $\Delta p = \rho_{\text{水}} g \Delta h$ 知，每次抽出水的 <b>深度相同</b>，故 <b>小王正确</b>。<br>
+            由于圆柱形物体乙浸没在水中，每次抽水时，乙会占据相同的体积，所以 <b>抽出水的体积不相等</b>，即抽出水的 <b>质量也不相等</b>，故 <b>小红错误</b>。</p>
+
+            <p><b>（3a）</b>分析表格中压强变化：</p>
+            <p>第一次抽水后：$p_{\text{水}}$ 减少 $400\ \text{Pa}$，$p_{\text{容}}$ 减少 $3100 - 2700 = 400\ \text{Pa}$，<b>两者相等</b>——说明乙仍完全浸没（乙上浮尚未发生）。<br>
+            第二次抽水后：$p_{\text{水}}$ 减少 $400\ \text{Pa}$，$p_{\text{容}}$ 减少 $2700 - 2375 = 325\ \text{Pa}$，<b>不再相等</b>——说明此时乙上表面开始露出水面（乙受力变化）。<br>
+            故第 <b>二</b> 次抽水后乙上表面开始露出水面。</p>
+
+            <p><b>（3b）</b>求甲、乙底面积之比：</p>
+            <p>① 由第二次、第三次数据得每次水位下降 $\Delta h$：<br>
+            $h_2 = \dfrac{p_2}{\rho_{\text{水}} g} = \dfrac{1700}{1 \times 10^3 \times 10} = 0.17\ \text{m}$<br>
+            $h_3 = \dfrac{1700 - 400}{1 \times 10^3 \times 10} = 0.13\ \text{m}$<br>
+            故 $\Delta h = 0.04\ \text{m}$。</p>
+            <p>② 第二次抽水后，容器对地面的压力减少量等于抽出水的重力：<br>
+            $\Delta F = \Delta G_{\text{水}} = \rho_{\text{水}} g \Delta h \cdot (S_{\text{甲}} - S_{\text{乙}}) = (p_{\text{容}2} - p_{\text{容}3})\,S_{\text{甲}}$<br>
+            $2700 - 2375 = 325\ \text{Pa}$，代入 $S_{\text{甲}} = 4 \times 10^{-2}\ \text{m}^2$：
+            $\Delta F = 325 \times 4 \times 10^{-2} = 13\ \text{N}$</p>
+            <p>③ 解得 $S_{\text{乙}}$：
+            $S_{\text{甲}} - S_{\text{乙}} = \dfrac{\Delta F}{\rho_{\text{水}} g \Delta h} = \dfrac{13}{1 \times 10^3 \times 10 \times 0.04} = 0.03\ \text{m}^2$<br>
+            $S_{\text{乙}} = 0.04 - 0.03 = 0.01\ \text{m}^2 = 1 \times 10^{-2}\ \text{m}^2$</p>
+            <p>故 $S_{\text{甲}} : S_{\text{乙}} = 4 \times 10^{-2} : 1 \times 10^{-2} = \mathbf{4 : 1}$。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 5 -->
+        <p class="quiz-source">5．（2025·上海黄浦·二模）如图所示，甲、乙两个轻质薄壁圆柱形容器放置在水平面上（容器足够高）。两容器底面积之比为 $5:3$，甲容器中装有 $5\ \text{kg}$ 的水，乙容器中装有某种液体。</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q5_huangpu.png" alt="甲容器装水、乙容器装液体，均为圆柱形薄壁容器，置于水平面上" style="max-width: 460px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">甲容器（装水，底面积较大）vs 乙容器（装某种液体，底面积较小）</div>
+        </div>
+
+        <p style="color:#34495e; font-weight:600; margin: 10px 0 4px;">问：</p>
+        <ol style="padding-left: 24px; color:#34495e; margin-bottom: 12px;">
+            <li style="margin: 4px 0;">求水的体积 $V_{\text{水}}$。</li>
+            <li style="margin: 4px 0;">若甲的底面积为 $5 \times 10^{-3}\ \text{m}^2$，求甲容器对水平面的压强 $p_{\text{甲}}$。</li>
+            <li style="margin: 4px 0;">现将某一物体分别浸入甲、乙两容器的液体中，物体在液体中所处状态、液体对容器底部压强增加量如表所示。求该物体的密度 $\rho_{\text{物}}$。</li>
+        </ol>
+
+        <table>
+            <tr>
+                <th>物体所处状态</th>
+                <th>浸没在水中</th>
+                <th>漂浮在乙液面上</th>
+            </tr>
+            <tr>
+                <td>液体对容器底部压强增加量 $\Delta p/\text{Pa}$</td>
+                <td>980</td>
+                <td>1960</td>
+            </tr>
+        </table>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】(1) $5 \times 10^{-3}\ \text{m}^3$；(2) 9800 Pa；(3) $1.2 \times 10^3\ \text{kg/m}^3$</span>
+            <span class="quiz-tag diff">【难度】0.4</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+
+            <p><b>（1）水的体积：</b>
+            $$V_{\text{水}} = \dfrac{m_{\text{水}}}{\rho_{\text{水}}} = \dfrac{5\ \text{kg}}{1.0 \times 10^3\ \text{kg/m}^3} = 5 \times 10^{-3}\ \text{m}^3$$</p>
+
+            <p><b>（2）甲容器对水平面的压强：</b></p>
+            <p>轻质薄壁容器（自身重力不计），故容器对水平面的压力等于水的重力：
+            $$F_{\text{甲}} = G_{\text{水}} = m_{\text{水}}\, g = 5\ \text{kg} \times 9.8\ \text{N/kg} = 49\ \text{N}$$
+            $$p_{\text{甲}} = \dfrac{F_{\text{甲}}}{S_{\text{甲}}} = \dfrac{49\ \text{N}}{5 \times 10^{-3}\ \text{m}^2} = 9800\ \text{Pa}$$</p>
+
+            <p><b>（3）物体的密度：</b></p>
+            <p><b>① 由浸没在水中求物体体积：</b><br>
+            物体浸没时容器底压强增加 $\Delta p_{\text{水}} = 980\ \text{Pa}$，由 $\Delta p = \rho_{\text{水}}\,g\,\Delta h$ 得水深增加量：
+            $$\Delta h_{\text{水}} = \dfrac{\Delta p_{\text{水}}}{\rho_{\text{水}}\,g} = \dfrac{980\ \text{Pa}}{1.0 \times 10^3\ \text{kg/m}^3 \times 9.8\ \text{N/kg}} = 0.1\ \text{m}$$
+            浸没时 $V_{\text{物}} = V_{\text{排}} = S_{\text{甲}}\,\Delta h = 5 \times 10^{-3}\ \text{m}^2 \times 0.1\ \text{m} = 5 \times 10^{-4}\ \text{m}^3$。</p>
+
+            <p><b>② 利用乙中漂浮条件求密度：</b><br>
+            物体在乙中漂浮：$F_{\text{浮}} = G_{\text{物}}$，即 $\rho_{\text{乙}}\,g\,V_{\text{排乙}} = \rho_{\text{物}}\,g\,V_{\text{物}}$。<br>
+            乙容器底面积 $S_{\text{乙}} = \dfrac{3}{5} S_{\text{甲}} = \dfrac{3}{5} \times 5 \times 10^{-3} = 3 \times 10^{-3}\ \text{m}^2$。<br>
+            漂浮时 $V_{\text{排乙}} = \dfrac{G_{\text{物}}}{\rho_{\text{乙}}\,g} = \dfrac{\rho_{\text{物}}\,V_{\text{物}}}{\rho_{\text{乙}}}$，<br>
+            所以乙中液面升高 $\Delta h_{\text{乙}} = \dfrac{V_{\text{排乙}}}{S_{\text{乙}}} = \dfrac{\rho_{\text{物}}\,V_{\text{物}}}{\rho_{\text{乙}}\,S_{\text{乙}}}$。<br>
+            对乙容器底部压强增加量：
+            $$\Delta p_{\text{乙}} = \rho_{\text{乙}}\,g\,\Delta h_{\text{乙}} = \rho_{\text{乙}}\,g \cdot \dfrac{\rho_{\text{物}}\,V_{\text{物}}}{\rho_{\text{乙}}\,S_{\text{乙}}} = \dfrac{\rho_{\text{物}}\,g\,V_{\text{物}}}{S_{\text{乙}}}$$
+            代入数据：
+            $$1960\ \text{Pa} = \dfrac{\rho_{\text{物}} \times 9.8\ \text{N/kg} \times 5 \times 10^{-4}\ \text{m}^3}{3 \times 10^{-3}\ \text{m}^2}$$
+            解得：
+            $$\rho_{\text{物}} = \dfrac{1960 \times 3 \times 10^{-3}}{9.8 \times 5 \times 10^{-4}} = \mathbf{1.2 \times 10^3\ \text{kg/m}^3}$$
+            </p>
+
+            <p class="ans-line">故答案为：(1) $5 \times 10^{-3}\ \text{m}^3$；(2) 9800 Pa；(3) $1.2 \times 10^3\ \text{kg/m}^3$。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 6 -->
+        <p class="quiz-source">6．（2025·上海嘉定·二模）如图所示，轻质薄壁圆柱形容器置于水平地面，其底面积为 $4S$，高度为 $2H$，内部盛有深度为 $H$ 的水。</p>
+
+        <table>
+            <tr>
+                <th>圆柱体</th>
+                <th>密度</th>
+                <th>底面积</th>
+                <th>高度</th>
+            </tr>
+            <tr>
+                <td>A</td>
+                <td>$1.5\,\rho_{\text{水}}$</td>
+                <td>$3S$</td>
+                <td>$2H$</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>$4\,\rho_{\text{水}}$</td>
+                <td>$2S$</td>
+                <td>$H$</td>
+            </tr>
+        </table>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q6_jiading.png" alt="轻质薄壁圆柱形容器置于水平面，容器内盛有深度为 H 的水" style="max-width: 280px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">底面积 $4S$、高 $2H$、水深 $H$ 的圆柱形容器</div>
+        </div>
+
+        <p style="color:#34495e; font-weight:600; margin: 10px 0 4px;">问：</p>
+        <ol style="padding-left: 24px; color:#34495e; margin-bottom: 12px;">
+            <li style="margin: 4px 0;">若容器中水的质量为 $10\ \text{kg}$，深度为 $0.2\ \text{m}$。求：<br>
+                ① 水的体积 $V_{\text{水}}$；<br>
+                ② 水对容器底的压强 $p_{\text{水}}$。</li>
+            <li style="margin: 4px 0;">现有两个均匀实心圆柱体 A、B，其规格如上表所示。选择其中一个轻放于容器内（圆柱体底与容器底接触），使容器对水平地面压强的变化量 $\Delta p$ 最小。请写出所选的圆柱体并说明理由，求出 $\Delta p$ 最小。</li>
+        </ol>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】(1)① $1 \times 10^{-2}\ \text{m}^3$；② 1960 Pa　(2) $\Delta p_{\min} = 1.75\,\rho_{\text{水}} H g$（应选 A）</span>
+            <span class="quiz-tag diff">【难度】0.65</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+
+            <p><b>（1）① 水的体积：</b>
+            $$V_{\text{水}} = \dfrac{m_{\text{水}}}{\rho_{\text{水}}} = \dfrac{10\ \text{kg}}{1.0 \times 10^3\ \text{kg/m}^3} = 1 \times 10^{-2}\ \text{m}^3$$</p>
+
+            <p><b>（1）② 水对容器底的压强：</b>
+            $$p_{\text{水}} = \rho_{\text{水}}\,g\,h_{\text{水}} = 1.0 \times 10^3\ \text{kg/m}^3 \times 9.8\ \text{N/kg} \times 0.2\ \text{m} = 1960\ \text{Pa}$$</p>
+
+            <p><b>（2）判断放入 A 还是 B：</b><br>
+            <b>放 A 后：</b>A 高度为 $2H$。若 A 浸没，所需水深 $h_{\text{水}A}' = \dfrac{V_{\text{水}}}{S_{\text{容}} - S_A} = \dfrac{4SH}{4S - 3S} = 4H > 2H$（超过容器高度），水会溢出，最终水深为 $2H$。<br>
+            溢出水的体积：
+            $$V_{\text{溢}} = S \times (4H - 2H) = 2SH$$
+            地面所受压力变化量（容器轻，可忽略）＝ A 重 − 溢出水重：
+            $$\Delta F_A = G_A - G_{\text{溢}} = (1.5\,\rho_{\text{水}})(3S)(2H)\,g - \rho_{\text{水}}(2SH)\,g = (9 - 2)\,\rho_{\text{水}}SH\,g = 7\,\rho_{\text{水}}SH\,g$$
+            </p>
+
+            <p><b>放 B 后：</b>B 高度 $H$。B 浸没后水面升高
+            $$\Delta h = \dfrac{S_B \cdot H}{S_{\text{容}} - S_B} = \dfrac{2S \cdot H}{4S - 2S} = H$$
+            水深变为 $H + H = 2H$（恰好达到容器顶部，未溢出）。<br>
+            地面所受压力变化量：
+            $$\Delta F_B = G_B - G_{\text{溢}} = (4\,\rho_{\text{水}})(2S)(H)\,g - 0 = 8\,\rho_{\text{水}}SH\,g$$
+            </p>
+
+            <p><b>比较：</b>$\Delta F_A = 7\,\rho_{\text{水}}SH\,g < \Delta F_B = 8\,\rho_{\text{水}}SH\,g$。<br>
+            受力面积均为 $S_{\text{容}} = 4S$ 相同，所以压强变化量 $\Delta p$ 与压力变化量 $\Delta F$ 成正比。<br>
+            因此<b>选 A</b>，地面所受压强变化量最小：
+            $$\Delta p_{\min} = \dfrac{\Delta F_A}{S_{\text{容}}} = \dfrac{7\,\rho_{\text{水}}SH\,g}{4S} = \mathbf{1.75\,\rho_{\text{水}}H\,g}$$
+            </p>
+
+            <p class="ans-line">故答案为：(1)① $1 \times 10^{-2}\ \text{m}^3$；② 1960 Pa　(2) 应选 A，$\Delta p_{\min} = 1.75\,\rho_{\text{水}}\,H\,g$。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 7 -->
+        <p class="quiz-source">7．（2025·上海金山·二模）如图所示，薄壁圆柱形容器甲置于水平地面上，容器足够高，底面积为 $2 \times 10^{-2}\ \text{m}^2$，其内部盛有 $0.15\ \text{m}$ 深的水；柱体乙的密度为 $2 \times 10^3\ \text{kg/m}^3$，体积为 $1 \times 10^{-3}\ \text{m}^3$。</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q7_jinshan.png" alt="薄壁圆柱形容器甲置于水平面，容器内盛有 0.15 m 深的水" style="max-width: 280px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">底面积 $2 \times 10^{-2}\ \text{m}^2$、水深 $0.15\ \text{m}$ 的圆柱形容器甲</div>
+        </div>
+
+        <p style="color:#34495e; font-weight:600; margin: 10px 0 4px;">问：</p>
+        <ol style="padding-left: 24px; color:#34495e; margin-bottom: 12px;">
+            <li style="margin: 4px 0;">求水对容器甲底部的压强 $p_{\text{水}}$。</li>
+            <li style="margin: 4px 0;">现将柱体乙竖直放入容器甲的水中，使得水对容器底部的压强增加量 $\Delta p_{\text{水}}$ 最大，求：<br>
+                （a）柱体乙的质量 $m_{\text{乙}}$；<br>
+                （b）柱体乙底面积的最小值 $S_{\text{乙}}$。</li>
+        </ol>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】(1) 1500 Pa　(2) (a) $2\ \text{kg}$　(b) $0.005\ \text{m}^2$</span>
+            <span class="quiz-tag diff">【难度】0.65</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+
+            <p><b>（1）水对容器底部的压强：</b>
+            $$p_{\text{水}} = \rho_{\text{水}}\,g\,h = 1.0 \times 10^3\ \text{kg/m}^3 \times 10\ \text{N/kg} \times 0.15\ \text{m} = 1500\ \text{Pa}$$
+            （注：金山二模中重力加速度取 $g = 10\ \text{N/kg}$。）</p>
+
+            <p><b>（2）(a) 柱体乙的质量：</b>
+            $$m_{\text{乙}} = \rho_{\text{乙}}\,V_{\text{乙}} = 2 \times 10^3\ \text{kg/m}^3 \times 1 \times 10^{-3}\ \text{m}^3 = 2\ \text{kg}$$</p>
+
+            <p><b>（2）(b) 柱体乙底面积最小值：</b></p>
+            <p>容器中原有水的体积：
+            $$V_{\text{水}} = S_{\text{容}}\,h_{\text{水}} = 2 \times 10^{-2}\ \text{m}^2 \times 0.15\ \text{m} = 3 \times 10^{-3}\ \text{m}^3$$
+            因为 $\rho_{\text{乙}} = 2 \times 10^3\ \text{kg/m}^3 > \rho_{\text{水}}$，柱体乙放入水中后会沉底。<br>
+            由 $\Delta p_{\text{水}} = \rho_{\text{水}}\,g\,\Delta h$ 可知，要使 $\Delta p_{\text{水}}$ 最大，应使水深增加量 $\Delta h$ 最大，即柱体乙<b>刚好完全浸没</b>在水中（再细高一些就会露出水面，浸没部分减少）。</p>
+
+            <p>当柱体乙刚好浸没时，水的总体积 $= V_{\text{水}} + V_{\text{乙}}$，水深 $h' = \dfrac{V_{\text{水}} + V_{\text{乙}}}{S_{\text{容}}}$：
+            $$h' = \dfrac{3 \times 10^{-3}\ \text{m}^3 + 1 \times 10^{-3}\ \text{m}^3}{2 \times 10^{-2}\ \text{m}^2} = 0.2\ \text{m}$$
+            此时柱体乙的高度 $h_{\text{乙}} = h' = 0.2\ \text{m}$。</p>
+
+            <p>由 $V_{\text{乙}} = S_{\text{乙}}\,h_{\text{乙}}$ 得柱体乙底面积的最小值：
+            $$S_{\text{乙}} = \dfrac{V_{\text{乙}}}{h_{\text{乙}}} = \dfrac{1 \times 10^{-3}\ \text{m}^3}{0.2\ \text{m}} = 0.005\ \text{m}^2$$
+            （$S_{\text{乙}}$ 越小，柱体越"细高"，越易达到完全浸没；$S_{\text{乙}} = 0.005\ \text{m}^2$ 正好对应"刚好浸没"的临界状态。）</p>
+
+            <p class="ans-line">故答案为：(1) 1500 Pa　(2) (a) $2\ \text{kg}$　(b) $S_{\text{乙}} = 0.005\ \text{m}^2$。</p>
+        </details>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #c2e6d8;">
+
+        <!-- 习题 8 -->
+        <p class="quiz-source">8．（2025·上海奉贤·二模）如图所示，盛有水的轻质薄壁柱形容器甲和实心均匀柱体乙置于水平地面上，容器甲、柱体乙的底面积之比是 $2:1$，容器甲足够高。</p>
+
+        <div class="diagram">
+            <img src="浮力基础知识_images/q8_fengxian.png" alt="左边是装有水的圆柱形容器甲，右边是放在地面上的实心柱体乙" style="max-width: 360px; width: 100%; height: auto; border-radius: 8px;">
+            <div class="caption">左侧为容器甲（装水，$S_{\text{甲}}:S_{\text{乙}}=2:1$），右侧为柱体乙</div>
+        </div>
+
+        <p style="color:#34495e; font-weight:600; margin: 10px 0 4px;">问：</p>
+        <ol style="padding-left: 24px; color:#34495e; margin-bottom: 12px;">
+            <li style="margin: 4px 0;">若甲容器中水的质量为 $3\ \text{kg}$，求水的体积 $V_{\text{水}}$。</li>
+            <li style="margin: 4px 0;">若甲容器中水的深度为 $0.2\ \text{m}$，求水对容器底部的压强 $p_{\text{水}}$。</li>
+            <li style="margin: 4px 0;">若柱体乙对地面的压强为 $1960\ \text{Pa}$，将乙浸没在甲容器的水中，水面升高了 $0.05\ \text{m}$。求柱体乙的密度 $\rho_{\text{乙}}$。</li>
+        </ol>
+
+        <div class="quiz-meta">
+            <span class="quiz-tag ans">【答案】(1) $3 \times 10^{-3}\ \text{m}^3$　(2) 1960 Pa　(3) $2 \times 10^3\ \text{kg/m}^3$</span>
+            <span class="quiz-tag diff">【难度】0.65</span>
+        </div>
+
+        <details class="quiz-detail">
+            <summary>展开详解</summary>
+
+            <p><b>（1）水的体积：</b>
+            $$V_{\text{水}} = \dfrac{m_{\text{水}}}{\rho_{\text{水}}} = \dfrac{3\ \text{kg}}{1.0 \times 10^3\ \text{kg/m}^3} = 3 \times 10^{-3}\ \text{m}^3$$</p>
+
+            <p><b>（2）水对容器底部的压强：</b>
+            $$p_{\text{水}} = \rho_{\text{水}}\,g\,h_{\text{水}} = 1.0 \times 10^3\ \text{kg/m}^3 \times 9.8\ \text{N/kg} \times 0.2\ \text{m} = 1960\ \text{Pa}$$</p>
+
+            <p><b>（3）柱体乙的密度：</b><br>
+            设 $S_{\text{乙}} = S$，则 $S_{\text{甲}} = 2S$。<br>
+            乙浸没在甲中，$V_{\text{乙}} = V_{\text{排}}$。水位升高 $\Delta h = 0.05\ \text{m}$，由 $V_{\text{排}} = S_{\text{甲}}\,\Delta h$ 得：
+            $$V_{\text{乙}} = S_{\text{甲}}\,\Delta h = 2S \times 0.05\ \text{m} = 0.1\,S\ \text{m}^3$$
+            乙的体积又等于 $V_{\text{乙}} = S_{\text{乙}}\,h_{\text{乙}} = S\,h_{\text{乙}}$，故：
+            $$h_{\text{乙}} = 0.1\ \text{m}$$</p>
+
+            <p>实心柱体放在水平面上，$p_{\text{乙}} = \dfrac{F}{S} = \dfrac{G}{S} = \dfrac{\rho_{\text{乙}}\,V_{\text{乙}}\,g}{S_{\text{乙}}} = \rho_{\text{乙}}\,g\,h_{\text{乙}}$，所以：
+            $$\rho_{\text{乙}} = \dfrac{p_{\text{乙}}}{g\,h_{\text{乙}}} = \dfrac{1960\ \text{Pa}}{9.8\ \text{N/kg} \times 0.1\ \text{m}} = 2 \times 10^3\ \text{kg/m}^3$$
+            </p>
+
+            <p class="ans-line">故答案为：(1) $3 \times 10^{-3}\ \text{m}^3$　(2) 1960 Pa　(3) $\rho_{\text{乙}} = 2 \times 10^3\ \text{kg/m}^3$。</p>
+        </details>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>初中物理 · 浮力基础知识 &nbsp;|&nbsp; 浮力 · 阿基米德原理 · 浮沉条件 · 应用</p>
+</div>
+
+<script src="../nav.js"></script>
+</body>
+</html>

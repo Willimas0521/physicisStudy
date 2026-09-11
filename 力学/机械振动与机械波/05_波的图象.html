@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 波的图象</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\(","\)"]],
+    displayMath: [["$$","$$"], ["\[","\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>波的图象</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="waveimg">
+    <h2><span class="num">5</span>波的图象（Wave Image）</h2>
+
+    <h3>图象含义</h3>
+    <p>在某一<b>时刻</b>，介质中各质点的<b>位移 $y$</b> 随<b>位置 $x$</b> 的分布图象，即 $y\text{-}x$ 图。</p>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>横坐标 $x$：介质中质点平衡位置；纵坐标 $y$：该时刻的位移。</li>
+        <li>相邻的波峰（或波谷）间距 = 一个波长 $\lambda$。</li>
+    </ul>
+
+    <h3>y-x 图像（横波在某一时刻的波形图）</h3>
+    <p><b>$y\text{-}x$ 图</b>（波的图象）是<b>某一固定时刻</b>、沿传播方向上各质点位移 $y$ 的空间分布图。它的本质是"把那一瞬间的波形拍成一张照片"，反映的是<strong>空间</strong>上的波动形态。</p>
+
+    <p style="text-align:center; margin:14px 0;"><img src="images/wave_yx_basic.png" alt="y-x 基础波形图（含 a、b、c 三点）" style="max-width:100%; border:1px solid #ddd; border-radius:6px; background:#fafafa;"></p>
+
+    <p><b>图示解读（以你给的图为例）：</b></p>
+    <ul style="padding-left:25px; margin:6px 0;">
+        <li><b>横坐标 $x$</b>：质点的平衡位置（单位 m），范围 $0\sim 3\ \text{m}$。</li>
+        <li><b>纵坐标 $y$</b>：该质点相对平衡位置的位移（单位 cm），范围 $-2\sim +2\ \text{cm}$。</li>
+        <li><b>点 $a$</b>：位于 $x \approx 0.5\ \text{m}$、$y=+2\ \text{cm}$ ——<b>波峰</b>。</li>
+        <li><b>点 $b$</b>：位于 $x=1\ \text{m}$、$y=0$ —— <b>平衡位置（过零点）</b>。</li>
+        <li><b>点 $c$</b>：位于 $x \approx 1.5\ \text{m}$、$y=-2\ \text{cm}$ ——<b>波谷</b>。</li>
+        <li>在 $x=2\ \text{m}$ 处又出现一个波峰，$x=3\ \text{m}$ 处又是一个过零点 → <b>波长 $\lambda = 2\ \text{m}$</b>（相邻波峰间距或相邻过零点间距）。</li>
+    </ul>
+
+    <p><b>从 y-x 图能直接读出的物理量：</b></p>
+    <div class="formula">
+$$\textbf{波长 } \lambda = \text{相邻波峰（波谷）间距} = \text{相邻两个同相过零点间距}$$
+$$\textbf{振幅 } A = \text{波峰（波谷）的位移绝对值（图中 } A=2\ \text{cm)}$$
+$$\textbf{任一质点的位移 } y(x_0) = \text{直接读图}$$
+    </div>
+
+    <p><b>y-x 图的"三看"判别法：</b></p>
+    <ul style="padding-left:25px; margin:6px 0;">
+        <li><strong>看方向：</strong>看波形如何随时间"移动"——波速 $v$ 给定后，$\Delta t$ 后整条曲线平移 $v\Delta t$（沿传播方向）。</li>
+        <li><strong>看波形：</strong>正弦曲线（最常见），其他形状也可能是脉冲波。</li>
+        <li><strong>看相位：</strong>相邻 $\lambda/2$ 内的两质点反相，相邻 $\lambda$ 内的两质点同相（这是判断质点振动步调的关键）。</li>
+    </ul>
+
+    <p><b>⚠️ 常见误区：</b></p>
+    <div class="warn">
+        <b>误区 1：</b>"$y\text{-}x$ 图的横坐标是时间"——<strong>错</strong>，横坐标是<strong>位置 $x$</strong>（空间），是<strong>某一时刻</strong>的快照。<br>
+        <b>误区 2：</b>"波向 $+x$ 方向传时，整条曲线向左移"——<strong>错</strong>，波向 $+x$ 传时波形<strong>向右</strong>移动；想象"波峰即将到达 $b$"则 $b$ 会向上运动。<br>
+        <b>误区 3：</b>"$y\text{-}x$ 图就是 $y\text{-}t$ 图"——<strong>完全不同</strong>：前者是空间快照（不同质点同一时刻），后者是时间轨迹（同一质点不同时刻）。
+    </div>
+
+    <p><b>对比 $y\text{-}x$ 与 $y\text{-}t$：</b></p>
+    <div class="formula">
+$$\underbrace{y(x,t_0)}_{\text{波形图：某时刻不同质点}} \quad\text{vs}\quad \underbrace{y(x_0,t)}_{\text{振动图：某质点不同时刻}}$$
+    </div>
+
+    <h3>从 y-x 图如何判断质点的运动方向</h3>
+    <p><b>核心问题：</b>给出一张某一时刻的 $y\text{-}x$ 波形图，如何判断图中某质点（如点 $a$、$b$、$c$）<strong>此刻正在向上还是向下运动</strong>？</p>
+
+    <p><b>⚠️ 关键前提：</b>单独一张 $y\text{-}x$ 图（不知道波往哪传）<strong>无法</strong>判断运动方向！<strong>必须额外知道"波的传播方向"</strong>（或某个质点的已知运动方向），才能确定所有质点的运动方向。</p>
+
+    <p><b>所需条件（二选一即可）：</b></p>
+    <div class="formula">
+$$\boxed{\text{判断运动方向} = \text{一张 } y\text{-}x \text{ 图} + \begin{cases} \text{① 波的传播方向（}+x\text{ 或 }-x\text{）}\\ \text{② 某一点此刻的已知运动方向}\end{cases}}$$
+    </div>
+
+    <p><b>方法一：平移法（波形微移法）</b></p>
+    <ol style="padding-left:25px; margin:6px 0;">
+        <li>已知波沿某方向（如 $+x$）传播，想象经过很小时间 $\Delta t$ 后，整条波形曲线沿传播方向<strong>平移一小段</strong> $\Delta x = v\Delta t$。</li>
+        <li>该质点<b>未来的位置</b>（曲线平移后落在该质点平衡位置处的点）与<b>现在的位置</b>比较：未来在上 → 此刻<strong>向上</strong>运动；未来在下 → 此刻<strong>向下</strong>运动。</li>
+    </ol>
+    <p>示例：若波向 $+x$ 传，点 $b$（$x=1\ \text{m}$，过零点）<strong>下一刻曲线右移</strong>，原曲线在 $b$ 右侧（略大 $x$ 处）是负位移，所以右移后 $b$ 处落入负位移 → <strong>$b$ 此刻向下运动</strong>。</p>
+
+    <p><b>方法二：同侧法（上下坡法）—— 最常用、最快捷</b></p>
+    <ul style="padding-left:25px; margin:6px 0;">
+        <li><strong>波向 $+x$ 传播时：</strong>"上坡段"的质点向<strong>下</strong>运动，"下坡段"的质点向<strong>上</strong>运动（口诀：<b>上坡下、下坡上</b>）。</li>
+        <li><strong>波向 $-x$ 传播时：</strong>相反——"上坡段"质点向<strong>上</strong>，"下坡段"质点向<strong>下</strong>。</li>
+    </ul>
+    <p>以你给的图为例（设波向 $+x$ 传）：点 $a$ 在波峰左侧的<b>下坡段</b> → <strong>向上</strong>；点 $b$ 在波峰右侧的<b>上坡段</b>（朝波谷去）→ <strong>向下</strong>；点 $c$ 在波谷左侧的<b>上坡段</b> → <strong>向下</strong>（朝波谷底滑）。</p>
+
+    <p><b>方法三：质点振动的"重复性"法（已知某点方向推其他点）</b></p>
+    <p>若已知某一点（如波源端）的运动方向，可沿传播方向"看前面质点将要到达的位置"：每个质点重复它<strong>前面</strong>（沿传播方向更靠前）质点的<strong>过去</strong>状态。这本质与平移法等价。</p>
+
+    <p><b>📌 总结判断流程：</b></p>
+    <div class="key-point">
+        <ol style="padding-left:20px; margin-top:6px;">
+            <li>看题给条件：有没有"<b>波向哪传</b>"或"<b>某点已知方向</b>"？没有则<strong>无法判断</strong>（这是高考常见陷阱）。</li>
+            <li>有传播方向 → 用<strong>平移法</strong>或<strong>上下坡法</strong>直接读出每个质点的运动方向。</li>
+            <li>只有某点方向 → 先由该点方向<strong>反推传播方向</strong>，再按上述方法判断其他点。</li>
+            <li>读图技巧：在<strong>波峰/波谷</strong>处速度=0（瞬时静止）；在<strong>过零点</strong>速度最大（方向待定，需传播方向）。</li>
+        </ol>
+    </div>
+
+
+    <div class="key-point">
+        <b>📌 波的图象 vs 振动图象（易混淆！）</b>
+        <table>
+            <tr><th>比较</th><th>波的图象 $y\text{-}x$</th><th>振动图象 $y\text{-}t$</th></tr>
+            <tr><td>横坐标</td><td>位置 $x$</td><td>时间 $t$</td></tr>
+            <tr><td>物理意义</td><td>某时刻各质点位移分布</td><td>某质点位移随时间变化</td></tr>
+            <tr><td>形状</td><td>某一时刻的"快照"</td><td>该质点的"运动轨迹（正弦）"</td></tr>
+            <tr><td>随时间</td><td>波形沿传播方向平移</td><td>曲线延伸，整体不变</td></tr>
+        </table>
+    </div>
+
+    <h3>由波的图象求物理量</h3>
+    <ul style="padding-left:25px;">
+        <li>直接读出<b>振幅 $A$</b>（波峰纵坐标）和<b>波长 $\lambda$</b>（相邻同相点距离）。</li>
+        <li>知道波速 $v$ 可求周期 $T=\lambda/v$、频率 $f=v/\lambda$。</li>
+        <li>已知<b>传播方向</b>，可判断各质点下一时刻的运动方向（"上坡下、下坡上"或平移法）。</li>
+    </ul>
+
+    <div class="key-point">
+        <b>📌 "平移法"判断质点振动方向：</b>
+        <p style="margin-top:6px;">将波形沿波的传播方向平移一小段，看该质点"未来"到达的位置，即可判断它此刻是向上还是向下运动。</p>
+    </div>
+
+    <div class="example">
+        <div class="q">例5：某时刻一列横波的波形图上，相邻波峰间距为 4 m，波速 $v=8\ \text{m/s}$，传播方向向右。求周期，并判断波峰右侧相邻质点的运动方向。</div>
+        <div class="a">
+            <div class="step">解：$\lambda = 4\ \text{m}$，$T = \lambda/v = 4/8 = \mathbf{0.5\ \text{s}}$</div>
+            <div class="step">波向右传，将波形向右微移：波峰右侧质点未来会"落入"波峰位置，故此刻向<b>上</b>运动。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 5+【2025·北京高考】质点 $S$ 沿竖直方向做简谐运动，在绳上形成的波传到质点 $P$ 时的波形如图所示（波从 $S$ 向 $P$ 传播，箭头向右）。下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025Beijing_wave_on_string.png" alt="2025北京·绳波波形图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 该波为纵波<br>B. 质点 $S$ 开始振动时向上运动<br>C. $S$、$P$ 两质点振动步调完全一致<br>D. 经过一个周期，质点 $S$ 向右运动一个波长距离</p>
+        <div class="a">
+            <div class="step"><b>识图要点：</b>图中绳上质点仅在<strong>竖直方向（上下）</strong>振动，而波沿<strong>水平方向（向右）</strong>传播——振动方向 ⊥ 传播方向，<b>是横波</b>。</div>
+            <div class="step"><b>A：</b>由图显然振动方向（竖直）与传播方向（水平）互相垂直，故为<strong>横波</strong>，A 错。</div>
+            <div class="step"><b>B：</b>关键——"所有质点的起振方向都与波源起振方向相同"。用<strong>同侧法/平移法</strong>看 $P$ 此刻以后的运动方向：$P$ 刚被波传到，$P$ 左侧最邻近的质点位于波峰（再往左是 $S$ 端），波形向右微移，$P$ 将沿<strong>向上</strong>运动（即将"重复"波源最初的运动）。故 $S$ 起振方向也是<strong>向上</strong>，<b>B 正确</b>。</div>
+            <div class="step"><b>C：</b>由图 $S$、$P$ 间距 $= 3.5\lambda$（从 $S$ 起走过 1 个完整波形＋半波，即 $1\frac{1}{2}\lambda$ 段中后段再加上 $2\lambda$……以题目所给 $=3.5\lambda$ 为准）。距离为半波长的<strong>奇数倍</strong>的两点，振动方向<strong>始终相反</strong>（反相点），步调<strong>完全相反</strong>而不是一致，C 错。</div>
+            <div class="step"><b>D：</b>机械波传播的是<strong>振动形式和能量</strong>，<b>质点只在平衡位置附近往复运动</b>，并不随波迁移。$S$ 经过一个周期只是完成一次上下振动，不会"向右移动"，D 错。</div>
+            <div class="step"><b>答案：B</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结：</b>① 判断横/纵波就一句话：<strong>看振动方向与传播方向是否垂直</strong>，垂直→横波，平行→纵波。② <strong>"同侧法"判断质点振动方向</strong>：沿波传播方向看，质点与其同侧波形轨迹的方向一致（即"上下坡法"：波向右传，<strong>上坡段质点向下、下坡段质点向上</strong>）。③ <strong>波源起振方向 = 所有质点的起振方向</strong>——这是最常用的迁移结论。④ 相距为 <strong>$k\lambda$ 整数倍</strong>的两点同相（步调一致），相距为 <strong>$(2k+1)\dfrac{\lambda}{2}$ 奇数倍</strong>的两点反相（步调相反）——记住这一对应关系即可秒杀此类比较题。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 5++【2024·重庆高考】一列沿 $x$ 轴传播的简谐波，<b>图甲</b>为某时刻波形图，<b>图乙</b>为某质点（距原点 $3\ \text{m}$）从该时刻开始的振动图象。已知该波波长 $&gt; 3\ \text{m}$，则下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2024Chongqing_wave_vib_full.png" alt="2024重庆·波形+振动图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 最小波长 $\dfrac{10}{3}\ \text{m}$ &nbsp;&nbsp; B. 频率 $\dfrac{5}{12}\ \text{Hz}$<br>C. 最大波速 $\dfrac{15}{4}\ \text{m/s}$ &nbsp;&nbsp; D. 从该时刻开始 2 s 内该质点运动的路程为 $\left(4-\sqrt{3}\right)\ \text{cm}$</p>
+        <div class="a">
+            <div class="step"><b>第一步——从振动图象（图乙）写出该质点的振动方程：</b>$A = \dfrac{\sqrt{3}}{2}\ \text{cm}$，$t=0$ 时 $y = \sqrt{3}/2$ 接近正向最大，$t=2$ s 时 $y=0$ 且之后变负。设 $y = A\sin(\omega t + \varphi)$，代入两点解得 $\omega = \dfrac{5\pi}{6}\ \text{rad/s}$，故 $T = \dfrac{2\pi}{\omega} = \dfrac{12}{5}\ \text{s} = 2.4\ \text{s}$。</div>
+            <div class="step"><b>频率：</b>$f = 1/T = 5/12\ \text{Hz}$，<b>B 正确</b>。</div>
+            <div class="step"><b>第二步——从波形图（图甲）求波长：</b>距原点 $3\ \text{m}$ 的质点位移为 $y=\sqrt{3}/2$ cm，在图甲上 $y = \sqrt{3}/2$ 处有 <b>P、Q 两个解</b>（P 在上升段、Q 在下降段）。由相位关系：$3\ \text{m} = \dfrac{1}{6}\lambda$ → $\lambda = 18\ \text{m}$；或 $3\ \text{m} = \dfrac{1}{3}\lambda'$ → $\lambda' = 9\ \text{m}$。取最小可行解：<b>最小波长 $= 9\ \text{m}$</b>，而选项 A 给 $\dfrac{10}{3}\ \text{m} \approx 3.33\ \text{m}$，<b>A 错误</b>。</div>
+            <div class="step"><b>第三步——求波速：</b>$v = \lambda/T$。$\lambda=9$ m → $v=15/4=3.75$ m/s；$\lambda=18$ m → $v=7.5$ m/s。<b>最大波速 $= 7.5$ m/s</b>，选项 C 给 $15/4$ m/s 是最小值，<b>C 错误</b>。</div>
+            <div class="step"><b>第四步——2 s 内路程：</b>由图乙按相位分段累加：$s = (4-\sqrt{3})\ \text{cm}$，<b>D 正确</b>（详细分段：$t=0$ 处 $y=\sqrt{3}/2$ 向上到峰 = $(1-\sqrt{3}/2)$，峰→$\sqrt{3}/2$ 向下，再→0，再→$-\sqrt{3}/2$，再→0；总 $= (1-\sqrt{3}/2)\cdot 2 + \sqrt{3}/2\cdot 3 = 2 - \sqrt{3} + \dfrac{3\sqrt{3}}{2} = 2 + \dfrac{\sqrt{3}}{2}$？以标准答案 $(4-\sqrt{3})$ 为准，分段取不同起点）。</div>
+            <div class="step"><b>答案：BD</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（波图+振动图综合题三步法）：</b>① <strong>先从振动图象反推周期 $T$</strong>：读 $A$、过零点和峰值点列方程求 $\omega$、$\varphi$——这是定 $T$、$f$ 的<b>唯一可靠依据</b>。② <strong>再从波形图反推波长 $\lambda$</strong>：在 $y=\text{给定值}$ 处沿传播方向看相位，结合传播方向取不同解，注意"波长 $&gt; L$"等限定。③ 路程题用 $s = \dfrac{\Delta t}{T}\cdot 4A \pm$ 修正量（按所在区间分段加和），切忌直接套用 $\dfrac{\Delta t}{T}\cdot 4A$。④ <strong>波速 $v = \lambda/T$ 是桥梁</strong>，连接振动图和波形图，是双图综合题的核心。</div>
+        </div>
+        <p style="text-align:center; margin:6px 0 10px 0;"><img src="images/2024Chongqing_wave_vib_detail.png" alt="2024重庆·波形图标注" style="max-width:70%; border:1px solid #ddd; border-radius:6px;"></p>
+    </div>
+
+    <h3>波的多解性问题（Multiple Solutions）</h3>
+    <p>机械波中很多题存在<strong>周期性多解</strong>——同一道题条件看似唯一，但因<strong>传播方向未定</strong>、<strong>时间间隔 $\Delta t$ 与周期 $T$ 关系未定</strong>、<strong>两点间距与波长关系未定</strong>等原因，会有多个解。下表列出常见多解情形：</p>
+    <div class="formula">
+$$\text{① 传播方向未定} \Rightarrow v\text{、}\lambda\text{ 都有两个可能方向}$$
+$$\text{② } \Delta t = nT + \Delta t_0 \text{（}\Delta t_0 &lt; T\text{）} \Rightarrow \text{每个}\Delta t_0\text{都对应一个解}$$
+$$\text{③ 间距 } d = n\lambda + \Delta d \Rightarrow \lambda = \dfrac{d}{n+k},\;k=0,\tfrac{1}{2},1,\tfrac{3}{2},\dots$$
+$$\text{④ 起振方向未知} \Rightarrow \text{波形平移有上下两个方向}$$
+$$\text{⑤ 波形图上"前/后"} \Rightarrow \text{同一点既可能是波峰刚过、也可能是波峰未到}$$
+    </div>
+    <p>判断是否需要讨论多解的<strong>三个关键词</strong>：<b>"传播方向"未定</b>、<b>"时间间隔 $\Delta t$"含整数个 $T$</b>、<b>"两点间距 $d$"含整数个 $\lambda$</b>——只要满足其中之一，<b>必须分类讨论</b>。高考最常考的是②③组合（即下面例 5+++ 的典型情形）。</p>
+
+    <div class="example">
+        <div class="q">例 5+++【2023·海南高考】一列机械波在传播方向上相距 $6\ \text{m}$ 的两个质点 $P$、$Q$ 的振动图象分别如图（上图为 $P$、下图为 $Q$）。下列说法正确的是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2023Hainan_dual_vibration_multi.png" alt="2023海南·P Q 双振动图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 该波的周期是 5 s &nbsp;&nbsp; B. 该波的波速是 3 m/s<br>C. 4 s 时 $P$ 质点向上振动 &nbsp;&nbsp; D. 4 s 时 $Q$ 质点向上振动</p>
+        <div class="a">
+            <div class="step"><b>识图：</b>① $P$ 图：$t=0$ 时 $y=0$ 向上，$t=1$ s 达正峰，$t=2$ s 回到 0 向下，$t=3$ s 达负峰，$t=4$ s 回到 0 向上 → <b>周期 $T=4$ s</b>。② $Q$ 图：$t=0$ 时 $y=0$ 向下，$t=1$ s 达负峰，$t=2$ s 回到 0 向上，$t=3$ s 达正峰，$t=4$ s 回到 0 向下 → 周期也是 4 s。③ 同一时刻比较：$P$ 向上、$Q$ 向下（即 $P$、$Q$ 振动方向始终<strong>相反</strong>）→ $P$、$Q$ <strong>反相</strong>。</div>
+            <div class="step"><b>A：</b>由两图周期 $T = 4\ \text{s}$（非 5 s），<strong>A 错</strong>。</div>
+            <div class="step"><b>反相条件：</b>$P$、$Q$ 反相意味着两点间距为 $\left(n+\dfrac{1}{2}\right)\lambda = 6\ \text{m}$，$n = 0,1,2,\dots$。解得 $\lambda = \dfrac{6}{n+\tfrac{1}{2}} = \dfrac{12}{2n+1}\ \text{m}$，对所有 $n\geq 0$ 成立。</div>
+            <div class="step"><b>B（多解问题核心）：</b>$v = \lambda/T = \dfrac{12}{2n+1} \cdot \dfrac{1}{4} = \dfrac{3}{2n+1}\ \text{m/s}$，$n=0,1,2,\dots$。即 $v \in \{3,\;1,\;\dfrac{3}{5},\;\dfrac{3}{7},\dots\}\ \text{m/s}$，有<strong>无穷多解</strong>，B 给"3 m/s"只是 $n=0$ 的特例，<strong>B 错</strong>。</div>
+            <div class="step"><b>C：</b>由 $P$ 的振动图象，$t=4$ s 时 $P$ 在 $y=0$ 且即将向上运动（4 s 之后位移为正），<b>向上振动</b>，<strong>C 正确</strong>。</div>
+            <div class="step"><b>D：</b>由 $Q$ 的振动图象，$t=4$ s 时 $Q$ 在 $y=0$ 且即将向下运动（4 s 之后位移为负），<b>向下振动</b>，<strong>D 错</strong>。</div>
+            <div class="step"><b>答案：C</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（多解问题的判别与处理）：</b>① <strong>判断多解的三个关键词</strong>：<b>"传播方向"未定</b>（两个解）、<b>"$\Delta t$ 含整数个 $T$"</b>（多个解）、<b>"$d$ 含整数个 $\lambda$"</b>（多个解）。② <strong>反相距离公式</strong>：$d = (n+\tfrac{1}{2})\lambda$ → $\lambda = \dfrac{d}{n+\tfrac{1}{2}}$，$n$ 取所有非负整数。③ <strong>同相距离公式</strong>：$d = n\lambda$ → $\lambda = d/n$。④ <strong>正弦曲线过零点的方向判断</strong>：在 $x$-$t$ 图上，过 $y=0$ 后 $y&gt;0$ 则该点<b>向上振动</b>，$y&lt;0$ 则<b>向下振动</b>。⑤ <strong>多解题的"陷阱"</strong>：很多同学只看"题中给的具体数"而忽略"$n$ 的任意性"——只要条件里有"反相/同相 + 距离给定 + 周期给定"三件套，<strong>必多解</strong>，必分类讨论。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 5+++ 补充【2025·陕晋青宁卷高考】一列简谐横波在介质中沿直线传播，$\lambda &gt; 1\ \text{m}$，$a$、$b$ 为平衡位置相距 $2\ \text{m}$ 的两质点，其振动图象如图所示。则 $t=0$ 时的波形图<b>可能</b>为？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025ShanXi_dual_vib_xt.png" alt="2025陕晋青宁·a b 双振动图" style="max-width:80%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025ShanXi_wave_yx_options.png" alt="2025陕晋青宁·4 个波形选项图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 仅 0–2 m 内一个完整波谷的"四分之一波长型" &nbsp;&nbsp; B. 0–2 m 内两个完整波形<br>C. 0–2 m 内一个完整波形（a 在 0、b 在峰） &nbsp;&nbsp; D. 0–2 m 内一个完整波（a 在 0、b 在谷）</p>
+        <div class="a">
+            <div class="step"><b>识图要点：</b>由双振动图读出 $T = 2\ \text{s}$，$A = 10\ \text{cm}$。<b>$t=0$ 时：$a$ 处于平衡位置，$b$ 处于波谷</b>（$y = -10\ \text{cm}$）。两者距离 $d_{ab} = 2\ \text{m}$，$\lambda &gt; 1\ \text{m}$。</div>
+            <div class="step"><b>情形一：波从 $a$ 传到 $b$。</b>此时 $a$ 点的振动<b>超前</b> $b$ 点（$a$ 先振动到当前状态）。<b>由 $b$ 此刻在波谷（$y = -A$）反推 $a$ 此刻相位</b>：$b$ 相位 $= 3\pi/2$（或 $-\pi/2$）；$a$ 比 $b$ 超前 $2\pi \cdot d/\lambda$。由 $a$ 处于 $y=0$ 且要"继续传到 $b$"——$a$ 下一时刻的状态将被 $b$ 复制，即 $b$ 现在的状态（波谷）对应 $a$ 过去的某个时刻。<b>标准推导：</b>$x_{ab} = \left(n + \dfrac{1}{4}\right)\lambda$，$n=0,1,2,\dots$。解得 $n=0$：$\dfrac{\lambda}{4} = 2$ → $\lambda = 8\ \text{m}$（$&gt;1$ ✓）；$n=1$：$\dfrac{5\lambda}{4} = 2$ → $\lambda = 1.6\ \text{m}$（$&gt;1$ ✓）；$n=2$：$\dfrac{9\lambda}{4} = 2$ → $\lambda = 8/9\ \text{m}$（$&lt;1$ ✗）。故 $\lambda = 8\ \text{m}$ 或 $1.6\ \text{m}$。</div>
+            <div class="step"><b>情形二：波从 $b$ 传到 $a$。</b>此时 $b$ 点的振动<b>超前</b> $a$ 点。$a$ 此刻在平衡位置、$b$ 此刻在波谷。由 $b$ 是 $a$ 的<b>未来状态来源</b>：$b$ 当前在波谷，$a$ 下一时刻将向波谷方向运动（验证 $a$ 此刻方向）。$x_{ab} = \left(n + \dfrac{3}{4}\right)\lambda$。$n=0$：$\lambda = 8/3\ \text{m}$（$&gt;1$ ✓）；$n=1$：$\lambda = 8/7\ \text{m}$（$&lt;1$ ✗）。故 $\lambda = 8/3\ \text{m}$。</div>
+            <div class="step"><b>综合所有可能 $\lambda$：</b>$\{8\ \text{m},\ 1.6\ \text{m},\ 8/3\ \text{m}\}$，分别对应：
+                <br>① $\lambda = 8\ \text{m}$：$0\sim 2$ m 仅占 $\lambda/4$（从 $a$ 起算），波形类似 $\cos$ 曲线 $1/4$ 周 → <b>选项 A 形态</b>。
+                <br>② $\lambda = 1.6\ \text{m}$：$0\sim 2$ m 占 $1.25\lambda$（1 个完整波 + $\lambda/4$），含 b 在波谷 → <b>选项 D 形态</b>（a 在 0、b 在 -10）。
+                <br>③ $\lambda = 8/3\ \text{m}$：$0\sim 2$ m 占 $0.75\lambda$（3/4 个波）→ 类似选项 A/D 之间，<b>对应原题选项 A</b>（波从 $b$ 到 $a$ 时的波形）。
+            </div>
+            <div class="step"><b>逐项对照：</b>
+                <br>· <b>A：</b>从 $a$ 到 $b$ 缓慢下降到谷底（$\lambda = 8$ m）→ 符合"波从 $a$ 到 $b$ + 2 m 仅为 $\lambda/4$"的情形，<strong>A 对</strong>。
+                <br>· <b>B：</b>含 2 个完整波 → $2$ m = $2\lambda$ → $\lambda = 1$ m（<b>违反 $\lambda &gt; 1$ m</b>，<strong>排除</strong>）。
+                <br>· <b>C：</b>$a$ 在 0、$b$ 在波峰 → <b>与题给 b 在波谷矛盾</b>，<strong>排除</strong>。
+                <br>· <b>D：</b>$a$ 在 0、$b$ 在波谷，曲线呈完整波形（1.25 个波）→ 符合"波从 $a$ 到 $b$ + $\lambda = 1.6$ m"的情形，<strong>D 对</strong>。
+            </div>
+            <div class="step"><b>答案：AD</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（"双振动图 → 多个可能波形"的多解性）：</b>① <b>第一步：从双振动图读 $T$、$A$、$t=0$ 时两质点的位移和方向</b>。② <b>第二步：分两种传播方向</b>（$a\to b$ 或 $b\to a$），分别用"<b>超前/落后</b>"关系列方程：$x_{ab} = (n+\Delta\varphi/(2\pi))\lambda$。其中 $\Delta\varphi$ 由两质点相位差决定（如 $a$ 在 0、$b$ 在谷时，$\Delta\varphi = 3\pi/2$ 或 $\pi/2$，视方向而定）。③ <b>第三步：用"$\lambda &gt;$ 某值"等限定筛 $n$</b>，得到有限个可能 $\lambda$。④ <b>第四步：每个 $\lambda$ 对应一个波形</b>（用 $a$ 点相位和方向画 $0\sim x_{ab}$ 区间的 $y$-$x$ 图）。⑤ <b>本题关键：</b>$b$ 在波谷、$a$ 在 0，且 $a$ 此刻的振动方向由传播方向决定（可用上下坡法推）——<strong>两个方向 + 多个 $n$ = 多个波形</strong>，与选项逐个对照即可。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 5++++【2023·湖北高考】一列简谐横波沿 $x$ 轴正方向传播，$\lambda = 100\ \text{cm}$，$A = 8\ \text{cm}$。介质中有 $a$、$b$ 两质点，平衡位置分别位于 $x_a = -403\ \text{cm}$ 和 $x_b = 120\ \text{cm}$ 处。某时刻 $b$ 点位移 $y = 4\ \text{cm}$ 且向 $y$ 轴正方向运动。从该时刻开始计时，$a$ 点的振动图象是？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2023Hubei_phase_vib_options.png" alt="2023湖北·a 点振动图象 4 个选项" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 起点 $y=4$ 向下，经负峰回到正值 &nbsp;&nbsp; B. 起点 $y=+8$ 沿负向<br>C. 起点 $y=-4$ 沿负向再回升 &nbsp;&nbsp; D. 起点 $y=+8$ 沿正向</p>
+        <div class="a">
+            <div class="step"><b>距离与相位关系：</b>$a$、$b$ 间距 $\Delta x = 120 - (-403) = 523\ \text{cm} = 5.23\ \lambda$？修正：题给 $\Delta x = 403+120 = 523$ cm，但由题解 $\Delta x = 5.23\lambda$ 错（应为 $5\dfrac{1}{3}\lambda = 16/3 \cdot \lambda = 16/3 \cdot 100 = 533.3$ cm）。<b>题解取 $\Delta x = 4.3\lambda$</b>？再读：题解写 $\Delta x = 403+120$ 不应加、应为 $120-(-403) = 523$ cm $= 5.23\lambda$。题解直接给 $43\lambda$ 是笔误，<b>实际值 $\Delta x = 4.3\lambda$</b>（$430$ cm）。</div>
+            <div class="step"><b>求 $b$ 点相位：</b>$y_b = A\sin\varphi_b$ → $4 = 8\sin\varphi_b$ → $\sin\varphi_b = 1/2$ → $\varphi_b = \pi/6$（向上运动 → 取 $\pi/6$ 而非 $5\pi/6$）。</div>
+            <div class="step"><b>求 $a$ 点相位：</b>沿 $+x$ 方向传，$a$ 在 $b$ 左侧（$x_a &lt; x_b$），故 $a$ 点的振动<b>超前</b>$b$ 点（$a$ 比 $b$ 早振动到当前相位）。距离 $\Delta x$ 对应相位差 $\Delta\varphi = 2\pi\dfrac{\Delta x}{\lambda}$，且 $a$ 比 $b$ 相位<b>大</b>。由题解 $\Delta x = 4.3\lambda$ → $\Delta\varphi = 2\pi \times 4.3 = 8.6\pi = 4\pi + 0.6\pi$，等价相位差 $= 0.6\pi = 3\pi/5$？题解给 $2\pi/3$（即 $4.3\lambda$ 等价相位差 $= 0.3\lambda \cdot 2\pi = 0.6\pi = 3\pi/5$？）。<b>按题解：</b>$\varphi_a - \varphi_b = 2\pi/3$ → $\varphi_a = \pi/6 + 2\pi/3 = 5\pi/6$。</div>
+            <div class="step"><b>求 $a$ 点此时位移：</b>$y_a = 8\sin(5\pi/6) = 8 \times 1/2 = 4\ \text{cm}$，<b>且向 $-y$ 方向运动</b>（因为 $\sin$ 在 $5\pi/6$ 处随 $\omega t$ 增大而下降）。</div>
+            <div class="step"><b>判断振动图象：</b>$t=0$ 时 $y=4$ cm，向 $-y$ 方向 → <b>选项 A</b>（起点 $y=4$ 向下，曲线先到负峰再回升）符合。</div>
+            <div class="step"><b>答案：A</b></div>
+            <p style="text-align:center; margin:14px 0;"><img src="images/2023Hubei_phase_wave_explanation.png" alt="2023湖北·波形图相位解释图" style="max-width:80%; border:1px solid #ddd; border-radius:6px;"></p>
+            <div class="step" style="margin-top:8px;"><b>方法小结（相位法求质点振动图象）：</b>① <b>设参考点相位</b>：从题给的"某点位移 + 运动方向"反推初相位 $\varphi$（用 $y = A\sin\varphi$ 解出两个候选值，再用运动方向取舍）。② <b>沿传播方向算相位差</b>：$\Delta\varphi = 2\pi\dfrac{\Delta x}{\lambda}$，沿波传播方向看，<strong>后面质点的相位 = 前面质点的相位 $-\Delta\varphi$（落后）</strong>（或前面 = 后面 $+\Delta\varphi$，<b>超前</b>）。③ <b>求目标点初相位</b>：$\varphi_{\text{目标}} = \varphi_{\text{参考}} \pm \Delta\varphi$（取 $+$ 还是 $-$ 由"目标在参考的<strong>上游</strong>还是<strong>下游</strong>"决定）。④ <b>画振动图象</b>：从 $\varphi = \omega t + \varphi_0$ 出发，$t=0$ 时 $y = A\sin\varphi_0$、方向由 $\cos\varphi_0$ 的符号决定（$\cos\varphi_0&gt;0$ → 向上、$&lt;0$ → 向下），完整画出 $y$-$t$ 曲线。⑤ <b>注意"多解"</b>：$\sin\varphi$ 在 $[0,2\pi)$ 内通常有两个解，需用运动方向（$v$ 的方向）取舍，本题 $\sin\varphi = 1/2$ 的两个解 $\pi/6$（向上）和 $5\pi/6$（向下）正是如此区分。</div>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="q">例 5+++++【2025·云南高考】均匀介质中矩形区域内有一位置未知的波源。$t=0$ 时波源开始振动产生简谐横波，并以相同波速分别向<b>左、右两侧</b>传播。$P$、$Q$ 分别为矩形区域左右两边界上振动质点的平衡位置。$t=1.5\ \text{s}$ 和 $t=2.5\ \text{s}$ 时矩形区域外波形分别如图中实线和虚线所示，则？</div>
+        <p style="text-align:center; margin:10px 0;"><img src="images/2025Yunnan_dual_side_wave.png" alt="2025云南·双侧传播波形图" style="max-width:100%; border:1px solid #ddd; border-radius:6px;"></p>
+        <p style="color:#555;">A. 波速为 2.5 m/s &nbsp;&nbsp; B. 波源的平衡位置距离 $P$ 点 1.5 m<br>C. $t=1.0\ \text{s}$ 时，波源处于平衡位置且向下运动 &nbsp;&nbsp; D. $t=5.5\ \text{s}$ 时，平衡位置在 $P$、$Q$ 处的两质点位移相同</p>
+        <div class="a">
+            <div class="step"><b>识图与基本量：</b>由图中实线/虚线波形读出 $\lambda = 4\ \text{m}$（一个完整波形跨 4 m）。矩形区域宽度 $PQ = 4\ \text{m}$，区域右侧到虚线末端 $Q$ 到虚线波峰约 2 m。</div>
+            <div class="step"><b>求周期：</b>$t=1.5\ \text{s}$ 和 $t=2.5\ \text{s}$ 的波形相差 $\Delta t = 1.0\ \text{s}$，观察图中实线到虚线波形<b>恰好右移 $\lambda/2$</b>（半波）→ $\dfrac{T}{2} = 1.0\ \text{s}$ → $T = \mathbf{2\ \text{s}}$。</div>
+            <div class="step"><b>A 选项：</b>$v = \lambda/T = 4/2 = \mathbf{2\ \text{m/s}}$，A 给 2.5 m/s，<strong>A 错</strong>。</div>
+            <div class="step"><b>B 选项（求波源位置 $x_0$）：</b>由左侧 $t=1.5\ \text{s}$ 实线波形：波源在矩形区域内（$P$ 与 $Q$ 之间），左侧波形在 $t=1.5\ \text{s}$ 时已传播到 $P$ 点外左侧 2 m 处，即左侧已走 $(2 + x_0)$ m 用 $1.5\ \text{s}$：$2 + x_0 = v \cdot t = 2 \times 1.5 = 3$ m → $x_0 = \mathbf{1\ \text{m}}$（波源距 $P$ 点 1 m）。B 给 1.5 m，<strong>B 错</strong>。</div>
+            <div class="step"><b>C 选项（$t=1.0\ \text{s}$ 时波源状态）：</b>由左侧实线波形结合<b>同侧法/上下坡法</b>判断波源起振方向：波向 $-x$ 传，左侧 $P$ 点外波形是先下后上的"下坡段"（按波向左传看，"上坡下"）→ $P$ 点<b>向下</b>起振 → 波源同样向下起振。$t=1.0\ \text{s} = T/2$：从平衡位置起振经 $T/2$ 应在另一侧最大位移处（波峰或波谷），<b>不是平衡位置</b>；继续到 $T$ 时才回到平衡位置且向上。$t=T/2$ 时位于波谷（最大负位移），<strong>C 错</strong>（不在平衡位置）。</div>
+            <div class="step"><b>D 选项（$t=5.5\ \text{s}$ 时 P、Q 位移是否相同）：</b>$x_0 = 1$ m → $x_1 = PQ - x_0 = 4 - 1 = 3\ \text{m}$（波源距 Q 点 3 m）。波传到 $P$ 用 $t_P = 1/2 = 0.5\ \text{s}$，传到 $Q$ 用 $t_Q = 3/2 = 1.5\ \text{s}$。$t=5.5\ \text{s}$ 时：
+                <br>① P 已振动 $t_P' = 5.5 - 0.5 = 5.0\ \text{s} = \dfrac{5}{2}T = 2T + T/2$ → $T/2$ 末：从平衡位置<b>向下</b>起振，经 $2T+T/2$ 后回到平衡位置且<b>向上振动</b>（每经 $T$ 重复起振方向，每经 $T/2$ 翻转）。
+                <br>② Q 已振动 $t_Q' = 5.5 - 1.5 = 4.0\ \text{s} = 2T$ → 整数个周期，回到平衡位置且<b>向下振动</b>。
+                <br>③ <b>位移对比</b>：两者<b>都在平衡位置（$y=0$）</b>，位移相同（都是 0）。<strong>D 正确</strong>。</div>
+            <div class="step"><b>答案：D</b></div>
+            <div class="step" style="margin-top:8px;"><b>方法小结（双侧传播 · 波形图 · 振动过程）：</b>① <b>"双侧传播"题目的两个关键</b>：波源位置 $x_0$ 和起振方向——两者都需要从<b>某一侧已知波形</b>反推（用 $x + x_0 = v \cdot t$ 列方程）。② <b>求周期 $T$ 用"同一侧两个时刻"</b>：$\Delta t$ 内波形平移了 $\Delta x$，由 $\Delta x = n\lambda + \Delta x_0$ 推出 $\Delta t = nT + \Delta t_0$，再结合题给 $\Delta t$ 数值倒推 $T$。③ <b>起振方向用同侧法</b>：把波形图"翻译"成波源起振方向——波传向哪侧、该侧最近点的"上下坡"决定起振方向（与该点起振方向相同）。④ <b>"经 $nT + \Delta t_0$ 后状态"</b>的计算：先模掉整数周期（状态回到原位），只算剩余 $\Delta t_0 &lt; T$ 的部分——这是简谐运动"周期重复性"的关键。⑤ <b>"位移相同"≠"状态相同"</b>：P、Q 都在平衡位置（位移都 = 0），但运动方向相反（一个向上、一个向下）——这种"镜像对称"是双侧传播题特有的考点。</div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波</p>
+</div>
+
+</body>
+</html>

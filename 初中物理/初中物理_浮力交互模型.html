@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初中物理 · 浮力交互模型（甲物体 / 乙容器）</title>
+<script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']] },
+        svg: { fontCache: 'global' }
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        background: #f5f7fa; color: #2c3e50; line-height: 1.7;
+    }
+    .header {
+        background: linear-gradient(135deg, #2980b9 0%, #38ef7d 100%);
+        color: white; padding: 38px 20px; text-align: center;
+        box-shadow: 0 4px 20px rgba(41,128,185,0.3);
+    }
+    .header h1 { font-size: 2em; letter-spacing: 1px; }
+    .header p { opacity: 0.92; margin-top: 6px; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 24px 18px; }
+    .layout { display: grid; grid-template-columns: 360px 1fr; gap: 22px; align-items: start; }
+    @media (max-width: 820px) { .layout { grid-template-columns: 1fr; } }
+    .panel {
+        background: white; border-radius: 14px; padding: 22px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-top: 4px solid #2980b9;
+    }
+    .panel h2 { font-size: 1.15em; color: #1f6aa5; margin-bottom: 14px; }
+    .ctrl { margin-bottom: 14px; }
+    .ctrl label { display: flex; justify-content: space-between; font-size: 0.9em; color: #34495e; margin-bottom: 5px; }
+    .ctrl label b { color: #2980b9; }
+    .ctrl input[type=range] { width: 100%; accent-color: #2980b9; }
+    .ctrl .hint { font-size: 0.78em; color: #aaa; }
+    .stage { background: #fbfdff; border: 2px dashed #b8d8f3; border-radius: 12px; padding: 12px; text-align: center; }
+    .stage svg { width: 100%; height: auto; }
+    .result { margin-top: 14px; }
+    .result .row {
+        display: flex; justify-content: space-between; align-items: baseline;
+        padding: 8px 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.95em;
+    }
+    .result .row:nth-child(odd) { background: #eef6fd; }
+    .result .row .k { color: #34495e; }
+    .result .row .v { font-weight: 700; color: #1f6aa5; font-variant-numeric: tabular-nums; }
+    .status-bar {
+        margin-top: 10px; padding: 10px 14px; border-radius: 10px; font-weight: 700; text-align: center;
+    }
+    .s-sink { background: #fde8e8; color: #c0392b; }
+    .s-float { background: #e8f6ee; color: #1e8449; }
+    .s-susp { background: #fff4e0; color: #b9770e; }
+    .warn-box { background: #fff3cd; color: #8a6d00; border-radius: 8px; padding: 8px 12px; margin-top: 10px; font-size: 0.85em; display: none; }
+    .note { font-size: 0.82em; color: #888; margin-top: 12px; }
+    .back { display: inline-block; margin: 0 0 14px; color: #2980b9; text-decoration: none; font-size: 0.9em; }
+    .back:hover { text-decoration: underline; }
+    .formula-box { background:#f0f4f8; border:1px solid #d6e2ef; border-radius:8px; padding:12px 16px; margin-top:14px; font-size:0.95em; }
+    /* ===== 左侧导航改造 ===== */
+    .sidenav {
+        position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+        background: rgba(255,255,255,0.97); border: 1px solid #e0e6ed;
+        border-radius: 14px; box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+        padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+    }
+    .sidenav .sn-title {
+        font-size: 0.85em; font-weight: 700; color: #2980b9;
+        text-align: center; margin-bottom: 10px; padding-bottom: 8px;
+        border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+    }
+    .sidenav a {
+        display: block; background: #f0f4f8; color: #34495e;
+        border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+        border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;
+        text-decoration: none; font-size: 0.85em; transition: all 0.25s;
+    }
+    .sidenav a:hover { background: #e3ecf7; border-left-color: #2980b9; }
+    @media (min-width: 1101px) { .container { margin-left: max(210px, calc((100% - 1080px) / 2)); margin-right: calc((100% - 1080px) / 2); } }
+    @media (max-width: 1100px) {
+        .sidenav {
+            position: sticky; top: 0; left: auto; width: auto;
+            max-height: none; overflow: visible; margin-bottom: 18px;
+            display: flex; flex-wrap: wrap; gap: 6px;
+        }
+        .sidenav .sn-title { width: 100%; margin-bottom: 4px; }
+        .sidenav a { display: inline-block; margin: 0; }
+        .container { margin-left: auto !important; }
+    }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>浮力交互模型</h1>
+    <p>调节"物体甲"与"容器乙"的参数，实时观察浮沉状态与两种压强变化量</p>
+</div>
+
+<div class="sidenav">
+    <div class="sn-title">🧭 页面导航</div>
+    <a href="#top">本页 · 交互模型</a>
+    <a href="初中物理_浮力基础知识.html">浮力基础知识</a>
+    <a href="初中物理_压强选择题.html">压强选择题</a>
+</div>
+
+<div class="container" id="top">
+    <a class="back" href="初中物理_浮力基础知识.html">← 返回浮力基础知识</a>
+    <div class="layout">
+
+        <!-- 控制面板 -->
+        <div class="panel">
+            <h2>① 可调变量</h2>
+
+            <div class="ctrl">
+                <label>甲的密度 ρ<sub>甲</sub> <b><span id="v_rhoA">0.6</span>×10³ kg/m³</b></label>
+                <input type="range" id="rhoA" min="0.2" max="3" step="0.1" value="0.6">
+                <div class="hint">水的密度取 1.0×10³ kg/m³；ρ<sub>甲</sub>&lt;1 漂浮，=1 悬浮，&gt;1 沉底</div>
+            </div>
+
+            <div class="ctrl">
+                <label>甲的底面积 S<sub>甲</sub> <b><span id="v_sA">0.030</span> m²</b></label>
+                <input type="range" id="sA" min="0.005" max="0.12" step="0.005" value="0.03">
+            </div>
+
+            <div class="ctrl">
+                <label>甲的高度 h<sub>甲</sub> <b><span id="v_hA">0.15</span> m</b></label>
+                <input type="range" id="hA" min="0.05" max="0.40" step="0.01" value="0.15">
+            </div>
+
+            <div class="ctrl">
+                <label>乙的底面积 S<sub>乙</sub> <b><span id="v_sB">0.10</span> m²</b></label>
+                <input type="range" id="sB" min="0.05" max="0.20" step="0.01" value="0.10">
+            </div>
+
+            <div class="ctrl">
+                <label>乙的高度 H<sub>乙</sub> <b><span id="v_hB">0.30</span> m</b></label>
+                <input type="range" id="hB" min="0.20" max="0.50" step="0.01" value="0.30">
+            </div>
+
+            <div class="ctrl">
+                <label>乙中初始水深 h<sub>0</sub> <b><span id="v_h0">0.12</span> m</b></label>
+                <input type="range" id="h0" min="0.02" max="0.25" step="0.01" value="0.12">
+            </div>
+
+            <div class="ctrl">
+                <label>液体密度 ρ<sub>液</sub> <b><span id="v_rhoL">1.0</span>×10³ kg/m³</b></label>
+                <input type="range" id="rhoL" min="0.8" max="1.3" step="0.1" value="1.0">
+            </div>
+
+            <div class="ctrl">
+                <label>g <b><span id="v_g">9.8</span> N/kg</b></label>
+                <input type="range" id="g" min="9.8" max="10" step="0.2" value="9.8">
+            </div>
+
+            <div class="warn-box" id="warn">⚠ 水面将溢出容器乙！模型按"溢出"处理：容器对桌面压力变化量为 G<sub>甲</sub>−G<sub>溢</sub>。</div>
+        </div>
+
+        <!-- 舞台 + 结果 -->
+        <div class="panel">
+            <h2>② 模拟结果</h2>
+            <div class="stage">
+                <svg id="svg" viewBox="0 0 460 380" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 容器乙 -->
+                    <rect id="vessel" x="150" y="40" width="160" height="280" fill="#f4fbff" stroke="#2980b9" stroke-width="3"/>
+                    <!-- 水体 -->
+                    <rect id="water" x="152" y="160" width="156" height="158" fill="#7ec8f2" opacity="0.75"/>
+                    <line id="waterline" x1="150" y1="160" x2="310" y2="160" stroke="#1f6aa5" stroke-width="2" stroke-dasharray="5 4"/>
+                    <!-- 物体甲 -->
+                    <g id="objWrap">
+                        <rect id="obj" x="210" y="60" width="40" height="60" fill="#e67e22" stroke="#a84300" stroke-width="2"/>
+                        <text id="objLabel" x="230" y="95" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">甲</text>
+                    </g>
+                    <!-- 标签 -->
+                    <text id="lblState" x="230" y="370" text-anchor="middle" font-size="14" font-weight="700" fill="#333">状态</text>
+                </svg>
+            </div>
+
+            <div class="status-bar" id="statusBar">—</div>
+
+            <div class="result">
+                <div class="row"><span class="k">浸没体积 V<sub>浸</sub></span><span class="v" id="r_vimm">—</span></div>
+                <div class="row"><span class="k">水面上升 Δh</span><span class="v" id="r_dh">—</span></div>
+                <div class="row"><span class="k">甲重力 G<sub>甲</sub></span><span class="v" id="r_G">—</span></div>
+                <div class="row"><span class="k">浮力 F<sub>浮</sub></span><span class="v" id="r_F">—</span></div>
+                <div class="row"><span class="k">Δp<sub>液</sub>（液体对容器底）</span><span class="v" id="r_dpL">—</span></div>
+                <div class="row"><span class="k">Δp<sub>桌</sub>（容器对桌面）</span><span class="v" id="r_dpT">—</span></div>
+            </div>
+
+            <div class="formula-box">
+                <b>计算逻辑：</b>
+                <ul style="padding-left:18px; margin-top:6px;">
+                    <li>沉底 / 悬浮：$V_{\text{浸}}=V_{\text{甲}}=S_{\text{甲}}h_{\text{甲}}$；漂浮：$V_{\text{浸}}=G_{\text{甲}}/(\rho_{\text{液}}g)$。</li>
+                    <li>$\Delta h = V_{\text{浸}}/(S_{\text{乙}}-S_{\text{甲}})$（甲占去底部面积）。</li>
+                    <li>$\Delta p_{\text{液}}=\rho_{\text{液}}g\,\Delta h$（液体深度增加所致）。</li>
+                    <li>$\Delta p_{\text{桌}}=\Delta F/S_{\text{乙}}$，其中 $\Delta F=G_{\text{甲}}-G_{\text{溢}}$；未溢出时 $\Delta F=G_{\text{甲}}$。</li>
+                </ul>
+            </div>
+            <p class="note">注：本模型假设乙容器"足够高"时不溢出；若 $h_0+\Delta h > H_{\text{乙}}$ 则判定溢出并提示，桌面压力变化量扣除溢出液重。</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const ids = ['rhoA','sA','hA','sB','hB','h0','rhoL','g'];
+const fmt = (x, n=3) => (Math.abs(x) >= 1e-4 && Math.abs(x) < 1e5) ? x.toFixed(n) : x.toExponential(2);
+
+function compute() {
+    const rhoA = +$('rhoA').value * 1000;   // kg/m3
+    const sA   = +$('sA').value;
+    const hA   = +$('hA').value;
+    const sB   = +$('sB').value;
+    const hB   = +$('hB').value;
+    const h0   = +$('h0').value;
+    const rhoL = +$('rhoL').value * 1000;
+    const g    = +$('g').value;
+
+    // 更新标签
+    $('v_rhoA').textContent = (+$('rhoA').value).toFixed(1);
+    $('v_sA').textContent   = sA.toFixed(3);
+    $('v_hA').textContent   = hA.toFixed(2);
+    $('v_sB').textContent   = sB.toFixed(2);
+    $('v_hB').textContent   = hB.toFixed(2);
+    $('v_h0').textContent   = h0.toFixed(2);
+    $('v_rhoL').textContent = (+$('rhoL').value).toFixed(1);
+    $('v_g').textContent    = g.toFixed(1);
+
+    const V_A = sA * hA;
+    const G_A = rhoA * V_A * g;
+
+    // 状态判定（与水的相对 → 用 rhoL）
+    let state, V_imm, color;
+    if (rhoA < rhoL - 1e-9) {
+        state = '漂浮'; color = '#1e8449';
+        // 漂浮：F浮=G，V_imm = G/(rhoL g)
+        V_imm = G_A / (rhoL * g);
+        // 若 V_imm > V_A（密度差极小），取全体积悬浮
+        if (V_imm > V_A + 1e-9) { state = '悬浮'; V_imm = V_A; }
+    } else if (Math.abs(rhoA - rhoL) <= 1e-9) {
+        state = '悬浮'; color = '#b9770e'; V_imm = V_A;
+    } else {
+        state = '沉底'; color = '#c0392b'; V_imm = V_A;
+    }
+
+    // 浸没高度 hi（用于绘图）
+    const hi = V_imm / sA;
+
+    // 水面上升
+    const dh = V_imm / (sB - sA);
+    const newH = h0 + dh;
+    const overflow = newH > hB + 1e-9;
+
+    // 浮力
+    const Fb = rhoL * V_imm * g;
+
+    // 溢出液重
+    let G_over = 0;
+    if (overflow) {
+        // 实际能升高的高度受 H乙 限制
+        const realDh = Math.max(hB - h0, 0);
+        G_over = rhoL * (sB - sA) * realDh * g - rhoL * V_imm * g; // 多出的排开液重需减回
+        if (G_over < 0) G_over = 0;
+    }
+
+    // 压强变化量
+    const dpL = rhoL * g * dh;                 // 液体对容器底（按实际水位升）
+    const dF_table = G_A - G_over;             // 桌面压力变化（溢出则减溢出液重）
+    const dpT = dF_table / sB;
+
+    // 输出
+    $('r_vimm').textContent = fmt(V_imm, 4) + ' m³';
+    $('r_dh').textContent   = fmt(dh, 4) + ' m';
+    $('r_G').textContent    = fmt(G_A, 2) + ' N';
+    $('r_F').textContent    = fmt(Fb, 2) + ' N';
+    $('r_dpL').textContent  = fmt(dpL, 1) + ' Pa';
+    $('r_dpT').textContent  = fmt(dpT, 1) + ' Pa';
+
+    const bar = $('statusBar');
+    bar.className = 'status-bar ' + (state === '漂浮' ? 's-float' : state === '悬浮' ? 's-susp' : 's-sink');
+    bar.textContent = '物体甲：' + state + (overflow ? '（容器溢出！）' : '');
+    $('warn').style.display = overflow ? 'block' : 'none';
+    $('lblState').textContent = '状态：' + state;
+
+    // ===== 绘制 SVG =====
+    drawSVG(sB, sA, hB, h0, dh, hA, hi, state, overflow, h0, g, rhoL);
+}
+
+function drawSVG(sB, sA, hB, h0, dh, hA, hi, state, overflow, h0v, g, rhoL) {
+    const svg = $('svg');
+    const X0 = 150, Y0 = 40;          // 容器左上
+    const Wmax = 160;                 // 容器最大宽
+    const Hmax = 280;                 // 容器最大高
+    const sScale = Wmax / 0.22;       // 面积→像素宽（0.22为最大底面积基准）
+    // 容器乙
+    const wB = Math.min(sScale * sB, Wmax);
+    const xB = X0 + (Wmax - wB) / 2;
+    const hBpx = Hmax;                // 容器高固定铺满（按比例缩放高度）
+    const vessel = $('vessel');
+    vessel.setAttribute('x', xB); vessel.setAttribute('width', wB);
+    // 高度比例：把 H乙 映射到 hBpx，实际 h0/dh 按比例
+    const hUnit = hBpx / hB;          // 每米像素
+    // 初始水面
+    const yWater0 = Y0 + hBpx - h0 * hUnit;
+    const dhpx = (overflow ? (hB - h0) : dh) * hUnit;
+    const yWaterNew = yWater0 - dhpx;
+    const water = $('water');
+    water.setAttribute('x', xB + 1);
+    water.setAttribute('width', wB - 2);
+    water.setAttribute('y', yWaterNew);
+    water.setAttribute('height', (Y0 + hBpx) - yWaterNew);
+    const wl = $('waterline');
+    wl.setAttribute('x1', xB); wl.setAttribute('x2', xB + wB);
+    wl.setAttribute('y1', yWaterNew); wl.setAttribute('y2', yWaterNew);
+
+    // 物体甲
+    const wA = Math.min(sScale * sA, wB - 4);
+    const xA = xB + (wB - wA) / 2;
+    const obj = $('obj');
+    const objWrap = $('objWrap');
+    obj.setAttribute('width', wA);
+    obj.setAttribute('x', xA);
+    // 物体高度（绘图用全高 hA，但浸没部分 hi 决定吃水深度）
+    const hApx = hA * hUnit;
+    obj.setAttribute('height', hApx);
+    $('objLabel').setAttribute('x', xA + wA/2);
+    $('objLabel').setAttribute('y', yWaterNew - hApx + hApx/2 + 4);
+
+    // 物体竖直位置
+    let yTop;
+    if (state === '沉底') {
+        yTop = Y0 + hBpx - hApx;       // 顶到容器底
+    } else if (state === '悬浮') {
+        yTop = yWaterNew - hApx;       // 完全浸没，随水面
+    } else { // 漂浮
+        const sub = hi * hUnit;        // 浸没高度像素
+        yTop = yWaterNew - sub;        // 浸没部分在水下
+    }
+    obj.setAttribute('y', yTop);
+
+    // 颜色
+    const c = state === '漂浮' ? '#1e8449' : state === '悬浮' ? '#b9770e' : '#c0392b';
+    obj.setAttribute('fill', c);
+    $('objLabel').setAttribute('fill', '#fff');
+}
+
+ids.forEach(id => $(id).addEventListener('input', compute));
+compute();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 单棒切割磁感线（自由学习）</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa; color: #2c3e50; line-height: 1.9; font-size: 18px;
+        }
+        .header {
+            background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%);
+            color: white; padding: 42px 20px 30px; text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 8px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.05em; }
+        .progress-wrap { max-width: 760px; margin: 22px auto 0; text-align: left; }
+        .progress-label { font-size: 0.9em; margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .progress-bar { height: 14px; background: rgba(255,255,255,0.25); border-radius: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#7ee8a4,#27ae60); transition: width 0.5s ease; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card {
+            background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5;
+            transition: filter 0.3s, opacity 0.3s;
+        }
+        .card h2 {
+            color: #1e3c72; font-size: 1.85em; margin-bottom: 15px; padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.8em; flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.35em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .card img { max-width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin: 10px 0; }
+        .formula {
+            background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px;
+            padding: 18px 20px; margin: 12px 0; font-size: 1.3em; color: #1a2a3a;
+            text-align: center; overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0; border-left: 4px solid #ff9800;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        .danger {
+            background: #ffebee; border-left: 4px solid #e74c3c;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 1em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 15px 20px; margin: 15px 0; border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .nav {
+            position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100;
+            background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+            border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+            max-height: calc(100vh - 140px); overflow-y: auto;
+        }
+        .nav .nav-title {
+            color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px;
+            padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px;
+        }
+        .nav a {
+            display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em;
+            padding: 7px 10px; border-radius: 6px; transition: background 0.25s;
+            border-left: 3px solid transparent;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .nav a.disabled { opacity: 0.45; cursor: not-allowed; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .level-nav {
+            display: flex; justify-content: space-between; margin-top: 18px;
+            padding-top: 16px; border-top: 1px dashed #dce4ee;
+        }
+        .level-nav button {
+            border: none; padding: 9px 20px; border-radius: 8px; cursor: pointer;
+            font-size: 0.95em; font-weight: 600; transition: background 0.2s;
+        }
+        .level-nav .prev { background: #eceff1; color: #546e7a; }
+        .level-nav .prev:hover { background: #cfd8dc; }
+        .level-nav .prev:disabled { opacity: 0.4; cursor: not-allowed; }
+        .level-nav .next { background: #3a7bd5; color: #fff; }
+        .level-nav .next:hover { background: #2a5298; }
+        .level-nav .next:disabled { background: #b0bec5; cursor: not-allowed; }
+        .level-nav .next-strong { background: linear-gradient(135deg,#27ae60,#2ecc71); }
+        .level-nav .next-strong:hover { filter: brightness(1.05); }
+        .card.level { display: block; }
+        .card.level.active-level { display: block; }
+        .quiz {
+            margin: 22px 0 4px; padding: 18px 20px; border-radius: 10px;
+            background: linear-gradient(135deg,#fff8e1,#fffdf5); border: 1px solid #ffe082;
+        }
+        .quiz .quiz-title { font-weight: 700; color: #b8860b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .quiz .q { margin: 12px 0 6px; font-weight: 600; color: #2c3e50; }
+        .quiz label.opt {
+            display: block; padding: 8px 12px; margin: 6px 0; border: 1px solid #e0e0e0;
+            border-radius: 8px; cursor: pointer; transition: background 0.2s; background: #fff;
+        }
+        .quiz label.opt:hover { background: #fffde7; }
+        .quiz label.opt.correct { background: #e8f5e9; border-color: #4caf50; }
+        .quiz label.opt.wrong { background: #ffebee; border-color: #e74c3c; }
+        .quiz input[type=radio] { margin-right: 8px; }
+        .quiz .submit-btn {
+            margin-top: 12px; background: #f39c12; color: white; border: none; padding: 8px 22px;
+            border-radius: 6px; cursor: pointer; font-size: 1em;
+        }
+        .quiz .submit-btn:hover { background: #d68910; }
+        .quiz .quiz-feedback {
+            margin-top: 12px; padding: 10px 14px; border-radius: 6px; font-weight: 600; display: none;
+        }
+        .quiz .quiz-feedback.ok { background: #e8f5e9; color: #1b5e20; border-left: 4px solid #4caf50; }
+        .quiz .quiz-feedback.no { background: #ffebee; color: #c0392b; border-left: 4px solid #e74c3c; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px; padding: 18px;
+            margin: 16px 0; text-align: center;
+        }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0;
+                display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧲 单棒切割磁感线 · 自由学习</h1>
+    <p>高中物理 · 电磁感应 · 导体棒平动/转动切割 —— 电路 · 动力学 · 能量</p>
+    <div class="progress-wrap">
+        <div class="progress-label"><span>学习进度</span><span id="pTxt">0 / 8 节</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+    </div>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">知识框架</a>
+    <a href="#models">① 单棒模型分类</a>
+    <a href="#emf">② 感应电动势</a>
+    <a href="#circuit">③ 电路与安培力</a>
+    <a href="#dynamic">④ 动力学·收尾</a>
+    <a href="#charge">⑤ 电荷量与位移</a>
+    <a href="#energy">⑥ 能量转化</a>
+    <a href="#rotate">⑦ 转动与有效长</a>
+    <a href="#gaokao">⑧ 高考经典</a>
+</nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 知识框架 -->
+<div class="card level" id="overview">
+    <h2><span class="num">▶</span>知识框架</h2>
+    <p style="color:#7f8c8d;font-size:0.92em;margin-bottom:10px;">单棒切割是电磁感应中最经典、最常考的模型：一根导体棒在磁场中运动，棒两端产生感应电动势，与外电路构成闭合回路。</p>
+    <div class="key-point">
+        <b>📌 一条主线（四步分析法）：</b>
+        <ol style="padding-left:25px; margin:8px 0;">
+            <li><b>① 动生电动势</b>：$E = BLv$（平动）或 $E=\frac12 B\omega L^2$（转动）；</li>
+            <li><b>② 闭合回路电流</b>：$I=\dfrac{E}{R+r}$，安培力 $F_\text{安}=BIL=\dfrac{B^2L^2v}{R+r}$；</li>
+            <li><b>③ 受力与运动</b>：牛顿第二定律求加速度，分析收尾（匀速）状态；</li>
+            <li><b>④ 电荷与能量</b>：$q=\dfrac{\Delta\Phi}{R+r}$，克服安培力做功等于焦耳热。</li>
+        </ol>
+    </div>
+    <div class="anim-wrap">
+        <svg width="460" height="200" viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="单棒平动切割模型">
+            <defs><marker id="sv1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#34495e"/></marker></defs>
+            <!-- 导轨 -->
+            <line x1="40" y1="70" x2="420" y2="70" stroke="#607d8b" stroke-width="4"/>
+            <line x1="40" y1="130" x2="420" y2="130" stroke="#607d8b" stroke-width="4"/>
+            <!-- 磁场（垂直纸面向里） -->
+            <g fill="#90caf9" font-size="13">
+                <text x="80" y="40">⊗ ⊗ ⊗</text><text x="180" y="40">⊗ ⊗ ⊗</text><text x="280" y="40">⊗ ⊗ ⊗</text><text x="360" y="40">⊗ ⊗ ⊗</text>
+                <text x="80" y="170">⊗ ⊗ ⊗</text><text x="180" y="170">⊗ ⊗ ⊗</text><text x="280" y="170">⊗ ⊗ ⊗</text><text x="360" y="170">⊗ ⊗ ⊗</text>
+            </g>
+            <text x="300" y="22" fill="#1565c0" font-size="12">B 垂直纸面向里</text>
+            <!-- 导体棒 -->
+            <line x1="250" y1="70" x2="250" y2="130" stroke="#c0392b" stroke-width="6"/>
+            <text x="258" y="104" fill="#c0392b" font-size="13" font-weight="700">棒</text>
+            <!-- 速度 -->
+            <line x1="250" y1="100" x2="330" y2="100" stroke="#2e7d32" stroke-width="3" marker-end="url(#sv1)"/>
+            <text x="332" y="104" fill="#2e7d32" font-size="13" font-weight="700">v</text>
+        </svg>
+    </div>
+    <p style="margin-top:10px;color:#7f8c8d;font-size:0.9em;">💡 本页为自由学习模式，所有小节都能直接查看；每节底部配小测验，仅作自我检测。</p>
+    <div class="level-nav">
+        <button class="prev" data-prev="overview" disabled>← 返回总览</button>
+        <button class="next" data-next="models">下一节 →</button>
+    </div>
+</div>
+
+<!-- ① 单棒模型分类 -->
+<div class="card level" id="models">
+    <h2><span class="num">1</span>单棒模型分类</h2>
+    <p>高考中"单棒在磁场中运动"可以按"棒本身是否提供电源"与"外电路是电阻还是电容"分成几类。下面把最常见的四类拎出来，先建立整体印象。</p>
+
+    <h3>1．无外力 + 电阻 + 单棒 + 有初速度</h3>
+    <div class="key-point">
+        <b>📌 初始条件：</b>轨道水平且光滑，导体棒有初速度 $v_0$，向右为正方向；棒电阻不计，导轨间接有定值电阻 $R$。
+    </div>
+    <p><b>运动分析：</b></p>
+    <ul style="padding-left:25px; margin:8px 0;">
+        <li>棒以 $v_0$ 切割磁感线，产生感应电动势 $E=BLv$；</li>
+        <li>闭合回路中有感应电流 $I=\dfrac{BLv}{R}$；</li>
+        <li>棒受到向左的安培力 $F_\text{安}=BIL=\dfrac{B^2L^2v}{R}$；</li>
+        <li>由牛顿第二定律，$-F_\text{安}=ma$，即棒从 $v_0$ 开始<b>减速</b>。</li>
+    </ul>
+    <p>随着速度减小，安培力减小，加速度也减小——这是<b>加速度减小的减速运动</b>。最终速度趋近于 0，棒静止。</p>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; margin:12px 0;">
+        <div style="flex:1; min-width:220px;"><img src="images/单棒_无外力电阻初速度.png" alt="无外力电阻模型" style="width:100%;"></div>
+        <div style="flex:1; min-width:220px;"><img src="images/单棒_无外力电阻_vt.png" alt="无外力电阻 v-t 图" style="width:100%;"></div>
+    </div>
+    <div class="formula">$$v(t):\ v_0 \xrightarrow{\text{加速度减小的减速}} 0$$</div>
+    <p><b>能量规律：</b>导体棒的初动能全部转化为电阻 $R$ 上的焦耳热，即</p>
+    <div class="formula">$$Q = \frac12 mv_0^2$$</div>
+    <p><b>动量规律：</b>安培力的冲量等于杆的动量变化量，即</p>
+    <div class="formula">$$-\,B\,L\,q = 0 - mv_0 \quad \Rightarrow \quad q = \frac{mv_0}{BL}$$</div>
+    <p>又因为 $q=\dfrac{\Delta\Phi}{R}=\dfrac{BLx}{R}$，可进一步求出全过程棒的位移 $x=\dfrac{mv_0R}{B^2L^2}$。</p>
+
+    <h3>2．有外力 + 电阻 + 单棒</h3>
+    <div class="key-point">
+        <b>📌 外力来源：</b>可以是水平拉力 $F$、竖直重力 $G$、斜面上重力的分力 $mg\sin\theta$ 等。这里以水平恒力 $F$ 为例。
+    </div>
+    <p>棒从静止出发，初始速度小，安培力小，$F>F_\text{安}$，加速；随着速度增大，安培力 $F_\text{安}=\dfrac{B^2L^2v}{R+r}$ 增大，加速度减小。最终 $F=F_\text{安}$，加速度为零，速度达到最大收尾值 $v_m$。</p>
+    <div style="max-width:420px; margin:12px auto;"><img src="images/单棒_有外力电阻_vt.png" alt="有外力电阻 v-t 图" style="width:100%;"></div>
+    <div class="formula">$$v_m = \frac{F(R+r)}{B^2L^2}$$</div>
+    <p>如果是竖直下落（只受重力），收尾速度 $v_m=\dfrac{mg(R+r)}{B^2L^2}$；如果是光滑斜面下滑，则 $v_m=\dfrac{mg\sin\theta\,(R+r)}{B^2L^2}$。</p>
+
+    <h3>3．无外力 + 电源 + 单棒</h3>
+    <p>导轨回路中串入电动势为 $E$ 的电源（方向使棒向右加速）。闭合开关后，电源提供电流，棒在磁场中受安培力向右运动。棒一旦运动，又产生反向感应电动势 $E_\text{感}=BLv$，削弱回路电流。</p>
+    <div style="max-width:420px; margin:12px auto;"><img src="images/单棒_无外力电源.png" alt="无外力电源模型" style="width:100%;"></div>
+    <p>电流随速度增大而减小，安培力减小，加速度减小。当 $BLv_m = E$ 时，回路电流为零，安培力为零，棒以</p>
+    <div class="formula">$$v_m = \frac{E}{BL}$$</div>
+    <p>匀速运动。全过程电源输出的电能转化为棒的动能。</p>
+
+    <h3>4．有外力 + 电容 + 单杆</h3>
+    <p>电容器并联在导轨两端，外力 $F$ 水平向右拉棒。棒运动时切割产生电动势 $E=BLv$，给电容充电，电容器两端电压 $U_C$ 随 $v$ 增大而升高。</p>
+    <div style="max-width:420px; margin:12px auto;"><img src="images/单棒_有外力电容.png" alt="有外力电容模型" style="width:100%;"></div>
+    <p>若回路电阻可忽略，则 $U_C = BLv$。电容器电荷量 $Q_C = C\,U_C = CBLv$，于是回路电流</p>
+    <div class="formula">$$I = \frac{dQ_C}{dt} = C\,B\,L\,\frac{dv}{dt} = C\,B\,L\,a$$</div>
+    <p>对棒列牛顿第二定律：</p>
+    <div class="formula">$$F - B\,I\,L = ma \quad \Rightarrow \quad F - B^2L^2C\,a = ma$$</div>
+    <p>整理得</p>
+    <div class="formula">$$a = \frac{F}{m + B^2L^2C}$$</div>
+    <div class="key-point">
+        <b>📌 核心结论：</b>恒外力 + 电容 + 无电阻导轨，棒做<b>匀加速直线运动</b>，加速度 $a=\dfrac{F}{m+B^2L^2C}$。这是与"电阻模型"截然不同的运动形态。
+    </div>
+
+    <h3>5．两类电容补充模型</h3>
+    <table>
+        <tr><th>模型</th><th>电路特征</th><th>运动特征</th></tr>
+        <tr><td><b>电容 + 单棒 + 有初速度</b></td><td>电容跨接导轨，棒有 $v_0$，无电源无外力</td><td>棒减速，电容充电；最终电流为零，$U_C=BLv_\text{末}$，棒以 $v_\text{末}$ 匀速（若有电阻则最终停下）</td></tr>
+        <tr><td><b>充电/放电式电容 + 电源 + 单棒 + 外力</b></td><td>先由电源给电容充电，再接入导轨；或电容与电源、导轨、棒组成回路</td><td>电容放电提供电流，棒受安培力加速；同时棒切割产生反电动势，最终 $U_C=BLv_\text{末}$ 时电流为零，系统趋于稳定</td></tr>
+    </table>
+    <div class="warn">
+        <b>⚠️ 区分要点：</b>电阻模型最终常是"收尾速度"；无电阻电容模型最终常是"匀加速"或"电流为零的匀速"，列式时要抓住 $I=\dfrac{dQ_C}{dt}=CBL\,a$ 这一关系。
+    </div>
+
+    <div class="quiz" data-quiz="m1">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">M1. 无外力、电阻、单棒有初速度 $v_0$ 向右运动，最终棒（　）</div>
+        <label class="opt"><input type="radio" name="qm1" value="a"> 做匀减速运动直到停下</label>
+        <label class="opt"><input type="radio" name="qm1" value="b"> 做加速度减小的减速运动直到静止</label>
+        <label class="opt"><input type="radio" name="qm1" value="c"> 匀速运动</label>
+        <label class="opt"><input type="radio" name="qm1" value="d"> 做加速度增大的加速运动</label>
+        <button class="submit-btn" onclick="checkQuiz('m1', 'b', 'emf')">提交答案</button>
+        <div class="quiz-feedback" id="fb-m1"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="overview">← 返回总览</button>
+        <button class="next" data-next="emf">下一节 →</button>
+    </div>
+</div>
+
+<!-- ② 感应电动势 -->
+<div class="card level" id="emf">
+    <h2><span class="num">2</span>感应电动势</h2>
+    <h3>1．平动切割（动生电动势）</h3>
+    <p>长为 $L$ 的导体棒，以速度 $v$ 垂直切割磁感应强度为 $B$ 的匀强磁场，棒两端产生的感应电动势为</p>
+    <div class="formula">$$E = B\,L\,v$$</div>
+    <p>适用条件：<b>$B$、$L$、$v$ 三者两两垂直</b>。若速度方向与棒不垂直，取垂直于棒的分速度 $v_\perp$。</p>
+    <div class="key-point">
+        <b>📌 等效电源：</b>切割磁感线的导体棒相当于电源，<b>棒内部电流从低电势流向高电势</b>（负极→正极）；电动势方向由右手定则（或楞次定律）判定。
+    </div>
+    <h3>2．转动切割</h3>
+    <p>长为 $L$ 的导体棒绕其一端、以角速度 $\omega$ 在垂直磁场平面内转动，棒上各点线速度不同，平均速度为 $\dfrac{\omega L}{2}$，故</p>
+    <div class="formula">$$E = \frac12\,B\,\omega\,L^2$$</div>
+    <h3>3．有效长度</h3>
+    <p>弯曲导体或斜放导体切割时，$L$ 取<b>导体两端点在垂直速度方向上的投影距离</b>（即"参与切割的有效长度"）。</p>
+    <div class="warn">
+        <b>⚠️ 易错：</b>$E=BLv$ 中的 $L$ 是<b>有效切割长度</b>，不是导体的几何总长。只有垂直切割磁感线的那部分才产生电动势。
+    </div>
+    <div class="quiz" data-quiz="1">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">1. 长为 $L$ 的直导线在匀强磁场 $B$ 中以速度 $v$ 垂直切割，且 $B\perp L\perp v$，其感应电动势为（　）</div>
+        <label class="opt"><input type="radio" name="q1" value="a"> $\dfrac12 BLv$</label>
+        <label class="opt"><input type="radio" name="q1" value="b"> $BLv$</label>
+        <label class="opt"><input type="radio" name="q1" value="c"> $B\omega L^2$</label>
+        <label class="opt"><input type="radio" name="q1" value="d"> 与 $v$ 无关</label>
+        <button class="submit-btn" onclick="checkQuiz(1, 'b', 'circuit')">提交答案</button>
+        <div class="quiz-feedback" id="fb-1"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="models">← 上一节</button>
+        <button class="next" data-next="circuit">下一节 →</button>
+    </div>
+</div>
+
+<!-- ③ 电路与安培力 -->
+<div class="card level" id="circuit">
+    <h2><span class="num">3</span>电路与安培力</h2>
+    <h3>1．回路电流</h3>
+    <p>棒作电源，电动势 $E=BLv$，全电路总电阻为 $R+r$（$R$ 为外电阻，$r$ 为棒电阻），则感应电流</p>
+    <div class="formula">$$I = \frac{E}{R+r} = \frac{BLv}{R+r}$$</div>
+    <h3>2．安培力（阻力）</h3>
+    <p>通电导体棒在磁场中受安培力，大小为</p>
+    <div class="formula">$$F_\text{安} = B\,I\,L = \frac{B^2L^2v}{R+r}$$</div>
+    <p>方向由<b>左手定则</b>判定，结果总是<b>阻碍导体棒的相对运动</b>（楞次定律的"阻碍"在力学上的体现）。</p>
+    <div class="key-point">
+        <b>📌 记忆：</b>棒被拉动时，安培力与运动方向相反（阻力）；棒自由运动时，安培力使其减速——能量最终变为焦耳热。
+    </div>
+    <div class="quiz" data-quiz="2">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">2. 导体棒匀速切割时，若速度 $v$ 增大，则回路中的安培力 $F_\text{安}$ 将（　）</div>
+        <label class="opt"><input type="radio" name="q2" value="a"> 不变</label>
+        <label class="opt"><input type="radio" name="q2" value="b"> 增大（与 $v$ 成正比）</label>
+        <label class="opt"><input type="radio" name="q2" value="c"> 减小</label>
+        <label class="opt"><input type="radio" name="q2" value="d"> 先增后减</label>
+        <button class="submit-btn" onclick="checkQuiz(2, 'b', 'dynamic')">提交答案</button>
+        <div class="quiz-feedback" id="fb-2"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="emf">← 上一节</button>
+        <button class="next" data-next="dynamic">下一节 →</button>
+    </div>
+</div>
+
+<!-- ④ 动力学·收尾 -->
+<div class="card level" id="dynamic">
+    <h2><span class="num">4</span>动力学 · 收尾速度</h2>
+    <h3>1．牛顿第二定律</h3>
+    <p>棒受外力 $F_\text{牵}$、安培力 $F_\text{安}$、摩擦力 $f$、重力分量等，加速度为</p>
+    <div class="formula">$$a = \frac{F_\text{牵} - F_\text{安} - f - mg\sin\theta}{m}$$</div>
+    <p>其中 $F_\text{安}=\dfrac{B^2L^2v}{R+r}$，$v$ 越大，安培力越大，加速度越小——这是<b>变加速</b>过程。</p>
+    <h3>2．收尾（稳定）状态</h3>
+    <p>当 $a=0$ 时速度达到最大（收尾）值 $v_m$。常见两类：</p>
+    <table>
+        <tr><th>情景</th><th>受力平衡式</th><th>收尾速度 $v_m$</th></tr>
+        <tr><td>水平导轨，恒力 $F$ 拉，无摩擦</td><td>$F = F_\text{安}$</td><td>$v_m = \dfrac{F(R+r)}{B^2L^2}$</td></tr>
+        <tr><td>光滑斜面，恒力 $F$ 沿斜面</td><td>$F = mg\sin\theta + F_\text{安}$</td><td>$v_m = \dfrac{(F-mg\sin\theta)(R+r)}{B^2L^2}$</td></tr>
+        <tr><td>竖直下落，只受重力（无外力）</td><td>$mg = F_\text{安}$</td><td>$v_m = \dfrac{mg(R+r)}{B^2L^2}$</td></tr>
+    </table>
+    <div class="warn">
+        <b>⚠️ 收尾的本质：</b>加速度为零≠速度为零，而是速度达到稳定值，此后匀速运动，电流恒定。
+    </div>
+    <div class="example">
+        <div class="q">例题：水平光滑导轨间距 $L=0.5\,\text{m}$，电阻 $R=1\,\Omega$，棒质量 $m=0.1\,\text{kg}$，匀强磁场 $B=1\,\text{T}$ 垂直，恒力 $F=0.5\,\text{N}$ 拉棒（棒电阻不计）。求收尾速度 $v_m$ 与收尾时热功率。</div>
+        <p class="step">解：收尾时 $F=F_\text{安}=BIL=\dfrac{B^2L^2v_m}{R}$，故 $v_m=\dfrac{FR}{B^2L^2}=\dfrac{0.5\times1}{1^2\times0.5^2}=2\,\text{m/s}$。</p>
+        <p class="step">电流 $I=\dfrac{BLv_m}{R}=\dfrac{1\times0.5\times2}{1}=1\,\text{A}$，热功率 $P_\text{热}=I^2R=1^2\times1=1\,\text{W}$（等于拉力功率 $Fv_m=0.5\times2=1\,\text{W}$）。</p>
+    </div>
+    <div class="quiz" data-quiz="3">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">3. 水平光滑导轨上恒力拉棒，关于收尾速度 $v_m$ 的说法正确的是（　）</div>
+        <label class="opt"><input type="radio" name="q3" value="a"> $v_m$ 与拉力 $F$ 无关</label>
+        <label class="opt"><input type="radio" name="q3" value="b"> $v_m = \dfrac{F(R+r)}{B^2L^2}$，与 $F$ 成正比</label>
+        <label class="opt"><input type="radio" name="q3" value="c"> $v_m = \dfrac{B^2L^2}{F(R+r)}$</label>
+        <label class="opt"><input type="radio" name="q3" value="d"> 收尾时加速度最大</label>
+        <button class="submit-btn" onclick="checkQuiz(3, 'b', 'charge')">提交答案</button>
+        <div class="quiz-feedback" id="fb-3"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="circuit">← 上一节</button>
+        <button class="next" data-next="charge">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑤ 电荷量与位移 -->
+<div class="card level" id="charge">
+    <h2><span class="num">5</span>电荷量与位移</h2>
+    <p>通过回路某截面的电荷量 $q = \bar I\,\Delta t$，其中平均电流 $\bar I = \dfrac{\bar E}{R+r} = \dfrac{\Delta\Phi}{(R+r)\Delta t}$，故</p>
+    <div class="formula">$$q = \frac{\Delta\Phi}{R+r} = \frac{B\,L\,x}{R+r}$$</div>
+    <p>$x$ 为棒在垂直磁场方向的<b>位移</b>。由此得位移与电荷量的关系：</p>
+    <div class="formula">$$x = \frac{q(R+r)}{B\,L}$$</div>
+    <div class="key-point">
+        <b>📌 关键结论：</b>电荷量 $q$ 只与<b>磁通量变化量 $\Delta\Phi$</b>和总电阻有关，<b>与运动快慢、时间无关</b>。测 $q$ 即可求位移。
+    </div>
+    <div class="quiz" data-quiz="4">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">4. 导体棒从静止出发切割，通过某截面的电荷量 $q$ 取决于（　）</div>
+        <label class="opt"><input type="radio" name="q4" value="a"> 运动时间长短</label>
+        <label class="opt"><input type="radio" name="q4" value="b"> 瞬时速度大小</label>
+        <label class="opt"><input type="radio" name="q4" value="c"> 磁通量变化量 $\Delta\Phi$ 与总电阻</label>
+        <label class="opt"><input type="radio" name="q4" value="d"> 棒的加速度</label>
+        <button class="submit-btn" onclick="checkQuiz(4, 'c', 'energy')">提交答案</button>
+        <div class="quiz-feedback" id="fb-4"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="dynamic">← 上一节</button>
+        <button class="next" data-next="energy">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑥ 能量转化 -->
+<div class="card level" id="energy">
+    <h2><span class="num">6</span>能量转化</h2>
+    <p>导体棒在磁场中运动，外力（或其他力）做功，一部分转化为棒的动能，另一部分克服安培力做功转化为<b>焦耳热</b>。</p>
+    <div class="formula">$$W_\text{牵} = \Delta E_\text{k} + Q$$</div>
+    <div class="formula">$$Q = W_\text{克安} = \int F_\text{安}\,dx$$</div>
+    <div class="key-point">
+        <b>📌 三条能量关系：</b>
+        <ul style="padding-left:25px; margin:8px 0;">
+            <li>克服安培力做的功 $=$ 回路产生的焦耳热：$W_\text{克安}=Q$；</li>
+            <li>安培力的功率 $P_\text{安}=F_\text{安}v$（阻力，做负功）；</li>
+            <li>匀速时：拉力功率 $=$ 热功率，即 $Fv = I^2(R+r)$。</li>
+        </ul>
+    </div>
+    <div class="warn">
+        <b>⚠️ 注意：</b>安培力是阻力时做负功，能量"凭空消失"的部分全部变成内能（焦耳热），符合能量守恒。
+    </div>
+    <div class="quiz" data-quiz="5">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">5. 导体棒克服安培力做的功与下列哪个量相等？（　）</div>
+        <label class="opt"><input type="radio" name="q5" value="a"> 棒的动能增量</label>
+        <label class="opt"><input type="radio" name="q5" value="b"> 回路中产生的焦耳热 $Q$</label>
+        <label class="opt"><input type="radio" name="q5" value="c"> 拉力做的功</label>
+        <label class="opt"><input type="radio" name="q5" value="d"> 棒的重力势能</label>
+        <button class="submit-btn" onclick="checkQuiz(5, 'b', 'rotate')">提交答案</button>
+        <div class="quiz-feedback" id="fb-5"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="charge">← 上一节</button>
+        <button class="next" data-next="rotate">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑦ 转动切割与有效长度 -->
+<div class="card level" id="rotate">
+    <h2><span class="num">7</span>转动切割与有效长度</h2>
+    <h3>1．转动切割电动势</h3>
+    <p>棒绕一端转动，线速度从 0 线性增大到 $\omega L$，取平均 $v_\text{均}=\dfrac{\omega L}{2}$：</p>
+    <div class="formula">$$E = B\,L\,v_\text{均} = \frac12\,B\,\omega\,L^2$$</div>
+    <p>若棒绕距一端 $a$ 处转动（两端到轴距离 $a$、$b$），则 $E=\dfrac12 B\omega(a^2+b^2)$。</p>
+    <h3>2．有效长度典型情形</h3>
+    <table>
+        <tr><th>导体形状</th><th>有效长度 $L_\text{有效}$</th></tr>
+        <tr><td>直棒，速度垂直棒</td><td>棒长 $L$</td></tr>
+        <tr><td>弯折导体（∠ 形）</td><td>两端点在垂直速度方向投影的距离</td></tr>
+        <tr><td>棒与速度成 $\theta$ 角</td><td>$L\sin\theta$</td></tr>
+        <tr><td>圆形线圈一边切割</td><td>切割边在垂直速度方向投影</td></tr>
+        <tr><td>棒不全在磁场内</td><td>磁场内部分的长度</td></tr>
+    </table>
+    <div class="warn">
+        <b>⚠️ 易错：</b>只有<b>处在磁场中且垂直于速度方向</b>的那段导体才计入有效长度。磁场外的部分不产生电动势。
+    </div>
+    <div class="quiz" data-quiz="6">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">6. 长为 $L$ 的直棒绕其一端以角速度 $\omega$ 在垂直磁场中转动，棒两端电动势为（　）</div>
+        <label class="opt"><input type="radio" name="q6" value="a"> $BL\omega$</label>
+        <label class="opt"><input type="radio" name="q6" value="b"> $\dfrac12 B\omega L^2$</label>
+        <label class="opt"><input type="radio" name="q6" value="c"> $B\omega L^2$</label>
+        <label class="opt"><input type="radio" name="q6" value="d"> $2B\omega L^2$</label>
+        <button class="submit-btn" onclick="checkQuiz(6, 'b', 'gaokao')">提交答案</button>
+        <div class="quiz-feedback" id="fb-6"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="energy">← 上一节</button>
+        <button class="next" data-next="gaokao">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑧ 高考经典 -->
+<div class="card level" id="gaokao">
+    <h2><span class="num">8</span>高考经典</h2>
+    <div class="example">
+        <div class="q">例 1（多选）：如图所示，光滑平行金属导轨间距 $L$，电阻不计，左端接电阻 $R$，匀强磁场 $B$ 垂直导轨平面。质量为 $m$ 的棒 ab 初速 $v_0$ 向右运动，不计摩擦。则（　）</div>
+        <p class="step">A. 棒做匀减速运动 —— <b>错</b>：安培力 $F_\text{安}=\dfrac{B^2L^2v}{R}$ 随 $v$ 减小而减小，加速度减小，为变减速。</p>
+        <p class="step">B. 棒最终静止 —— <b>对</b>：安培力持续阻碍运动，动能全部转化为焦耳热。</p>
+        <p class="step">C. 全过程产生焦耳热 $Q=\dfrac12 mv_0^2$ —— <b>对</b>：动能全部转化为热。</p>
+        <p class="step">D. 通过电阻的电荷量 $q=\dfrac{BLx}{R}$ —— <b>对</b>：由 $q=\dfrac{\Delta\Phi}{R}=\dfrac{BLx}{R}$。</p>
+        <p class="a"><b>答案：BCD</b></p>
+    </div>
+    <div class="example">
+        <div class="q">例 2：上题中若棒从静止开始受恒定拉力 $F$ 作用，求稳定速度 $v_m$ 及此状态下拉力功率。</div>
+        <p class="step">解：稳定时 $F=F_\text{安}=\dfrac{B^2L^2v_m}{R}\Rightarrow v_m=\dfrac{FR}{B^2L^2}$。</p>
+        <p class="step">拉力功率 $P=Fv_m=\dfrac{F^2R}{B^2L^2}$，且等于热功率 $I^2R$。</p>
+    </div>
+    <div class="quiz" data-quiz="7">
+        <div class="quiz-title">📝 综合闯关（多选，需全对）</div>
+        <div class="q">7. 关于"单棒 + 电阻"模型，下列说法正确的有（　）</div>
+        <label class="opt"><input type="radio" name="q7a" value="a"> 棒自由滑行时做变减速运动，最终停下</label>
+        <label class="opt"><input type="radio" name="q7b" value="b"> 恒力拉动时最终匀速，速度 $v_m=\dfrac{F(R+r)}{B^2L^2}$</label>
+        <label class="opt"><input type="radio" name="q7c" value="c"> 克服安培力做功等于棒动能增量</label>
+        <label class="opt"><input type="radio" name="q7d" value="d"> 通过回路的电荷量 $q$ 只与磁通变化量和电阻有关</label>
+        <button class="submit-btn" onclick="checkQuizMulti(7, {'q7a':'a','q7b':'b','q7d':'d'}, 'overview')">提交答案</button>
+        <div class="quiz-feedback" id="fb-7"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="rotate">← 上一节</button>
+        <button class="next next-strong" data-next="overview">🏠 返回知识框架</button>
+    </div>
+</div>
+
+<div class="footer">单棒切割磁感线 · 高中物理磁场专题 · 自由学习模式</div>
+
+</div>
+
+<script>
+    // ===== 浏览模式（所有小节直接可见，测验仅作练习） =====
+    let currentLevel = 'overview';
+    function applyLockState() {
+        document.querySelectorAll('.card.level').forEach(card => card.classList.add('active-level'));
+    }
+    function showLevel(id) {
+        const target = document.getElementById(id);
+        if (!target) return false;
+        currentLevel = id;
+        document.querySelectorAll('.card.level').forEach(card => card.classList.add('active-level'));
+        window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+        return true;
+    }
+    function checkQuiz(level, correct) {
+        const name = 'q' + level;
+        const sel = document.querySelector('input[name="' + name + '"]:checked');
+        const fb = document.getElementById('fb-' + level);
+        if (!sel) { alert('请先选择一个答案'); return; }
+        const opts = document.querySelectorAll('input[name="' + name + '"]');
+        opts.forEach(o => o.parentElement.classList.remove('correct', 'wrong'));
+        if (sel.value === correct) {
+            sel.parentElement.classList.add('correct');
+            fb.className = 'quiz-feedback ok';
+            fb.innerHTML = '✅ 回答正确！';
+            fb.style.display = 'block';
+        } else {
+            sel.parentElement.classList.add('wrong');
+            fb.className = 'quiz-feedback no';
+            fb.innerHTML = '❌ 答案不对，再想想：' + quizHint(level);
+            fb.style.display = 'block';
+        }
+    }
+    function checkQuizMulti(level, answers) {
+        let allOk = true;
+        const fb = document.getElementById('fb-' + level);
+        for (const [name, correct] of Object.entries(answers)) {
+            const sel = document.querySelector('input[name="' + name + '"]:checked');
+            const opts = document.querySelectorAll('input[name="' + name + '"]');
+            opts.forEach(o => o.parentElement.classList.remove('correct', 'wrong'));
+            if (!sel || sel.value !== correct) {
+                allOk = false;
+                if (sel) sel.parentElement.classList.add('wrong');
+            } else {
+                sel.parentElement.classList.add('correct');
+            }
+        }
+        if (allOk) {
+            fb.className = 'quiz-feedback ok';
+            fb.innerHTML = '✅ 全部正确！';
+            fb.style.display = 'block';
+        } else {
+            fb.className = 'quiz-feedback no';
+            fb.innerHTML = '❌ 还有错误，仔细检查每一小题（提示：' + quizHint(level) + '）';
+            fb.style.display = 'block';
+        }
+    }
+    function quizHint(level) {
+        const hints = {
+            'm1': '无外力时安培力是阻力，随速度减小而减小，加速度减小。',
+            1: '平动切割且三者垂直时 E = BLv。',
+            2: 'F安 = B²L²v/(R+r)，与 v 成正比。',
+            3: '收尾时 F牵 = F安，得 vm = F(R+r)/(B²L²)。',
+            4: 'q = ΔΦ/R，与过程快慢无关。',
+            5: '克服安培力做功全部转化为焦耳热。',
+            6: '转动切割取平均速度，E = ½BωL²。',
+            7: '自由滑行变减速最终停；恒力拉最终匀速；克服安培力做功=焦耳热（不是动能增量）。'
+        };
+        return hints[level] || '';
+    }
+    // 导航：自由跳转
+    document.querySelectorAll('.nav a').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id && id.startsWith('#')) { e.preventDefault(); showLevel(id.slice(1)); }
+        });
+    });
+    // 节内上/下导航按钮
+    document.querySelectorAll('.level-nav .prev, .level-nav .next').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('next')) showLevel(btn.dataset.next);
+            else showLevel(btn.dataset.prev);
+        });
+    });
+    // 导航栏滚动高亮 + 进度条
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll('.nav a'));
+        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        const total = sections.length;
+        const pFill = document.getElementById('pFill');
+        const pTxt = document.getElementById('pTxt');
+        function onScroll() {
+            const pos = window.scrollY + 160;
+            let current = sections[0], idx = 0;
+            sections.forEach((sec, i) => { if (sec.offsetTop <= pos) { current = sec; idx = i; } });
+            navLinks.forEach(a => { const href = a.getAttribute('href'); if (href) a.classList.toggle('active', href === '#' + current.id); });
+            const pct = Math.round(((idx + 1) / total) * 100);
+            if (pFill) pFill.style.width = pct + '%';
+            if (pTxt) pTxt.textContent = (idx + 1) + ' / ' + total + ' 节';
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+    applyLockState();
+    showLevel('overview');
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

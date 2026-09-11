@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动学闯关 · 弹簧与木块分离问题</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav a {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; text-align: left; text-decoration: none;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s;
+        }
+        .level-nav a::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav a.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav a.active::before { background: #ff6a00; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5;
+        }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .section-title { color: #1e3c72; font-size: 1.35em; margin: 28px 0 10px; font-weight: 700; }
+        .sub-title { color: #34495e; font-size: 1.15em; font-weight: 700; margin: 16px 0 8px; }
+        .scene-svg { width: 100%; max-width: 440px; height: auto; display: block; margin: 12px auto; }
+        .svg-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        .svg-row .scene-svg { max-width: 360px; margin: 0; }
+        .ul-list { margin: 8px 0 8px 22px; }
+        .ul-list li { margin: 6px 0; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav a { width: auto; flex: 1; min-width: 84px; white-space: nowrap; }
+            .level-nav a::before { display: none; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+            .svg-row { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏃 高考物理 · 运动学闯关</h1>
+    <p>直线运动 &amp; 曲线运动 · 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 本关闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">1</span> &nbsp;|&nbsp; 已答 <b id="doneVal">0</b> 题</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 知识点导航</div>
+            <div class="level-nav">
+            <a class="level-link" href="运动的描述.html">运动的描述</a>
+            <a class="level-link" href="匀变速直线运动基本公式.html">匀变速直线运动基本公式</a>
+            <a class="level-link" href="自由落体与竖直上抛.html">自由落体与竖直上抛</a>
+            <a class="level-link" href="匀变速推论与图像.html">匀变速推论与图像</a>
+            <a class="level-link" href="追及与相遇.html">追及与相遇</a>
+            <a class="level-link" href="曲线运动基础.html">曲线运动基础</a>
+            <a class="level-link" href="平抛运动.html">平抛运动</a>
+            <a class="level-link" href="斜抛运动.html">斜抛运动</a>
+            <a class="level-link" href="圆周运动.html">圆周运动</a>
+            <a class="level-link" href="圆周运动临界问题.html">圆周运动临界问题</a>
+            <a class="level-link" href="关联速度分解.html">关联速度分解</a>
+            <a class="level-link" href="接触物类.html">接触物类</a>
+            <a class="level-link" href="斜面上的平抛运动.html">斜面上的平抛运动</a>
+            <a class="level-link active" href="弹簧与木块分离问题.html">弹簧与木块分离问题</a>
+            <a class="level-link" href="竖直平面内的圆周运动.html">竖直平面内的圆周运动</a>
+            <a class="level-link" href="水平面内圆周运动的临界问题.html">水平面内圆周运动的临界问题</a>
+            <a class="level-link" href="斜面内圆周运动的临界问题.html">斜面内圆周运动的临界问题</a>
+            <a class="level-link" href="变力做功.html">变力做功</a>
+        </div>
+</div>
+
+<div class="container" id="container">
+    <div class="level active" id="lvSpringSep">
+        <div class="level-head">
+            <span class="level-badge">力学 · 方法</span>
+            <h2>弹簧与木块分离问题</h2>
+        </div>
+        <p class="level-intro">弹簧连接体的分离问题是力学综合高频考点。抓住“分离瞬间弹力为零、加速度仍相等”的临界条件，就能把运动学与牛顿定律打通。</p>
+
+        <div class="formula-box">
+            <div class="ftitle">📘 分离临界条件</div>
+            <div class="formula">$F_\text{弹}=0,\quad a_A=a_B,\quad v_A=v_B$</div>
+            <div class="formula-note">两个相互接触的物体在分离瞬间处于“若即若离”状态：已经分离则接触力为零；尚未分离则加速度相同。</div>
+        </div>
+
+        <div class="section-title">分离问题（一）：A 与弹簧分离</div>
+        <div class="svg-row">
+            <svg class="scene-svg" viewBox="0 0 260 220" aria-label="A 静止在压缩弹簧上">
+                <defs>
+                    <marker id="aup" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                </defs>
+                <line x1="40" y1="180" x2="220" y2="180" stroke="#546e7a" stroke-width="2"/>
+                <path d="M50,182 L60,176 L70,188 L80,176 L90,188 L100,176 L110,188 L120,176 L130,188 L140,176 L150,188 L160,176 L170,188 L180,176 L190,188 L200,176 L210,182" fill="none" stroke="#1e3c72" stroke-width="2"/>
+                <rect x="115" y="90" width="70" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="142" y="116" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">A</text>
+                <line x1="185" y1="110" x2="215" y2="110" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#aup)"/>
+                <text x="205" y="100" font-size="13" fill="#3a7bd5">接触</text>
+                <line x1="180" y1="180" x2="180" y2="130" stroke="#e53935" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#aup)"/>
+                <text x="188" y="160" font-size="14" fill="#e53935">x₁</text>
+                <text x="25" y="205" font-size="13" fill="#546e7a">压缩量 x₁=m_A·g/k</text>
+            </svg>
+            <svg class="scene-svg" viewBox="0 0 260 220" aria-label="A 受拉力 F 分离瞬间">
+                <defs>
+                    <marker id="bup" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                </defs>
+                <line x1="40" y1="180" x2="220" y2="180" stroke="#546e7a" stroke-width="2"/>
+                <path d="M130,180 L138,170 L122,160 L138,150 L122,140 L138,130 L122,120 L138,110 L130,100 L122,90 L138,80 L130,70" fill="none" stroke="#1e3c72" stroke-width="2"/>
+                <rect x="95" y="30" width="70" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="122" y="56" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">A</text>
+                <line x1="130" y1="30" x2="130" y2="5" stroke="#e53925" stroke-width="2.5" marker-end="url(#bup)"/>
+                <text x="138" y="16" font-size="15" fill="#e53925" font-weight="700">F</text>
+                <line x1="60" y1="50" x2="60" y2="20" stroke="#3a7bd5" stroke-width="2" marker-end="url(#bup)"/>
+                <text x="66" y="35" font-size="14" fill="#3a7bd5">a</text>
+                <rect x="140" y="75" width="108" height="42" fill="#fff9c4" stroke="#ff6a00" stroke-width="1" rx="4"/>
+                <text x="144" y="92" font-size="12" fill="#5d4037">分离：弹力为零；</text>
+                <text x="144" y="110" font-size="12" fill="#5d4037">加速度此瞬间还为零</text>
+                <text x="40" y="205" font-size="13" fill="#5d4037">分离时，弹簧处于原长</text>
+            </svg>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">✏️ 分析要点</div>
+            <div class="formula-note">A 原来静止在弹簧上时，弹簧压缩量满足 $kx_1=m_Ag$。当用外力 $F$ 向上拉 A 时，A 向上加速；在<strong>弹簧恢复原长</strong>的瞬间，A 与弹簧之间的弹力恰好减为零，此后 A 不再受弹簧作用，即 A 与弹簧分离。</div>
+        </div>
+
+        <div class="section-title">分离问题（二）：B 与地面分离</div>
+        <p class="level-intro">轻弹簧一端固定、另一端系物体，在忽略摩擦和空气阻力时组成弹簧振子，振动具有对称性：</p>
+        <ul class="ul-list">
+            <li><b>速度的对称：</b>振子在离平衡位置距离相等的两个对称点，速度大小相同。</li>
+            <li><b>加速度（合力）的对称：</b>振子在离平衡位置距离相等的两个对称点，加速度大小相同、方向相反。</li>
+        </ul>
+        <div class="formula-box">
+            <div class="ftitle">📘 利用对称性</div>
+            <div class="formula-note">通过弹簧振子的对称性，可以方便地确定最大压缩、最大伸长以及速度、加速度的对称关系，从而求解分离临界位置。</div>
+        </div>
+        <div class="svg-row">
+            <svg class="scene-svg" viewBox="0 0 260 240" aria-label="A 在 B 上，弹簧压缩">
+                <defs>
+                    <marker id="cup" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                </defs>
+                <line x1="40" y1="200" x2="220" y2="200" stroke="#546e7a" stroke-width="2"/>
+                <rect x="110" y="160" width="80" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="145" y="186" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">B</text>
+                <path d="M150,160 L158,150 L142,140 L158,130 L142,120 L158,110 L142,100 L150,90" fill="none" stroke="#1e3c72" stroke-width="2"/>
+                <rect x="115" y="50" width="70" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="145" y="76" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">A</text>
+                <line x1="195" y1="70" x2="225" y2="70" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#cup)"/>
+                <text x="205" y="60" font-size="13" fill="#3a7bd5">接触</text>
+                <rect x="40" y="110" width="110" height="36" fill="#fff" stroke="#ff6a00" stroke-width="1" rx="4"/>
+                <text x="45" y="128" font-size="13" fill="#5d4037">处于压缩状态，</text>
+                <text x="45" y="144" font-size="13" fill="#5d4037">x₁=m_A·g/k</text>
+            </svg>
+            <svg class="scene-svg" viewBox="0 0 260 240" aria-label="向上拉 A，B 刚离地">
+                <defs>
+                    <marker id="dup" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                </defs>
+                <line x1="40" y1="200" x2="220" y2="200" stroke="#546e7a" stroke-width="2"/>
+                <rect x="110" y="180" width="80" height="20" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="145" y="195" font-size="14" fill="#1e3c72" text-anchor="middle" font-weight="700">B</text>
+                <path d="M150,180 L158,165 L142,150 L158,135 L142,120 L158,105 L142,90 L158,75 L150,60 L142,45 L158,30 L150,15" fill="none" stroke="#1e3c72" stroke-width="2"/>
+                <rect x="115" y="-25" width="70" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="145" y="1" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">A</text>
+                <line x1="150" y1="-25" x2="150" y2="-50" stroke="#e53925" stroke-width="2.5" marker-end="url(#dup)"/>
+                <text x="158" y="-40" font-size="15" fill="#e53925" font-weight="700">F</text>
+                <line x1="60" y1="-5" x2="60" y2="-30" stroke="#3a7bd5" stroke-width="2" marker-end="url(#dup)"/>
+                <text x="66" y="-18" font-size="14" fill="#3a7bd5">a</text>
+                <rect x="40" y="90" width="108" height="48" fill="#fff9c4" stroke="#ff6a00" stroke-width="1" rx="4"/>
+                <text x="45" y="108" font-size="13" fill="#5d4037">处于伸长状态，</text>
+                <text x="45" y="124" font-size="13" fill="#5d4037">x₂=m_B·g/k</text>
+                <text x="45" y="140" font-size="12" fill="#5d4037">分离：弹力为零</text>
+            </svg>
+            <svg class="scene-svg" viewBox="0 0 300 220" aria-label="F 随 x 变化的图像">
+                <line x1="40" y1="180" x2="270" y2="180" stroke="#1e3c72" stroke-width="2" marker-end="url(#aup)"/>
+                <line x1="40" y1="180" x2="40" y2="20" stroke="#1e3c72" stroke-width="2" marker-end="url(#aup)"/>
+                <text x="250" y="200" font-size="15" fill="#1e3c72">x</text>
+                <text x="20" y="30" font-size="15" fill="#1e3c72">F</text>
+                <line x1="40" y1="140" x2="240" y2="40" stroke="#e53925" stroke-width="2"/>
+                <line x1="40" y1="140" x2="240" y2="140" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <line x1="240" y1="40" x2="240" y2="180" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="15" y="145" font-size="14" fill="#e53925">m_A·a</text>
+                <text x="225" y="30" font-size="13" fill="#e53925">(m_A+m_B)g+m_A·a</text>
+                <text x="230" y="198" font-size="14" fill="#1e3c72">x₁+x₂</text>
+                <text x="150" y="100" font-size="14" fill="#3a7bd5">斜率 $k$</text>
+                <path d="M200,72 L220,60" fill="none" stroke="#3a7bd5" stroke-width="1.5" marker-end="url(#aup)"/>
+                <text x="200" y="58" font-size="13" fill="#3a7bd5">分离</text>
+            </svg>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">✏️ 分析要点</div>
+            <div class="formula-note">向上拉 A 时，弹簧从压缩逐渐变为伸长。当弹簧弹力恰好等于 B 的重力（$kx_2=m_Bg$）时，地面对 B 的支持力为零，B 与地面分离。此时弹簧仍处于伸长状态，A、B 间弹力为零。结合 $F-x$ 图像，分离点对应 $x=x_1+x_2$，拉力 $F=(m_A+m_B)g+m_Aa$，图像斜率为弹簧劲度系数 $k$。</div>
+        </div>
+
+        <div class="section-title">分离问题（三）：A、B 分离</div>
+        <p class="level-intro">两个相互接触的物体在共同运动过程中，若在某位置或某时刻开始分离，则分离瞬间满足：</p>
+        <div class="formula-box">
+            <div class="ftitle">📘 临界条件</div>
+            <div class="formula">$F_{AB}=0,\quad v_A=v_B,\quad a_A=a_B$</div>
+            <div class="formula-note">从力的角度：A、B 间弹力为零；从运动学角度：分离瞬间两者速度相同、加速度相同。</div>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">📘 通法</div>
+            <div class="formula-note">先根据“两物体间没有弹力”分别写出 A、B 的加速度表达式；再利用 $a_A=a_B$ 建立方程，求解分离时的位置、速度或外力。</div>
+        </div>
+        <div class="svg-row">
+            <svg class="scene-svg" viewBox="0 0 260 240" aria-label="A 叠在 B 上，弹簧压缩">
+                <defs>
+                    <marker id="eup" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                </defs>
+                <line x1="40" y1="200" x2="220" y2="200" stroke="#546e7a" stroke-width="2"/>
+                <rect x="110" y="160" width="80" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="145" y="186" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">B</text>
+                <path d="M150,160 L158,150 L142,140 L158,130 L142,120 L158,110 L142,100 L158,90 L150,80" fill="none" stroke="#1e3c72" stroke-width="2"/>
+                <rect x="115" y="40" width="70" height="40" fill="#fff" stroke="#1e3c72" stroke-width="2"/>
+                <text x="145" y="66" font-size="16" fill="#1e3c72" text-anchor="middle" font-weight="700">A</text>
+                <line x1="150" y1="40" x2="150" y2="10" stroke="#e53925" stroke-width="2.5" marker-end="url(#eup)"/>
+                <text x="158" y="22" font-size="15" fill="#e53925" font-weight="700">F</text>
+                <line x1="60" y1="60" x2="60" y2="30" stroke="#3a7bd5" stroke-width="2" marker-end="url(#eup)"/>
+                <text x="66" y="46" font-size="14" fill="#3a7bd5">a</text>
+                <rect x="40" y="105" width="140" height="48" fill="#fff9c4" stroke="#ff6a00" stroke-width="1" rx="4"/>
+                <text x="45" y="124" font-size="13" fill="#5d4037">处于压缩状态，</text>
+                <text x="45" y="142" font-size="13" fill="#5d4037">x₂=m_B(g+a)/k</text>
+            </svg>
+            <svg class="scene-svg" viewBox="0 0 300 240" aria-label="分离前后的 v-t 图像">
+                <line x1="40" y1="200" x2="280" y2="200" stroke="#1e3c72" stroke-width="2" marker-end="url(#aup)"/>
+                <line x1="40" y1="200" x2="40" y2="20" stroke="#1e3c72" stroke-width="2" marker-end="url(#aup)"/>
+                <text x="260" y="220" font-size="15" fill="#1e3c72">t</text>
+                <text x="20" y="30" font-size="15" fill="#1e3c72">v</text>
+                <line x1="40" y1="200" x2="220" y2="60" stroke="#e53925" stroke-width="2"/>
+                <text x="225" y="55" font-size="14" fill="#e53925">A</text>
+                <path d="M40,200 Q120,60 160,80 T220,140" fill="none" stroke="#3a7bd5" stroke-width="2"/>
+                <text x="225" y="145" font-size="14" fill="#3a7bd5">B</text>
+                <line x1="160" y1="200" x2="160" y2="100" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="150" y="220" font-size="14" fill="#1e3c72">t₁</text>
+                <text x="130" y="90" font-size="14" fill="#5d4037">分离</text>
+                <path d="M130,95 L150,110" fill="none" stroke="#5d4037" stroke-width="1.5" marker-end="url(#aup)"/>
+            </svg>
+        </div>
+        <div class="formula-box">
+            <div class="ftitle">✏️ 分析要点</div>
+            <div class="formula-note">A 叠在 B 上、弹簧在 B 下方并压缩。用外力 $F$ 向上拉 A 时，A、B 一起向上加速；当弹簧弹力减小到零时，B 只受重力和弹簧弹力（为零），其加速度为 $-g$；而 A 受 $F$ 和重力，加速度仍为 $a$。若分离瞬间仍要求 $a_A=a_B$，则实际对应弹簧刚好恢复原长、A、B 间弹力为零的位置。$v-t$ 图中，分离时刻 $t_1$ 前两物体速度相等，分离后 A 做匀加速、B 做竖直上抛。</div>
+        </div>
+
+        <div class="challenge">
+            <span class="ctag">🎮 闯关挑战</span>
+            <div class="cq">关于弹簧作用下两接触物体的分离，下列说法正确的是？</div>
+            <div class="opts" id="optsSS_0">
+                <div class="opt" data-i="SS_0" data-j="0"><span class="key">A</span><span>分离时弹簧一定处于原长</span></div>
+                <div class="opt" data-i="SS_0" data-j="1"><span class="key">B</span><span>分离瞬间两物体间弹力为零，且加速度相等</span></div>
+                <div class="opt" data-i="SS_0" data-j="2"><span class="key">C</span><span>分离瞬间两物体速度一定为零</span></div>
+                <div class="opt" data-i="SS_0" data-j="3"><span class="key">D</span><span>分离时弹簧弹力最大</span></div>
+            </div>
+            <button class="cbtn" id="btnSS_0">提交答案</button>
+            <div class="cresult" id="resSS_0"></div>
+            <div class="cexplain" id="expSS_0"><b>📝 解析：</b>分离的临界条件是接触力为零且加速度相同、速度相同；弹簧是否原长取决于具体模型，不是普适结论；速度与弹力大小也无必然关系。故选 B。</div>
+        </div>
+
+        <div class="keymemo">🔑 <b>本关记忆要点：</b>弹簧与木块分离 — 分离瞬间满足“弹力为零、加速度相等、速度相等”；分别列牛顿第二定律，再用 $a_A=a_B$ 联立求解。</div>
+        <div class="level-actions">
+            <a class="btn" href="斜面上的平抛运动.html">← 上一关</a>
+            <a class="btn" href="index.html">📑 目录</a>
+            <a class="btn btn-next" href="index.html">🏠 回到目录</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理运动学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+<script>
+let score = 0, done = 0;
+const total = 1;
+const ANS = { "SS_0": 1 };
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+let answered = {};
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const correct = ANS[cid];
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65 + correct);
+    }
+    done++;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('progFill').style.width = (done / total * 100) + '%';
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 验证力的平行四边形定则</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 3 关 · 共 9 关</span>
+  </div>
+  <h1>验证力的平行四边形定则</h1>
+  <div class="tag">力的合成</div>
+  <div class="imgbox"><img src="../力学实验_images/force_parallelogram.png" alt=""><div class="imgcap">验证力的平行四边形定则实验装置</div></div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>核心原理：</b>互成角度的两个力 F₁、F₂ 的合力 F，与以 F₁、F₂ 为邻边作平行四边形的对角线大小、方向一致。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>做法：</b>用橡皮条结点拉到某 O 点，记下 F₁、F₂ 的大小方向；再用一个力 F 单独把结点拉到<b>同一 O 点</b>，比较 F 与 F₁、F₂ 的合成结果。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>关键：</b>两次都把结点拉到<b>同一位置</b>，才能保证作用效果相同（等效替代）。</div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <div class="imgbox"><img src="../力学实验_images/force_parallelogram_paper.png" alt=""><div class="imgcap">图 3-2：（d）两力 F₁、F₂ 拉橡皮条结点至 O 点的装置；（e）记录纸：O 为结点位置，P₁、P₂、P₃ 为多次拉伸的标记点（标度 1N）</div></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（2021·湖南）在验证平行四边形定则实验中，先用互成角度的 F₁、F₂ 将橡皮条结点拉至 O 点；再用一个弹簧测力计将结点拉至同一 O 点，读数为 F。则 F 与 F₁、F₂ 的关系是？</p><p class='ans'>答案：F 应是以 F₁、F₂ 为邻边的平行四边形的对角线（大小、方向均相符），即 F 是 F₁、F₂ 的合力。</p><p>（问答题·误差分析）在做『验证力的平行四边形定则』实验中，根据记录纸上 F₁、F₂ 的方向大小，按平行四边形定则作图得到合力 F；同时用一只弹簧测力计把结点拉到同一 O 点，测得 F′。请写出可能产生误差的两点原因。</p><p class='ans'>答案：① <b>没有做到弹簧秤、细绳、橡皮条都与木板平行</b>（导致力的方向偏离纸面，作图失真）；② <b>读数时没有正视弹簧测力计</b>（产生视差，读数偏大或偏小）。其他可能：作图误差（线段/角度不精确）、未把结点拉到同一位置 O 等。</p></div>
+  <div class="nav">
+    <a class="prev" href="02_探究弹力和弹簧伸长关系.html">← 探究弹力和弹簧伸长关系</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="04_探究加速度与力质量关系.html">探究加速度与力、质量关系 →</a>
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "在『验证力的平行四边形定则』实验中，比较按平行四边形定则作图得到的合力 F 与用一只弹簧测力计把结点拉到同一 O 点得到的力 F′，可能产生误差的原因有？（多选）", "o": ["弹簧秤、细绳、橡皮条没有都与木板平行", "读数时没有正视弹簧测力计", "实验台没有调水平", "F₁、F₂ 之间的夹角保持不变"], "a": [0, 1], "e": "<b>A ✓<\/b>：弹簧秤、细绳、橡皮条若不都与木板平行，力的方向会偏离纸面，刻度尺量出的力的大小方向均不准确，导致 F 与 F′ 偏差；<br><b>B ✓<\/b>：读数时若不<b>正视<\/b>刻度（视线与刻度盘平面不垂直），会产生视差，导致 F₁、F₂、F′ 读数偏大或偏小；<br><b>C ✗<\/b>：本实验与实验台是否水平无关（台面在水平方向上的小倾斜不影响力的水平方向测量）；<br><b>D ✗<\/b>：保持夹角不变是实验要求，不是误差来源。"}, {"q": "实验中两次拉伸橡皮条都应使结点到达？", "o": ["任意位置", "同一位置 O", "不同位置", "越远越好"], "a": 1, "e": "等效替代思想：两次作用效果相同，故结点必须拉到同一位置。"}, {"q": "本实验用到的物理思想是？", "o": ["控制变量", "等效替代", "理想模型", "微小量放大"], "a": 1, "e": "用单个力 F 等效替代两个力 F₁、F₂ 的共同作用，是等效替代法。"}, {"q": "为减小误差，细绳应？", "o": ["尽量长", "尽量短", "越粗越好", "打结使用"], "a": 0, "e": "细绳适当长一些，便于准确确定力的方向（描点画线更准）。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

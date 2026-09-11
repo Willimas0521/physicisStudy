@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理 · 机械振动与机械波 · 动画演示</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [["$","$"], ["\(","\)"]],
+    displayMath: [["$$","$$"], ["\[","\]"]],
+    packages: {"[+]": ["ams", "boldsymbol", "cancel", "color", "enclose", "textmacros", "newcommand", "stackrel"]}
+  },
+  svg: { fontCache: "global" }
+};
+</script>
+<script src="mathjax/tex-svg.js" async></script>
+<style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #3a7bd5;
+        }
+        .card h2 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .knowledge-card {
+            background: linear-gradient(135deg, #fff8e1, #fffdf5);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15);
+        }
+        .knowledge-card .kc-title {
+            font-weight: 700;
+            color: #f57f17;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .knowledge-card .kc-title::before {
+            content: "💡";
+            font-size: 1.2em;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 80px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #3a7bd5; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #2a5298; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(30,60,114,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 12px; font-size: 0.9em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #3a7bd5; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #2a5298; }
+        .anim-controls label { font-size: 0.9em; margin: 0 6px; }
+        .anim-controls input { width: 60px; padding: 4px 6px; border: 1px solid #b0bec5; border-radius: 5px; text-align: center; }
+        .anim-readout { margin-top: 10px; font-size: 0.92em; color: #34495e; }
+        .anim-readout b { color: #1e3c72; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #1e3c72; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #3a7bd5; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 6px; font-size: 0.8em; }
+            .card { padding: 20px; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(30,60,114,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    
+</style>
+</head>
+<body>
+<div class="header">
+<h1>🌊 机械振动与机械波</h1>
+<p>动画演示</p>
+</div>
+<div class="container">
+<div class="card-nav" style="margin-bottom:18px;"><a href="index.html" style="color:#3a7bd5;text-decoration:none;font-weight:600;">← 返回目录</a></div>
+
+<div class="card" id="anim">
+    <h2><span class="num">11</span>动画演示</h2>
+    <p>以下动画帮助你直观理解简谐运动、波的传播与干涉。可调节参数观察变化。</p>
+
+    <h3>动画 1 · 弹簧振子（简谐运动）</h3>
+    <p style="color:#555;">物块在光滑水平面上与弹簧相连，做简谐运动。观察位移、速度、加速度的相位关系，以及动能与弹性势能的相互转化（总能量守恒）。</p>
+    <div class="anim-wrap">
+        <canvas id="canvasSHM" width="620" height="300"></canvas>
+        <div class="anim-controls">
+            <label>振幅 A <input type="number" id="shmA" value="120" step="10"></label>
+            <label>周期 T(s) <input type="number" id="shmT" value="2" step="0.2"></label>
+            <button onclick="shmAnim.restart()">重置</button>
+            <button onclick="shmAnim.toggle()">暂停 / 继续</button>
+        </div>
+        <div class="anim-readout" id="shmReadout"></div>
+    </div>
+
+    <h3>动画 2 · 横波的传播</h3>
+    <p style="color:#555;">一列横波沿介质向右传播。注意：质点只在竖直方向振动，并不随波向右迁移；波峰、波谷整体向右平移。</p>
+    <div class="anim-wrap">
+        <canvas id="canvasWave" width="620" height="260"></canvas>
+        <div class="anim-controls">
+            <label>波长 λ(px) <input type="number" id="waveLam" value="160" step="10"></label>
+            <label>振幅 A(px) <input type="number" id="waveAmp" value="60" step="5"></label>
+            <label>波速 <input type="number" id="waveV" value="80" step="10"></label>
+            <button onclick="waveAnim.restart()">重置</button>
+            <button onclick="waveAnim.toggle()">暂停 / 继续</button>
+        </div>
+        <div class="anim-readout" id="waveReadout"></div>
+    </div>
+
+    <h3>动画 3 · 波的干涉（双波源）</h3>
+    <p style="color:#555;">两个同频波源 $S_1,S_2$ 发出圆形波，叠加形成稳定的干涉图样：红色为振动加强区，蓝色为振动减弱区。改变波长观察干涉条纹间距变化（间距 $\Delta x \propto \lambda$）。</p>
+    <div class="anim-wrap">
+        <canvas id="canvasInter" width="620" height="360"></canvas>
+        <div class="anim-controls">
+            <label>波长 λ(px) <input type="number" id="interLam" value="40" step="5"></label>
+            <button onclick="interAnim.restart()">重置</button>
+            <button onclick="interAnim.toggle()">暂停 / 继续</button>
+        </div>
+        <div class="anim-readout" id="interReadout"></div>
+    </div>
+
+    <h3>动画 4 · 简谐运动的 v、a 变化（滑块控制）</h3>
+    <p style="color:#555;">拖动下方<b>相位滑块</b>（或拖动时间滑块），观察弹簧振子在各时刻的<b>位移 $x$</b>（蓝）、<b>速度 $v$</b>（绿）、<b>加速度 $a$</b>（红）的瞬时大小与方向。可对比三条曲线：加速度始终与位移反向，速度在平衡位置最大、最大位移处为零。</p>
+    <div class="anim-wrap">
+        <canvas id="canvasVA" width="620" height="320"></canvas>
+        <div class="anim-controls">
+            <label>振幅 A(px) <input type="number" id="vaA" value="100" step="10"></label>
+            <label>周期 T(s) <input type="number" id="vaT" value="2" step="0.2"></label>
+            <label>相位 φ(°) <input type="number" id="vaPhi" value="0" step="15"></label>
+            <br>
+            <label style="display:block; margin-top:10px;">时间滑块 t（s）：
+                <input type="range" id="vaTime" min="0" max="4" step="0.01" value="0" style="width:420px; vertical-align:middle;">
+                <span id="vaTimeVal" style="display:inline-block; width:50px;">0.00</span>
+            </label>
+        </div>
+        <div class="anim-readout" id="vaReadout"></div>
+    </div>
+</div>
+
+
+</div>
+<div class="footer">
+<p>📖 高中物理 · 机械振动与机械波</p>
+</div>
+<script>
+/* ===================== 动画 1：简谐运动（弹簧振子） ===================== */
+const shmAnim = (function () {
+    const canvas = document.getElementById('canvasSHM');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const eqX = W / 2, wallX = 30, blockW = 40, blockH = 40;
+    const blockY = 40;
+    let A = 120, T = 2, t = 0, running = true, lastT = 0, raf = null;
+
+    function readParams() {
+        A = parseFloat(document.getElementById('shmA').value) || 120;
+        T = parseFloat(document.getElementById('shmT').value) || 2;
+        A = Math.max(30, Math.min(A, (W / 2 - wallX - blockW)));
+    }
+
+    function physics(dt) { t += dt; }
+
+    function xNow() { return A * Math.cos(2 * Math.PI * t / T); }   // 相对平衡位置位移
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const x = xNow();                       // 当前位移（右正）
+        const blockX = eqX + x - blockW / 2;
+
+        // 平衡位置参考线
+        ctx.strokeStyle = 'rgba(142,68,173,0.4)'; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(eqX, blockY - 10); ctx.lineTo(eqX, blockY + blockH + 10); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#8e44ad'; ctx.font = '12px sans-serif';
+        ctx.fillText('平衡位置', eqX - 36, blockY - 14);
+
+        // 墙
+        ctx.fillStyle = '#607d8b';
+        ctx.fillRect(wallX - 10, blockY - 10, 10, blockH + 20);
+
+        // 弹簧
+        const sx = wallX, ex = blockX, sy = blockY + blockH / 2;
+        ctx.strokeStyle = '#7f8c8d'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(sx, sy);
+        const coils = 12;
+        for (let i = 0; i <= coils; i++) {
+            const tt = i / coils;
+            const px = sx + (ex - sx) * tt;
+            const py = sy + (i % 2 === 0 ? -8 : 8);
+            ctx.lineTo(px, py);
+        }
+        ctx.lineTo(ex, sy); ctx.stroke();
+
+        // 物块
+        ctx.fillStyle = '#2980b9';
+        ctx.fillRect(blockX, blockY, blockW, blockH);
+        ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif';
+        ctx.fillText('m', blockX + 13, blockY + 25);
+
+        // 位移矢量
+        ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(eqX, blockY + blockH + 22); ctx.lineTo(eqX + x, blockY + blockH + 22); ctx.stroke();
+        ctx.fillStyle = '#e74c3c'; ctx.font = '11px sans-serif';
+        ctx.fillText('x', (eqX + eqX + x) / 2 - 4, blockY + blockH + 36);
+    }
+
+    function updateReadout() {
+        const omega = 2 * Math.PI / T;
+        const x = xNow();
+        const v = -A * omega * Math.sin(omega * t);
+        const a = -omega * omega * x;
+        const Ek = 0.5 * (v * v);      // 取 m=1 的质量单位
+        const Ep = 0.5 * (omega * omega) * (x * x);
+        const E = Ek + Ep;
+        document.getElementById('shmReadout').innerHTML =
+            `t = ${t.toFixed(2)} s ｜ x = <b>${x.toFixed(1)}</b>，v = <b>${v.toFixed(1)}</b>，a = <b>${a.toFixed(1)}</b>　` +
+            `｜ E_k = ${Ek.toFixed(0)}，E_p = ${Ep.toFixed(0)}，E = ${E.toFixed(0)}（守恒）`;
+    }
+
+    function loop(ts) {
+        if (!lastT) lastT = ts;
+        let dt = (ts - lastT) / 1000; lastT = ts;
+        if (dt > 0.05) dt = 0.05;
+        if (running) { readParams(); physics(dt); draw(); updateReadout(); }
+        raf = requestAnimationFrame(loop);
+    }
+    function start() { if (!raf) raf = requestAnimationFrame(loop); }
+    return { start, restart() { t = 0; }, toggle() { running = !running; } };
+})();
+shmAnim.start();
+
+/* ===================== 动画 2：横波传播 ===================== */
+const waveAnim = (function () {
+    const canvas = document.getElementById('canvasWave');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const midY = H / 2;
+    let lam = 160, amp = 60, v = 80, phase = 0, running = true, lastT = 0, raf = null;
+
+    function readParams() {
+        lam = parseFloat(document.getElementById('waveLam').value) || 160;
+        amp = parseFloat(document.getElementById('waveAmp').value) || 60;
+        v = parseFloat(document.getElementById('waveV').value) || 80;
+        lam = Math.max(40, lam); amp = Math.max(10, Math.min(amp, H / 2 - 20));
+    }
+
+    function physics(dt) { phase += (2 * Math.PI * v / lam) * dt; }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        // 平衡线
+        ctx.strokeStyle = '#cfd8dc'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, midY); ctx.lineTo(W, midY); ctx.stroke();
+
+        // 波形（向右传播：y = A sin(kx - ωt) = A sin(2π(x/λ) - phase)）
+        ctx.strokeStyle = '#2a5298'; ctx.lineWidth = 3;
+        ctx.beginPath();
+        for (let x = 0; x <= W; x += 2) {
+            const y = midY - amp * Math.sin(2 * Math.PI * x / lam - phase);
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // 标记一个质点，展示其只在竖直方向振动
+        const px = 120;
+        const py = midY - amp * Math.sin(2 * Math.PI * px / lam - phase);
+        ctx.fillStyle = '#e74c3c';
+        ctx.beginPath(); ctx.arc(px, py, 6, 0, 2 * Math.PI); ctx.fill();
+        // 竖直线指示其平衡位置
+        ctx.strokeStyle = 'rgba(231,76,60,0.4)'; ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(px, midY - amp - 8); ctx.lineTo(px, midY + amp + 8); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#e74c3c'; ctx.font = '11px sans-serif';
+        ctx.fillText('质点（不随波迁移）', px - 50, midY + amp + 24);
+
+        // 传播方向箭头
+        ctx.fillStyle = '#2a5298'; ctx.font = '13px sans-serif';
+        ctx.fillText('波传播方向 →', W - 130, midY - amp - 14);
+    }
+
+    function updateReadout() {
+        const f = v / lam;
+        const T = lam / v;
+        document.getElementById('waveReadout').innerHTML =
+            `λ = ${lam.toFixed(0)} px，A = ${amp.toFixed(0)} px，v = ${v.toFixed(0)} px/s　｜ ` +
+            `f = <b>${(f).toFixed(2)} Hz</b>，T = <b>${T.toFixed(2)} s</b>　（质点只在竖直方向振动，不随波迁移）`;
+    }
+
+    function loop(ts) {
+        if (!lastT) lastT = ts;
+        let dt = (ts - lastT) / 1000; lastT = ts;
+        if (dt > 0.05) dt = 0.05;
+        if (running) { readParams(); physics(dt); draw(); updateReadout(); }
+        raf = requestAnimationFrame(loop);
+    }
+    function start() { if (!raf) raf = requestAnimationFrame(loop); }
+    return { start, restart() { phase = 0; }, toggle() { running = !running; } };
+})();
+waveAnim.start();
+
+/* ===================== 动画 3：双波源干涉 ===================== */
+const interAnim = (function () {
+    const canvas = document.getElementById('canvasInter');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const S1 = { x: W / 2 - 80, y: 60 };
+    const S2 = { x: W / 2 + 80, y: 60 };
+    let lam = 40, t = 0, running = true, lastT = 0, raf = null;
+
+    function readParams() {
+        lam = parseFloat(document.getElementById('interLam').value) || 40;
+        lam = Math.max(15, lam);
+    }
+
+    function physics(dt) { t += dt; }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const img = ctx.getImageData(0, 0, W, H);
+        const data = img.data;
+        for (let y = 0; y < H; y++) {
+            for (let x = 0; x < W; x++) {
+                const r1 = Math.sqrt((x - S1.x) ** 2 + (y - S1.y) ** 2);
+                const r2 = Math.sqrt((x - S2.x) ** 2 + (y - S2.y) ** 2);
+                // 两列波叠加的瞬时位移（取相位随时间变化，t 推进使波纹动起来）
+                const s1 = Math.sin(2 * Math.PI * r1 / lam - 2 * Math.PI * t * 1.2);
+                const s2 = Math.sin(2 * Math.PI * r2 / lam - 2 * Math.PI * t * 1.2);
+                const s = s1 + s2;                 // 叠加位移 [-2, 2]
+                // 用振幅大小映射颜色：强（|s|大）偏红，弱（|s|小）偏蓝
+                const idx = (y * W + x) * 4;
+                const intensity = (s + 2) / 4;     // 0~1
+                const r = Math.round(255 * intensity);
+                const b = Math.round(255 * (1 - intensity));
+                const g = 40;
+                // 减弱点（节点）更蓝
+                data[idx] = r;
+                data[idx + 1] = g;
+                data[idx + 2] = b;
+                data[idx + 3] = 255;
+            }
+        }
+        ctx.putImageData(img, 0, 0);
+
+        // 波源
+        ctx.fillStyle = '#000';
+        ctx.beginPath(); ctx.arc(S1.x, S1.y, 5, 0, 2 * Math.PI); ctx.fill();
+        ctx.beginPath(); ctx.arc(S2.x, S2.y, 5, 0, 2 * Math.PI); ctx.fill();
+        ctx.fillStyle = '#000'; ctx.font = '12px sans-serif';
+        ctx.fillText('S₁', S1.x - 8, S1.y - 10);
+        ctx.fillText('S₂', S2.x - 8, S2.y - 10);
+
+        // 图例
+        ctx.font = '12px sans-serif';
+        ctx.fillStyle = '#c0392b'; ctx.fillRect(10, H - 20, 14, 10);
+        ctx.fillStyle = '#34495e'; ctx.fillText('加强区', 28, H - 11);
+        ctx.fillStyle = '#21618c'; ctx.fillRect(90, H - 20, 14, 10);
+        ctx.fillStyle = '#34495e'; ctx.fillText('减弱区', 108, H - 11);
+    }
+
+    function updateReadout() {
+        // 中点（正下方）路程差 = 0 → 加强；间距近似 λD/d 定性说明
+        const d = S2.x - S1.x;
+        document.getElementById('interReadout').innerHTML =
+            `λ = ${lam.toFixed(0)} px，波源间距 d = ${d} px　｜ ` +
+            `两波源连线中垂线上各点路程差为 0，均为<b>加强点</b>；` +
+            `干涉条纹间距随 λ 增大而<b>增大</b>。`;
+    }
+
+    function loop(ts) {
+        if (!lastT) lastT = ts;
+        let dt = (ts - lastT) / 1000; lastT = ts;
+        if (dt > 0.05) dt = 0.05;
+        if (running) { readParams(); physics(dt); draw(); updateReadout(); }
+        raf = requestAnimationFrame(loop);
+    }
+    function start() { if (!raf) raf = requestAnimationFrame(loop); }
+    return { start, restart() { t = 0; }, toggle() { running = !running; } };
+})();
+interAnim.start();
+
+/* ===================== 动画 4：简谐运动 x/v/a 随相位变化（滑块） ===================== */
+const vaAnim = (function () {
+    const canvas = document.getElementById('canvasVA');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const eqX = W / 2;                 // 振子平衡位置
+    const trackY = 70;                 // 振子轨道 y
+    const blockW = 36, blockH = 36;
+    const maxT = 4;                    // 时间滑块范围
+
+    function readParams() {
+        const A = Math.max(30, Math.min(parseFloat(document.getElementById('vaA').value) || 100, (W / 2 - 60)));
+        const T = Math.max(0.4, parseFloat(document.getElementById('vaT').value) || 2);
+        const phiDeg = parseFloat(document.getElementById('vaPhi').value) || 0;
+        const t = Math.max(0, Math.min(parseFloat(document.getElementById('vaTime').value) || 0, maxT));
+        return { A, T, phi: phiDeg * Math.PI / 180, t };
+    }
+
+    function values(A, T, phi, t) {
+        const w = 2 * Math.PI / T;
+        const th = w * t + phi;
+        const x = A * Math.cos(th);
+        const v = -A * w * Math.sin(th);     // 速度（取质量 m=1 的相对量）
+        const a = -w * w * x;                // 加速度，与 x 反向
+        return { w, th, x, v, a };
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const { A, T, phi, t } = readParams();
+        const { x, v, a, w } = values(A, T, phi, t);
+
+        // ---------- 上半部分：振子 + 矢量 ----------
+        // 轨道
+        ctx.strokeStyle = '#cfd8dc'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(eqX - A - 20, trackY); ctx.lineTo(eqX + A + 20, trackY); ctx.stroke();
+        // 平衡位置
+        ctx.strokeStyle = 'rgba(142,68,173,0.5)'; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(eqX, trackY - 30); ctx.lineTo(eqX, trackY + 30); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#8e44ad'; ctx.font = '11px sans-serif';
+        ctx.fillText('平衡位置', eqX - 30, trackY - 34);
+
+        // 弹簧（左墙到振子）
+        const bx = eqX + x;
+        ctx.strokeStyle = '#95a5a6'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(eqX - A - 20, trackY);
+        const coils = 14;
+        for (let i = 0; i <= coils; i++) {
+            const tt = i / coils;
+            const px = (eqX - A - 20) + (bx - blockW / 2 - (eqX - A - 20)) * tt;
+            const py = trackY + (i % 2 === 0 ? -6 : 6);
+            ctx.lineTo(px, py);
+        }
+        ctx.lineTo(bx - blockW / 2, trackY); ctx.stroke();
+
+        // 振子方块
+        ctx.fillStyle = '#2980b9';
+        ctx.fillRect(bx - blockW / 2, trackY - blockH / 2, blockW, blockH);
+        ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif';
+        ctx.fillText('m', bx - 4, trackY + 4);
+
+        // 位移矢量（红，从平衡位置）
+        ctx.strokeStyle = '#e74c3c'; ctx.lineWidth = 3;
+        arrow(ctx, eqX, trackY - 40, eqX + x, trackY - 40);
+        ctx.fillStyle = '#e74c3c'; ctx.font = '12px sans-serif';
+        ctx.fillText('x', (eqX + bx) / 2 - 4, trackY - 48);
+
+        // 速度矢量（绿，从振子向上/下）
+        const vSign = v >= 0 ? -1 : 1;        // 速度>0（向+x）画向上示意
+        const vLen = Math.min(Math.abs(v) / A / w * 60, 55);
+        ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 3;
+        arrow(ctx, bx, trackY, bx, trackY + vSign * vLen);
+        ctx.fillStyle = '#27ae60'; ctx.fillText('v', bx + 8, trackY + vSign * vLen * 0.5);
+
+        // 加速度矢量（橙，从振子向下/上，与 x 反向）
+        const aSign = a >= 0 ? 1 : -1;        // a>0（向+x）画向右下示意
+        const aLen = Math.min(Math.abs(a) / (w * w) / A * 60, 55);
+        ctx.strokeStyle = '#e67e22'; ctx.lineWidth = 3;
+        arrow(ctx, bx, trackY + 30, bx + aSign * aLen, trackY + 30);
+        ctx.fillStyle = '#e67e22'; ctx.fillText('a', bx + aSign * aLen + 6, trackY + 38);
+
+        // 图例
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = '#e74c3c'; ctx.fillText('— x 位移', W - 150, 20);
+        ctx.fillStyle = '#27ae60'; ctx.fillText('— v 速度', W - 150, 36);
+        ctx.fillStyle = '#e67e22'; ctx.fillText('— a 加速度', W - 150, 52);
+
+        // ---------- 下半部分：x / v / a 随时间曲线 ----------
+        const baseY = H - 90;
+        const scaleY = 60 / Math.max(A, A);
+        const plotH = 130;
+        // 坐标轴
+        ctx.strokeStyle = '#bdc3c7'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(40, baseY - plotH / 2); ctx.lineTo(40, baseY + plotH / 2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(40, baseY); ctx.lineTo(W - 20, baseY); ctx.stroke();
+        ctx.fillStyle = '#7f8c8d'; ctx.font = '10px sans-serif';
+        ctx.fillText('t', W - 30, baseY - 6);
+
+        const Tshow = T * 2;     // 显示两个周期
+        function plot(fn, color, label) {
+            ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath();
+            for (let px = 40; px <= W - 20; px++) {
+                const tt = (px - 40) / (W - 60) * Tshow;
+                const val = fn(tt);    // 已按 A 归一
+                const yy = baseY - val * scaleY;
+                if (px === 40) ctx.moveTo(px, yy); else ctx.lineTo(px, yy);
+            }
+            ctx.stroke();
+        }
+        plot(tt => A * Math.cos(w * tt + phi), '#e74c3c');          // x/A
+        plot(tt => -A * w * Math.sin(w * tt + phi) / (A * w), '#27ae60');  // v 归一
+        plot(tt => -A * w * w * Math.cos(w * tt + phi) / (A * w * w), '#e67e22'); // a 归一
+
+        // 当前时刻竖线
+        const curX = 40 + (t % Tshow) / Tshow * (W - 60);
+        ctx.strokeStyle = '#34495e'; ctx.setLineDash([3, 3]);
+        ctx.beginPath(); ctx.moveTo(curX, baseY - plotH / 2); ctx.lineTo(curX, baseY + plotH / 2); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // 标注当前点
+        const curXval = A * Math.cos(w * t + phi);
+        const curv = -A * w * Math.sin(w * t + phi);
+        const cura = -w * w * curXval;
+        dot(ctx, curX, baseY - curXval * scaleY, '#e74c3c');
+        dot(ctx, curX, baseY - (curv / (A * w)) * scaleY, '#27ae60');
+        dot(ctx, curX, baseY - (cura / (A * w * w)) * scaleY, '#e67e22');
+
+        // 读数
+        document.getElementById('vaReadout').innerHTML =
+            `t = <b>${t.toFixed(2)} s</b>　｜ ` +
+            `x = <b>${x.toFixed(1)}</b>，v = <b>${v.toFixed(1)}</b>，a = <b>${a.toFixed(1)}</b>` +
+            `　（a = -ω²x，始终与 x 反向；v 在平衡位置最大、最大位移处为 0）`;
+    }
+
+    function arrow(c, x1, y1, x2, y2) {
+        c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke();
+        const ang = Math.atan2(y2 - y1, x2 - x1);
+        c.beginPath();
+        c.moveTo(x2, y2);
+        c.lineTo(x2 - 8 * Math.cos(ang - 0.4), y2 - 8 * Math.sin(ang - 0.4));
+        c.lineTo(x2 - 8 * Math.cos(ang + 0.4), y2 - 8 * Math.sin(ang + 0.4));
+        c.closePath(); c.fillStyle = c.strokeStyle; c.fill();
+    }
+    function dot(c, x, y, color) {
+        c.fillStyle = color; c.beginPath(); c.arc(x, y, 3.5, 0, 2 * Math.PI); c.fill();
+    }
+
+    // 滑块实时重绘
+    ['vaA', 'vaT', 'vaPhi', 'vaTime'].forEach(id => {
+        document.getElementById(id).addEventListener('input', function () {
+            if (id === 'vaTime') document.getElementById('vaTimeVal').textContent = parseFloat(this.value).toFixed(2);
+            draw();
+        });
+    });
+
+    function init() {
+        document.getElementById('vaTimeVal').textContent = '0.00';
+        draw();
+    }
+    return { start: init };
+})();
+vaAnim.start();
+
+// 平滑滚动
+document.querySelectorAll('.nav a, .toc a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+</body>
+</html>

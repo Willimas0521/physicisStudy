@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 受力分析与平衡闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>⚖️ 高考物理 · 受力分析与平衡闯关</h1>
+    <p>三种性质力 · 受力分析 · 共点力平衡 · 动态平衡 · 整体与隔离 — 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<!-- 左侧竖版悬浮导航 -->
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 考点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部受力分析与平衡关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理受力分析与平衡专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+/* lv: 所属关卡序号(0起)  module: 所属模块 */
+const KNOW = {
+    "gravity":    { name: "重力与弹力", lv: 0, module: "三种性质力", desc: "重力 G=mg，竖直向下；弹力是接触形变产生的力，方向垂直于接触面" },
+    "friction":   { name: "摩擦力", lv: 1, module: "三种性质力", desc: "滑动摩擦 f=μN，方向与相对运动方向相反；静摩擦由平衡条件求解" },
+    "compose":    { name: "力的合成与分解", lv: 2, module: "力的运算", desc: "平行四边形定则；按效果分解或正交分解" },
+    "analysis":   { name: "受力分析", lv: 3, module: "受力分析", desc: "按重力→弹力→摩擦力顺序分析，不多力、不漏力" },
+    "balance":    { name: "共点力平衡", lv: 4, module: "平衡问题", desc: "物体静止或匀速运动时合外力为零：F合=0" },
+    "orthogonal": { name: "正交分解法", lv: 5, module: "平衡问题", desc: "建系后：ΣFx=0 且 ΣFy=0，是解平衡问题的万能方法" },
+    "dynamic":    { name: "动态平衡图解法", lv: 6, module: "平衡问题", desc: "一个力恒定一个力方向不变，用矢量三角形转动态图" },
+    "overall":    { name: "整体法与隔离法", lv: 7, module: "解题方法", desc: "整体求外力、隔离求内力，常配合使用" },
+    "critical":   { name: "临界与极值问题", lv: 8, module: "平衡问题", desc: "恰好滑动（f=μN）、恰好脱离（N=0）等临界状态" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+    {
+        badge: "三种性质力 · 考点01",
+        title: "重力与弹力",
+        intro: "受力分析的地基：重力是引力产生的场力，弹力是接触形变产生的力，方向判断是重点。",
+        formulas: [
+            { t: "📦 重力", f: "$$G = mg$$", note: "竖直向下，重心不一定在物体上（如圆环）。" },
+            { t: "🔗 弹力方向", f: "<span class='term-chip'>压力/支持力</span><span class='term-op'>⊥</span><span class='term-chip'>接触面</span><span class='term-op'>,</span><span class='term-chip'>绳子拉力</span><span class='term-op'>→</span><span class='term-chip'>沿绳</span><span class='term-op'>,</span><span class='term-chip'>弹簧</span><span class='term-op'>→</span><span class='term-chip'>沿轴线</span>", note: "轻绳的弹力只能沿绳（拉力），轻杆的弹力可沿任意方向。" },
+            { t: "⚡ 胡克定律", f: "$$F = kx$$", note: "x 为形变量（伸长量或压缩量），弹簧两端受力相等。" }
+        ],
+        example: {
+            q: "一根轻弹簧原长 10 cm，在 20 N 拉力作用下伸长到 14 cm。若把它压缩到 7 cm，弹簧弹力大小为多少？",
+            steps: [
+                "胡克定律：$F = kx$，$k = \\dfrac{20}{0.04} = 500\\ \\text{N/m}$",
+                "压缩量 $x = 0.10 - 0.07 = 0.03\\ \\text{m}$",
+                "$F = 500 \\times 0.03 = 15\\ \\text{N}$，方向沿轴线指向恢复原长方向"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于重力与弹力，下列说法正确的是？",
+                opts: [
+                    "物体的重心一定在物体上",
+                    "轻绳的拉力方向一定沿绳指向绳的收缩方向",
+                    "只有接触的物体间才会产生弹力，且弹力方向一定与接触面垂直",
+                    "弹簧的弹力大小与弹簧的长度成正比"
+                ],
+                answer: 1,
+                explain: "重心可以不在物体上（如圆环）；弹力方向：压力、支持力垂直于接触面，而绳的拉力沿绳；弹力与形变量（不是长度）成正比；接触且发生形变才会产生弹力。"
+            },
+            {
+                q: "轻弹簧原长 12 cm，挂 6 N 重物时伸长到 15 cm。若两端各用 10 N 的力拉它，弹簧的长度为？",
+                opts: ["15 cm", "16 cm", "17 cm", "18 cm"],
+                answer: 2,
+                explain: "由 $F_1 = kx_1$：$k = \\dfrac{6}{0.03} = 200\\ \\text{N/m}$。两端各拉 10 N 时弹簧弹力为 10 N，伸长量 $x = \\dfrac{10}{200} = 0.05\\ \\text{m} = 5\\ \\text{cm}$，长度 $L = 12 + 5 = 17\\ \\text{cm}$。"
+            }
+        ]
+    },
+    {
+        badge: "三种性质力 · 考点02",
+        title: "摩擦力",
+        intro: "摩擦力是高考陷阱最多的力：分清'滑动'与'静'，关键是判断相对运动（趋势）方向。<br><a href='高中物理_静摩擦力与圆盘临界问题.html' target='_blank' style='display:inline-block;margin-top:8px;color:#8e44ad;font-weight:700;'>📄 拓展专题：物块随圆盘转动中的临界问题（静摩擦力分析）→</a>",
+        formulas: [
+            { t: "🧲 滑动摩擦力", f: "$$f = \\mu F_N$$", note: "方向与相对运动方向相反，大小与接触面积、速度无关。" },
+            { t: "🪨 静摩擦力", f: "$$f_{\\text{静}} \\le f_{\\max} = \\mu_s F_N$$", note: "大小由平衡条件或其他规律确定，方向与相对运动趋势方向相反。" },
+            { t: "⚠ 易错点", f: "<span class='term-chip warn'>摩擦力不一定是阻力</span><span class='term-op'>/</span><span class='term-chip'>静摩擦可做正功</span>", note: "传送带送物时静摩擦力做正功；人走路靠静摩擦前进。" }
+        ],
+        example: {
+            q: "质量为 5 kg 的物体静止在水平地面上，μ=0.3。用 10 N 的水平力推它，物体受到的摩擦力为多少？用 20 N 呢？",
+            steps: [
+                "最大静摩擦力近似等于滑动摩擦力：$f_{\\max} = \\mu mg = 0.3 \\times 50 = 15\\ \\text{N}$",
+                "用 10 N 推：$10 < 15$，物体静止，静摩擦力 $f = 10\\ \\text{N}$（平衡）",
+                "用 20 N 推：$20 > 15$，物体滑动，摩擦力 $f = 15\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于摩擦力，下列说法正确的是？",
+                opts: [
+                    "摩擦力总是阻碍物体的运动，一定是阻力",
+                    "静止的物体一定不受摩擦力",
+                    "滑动摩擦力的大小与接触面积有关",
+                    "摩擦力可以与物体的运动方向相同"
+                ],
+                answer: 3,
+                explain: "摩擦力阻碍的是'相对运动（趋势）'，可以与运动方向相同（如传送带上的物体），此时做正功；静摩擦也可存在于静止物体间。"
+            },
+            {
+                q: "质量 10 kg 的物体放在水平面上，μ=0.4。当用 35 N 的水平力推它时物体恰好匀速运动，现将水平力增大到 50 N，物体受到的摩擦力为？",
+                opts: ["35 N", "40 N", "50 N", "无法确定"],
+                answer: 1,
+                explain: "匀速时推力等于滑动摩擦力：$f = \\mu mg = 0.4 \\times 100 = 40\\ \\text{N}$。增大推力后物体加速运动，但滑动摩擦力仍为 40 N（与推力无关）。"
+            }
+        ]
+    },
+    {
+        badge: "力的运算 · 考点03",
+        title: "力的合成与分解",
+        intro: "多个力的'合并'与'拆解'都要遵守平行四边形定则，正交分解是最常用的手段。",
+        formulas: [
+            { t: "📐 平行四边形定则", f: "$$F = \\sqrt{F_1^2 + F_2^2 + 2F_1F_2\\cos\\theta}$$", note: "θ 为 F₁ 与 F₂ 的夹角。合力范围：$|F_1 - F_2| \\le F \\le F_1 + F_2$。" },
+            { t: "🧭 正交分解", f: "$$F_x = F\\cos\\theta,\\quad F_y = F\\sin\\theta$$", note: "将力沿互相垂直的两轴分解，方便代数相加。" },
+            { t: "📌 按效果分解", f: "<span class='term-chip'>斜面下滑重力</span><span class='term-op'>→</span><span class='term-chip'>垂直斜面 mgcosθ</span><span class='term-op'>+</span><span class='term-chip'>沿斜面 mgsinθ</span>", note: "θ 为斜面倾角，这是最常见的分解模型。" }
+        ],
+        example: {
+            q: "两个力 F₁=6 N、F₂=8 N，夹角为 90°，求合力大小；若夹角为 0° 和 180° 呢？",
+            steps: [
+                "90°：$F = \\sqrt{6^2 + 8^2} = 10\\ \\text{N}$",
+                "0°（同向）：$F = 6 + 8 = 14\\ \\text{N}$",
+                "180°（反向）：$F = |8 - 6| = 2\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "两个共点力的大小分别为 4 N 和 7 N，它们的合力大小不可能为？",
+                opts: ["3 N", "5 N", "11 N", "12 N"],
+                answer: 3,
+                explain: "合力范围 $|F_1 - F_2| \\le F \\le F_1 + F_2$，即 $3 \\le F \\le 11\\ \\text{N}$，12 N 超出范围。"
+            },
+            {
+                q: "质量为 m 的物体静止在倾角为 θ 的斜面上，重力沿斜面方向的分力大小为？",
+                opts: ["mg·cosθ", "mg·sinθ", "mg", "mg·tanθ"],
+                answer: 1,
+                explain: "重力沿斜面方向的分力为 $mg\\sin\\theta$，垂直斜面方向的分力为 $mg\\cos\\theta$。"
+            }
+        ]
+    },
+    {
+        badge: "受力分析 · 考点04",
+        title: "受力分析",
+        intro: "一切力学题的前提：按'重力→弹力→摩擦力'顺序逐个找力，不多不漏。",
+        formulas: [
+            { t: "🧭 分析顺序", f: "<span class='term-chip dark'>① 重力</span><span class='term-op'>→</span><span class='term-chip dark'>② 弹力</span><span class='term-op'>→</span><span class='term-chip dark'>③ 摩擦力</span><span class='term-op'>→</span><span class='term-chip dark'>④ 其他力</span>", note: "先看场力（重力），再看接触力（弹力、摩擦），最后看已知外力。" },
+            { t: "🔍 弹力的存在性判断", f: "<span class='term-chip'>假设撤去法</span><span class='term-op'>/</span><span class='term-chip'>状态平衡法</span>", note: "假设撤去该接触面，若物体运动状态改变则存在弹力；由平衡状态反推。" },
+            { t: "⚠ 常见错误", f: "<span class='term-chip warn'>多力</span><span class='term-op'>（把分力当实际力）</span><span class='term-chip warn'>漏力</span><span class='term-op'>（忘摩擦力/忘空气阻力）</span>", note: "物体只受性质力：重力、弹力、摩擦力、已知外力；力的分解是'分析'不是'受'的力。" }
+        ],
+        example: {
+            q: "物体 A 静止在倾角为 θ 的斜面上，画出并列出 A 受到的力。",
+            steps: [
+                "重力 mg：竖直向下",
+                "支持力 N：垂直斜面向上",
+                "静摩擦力 f：沿斜面向上（阻碍下滑趋势）",
+                "共 3 个力。若题目说明斜面光滑，则无摩擦力，只剩 2 个力"
+            ]
+        },
+        challenges: [
+            {
+                q: "一辆汽车在水平公路上匀速行驶，对汽车做受力分析，下列说法正确的是？",
+                opts: [
+                    "汽车受重力、支持力、牵引力、摩擦力四个力",
+                    "汽车受重力、支持力、牵引力、摩擦力、发动机给它的向前的力",
+                    "汽车只受重力和支持力",
+                    "汽车受的重力和支持力不在一条直线上"
+                ],
+                answer: 0,
+                explain: "汽车受重力、地面支持力、发动机牵引力、地面摩擦力（阻力）四个力。'牵引力'就是发动机通过传动系统提供的向前的力，不能重复计算。"
+            },
+            {
+                q: "物体静止在粗糙斜面上，关于它受到的摩擦力方向，下列说法正确的是？",
+                opts: [
+                    "沿斜面向上",
+                    "沿斜面向下",
+                    "垂直斜面向上",
+                    "水平向左"
+                ],
+                answer: 0,
+                explain: "物体有沿斜面下滑的趋势，静摩擦力阻碍该趋势，方向沿斜面向上。"
+            }
+        ]
+    },
+    {
+        badge: "平衡问题 · 考点05",
+        title: "共点力平衡",
+        intro: "静止或匀速直线运动的物体，所受合力为零——这是解平衡问题的核心方程。",
+        formulas: [
+            { t: "🎯 平衡条件", f: "$$F_{\\text{合}} = 0$$", note: "物体静止或做匀速直线运动（包括缓慢移动，可视为每时刻平衡）。" },
+            { t: "📐 三力平衡", f: "$$F_3 = - (F_1 + F_2)$$", note: "三力平衡时，任意两个力的合力与第三个力等大反向——可作矢量三角形求解。" },
+            { t: "⚠ 动态平衡", f: "<span class='term-chip'>缓慢移动</span><span class='term-op'>→</span><span class='term-chip'>每时刻均平衡</span>", note: "'缓慢'是动态平衡的关键词，每时刻仍满足 F合=0。" }
+        ],
+        example: {
+            q: "质量 4 kg 的物体静止在水平地面上，受一个与水平方向成 30° 斜向上的拉力 F=20 N，求地面对物体的支持力。",
+            steps: [
+                "竖直方向平衡：$N + F\\sin 30° = mg$",
+                "$N = mg - F\\sin 30° = 40 - 20 \\times \\dfrac{1}{2}$",
+                "$N = 30\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "下列关于共点力平衡条件的说法，正确的是？",
+                opts: [
+                    "速度为零的物体一定处于平衡状态",
+                    "加速度为零的物体处于平衡状态",
+                    "恒力作用下运动的物体一定处于平衡状态",
+                    "做匀速圆周运动的物体处于平衡状态"
+                ],
+                answer: 1,
+                explain: "平衡状态指静止或匀速直线运动，本质是合力为零、加速度为零。速度为零但可能有加速度（如竖直上抛到最高点）则不平衡；匀速圆周运动加速度不为零，不平衡。"
+            },
+            {
+                q: "重 10 N 的物体受 F₁=6 N、F₂=8 N 两个水平共点力作用处于静止状态，则第三个力 F₃ 的大小为？",
+                opts: ["2 N", "10 N", "14 N", "无法确定"],
+                answer: 1,
+                explain: "三力平衡时 $F_3$ 与 $F_1 + F_2$ 等大反向。$F_1 \\perp F_2$ 时合力 $\\sqrt{6^2+8^2} = 10\\ \\text{N}$，故 $F_3 = 10\\ \\text{N}$，与合力反向。"
+            }
+        ]
+    },
+    {
+        badge: "平衡问题 · 考点06",
+        title: "正交分解法",
+        intro: "把任意方向上的力分解到两个互相垂直的轴上，列两个代数方程——解平衡题的标准流程。",
+        formulas: [
+            { t: "📐 分解式", f: "$$F_x = F\\cos\\theta,\\quad F_y = F\\sin\\theta$$", note: "θ 是力与 x 轴的夹角。" },
+            { t: "🎯 平衡方程", f: "$$\\Sigma F_x = 0,\\quad \\Sigma F_y = 0$$", note: "两方向合力均为零，可解两个未知量。" },
+            { t: "🧭 选轴技巧", f: "<span class='term-chip'>沿运动趋势方向</span><span class='term-op'>+</span><span class='term-chip'>垂直它</span>", note: "斜面问题通常沿斜面与垂直斜面建系，可避免分解支持力。" }
+        ],
+        example: {
+            q: "质量 2 kg 的物体静止在倾角 37° 的粗糙斜面上（sin37°=0.6，cos37°=0.8），求斜面对物体的支持力和摩擦力。",
+            steps: [
+                "沿斜面与垂直斜面正交分解重力：$mg\\sin 37° = 12\\ \\text{N}$，$mg\\cos 37° = 16\\ \\text{N}$",
+                "垂直斜面方向：$N = mg\\cos 37° = 16\\ \\text{N}$",
+                "沿斜面方向：$f = mg\\sin 37° = 12\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "物体在斜面上静止，下列四组力中哪一组能保证物体平衡（θ 为斜面倾角）？",
+                opts: [
+                    "N = mg，f = mgsinθ",
+                    "N = mgcosθ，f = mgsinθ",
+                    "N = mgsinθ，f = mgcosθ",
+                    "N = mg，f = 0"
+                ],
+                answer: 1,
+                explain: "正交分解重力：垂直斜面方向 $N = mg\\cos\\theta$，沿斜面方向 $f = mg\\sin\\theta$。"
+            },
+            {
+                q: "质量 m 的物体静止在倾角 θ 的斜面上，现用一沿斜面向上的力 F 推它仍静止，则此时物体受摩擦力（斜面粗糙，mgsinθ > F）为？",
+                opts: ["mgsinθ，沿斜面向上", "mgsinθ - F，沿斜面向上", "F - mgsinθ，沿斜面向上", "0"],
+                answer: 1,
+                explain: "物体有下滑趋势，摩擦力沿斜面向上：$f + F = mg\\sin\\theta$，得 $f = mg\\sin\\theta - F$，方向沿斜面向上。"
+            }
+        ]
+    },
+    {
+        badge: "平衡问题 · 考点07",
+        title: "动态平衡图解法",
+        intro: "一个力恒定、另一个力方向不变时，用矢量三角形旋转'看'力的变化——不用解方程。",
+        formulas: [
+            { t: "🎯 模型识别", f: "<span class='term-chip'>一个力恒定</span><span class='term-op'>+</span><span class='term-chip'>一个力方向不变</span><span class='term-op'>→</span><span class='term-chip good'>图解法</span>", note: "如：挡板转动、绳端下滑等场景。" },
+            { t: "📐 矢量三角形", f: "$$F_1 + F_2 + F_3 = 0$$", note: "三个力首尾相接构成闭合三角形；改变一个力的方向，三角形随之旋转。" },
+            { t: "⚠ 相似三角形法", f: "<span class='term-chip'>力的三角形</span><span class='term-op'>∽</span><span class='term-chip'>几何三角形</span>", note: "当绳长、杆长、距离等几何量已知时，用相似比求力的变化。" }
+        ],
+        example: {
+            q: "小球用轻绳悬挂在墙上，水平力 F 缓慢把小球向右拉，绳与竖直方向的夹角 θ 逐渐增大，问绳中拉力 T 和 F 如何变化？",
+            steps: [
+                "对小球：三力平衡，重力 G 恒定，F 水平（方向不变）",
+                "θ 增大时，在矢量三角形中 T 与竖直方向夹角增大",
+                "由图可知：T 增大，F 增大"
+            ]
+        },
+        challenges: [
+            {
+                q: "用轻绳把小球挂在墙上的钉子 O 处，小球受到水平外力 F 作用，缓慢增大 F（绳与竖直方向夹角 θ 增大），则绳的拉力 T 将？",
+                opts: [
+                    "保持不变",
+                    "逐渐增大",
+                    "逐渐减小",
+                    "先减小后增大"
+                ],
+                answer: 1,
+                explain: "$T\\cos\\theta = mg$，θ 增大则 cosθ 减小，故 $T = \\dfrac{mg}{\\cos\\theta}$ 增大；$F = mg\\tan\\theta$ 也增大。"
+            },
+            {
+                q: "光滑半圆柱体固定在水平面上，小球从顶端缓慢下滑的过程中，柱面对球的支持力 N 和重力沿切线分力如何变化？",
+                opts: [
+                    "N 一直增大",
+                    "N 一直减小",
+                    "N 先增大后减小",
+                    "N 不变"
+                ],
+                answer: 0,
+                explain: "小球缓慢下滑视为动态平衡。设球与圆心连线与竖直方向夹角为 θ，$N = mg\\cos\\theta$。下滑过程中 θ 减小，cosθ 增大，故 N 一直增大。"
+            }
+        ]
+    },
+    {
+        badge: "解题方法 · 考点08",
+        title: "整体法与隔离法",
+        intro: "多个物体组成的系统：整体看'外部'，隔离看'内部'，两者结合是解连接体平衡的利器。",
+        formulas: [
+            { t: "🧑‍🤝‍🧑 整体法", f: "$$F_{\\text{外}} = (m_1 + m_2 + \\dots) \\cdot a = 0$$", note: "只分析系统外力，内力在整体法中互相抵消，不必分析。" },
+            { t: "🔍 隔离法", f: "$$F_i = 0$$", note: "分析某一物体的受力，用来求系统内力（如物体间的作用力）。" },
+            { t: "🧭 选择技巧", f: "<span class='term-chip good'>求外力 → 整体</span><span class='term-op'>，</span><span class='term-chip good'>求内力 → 隔离</span>", note: "两物体相对静止（或加速度相同）时才能用整体法。" }
+        ],
+        example: {
+            q: "质量分别为 2 kg 和 3 kg 的 A、B 叠放在水平地面上，A 在上。用 20 N 的水平力拉 A，A、B 一起匀速运动，求地面对 B 的摩擦力及 A、B 间摩擦力。",
+            steps: [
+                "整体法（A+B）：地面对 B 的摩擦力 $f = 20\\ \\text{N}$",
+                "隔离 A：水平方向 A 受拉力 20 N 与 B 对 A 的摩擦力平衡，故 A、B 间摩擦力 $f_{AB} = 20\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "质量均为 m 的 A、B 两物块叠放在水平面上，用水平力 F 拉 A 使 A、B 一起匀速运动。此时地面对 B 的摩擦力大小为？",
+                opts: ["0", "F/2", "F", "2F"],
+                answer: 2,
+                explain: "整体法：系统匀速，合外力为零，地面对 B 的摩擦力与外力 F 等大反向，大小为 F。"
+            },
+            {
+                q: "光滑水平面上叠放 A、B 两物体（A 在上），用恒力 F 推 B 使 A、B 一起加速运动。求 A、B 间摩擦力，宜采用？",
+                opts: [
+                    "对整体受力分析",
+                    "隔离 A 分析",
+                    "隔离 B 分析",
+                    "先整体后隔离，隔离 A 求摩擦力"
+                ],
+                answer: 3,
+                explain: "整体法求出共同加速度，再隔离 A，由牛顿第二定律求 A、B 间摩擦力——这是标准流程。"
+            }
+        ]
+    },
+    {
+        badge: "平衡问题 · 考点09",
+        title: "临界与极值问题",
+        intro: "'恰好滑动''恰好脱离''绳子恰好拉直'——临界状态的受力特征是突破口。",
+        formulas: [
+            { t: "⚠ 临界状态", f: "<span class='term-chip warn'>恰好滑动</span><span class='term-op'>→</span><span class='term-chip'>f = μN</span><span class='term-op'>,</span><span class='term-chip warn'>恰好脱离</span><span class='term-op'>→</span><span class='term-chip'>N = 0</span>", note: "临界是平衡与不平衡的分界，先找临界点再列方程。" },
+            { t: "📐 极值方法", f: "<span class='term-chip'>数学法（二次函数/三角函数）</span><span class='term-op'>/</span><span class='term-chip'>几何法</span>", note: "求力的最小值、最大值的常见手段。" },
+            { t: "🎯 解题流程", f: "<span class='term-chip dark'>找临界词</span><span class='term-op'>→</span><span class='term-chip dark'>定临界状态</span><span class='term-op'>→</span><span class='term-chip dark'>列临界方程</span>", note: "'恰好''刚好''最大''最小'是临界问题的信号词。" }
+        ],
+        example: {
+            q: "倾角 37° 的斜面上放一质量 2 kg 的物体，μ=0.5。要使物体恰好不上滑，沿斜面向上施加的推力至少为多大？(sin37°=0.6, cos37°=0.8)",
+            steps: [
+                "物体恰好不上滑的临界：静摩擦力达到最大值且方向沿斜面向下",
+                "$F + \\mu N = mg\\sin 37°$，且 $N = mg\\cos 37° = 16\\ \\text{N}$",
+                "$F = 12 + 0.5 \\times 16 = 20\\ \\text{N}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "物块恰好沿斜面匀速下滑时（μ=tanθ），若再施加一个沿斜面向下的力，物块将？",
+                opts: [
+                    "匀速下滑",
+                    "加速下滑",
+                    "减速下滑",
+                    "先加速后匀速"
+                ],
+                answer: 1,
+                explain: "μ=tanθ 时，$mg\\sin\\theta = \\mu mg\\cos\\theta$，重力分力恰好等于摩擦力。再施加向下的力后合力沿斜面向下，物体加速下滑。"
+            },
+            {
+                q: "质量为 m 的物块放在倾角为 θ 的斜面上，μ = tanθ。使物块恰好不上滑所需的沿斜面向上最小推力为？",
+                opts: ["0", "mgsinθ", "2mgsinθ", "mgcosθ"],
+                answer: 2,
+                explain: "μ=tanθ 时最大静摩擦力 $f_{\\max} = \\mu mg\\cos\\theta = mg\\sin\\theta$，恰好不上滑需 $F + f_{\\max} \\ge mg\\sin\\theta$，即 $F \\ge 2mg\\sin\\theta$。"
+            }
+        ]
+    },
+    {
+        badge: "综合与真题 · 考点10",
+        title: "综合与真题演练",
+        intro: "把受力分析、正交分解、动态平衡、整体隔离综合起来，挑战高考真题的难度。",
+        formulas: [
+            { t: "📋 解题总流程", f: "<span class='term-chip dark'>明确对象</span><span class='term-op'>→</span><span class='term-chip dark'>受力分析</span><span class='term-op'>→</span><span class='term-chip dark'>选方法</span><span class='term-op'>→</span><span class='term-chip dark'>建系列式</span><span class='term-op'>→</span><span class='term-chip dark'>解方程</span>", note: "先选研究对象（整体/隔离），再画受力图，再选解法。" },
+            { t: "🧮 核心方程", f: "$$\\Sigma F_x = 0,\\quad \\Sigma F_y = 0$$", note: "平衡问题的两个核心方程，配合矢量三角形、图解法使用。" },
+            { t: "🏆 高考信号词", f: "<span class='term-chip warn'>恰好</span><span class='term-op'>/</span><span class='term-chip warn'>缓慢</span><span class='term-op'>/</span><span class='term-chip warn'>最大</span><span class='term-op'>/</span><span class='term-chip warn'>最小</span>", note: "看到这些词，优先考虑临界与动态平衡。" }
+        ],
+        example: {
+            q: "光滑斜面（倾角 θ）上放一物块，用水平推力 F 使物块与斜面保持相对静止一起沿水平面匀速运动，求 F 的大小。",
+            steps: [
+                "物块受重力 mg、支持力 N、水平推力 F，三力平衡",
+                "沿水平、竖直方向正交分解：$F - N\\sin\\theta = 0$，$N\\cos\\theta = mg$",
+                "联立得：$F = mg\\tan\\theta$"
+            ]
+        },
+        challenges: [
+            {
+                q: "光滑斜面上物块随斜面一起水平向右匀速运动，水平推力 F 满足？",
+                opts: ["F = mg", "F = mgtanθ", "F = mgsinθ", "F = mgcosθ"],
+                answer: 1,
+                explain: "三力平衡，正交分解：水平方向 $F = N\\sin\\theta$，竖直方向 $N\\cos\\theta = mg$，联立得 $F = mg\\tan\\theta$。"
+            },
+            {
+                exam: true,
+                q: "（高考真题 · 复合考点）如图，质量为 m 的小球用轻绳悬挂在 O 点，用水平力 F 缓慢拉动小球，使绳与竖直方向夹角由 0 缓慢增大到 θ。此过程中轻绳拉力 T 与水平力 F 的变化情况是？",
+                opts: [
+                    "T 增大，F 增大",
+                    "T 减小，F 增大",
+                    "T 增大，F 减小",
+                    "T 不变，F 增大"
+                ],
+                answer: 0,
+                explain: "动态平衡：$T\\cos\\theta = mg$，$F = mg\\tan\\theta$。θ 从 0 增大到 θ 时，cosθ 减小 → T 增大；tanθ 增大 → F 增大。",
+                points: [
+                    { step: "识别'缓慢'为动态平衡，每时刻 F合=0", k: "balance" },
+                    { step: "对小球做受力分析：重力 G、绳拉力 T、水平力 F 三力平衡", k: "analysis" },
+                    { step: "正交分解：Tcosθ=mg，F=mgsinθ/cosθ=mgtanθ", k: "orthogonal" },
+                    { step: "随 θ 增大，cosθ 减小、tanθ 增大，判断 T、F 变化", k: "dynamic" }
+                ]
+            },
+            {
+                exam: true,
+                q: "（压轴题 · 复合考点）倾角为 θ 的粗糙斜面固定在水平面上，质量 m 的物块恰能沿斜面匀速下滑。现对物块施加一竖直向下的恒力 F，则物块将？",
+                opts: [
+                    "匀速下滑",
+                    "加速下滑",
+                    "减速下滑",
+                    "静止不动"
+                ],
+                answer: 0,
+                explain: "恰能匀速下滑说明 $mg\\sin\\theta = \\mu mg\\cos\\theta$，即 $\\mu = \\tan\\theta$。施加竖直向下的 F 后，等效重力变为 $mg + F$：$(mg+F)\\sin\\theta = \\mu (mg+F)\\cos\\theta$ 仍成立，物块仍匀速下滑。",
+                points: [
+                    { step: "由'恰能匀速下滑'得出 μ = tanθ", k: "critical" },
+                    { step: "受力分析：重力 mg、F、支持力 N、摩擦力 f", k: "analysis" },
+                    { step: "正交分解列平衡方程：(mg+F)sinθ 与 μ(mg+F)cosθ 比较", k: "orthogonal" },
+                    { step: "μ=tanθ 时两式恒相等，判断运动状态不变", k: "friction" }
+                ]
+            }
+        ]
+    }
+];
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+const LEVEL_COUNT = LEVELS.length;
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    const navBtn = document.createElement('button');
+    navBtn.innerHTML = `<span class="nav-no">考点${String(i+1).padStart(2,'0')}</span><span class="nav-name">${lv.title}</span>`;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    lv.formulas.forEach(f => {
+        const isMath = f.f.indexOf('$') !== -1;
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            ${isMath
+                ? `<div class="formula">${f.f}</div>`
+                : `<div class="formula-text">${f.f}</div>`}
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    html += `<div class="example">
+        <div class="q">💡 例题</div>`;
+    lv.example.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+    html += `</div>`;
+
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        const ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">考点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===LEVEL_COUNT-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65+correct);
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => answered[li+'_'+k] && document.querySelector(`.opt[data-i="${li}_${k}"][data-j="${c.answer}"]`)?.classList.contains('correct'));
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= LEVEL_COUNT) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

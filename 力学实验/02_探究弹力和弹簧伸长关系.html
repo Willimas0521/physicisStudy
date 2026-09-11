@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 探究弹力和弹簧伸长关系</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 2 关 · 共 9 关</span>
+  </div>
+  <h1>探究弹力和弹簧伸长关系</h1>
+  <div class="tag">胡克定律</div>
+  <div class="imgbox"><img src="../力学实验_images/spring_hooke.png" alt=""><div class="imgcap">探究弹力与弹簧伸长量关系装置</div></div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>核心原理（胡克定律）：</b>F = k x，其中 x 是弹簧的<b>形变量（伸长量）</b>，不是弹簧总长。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>做法：</b>悬挂不同钩码，记录弹力 F=mg 与对应伸长量 x，作 F–x 图像，斜率即劲度系数 k。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>注意：</b>F–x 图线应为过原点的直线；若不过原点，可能是未计弹簧原长或指针初始未调零。</div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（2022·广东）用右侧装置探究弹簧弹力与伸长量的关系，得到数据并作 F–x 图，图线斜率 k=50 N/m。若挂一重 1.0 N 的钩码，弹簧伸长量 x=？</p><p class='ans'>答案：由 F=kx → x=F/k=1.0/50=0.020 m=2.0 cm。</p></div>
+  <div class="nav">
+    <a class="prev" href="01_研究匀变速直线运动.html">← 研究匀变速直线运动</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="03_验证力的平行四边形定则.html">验证力的平行四边形定则 →</a>
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "弹簧的劲度系数 k 等于 F–x 图像的？", "o": ["纵截距", "斜率", "面积", "斜率的倒数"], "a": 1, "e": "F=kx，纵轴 F 对横轴 x 的图像斜率就是 k。"}, {"q": "下列说法正确的是？", "o": ["x 指弹簧自然长度", "弹力与伸长量成正比（弹性限度内）", "k 随拉力增大而增大", "图像一定过 (L₀,0)"], "a": 1, "e": "弹性限度内弹力与形变量成正比，k 由弹簧本身决定，与 F 无关；图像过原点 (0,0) 指形变量为 0 时弹力为 0。"}, {"q": "用图像求 k 比逐点计算取平均的优点是？", "o": ["计算更快", "可减小偶然误差、直观看出线性关系", "不需要原长", "避免单位换算"], "a": 1, "e": "图像法能利用全部数据点、抵消随机误差，并检验是否为线性。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

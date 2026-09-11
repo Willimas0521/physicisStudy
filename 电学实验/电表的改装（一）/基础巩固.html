@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电表的改装（一）· 基础巩固</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="../mathjax/tex-svg.js"></script>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--purple:#7c5cff;--warn:#e0922e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.8;padding:0 0 40px}
+.header{background:linear-gradient(135deg,#1565c0,#2196f3 55%,#7c5cff);color:#fff;padding:40px 20px 26px;text-align:center;box-shadow:0 4px 18px rgba(33,150,243,.3)}
+.header h1{font-size:2.1em;letter-spacing:1px}
+.header p{opacity:.92;margin-top:6px;font-size:14px}
+.nav{max-width:1000px;margin:16px auto 0;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap}
+.nav a{color:var(--accent);text-decoration:none;font-size:14px;border:1px solid #d6e2ef;background:#fff;border-radius:8px;padding:7px 16px}
+.nav a:hover{border-color:var(--accent);background:#eef4fb}
+.container{max-width:1000px;margin:0 auto;padding:24px 20px}
+.progress-wrap{background:#fff;border-radius:12px;padding:14px 20px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.progress-wrap .lab{font-weight:600;color:var(--accent)}
+.bar{flex:1;min-width:160px;height:12px;background:#e3eaf2;border-radius:8px;overflow:hidden}
+#bar{height:100%;width:0;background:linear-gradient(90deg,#2196f3,#7c5cff);transition:.35s}
+.level{background:#fff;border-radius:12px;margin:14px 0;border-left:5px solid var(--accent);box-shadow:0 2px 12px rgba(0,0,0,.06);padding:16px 22px;transition:.2s}
+.level.done{border-left-color:var(--accent2);background:#f4fbf6}
+.lv-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.lv-no{background:var(--accent);color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.level.done .lv-no{background:var(--accent2)}
+.lv-type{font-size:12px;background:#e3f2fd;color:#1565c0;padding:2px 9px;border-radius:10px}
+.lv-diff .stars{color:var(--warn);letter-spacing:1px}
+.lv-time{font-size:12px;color:var(--sub)}
+.lv-done{margin-left:auto;font-size:13px;color:#555;cursor:pointer;user-select:none}
+.lv-q{margin:6px 0 4px;color:#34495e}
+.opts{margin:6px 0}
+.opts span{display:inline-block;margin:3px 18px 3px 0}
+.fig{display:block;max-width:78%;margin:14px auto;border:1px solid #e2e8f0;border-radius:10px;padding:8px;background:#fafcff}
+.lv-ans summary{cursor:pointer;color:var(--accent2);font-weight:700;margin-top:6px}
+.ans-box{background:#f1f8f2;border-radius:8px;padding:12px 16px;margin-top:8px}
+.ans-box .a{color:#1b5e20;font-weight:700}
+.step{margin:5px 0;padding-left:10px;border-left:2px solid #a5d6a7;color:#37474f}
+.footer{text-align:center;color:var(--sub);font-size:13px;margin:30px 0}
+</style>
+</head>
+<body>
+<div class="header"><h1>电表的改装（一）· 基础巩固</h1><p>电流表 / 电压表改装 · 10 关闯关练习</p></div>
+<div class="nav">
+<a href="index.html">← 专题首页</a>
+<a href="../01_认识表头G改装基础.html">模型学习 →</a>
+<a href="拔高练习.html">拔高练习 →</a>
+</div>
+<div class="container">
+<div class="progress-wrap"><span class="lab">已掌握</span> <span id="cnt">0</span>/<span id="tot">10</span> <span class="lab">关</span><div class="bar"><div id="bar"></div></div></div>
+
+<div class="level" data-id="1">
+  <div class="lv-head"><span class="lv-no">1</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐</span></span><span class="lv-time">约 5 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">某同学要把一个量程为 $200\ \mu\text{A}$、内阻为 $300\ \Omega$ 的小量程电流表，改装成测量范围是 $0\sim 4\ \text{V}$ 的直流电压表。那么（　　）</div>
+  <div class="opts"><span>A. 串联一个阻值为 $200\ \text{k}\Omega$ 的电阻</span><span>B. 并联一个阻值为 $19.7\ \text{k}\Omega$ 的电阻</span></div>
+  <div class="opts"><span>C. 改装后的电压表内阻为 $20\ \text{k}\Omega$</span><span>D. 改装后的电压表内阻为 $19.7\ \text{k}\Omega$</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】C　【难度】0.85</p>
+    <div class="step">改装电压表需串联分压电阻：总电阻 $R_{\text{总}}=\dfrac{U}{I_g}=\dfrac{4}{2\times10^{-4}}=2\times10^4\ \Omega=20\ \text{k}\Omega$，故内阻为 $20\ \text{k}\Omega$。</div>
+    <div class="step">串联电阻 $R=R_{\text{总}}-R_g=20000-300=19700\ \Omega=19.7\ \text{k}\Omega$。故选 C。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="2">
+  <div class="lv-head"><span class="lv-no">2</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐</span></span><span class="lv-time">约 6 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">某同学设计了如图所示的电路进行电表的改装，将多用电表的选择开关旋转到“直流 500mA”挡作为图中的电流表 A。已知电流表 A 的内阻 $R_A=0.4\ \Omega$，$R_1=R_A$，$R_2=7R_A$。关于改装表的下列说法正确的是（　　）</div>
+  <img class="fig" src="jc_images/p1.png" alt="题2">
+  <div class="opts"><span>A. 接 1、2 时最大可测电流 $0.5\ \text{A}$</span><span>B. 接 1、3 时最大可测电压 $3.0\ \text{V}$</span></div>
+  <div class="opts"><span>C. 接 1、2 时最大可测电流 $2.0\ \text{A}$</span><span>D. 接 1、3 时最大可测电压 $1.5\ \text{V}$</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】B　【难度】0.85</p>
+    <div class="step">接 1、2 时 $R_1$ 与表头并联分流，量程 $I=I_g+\dfrac{I_gR_A}{R_1}=2I_g=1.0\ \text{A}$（$I_g=0.5\ \text{A}$），故 A、C 错。</div>
+    <div class="step">接 1、3 时 $R_2$ 串联分压，量程 $U=I_gR_A+IR_2=0.5\times0.4+1.0\times7\times0.4=3.0\ \text{V}$，故 B 对、D 错。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="3">
+  <div class="lv-head"><span class="lv-no">3</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 6 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">有两个量程的电流表，小量程 $0\sim1\ \text{A}$，大量程 $0\sim10\ \text{A}$，表头 G 满偏电流 $I_g=500\ \text{mA}$，定值电阻 $R_1=20\ \Omega$，则 $R_2$ 的阻值为（　　）</div>
+  <img class="fig" src="jc_images/p2.png" alt="题3">
+  <div class="opts"><span>A. $120\ \Omega$</span><span>B. $150\ \Omega$</span><span>C. $180\ \Omega$</span><span>D. $210\ \Omega$</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】C　【难度】0.65</p>
+    <div class="step">接公共端与最右端为小量程 $0\sim1\ \text{A}$，表头满偏：$I_gR_g=(I_1-I_g)(R_1+R_2)$。</div>
+    <div class="step">接公共端与中间为大量程 $0\sim10\ \text{A}$：$I_g(R_g+R_2)=(I_2-I_g)R_1$。联立解得 $R_2=180\ \Omega$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="4">
+  <div class="lv-head"><span class="lv-no">4</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 6 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">有两个量程的电压表，用 a、b 时量程 $0\sim10\ \text{V}$，用 a、c 时量程 $0\sim100\ \text{V}$。已知表头内阻 $R_g=500\ \Omega$，满偏电流 $I_g=1\ \text{mA}$，则 $R_1$、$R_2$ 为（　　）</div>
+  <img class="fig" src="jc_images/p3.png" alt="题4">
+  <div class="opts"><span>A. $9500\ \Omega$；$90000\ \Omega$</span><span>B. $90000\ \Omega$；$9500\ \Omega$</span></div>
+  <div class="opts"><span>C. $9500\ \Omega$；$9000\ \Omega$</span><span>D. $9000\ \Omega$；$9500\ \Omega$</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】A　【难度】0.65</p>
+    <div class="step">$I_g(R_g+R_1)=10\ \text{V}$，$I_g(R_g+R_1+R_2)=100\ \text{V}$。</div>
+    <div class="step">代入数据：$500+R_1=10000\Rightarrow R_1=9500\ \Omega$；$R_2=90000\ \Omega$。故选 A。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="5">
+  <div class="lv-head"><span class="lv-no">5</span><span class="lv-type">单选</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 5 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">将小量程电流表改装成电压表，校准时发现它的示数总是略大于标准表的示数。下列修改建议正确的是（　　）</div>
+  <img class="fig" src="jc_images/p4.png" alt="题5">
+  <div class="opts"><span>A. 给 $R$ 串联一个适当的大电阻</span><span>B. 给 $R$ 串联一个适当的小电阻</span></div>
+  <div class="opts"><span>C. 给 $R$ 并联一个适当的小电阻</span><span>D. 给 $R$ 并联一个适当的大电阻</span></div>
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】B　【难度】0.65</p>
+    <div class="step">改装表示数偏大 → 相同电压下流过表头电流偏大 → 串联总电阻偏小 → 应稍微增大串联电阻，给 $R$ 串联一个适当的小电阻即可。故选 B。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="6">
+  <div class="lv-head"><span class="lv-no">6</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐</span></span><span class="lv-time">约 8 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">某同学将满偏电流 $5\ \text{mA}$ 的电流表改装成量程 $2.5\ \text{V}$ 的电压表，内阻测得 $20\ \Omega$。(1) 应串联 $R_1=$ ______ $\Omega$；(2) 校准中标准表 $2.5\ \text{V}$ 时改装表显 $2.4\ \text{V}$，想调准则应在 $R$ 上（　）A. 并小电阻 B. 并大电阻 C. 串小电阻 D. 串大电阻；(3) 双量程 $10\ \text{V}$ 时在 $R_1$ 上串 $R_2$，接 a、c 对应 $10\ \text{V}$，则 $R_2=$ ______ $\Omega$。</div>
+  <img class="fig" src="jc_images/p5.png" alt="题6">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) $480$　(2) B　(3) $1500$　【难度】0.76</p>
+    <div class="step">(1) $R_{\text{总}}=\dfrac{U}{I_g}=\dfrac{2.5}{5\times10^{-3}}=500\ \Omega$，$R_1=500-20=480\ \Omega$。</div>
+    <div class="step">(2) 示数偏小说明总电阻偏大，需小幅减小，给 $R_1$ 并联一个大电阻（影响小）即可，选 B。</div>
+    <div class="step">(3) $R'_{\text{总}}=\dfrac{10}{5\times10^{-3}}=2000\ \Omega$，$R_2=2000-(20+480)=1500\ \Omega$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="7">
+  <div class="lv-head"><span class="lv-no">7</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 8 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">用 G 表（$I_g=5\ \text{mA}$，欧姆表测得内阻 $100\ \Omega$）改装成量程 $0\sim6\ \text{V}$ 电压表。(1) 需 ______（串/并）联 $R_0=$ ______ $\Omega$；(2) 校准中标准表 $3.66\ \text{V}$ 时改装表头指图乙（$3\ \text{mA}$ 处），则改装表实际量程为 ______ $\text{V}$。</div>
+  <img class="fig" src="jc_images/p6.png" alt="题7图1">
+  <img class="fig" src="jc_images/p7.png" alt="题7图2">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) 串联 $1100$　(2) $6.1$　【难度】0.67</p>
+    <div class="step">(1) $R_0=\dfrac{U}{I_g}-r_g=\left(\dfrac{6}{5\times10^{-3}}-100\right)=1100\ \Omega$。</div>
+    <div class="step">(2) 表头示数 $3\ \text{mA}$ 对应实际 $3.66\ \text{V}$，满偏 $5\ \text{mA}$ 对应 $U=\dfrac{5}{3}\times3.66=6.1\ \text{V}$，实际量程 $6.1\ \text{V}$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="8">
+  <div class="lv-head"><span class="lv-no">8</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 10 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">将量程 $0\sim3\ \text{mA}$、内阻未知的毫安表 G 改装成 $0\sim30\ \text{mA}$ 电流表 A₁：半偏法测 $R_g$，S₂ 闭合调 $R'$ 使 G 示数 $1\ \text{mA}$ 时 $R'=90.0\ \Omega$。(1) $R_g=$ ______ $\Omega$；(2) 为减小系统误差应（　）A. 减小 $R$ B. 增大 $R$ C. 选大电动势电源 D. 选小电动势电源；(3) 校准中标准表 $30\ \text{mA}$ 时 G 示数 $2.5\ \text{mA}$，实际量程 ______；(4) 应换电阻为原电阻 ______ 倍。</div>
+  <img class="fig" src="jc_images/p8.png" alt="题8">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) $180$　(2) C　(3) $36\ \text{mA}$　(4) $\dfrac{11}{9}$　【难度】0.65</p>
+    <div class="step">(1) 并联：$1\ \text{mA}\cdot R_g=(3-1)\ \text{mA}\cdot R'\Rightarrow R_g=180\ \Omega$。</div>
+    <div class="step">(2) 电源电动势越大，$R$ 可越大，对干路电流影响越小，系统误差越小，选 C。</div>
+    <div class="step">(3) $\dfrac{2.5}{30}=\dfrac{3}{I_m}\Rightarrow I_m=36\ \text{mA}$。</div>
+    <div class="step">(4) $(I_m-I_g)R_1=I_gR_g$，$(I_{m0}-I_g)R_2=I_gR_g$，$I_{m0}=30\ \text{mA}$，得 $\dfrac{R_2}{R_1}=\dfrac{11}{9}$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="9">
+  <div class="lv-head"><span class="lv-no">9</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 9 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">将满偏 $1\ \text{mA}$、内阻 $300\ \Omega$ 的电流表改装成量程 $10\ \text{V}$ 电压表。(1) 串联 $R=$ ______ $\Omega$；(2) 校准中标准表 $10\ \text{V}$ 时改装表显 $9.9\ \text{V}$，应在定值电阻上（　）A. 串小 B. 串大 C. 并小 D. 并大；(3) 两电阻 $R_1=10\ \text{k}\Omega$、$R_2=5\ \text{k}\Omega$ 串接 $U=12\ \text{V}$，用校准后电压表 V 测 $R_1$ 电压 $U_1=$ ______ $\text{V}$；测 $R_2$ 得 $U_2$，则 $\dfrac{U_1}{U_2}$ ______ $\dfrac{U'_1}{U'_2}$（大于/等于/小于）。</div>
+  <img class="fig" src="jc_images/p9.png" alt="题9图1">
+  <img class="fig" src="jc_images/p10.png" alt="题9图2">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) $9700$　(2) D　(3) $6$；等于　【难度】0.65</p>
+    <div class="step">(1) $R=\dfrac{U}{I_g}-R_g=9700\ \Omega$。</div>
+    <div class="step">(2) 示数偏小说明内阻偏大，应稍减小分压电阻，给其并联一个大电阻，选 D。</div>
+    <div class="step">(3) 校准后 $R_V=10\ \text{k}\Omega$；测 $R_1$：$R_{V1}=\dfrac{10\times10}{10+10}=5\ \text{k}\Omega$，$U_1=\dfrac{12\times5}{5+5}=6\ \text{V}$；测 $R_2$ 同理 $U_2=3\ \text{V}$；理想值 $U'_1=8\ \text{V}$、$U'_2=4\ \text{V}$，$\dfrac{U_1}{U_2}=\dfrac{U'_1}{U'_2}=2$。</div>
+  </div></details>
+</div>
+
+<div class="level" data-id="10">
+  <div class="lv-head"><span class="lv-no">10</span><span class="lv-type">填空</span><span class="lv-diff">难度 <span class="stars">⭐⭐⭐</span></span><span class="lv-time">约 9 分钟</span><label class="lv-done"><input type="checkbox" onchange="markDone(this)"> 已掌握</label></div>
+  <div class="lv-q">微安表 G（$I_g=300\ \mu\text{A}$）改装成量程 $20\ \text{mA}$ 电流表，用半偏法测内阻后并联阻值 $R$ 的检测中：标准表 $15.0\ \text{mA}$ 时 G 示数 $180\ \mu\text{A}$，则实际量程不是 $20\ \text{mA}$ 而是 ______ $\text{mA}$；(2) 无论测得内阻是否准，只需将 $R$ 换为 $kR$ 即可达预期，$k=$ ______。</div>
+  <img class="fig" src="jc_images/p11.png" alt="题10">
+  <details class="lv-ans"><summary>💡 显示答案与解析</summary><div class="ans-box">
+    <p class="a">【答案】(1) 并联；$25$　(2) $\dfrac{247}{197}$　【难度】0.65</p>
+    <div class="step">(1) 并联分流；$R$ 对应量程 $I$：$\dfrac{15}{I}=\dfrac{180}{300}\Rightarrow I=25\ \text{mA}$。</div>
+    <div class="step">(2) $R=\dfrac{I_gR_g}{25-I_g}$，$kR=\dfrac{I_gR_g}{20-I_g}$，解得 $k=\dfrac{247}{197}$。</div>
+  </div></details>
+</div>
+
+</div>
+<div class="footer">基础巩固 10 关 · 完成后进入「拔高练习」</div>
+<script>
+function markDone(cb){ var c=cb.closest('.level'); if(cb.checked) c.classList.add('done'); else c.classList.remove('done'); save(); }
+function save(){
+  var b=document.querySelectorAll('.lv-done input'), done=0, arr=[];
+  b.forEach(function(x,i){ if(x.checked){ done++; arr.push(i); } });
+  localStorage.setItem('elec1_jc', JSON.stringify(arr));
+  document.getElementById('cnt').textContent=done;
+  document.getElementById('bar').style.width=(done/b.length*100)+'%';
+}
+window.onload=function(){
+  var arr=[]; try{ arr=JSON.parse(localStorage.getItem('elec1_jc')||'[]'); }catch(e){}
+  var b=document.querySelectorAll('.lv-done input');
+  arr.forEach(function(i){ if(b[i]){ b[i].checked=true; b[i].closest('.level').classList.add('done'); } });
+  document.getElementById('tot').textContent=b.length;
+  var done=arr.filter(function(i){return b[i];}).length;
+  document.getElementById('cnt').textContent=done;
+  document.getElementById('bar').style.width=(done/b.length*100)+'%';
+};
+</script>
+</body>
+</html>

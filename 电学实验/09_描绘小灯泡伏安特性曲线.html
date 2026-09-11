@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 描绘小灯泡伏安特性曲线</title>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:10px 0}
+.imgbox svg{max-width:100%;height:auto}
+.imgcap{color:var(--sub);font-size:12px;margin-top:4px}
+.formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:1px 8px;margin:0 2px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle .red{color:var(--danger)}
+.principle .warn{color:var(--warn)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../高考物理_电学实验闯关.html">← 电学实验闯关目录</a>
+    <span class="pos">第 9 关 · 共 11 关</span>
+  </div>
+  <h1>描绘小灯泡伏安特性曲线</h1>
+  <div class="tag">分压 + 外接</div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><div class="imgbox">
+<svg width="450" height="165" viewBox="0 0 450 165">
+  <line x1="60" y1="40" x2="100" y2="40" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="120" cy="40" r="15" fill="none" stroke="#2196f3" stroke-width="2"/>
+  <text x="120" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#2196f3">A</text>
+  <line x1="135" y1="40" x2="168" y2="40" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="186" cy="40" r="13" fill="none" stroke="#e0922e" stroke-width="2"/>
+  <line x1="186" y1="27" x2="186" y2="53" stroke="#e0922e" stroke-width="2"/>
+  <line x1="173" y1="40" x2="199" y2="40" stroke="#e0922e" stroke-width="2"/>
+  <text x="186" y="70" text-anchor="middle" font-size="11" fill="#e0922e">小灯泡 Rₓ</text>
+  <line x1="199" y1="40" x2="230" y2="40" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="135" y1="40" x2="135" y2="18" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="135" y1="18" x2="230" y2="18" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="230" y1="18" x2="230" y2="40" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="182" cy="18" r="13" fill="none" stroke="#7c5cff" stroke-width="2"/>
+  <text x="182" y="23" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c5cff">V</text>
+  <line x1="230" y1="40" x2="230" y2="90" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="230" y1="90" x2="310" y2="90" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="310" y1="90" x2="310" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="60" y1="130" x2="310" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="60" y1="40" x2="60" y2="110" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="60" y1="110" x2="60" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="60" y1="95" x2="68" y2="95" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="68" y1="88" x2="68" y2="102" stroke="#5a6b7b" stroke-width="2"/>
+  <text x="48" y="100" font-size="11" fill="#5a6b7b">E</text>
+  <line x1="60" y1="40" x2="60" y2="22" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="60" cy="16" r="3" fill="#1f2a3d"/>
+  <line x1="60" y1="19" x2="60" y2="10" stroke="#e5484d" stroke-width="2"/>
+  <text x="72" y="14" font-size="10" fill="#e5484d">S</text>
+  <polyline points="60,22 68,32 68,12 76,22" fill="none" stroke="#1f9d6b" stroke-width="2"/>
+  <line x1="60" y1="22" x2="60" y2="95" stroke="#1f9d6b" stroke-width="2"/>
+  <text x="85" y="120" font-size="10" fill="#5a6b7b">分压式：电压从 0 连续可调</text>
+  <text x="185" y="110" text-anchor="middle" font-size="10" fill="#5a6b7b">外接法：灯泡电阻小</text>
+</svg>
+<div class="imgcap">图 9-1：描绘小灯泡伏安特性电路（分压式 + 电流表外接）</div>
+</div>
+<hr>
+<b>实验目的：</b>测量灯泡两端电压与流过电流的对应关系，描出 U–I 曲线。因灯丝电阻随温度升高而增大，曲线<b>不是直线</b>（靠近原点处斜率大、后段斜率变小，即电阻逐渐增大）。
+<hr>
+<b>两个必考点：</b><br>
+① <b>分压式</b>：要求电压从 <b>0</b> 开始连续变化，且能保护灯泡（避免一开始电流过大）；<br>
+② <b>外接法</b>：小灯泡电阻通常 <b>小</b>（几 Ω ~ 十几 Ω），外接误差小；且电压表直接并灯泡，测的就是真实 U。
+<hr>
+<b>曲线解读：</b>U–I 图上每点斜率 = 该状态下的电阻（R = U/I）。随着 I 增大，温度升高，电阻增大 → 图像斜率逐渐变陡（若以 I–U 图，则是斜率逐渐变小）。<br>
+<b>求某状态电阻：</b>用该点坐标 <b>R = U/I</b>（不是切线斜率！只有线性元件才用切线斜率）。
+<hr>
+<span class="warn">⚠ 易错：</span>某状态下灯泡电阻要用<b>该点与原点连线的斜率</b>（即 U/I），不能用切线斜率。</div></div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（真题改编）某同学用伏安法描绘额定电压 2.5 V 的小灯泡的伏安特性曲线。实验数据如下：U = 0.5 V 时 I = 0.08 A；U = 1.0 V 时 I = 0.15 A；U = 1.5 V 时 I = 0.21 A；U = 2.0 V 时 I = 0.26 A；U = 2.5 V 时 I = 0.30 A。</p>
+<p>(1) 求各状态电阻并说明变化趋势；(2) 若要测额定状态的电功率 P。</p>
+<p class='ans'>答案：(1) R₁=6.25 Ω，R₂≈6.67 Ω，R₃≈7.14 Ω，R₄≈7.69 Ω，R₅≈8.33 Ω。电阻随电压增大而<b>逐渐增大</b>（灯丝温度升高）。<br>(2) P = U₀I₀ = 2.5 × 0.30 = 0.75 W。</p></div>
+  <div class="nav">
+    <a class="prev" href="08_测定电源电动势和内阻.html">← 测定电源电动势和内阻</a>
+    <a class="mid" href="../高考物理_电学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="10_测量金属丝电阻率.html">测量金属丝的电阻率 →</a>
+  </div>
+  <div class="footer">电学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "描绘小灯泡伏安特性曲线实验中，滑动变阻器采用分压式接法的原因是？", "o": ["省电", "要求电压从 0 开始连续可调", "接法更简单", "防止电流表烧毁"], "a": 1, "e": "伏安特性曲线需要覆盖从 0 开始的全部电压，只有分压式能实现 U 从 0 连续变化。"}, {"q": "小灯泡电阻约 10 Ω，测量时应采用？", "o": ["电流表内接", "电流表外接", "两种均可", "不用电流表"], "a": 1, "e": "小灯泡电阻小（≪ 电压表内阻），外接法误差小，且电压表测的是灯泡真实电压。Rₓ < √(R_A·R_V) 时选外接。"}, {"q": "随着灯泡两端电压增大，其灯丝电阻将？", "o": ["减小", "增大", "不变", "先增后减"], "a": 1, "e": "电流越大灯丝温度越高，金属电阻率随温度升高而增大，故电阻逐渐增大（伏安特性曲线非线性）。"}, {"q": "由伏安特性曲线求灯泡在某状态（U₀，I₀）的电阻，正确做法是？", "o": ["取该点切线的斜率", "用 R = U₀/I₀", "取该点切线斜率的倒数", "取图像在原点处的斜率"], "a": 1, "e": "非线性元件某状态电阻 = 该点与<b>原点连线的斜率<\/b>（即 U₀/I₀）；切线斜率代表动态电阻 ΔU/ΔI，两者不同。只有线性元件两者才相等。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

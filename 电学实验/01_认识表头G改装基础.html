@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电表的改装（一）· 模型学习</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="../mathjax/tex-svg.js"></script>
+<style>
+:root{--bg:#f5f7fa;--card:#fff;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--purple:#7c5cff;--warn:#e0922e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.85;padding:0 0 40px}
+.header{background:linear-gradient(135deg,#1565c0,#2196f3 55%,#7c5cff);color:#fff;padding:40px 20px 26px;text-align:center;box-shadow:0 4px 18px rgba(33,150,243,.3)}
+.header h1{font-size:2.1em;letter-spacing:1px}
+.header p{opacity:.92;margin-top:6px;font-size:14px}
+.nav{max-width:1000px;margin:16px auto 0;padding:0 20px;display:flex;gap:12px;flex-wrap:wrap}
+.nav a{color:var(--accent);text-decoration:none;font-size:14px;border:1px solid #d6e2ef;background:#fff;border-radius:8px;padding:7px 16px}
+.nav a:hover{border-color:var(--accent);background:#eef4fb}
+.container{max-width:1000px;margin:0 auto;padding:24px 20px}
+.sec{background:#fff;border-radius:12px;padding:18px 22px;margin:16px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);border-left:5px solid var(--accent)}
+.sec h2{font-size:18px;color:var(--accent);margin-bottom:8px}
+.sec h3{font-size:15px;color:var(--purple);margin:14px 0 6px}
+.formula{display:inline-block;background:rgba(33,150,243,.1);border:1px solid rgba(33,150,243,.35);border-radius:6px;padding:1px 8px;margin:2px}
+.ex{background:#fafcff;border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0}
+.ex .t{font-weight:700;color:#34495e;margin-bottom:6px}
+.ex .tag{display:inline-block;font-size:11px;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 8px;margin-bottom:6px}
+.fig{display:block;max-width:80%;margin:12px auto;border:1px solid #e2e8f0;border-radius:10px;padding:8px;background:#fafcff}
+.lv-ans summary{cursor:pointer;color:var(--accent2);font-weight:700;margin-top:6px}
+.ans-box{background:#f1f8f2;border-radius:8px;padding:10px 14px;margin-top:6px}
+.ans-box .a{color:#1b5e20;font-weight:700}
+.step{margin:5px 0;padding-left:10px;border-left:2px solid #a5d6a7;color:#37474f}
+.footer{text-align:center;color:var(--sub);font-size:13px;margin:30px 0}
+</style>
+</head>
+<body>
+<div class="header"><h1>电表的改装（一）· 模型学习</h1><p>电流表 / 电压表的改装原理 · 校准与误差 · 例题精析</p></div>
+<div class="nav">
+<a href="index.html">← 专题首页</a>
+<a href="电表的改装（一）/基础巩固.html">基础巩固 →</a>
+<a href="电表的改装（一）/拔高练习.html">拔高练习 →</a>
+</div>
+<div class="container">
+
+<div class="sec">
+  <h2>一、表头 G 的三个参量</h2>
+  <p>内阻 $R_g$：表头线圈电阻；满偏电流 $I_g$：指针满偏时流过表头的电流；满偏电压 $U_g=I_gR_g$：满偏时表头两端电压，通常仅毫伏级。</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p1.png" alt="表头三参量">
+  <p>表头能承受的电流、电压都极小，必须<b>改装</b>才能测量大电流或高电压：<span class="formula">并联小电阻分流 → 电流表</span>；<span class="formula">串联大电阻分压 → 电压表</span>。</p>
+</div>
+
+<div class="sec">
+  <h2>二、电流表的改装与校准</h2>
+  <p>大量程电流表需在表头 G 上并联分流电阻，放大倍数 $n=\dfrac{I}{I_g}$。</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p2.png" alt="电流表改装">
+  <h3>核心公式</h3>
+  <p>① 分流电阻 $R=\dfrac{U_g}{I-I_g}=\dfrac{R_gI_g}{I-I_g}=\dfrac{R_g}{n-1}$</p>
+  <p>② 改装后内阻 $R_A=\dfrac{U_g}{I}=\dfrac{R_g}{n}$</p>
+  <p>③ 示数与表头读数关系 $I=nI_g$</p>
+  <h3>例：0.6 mA 表头 → 0~3 A 电流表</h3>
+  <p>$n=\dfrac{3000}{0.6}=5000$。表头示数 $0.2\ \text{mA}$ 对应改装表 $1\ \text{A}$，见下表与图：</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p3.png" alt="表格一">
+  <h3>同一表头改装成不同量程电流表的对比</h3>
+  <p>量程 $0.6\ \text{A}$、$3\ \text{A}$，内阻比 $\dfrac{R_{A1}}{R_{A2}}=\dfrac{n_2}{n_1}=\dfrac{5}{1}$。<b>串联</b>时示数相等、偏角不同（内阻小者偏角大）；<b>并联</b>时两表头并联，偏角相等、示数之比等于分度值之比。</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p4.png" alt="串联表盘对比">
+  <img class="fig" src="电表的改装（一）/mod_images/p5.png" alt="并联表盘对比">
+  <h3>校准与误差</h3>
+  <p>改装表与标准表串联校准，若读数总偏小 → 流过表头电流偏小 → 分流电阻偏小，应换稍大电阻或串小电阻。校准电路见图：</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p8.png" alt="电流表校准">
+  <h3>双量程电流表设计</h3>
+  <img class="fig" src="电表的改装（一）/mod_images/p9.png" alt="双量程电流表">
+  <img class="fig" src="电表的改装（一）/mod_images/p10.png" alt="双量程设计">
+</div>
+
+<div class="sec">
+  <h2>三、电压表的改装与校准</h2>
+  <p>大量程电压表需在表头串联分压电阻，放大倍数 $n=\dfrac{U}{U_g}$。</p>
+  <h3>核心公式</h3>
+  <p>① 分压电阻 $R=(n-1)R_g$</p>
+  <p>② 改装后内阻 $R_V=R_g+R=(n-1)R_g+R_g=nR_g$</p>
+  <p>③ 读数关系 $U=I_gR_V$（表头电流放大 $R_V$ 倍）</p>
+  <h3>例：R_g=10 Ω、I_g=0.6 mA → 0~3 V 电压表</h3>
+  <p>$U_g=I_gR_g=6\ \text{mV}$，$n=\dfrac{3}{0.006}=500$，$R=(500-1)\times10=4990\ \Omega$，$R_V=5000\ \Omega$。表头 $0.2\ \text{mA}$ 对应 $1\ \text{V}$。</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p11.png" alt="表格二">
+  <h3>同一表头改装成不同量程电压表的对比</h3>
+  <p>量程 $3\ \text{V}$、$15\ \text{V}$，内阻比 $\dfrac{R_{V1}}{R_{V2}}=\dfrac{1}{5}$。<b>串联</b>时表头电流相等、偏角相等、示数不等（$U_1:U_2=1:5$）；<b>并联</b>时电压相等、示数相等、偏角之比等于内阻反比（$5:1$）。</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p12.png" alt="电压表串联对比">
+  <img class="fig" src="电表的改装（一）/mod_images/p13.png" alt="电压表并联对比">
+  <h3>校准与误差</h3>
+  <p>改装表与标准表串联校准，若读数总偏小 → 表头电流偏小 → 分压电阻偏大，应换稍小电阻或并大电阻。</p>
+  <img class="fig" src="电表的改装（一）/mod_images/p14.png" alt="电压表校准">
+  <img class="fig" src="电表的改装（一）/mod_images/p16.png" alt="双量程电压表">
+</div>
+
+<div class="sec">
+  <h2>四、例题精析（点击看解析）</h2>
+
+  <div class="ex">
+    <div class="tag">例 1</div>
+    <div class="t">表头内阻 $R_G=27\ \Omega$、满偏电流 $I_G=3\ \text{mA}$，表盘如图甲。(1) 与 $R=973\ \Omega$ 串联改装成电压表，刻度如何改（标在乙图）；(2) 与 $R=3\ \Omega$ 并联改装成电流表，刻度如何改（标在丙图）。</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p18.png" alt="例1表盘">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】量程 3 V / 30 mA；刻度重标见图</p>
+      <div class="step">(1) 串联：$U=I_G(R+R_G)=3\ \text{V}$，满偏对应 $3\ \text{V}$，按线性重标电压刻度（乙图）。</div>
+      <div class="step">(2) 并联：$I=I_G+\dfrac{I_GR_G}{R}=30\ \text{mA}$，满偏对应 $30\ \text{mA}$，按线性重标电流刻度（丙图）。</div>
+      <img class="fig" src="电表的改装（一）/mod_images/p19.png" alt="例1答案乙">
+      <img class="fig" src="电表的改装（一）/mod_images/p20.png" alt="例1答案丙">
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="tag">例 2</div>
+    <div class="t">满偏 $100\ \text{mA}$、内阻 $40\ \Omega$ 的表头改装成测电流电压两用电表，$R_1=10\ \Omega$、$R_2=92\ \Omega$。下列说法正确的是（　　）<br>A. 接 Oa 是电流表，量程 $0\sim600\ \text{mA}$　B. 接 Ob 是电压表，量程 $0\sim50\ \text{V}$　C. 接 Oa 是电流表，量程 $0\sim500\ \text{mA}$　D. 接 Ob 是电压表，量程 $0\sim5\ \text{V}$</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p21.png" alt="例2">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】BC　【难度】0.85</p>
+      <div class="step">接 Oa：$R_1$ 分流 → 电流表，量程 $I=I_g+\dfrac{I_gR_g}{R_1}=500\ \text{mA}$，C 对 A 错。</div>
+      <div class="step">接 Ob：$R_2$ 分压 → 电压表，量程 $U=I_gR_g+IR_2=50\ \text{V}$，B 对 D 错。</div>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="tag">例 3</div>
+    <div class="t">两相同小量程表改装成量程不同的大量程电流表 A₁、A₂，分别并联或串联接入电路（如图）。正确的是（　　）<br>A. 图甲示数相同　B. 图甲偏角相同　C. 图乙示数和偏角都相同　D. 图乙偏角不同、示数相同</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p22.png" alt="例3">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】BD　【难度】0.65</p>
+      <div class="step">图甲并联：表头电压相等、电流相等 → 偏角相同；量程不同 → 读数不同，B 对 A 错。</div>
+      <div class="step">图乙串联：示数相同；内阻不同 → 电压不同 → 表头电流不同 → 偏角不同，D 对 C 错。</div>
+      <img class="fig" src="电表的改装（一）/mod_images/p23.png" alt="例3答1">
+      <img class="fig" src="电表的改装（一）/mod_images/p24.png" alt="例3答2">
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="tag">例 4</div>
+    <div class="t">改装电流表接入电路校准，读数比标准表偏小。若两表表头 G 相同，可能原因是（　　）<br>① 待测表指针偏角偏小　② 标准表指针偏角偏大　③ 并联电阻 $R_$并$ $偏小　④ $R_$并$ $偏大<br>A. ①③　B. ②④　C. ①④　D. ②③</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p25.png" alt="例4">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】A　【难度】0.85</p>
+      <div class="step">待测表读数偏小 → 表头电流偏小 → 偏角偏小；$R_$并$ $越小分流越多、表头电流越小。故①③，选 A。</div>
+      <img class="fig" src="电表的改装（一）/mod_images/p26.png" alt="例4注">
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="tag">变式 1</div>
+    <div class="t">两只完全相同表头（内阻 $100\ \Omega$）改装，甲图满偏电流 $I_g=$ ______、b 处量程 $9\ \text{V}$；乙图 $R_1=$ ______、$R_2=$ ______。选项：A. $I_g=2\ \text{mA}$ B. b 量程 $9\ \text{V}$ C. $R_1=\frac{10}{9}\ \Omega,R_2=10\ \Omega$ D. $R_1=5\ \Omega,R_2=45\ \Omega$</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p27.png" alt="变式1">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】BC　【难度】0.85</p>
+      <div class="step">$I_g=\dfrac{3}{100+2900}=1\ \text{mA}$（A 错）；b 量程 $U=I_g(R_g+R+R')=9\ \text{V}$（B 对）。</div>
+      <div class="step">改装 $10\ \text{mA}$：$R_1+R_2=\dfrac{I_gR_g}{0.009}=\dfrac{10}{9}\ \Omega$；改装 $100\ \text{mA}$：$R_1=\dfrac{I_g(R_g+R_2)}{0.1-0.001}$，联立 $R_1=\frac{10}{9}\ \Omega$、$R_2=10\ \Omega$（C 对）。</div>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="tag">变式 2</div>
+    <div class="t">关于电压表、电流表改装，正确的是（　　）<br>A. 并联电阻越小量程越大　B. 电压表示数偏小，给串联电阻并较大电阻　C. 电流表两端并小电阻，原表头最大电流将增大　D. 逐格校准需限流式电路</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p28.png" alt="变式2">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】AB　【难度】0.65</p>
+      <div class="step">A：并联分流，电阻越小量程越大；B：示数偏小→减小串联电阻（并大电阻）；C：原表头最大电流仍为满偏电流，不变；D：逐格校准需分压式。故选 AB。</div>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="tag">变式 3</div>
+    <div class="t">微安表 $I_g=250\ \mu\text{A}$、$R_g=1200\ \Omega$ 改装为 $20\ \text{mA}$ 电流表。(1) $R=$ ______（表达式），约 ______ $\Omega$；(2) 标准表 $16.0\ \text{mA}$ 时微安表指针（图 b）示 $160\ \mu\text{A}$，实际量程为 ______（A.18 B.21 C.25 D.28）mA；(3) 原因可能是 ______（A.内阻实测偏大 B.内阻实测偏小 C.R 偏小 D.R 偏大）；(4) 换为 $kR$ 即可，$k=$ ______。</div>
+    <img class="fig" src="电表的改装（一）/mod_images/p29.png" alt="变式3图">
+    <img class="fig" src="电表的改装（一）/mod_images/p30.png" alt="变式3指针">
+    <details class="lv-ans"><summary>💡 答案与解析</summary><div class="ans-box">
+      <p class="a">【答案】(1) $\dfrac{I_gR_g}{I-I_g}$；$15$　(2) C　(3) AC　(4) $\dfrac{99}{79}$　【难度】0.6</p>
+      <div class="step">(1) 并联：$R=\dfrac{I_gR_g}{I-I_g}=15\ \Omega$。</div>
+      <div class="step">(2) 比例 $n=\dfrac{16}{0.16}=100$，实际量程 $I=nI_g=25\ \text{mA}$，选 C。</div>
+      <div class="step">(3) 实际量程偏大→内阻实测偏大或并联电阻偏小，选 AC。</div>
+      <div class="step">(4) $k=\dfrac{R_{实}}{R_{预$期}}=\dfrac{I-I_g}{I_{实}-I_g}=\dfrac{20-0.25}{25-0.25}=\dfrac{99}{79}$$（取 mA 换算一致）。</div>
+    </div></details>
+  </div>
+
+</div>
+</div>
+<div class="footer">模型学习 · 学完请前往「基础巩固」「拔高练习」</div>
+<script src="../nav.js"></script>
+</body>
+</html>

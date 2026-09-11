@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 双棒切割磁感线（自由学习）</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa; color: #2c3e50; line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%);
+            color: white; padding: 42px 20px 30px; text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.2em; margin-bottom: 8px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.05em; }
+        .progress-wrap { max-width: 760px; margin: 22px auto 0; text-align: left; }
+        .progress-label { font-size: 0.9em; margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .progress-bar { height: 14px; background: rgba(255,255,255,0.25); border-radius: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#7ee8a4,#27ae60); transition: width 0.5s ease; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card {
+            background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5;
+            transition: filter 0.3s, opacity 0.3s;
+        }
+        .card h2 {
+            color: #1e3c72; font-size: 1.6em; margin-bottom: 15px; padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px;
+        }
+        .card h2 .num {
+            background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.8em; flex-shrink: 0;
+        }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px;
+            padding: 18px 20px; margin: 12px 0; font-size: 1.15em; color: #1a2a3a;
+            text-align: center; overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0; border-left: 4px solid #ff9800;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        .danger {
+            background: #ffebee; border-left: 4px solid #e74c3c;
+            padding: 12px 18px; margin: 12px 0; border-radius: 6px;
+        }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 15px 20px; margin: 15px 0; border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .nav {
+            position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100;
+            background: rgba(30,60,114,0.96); backdrop-filter: blur(10px);
+            border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+            max-height: calc(100vh - 140px); overflow-y: auto;
+        }
+        .nav .nav-title {
+            color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px;
+            padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px;
+        }
+        .nav a {
+            display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em;
+            padding: 7px 10px; border-radius: 6px; transition: background 0.25s;
+            border-left: 3px solid transparent;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .nav a.disabled { opacity: 0.45; cursor: not-allowed; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .level-nav {
+            display: flex; justify-content: space-between; margin-top: 18px;
+            padding-top: 16px; border-top: 1px dashed #dce4ee;
+        }
+        .level-nav button {
+            border: none; padding: 9px 20px; border-radius: 8px; cursor: pointer;
+            font-size: 0.95em; font-weight: 600; transition: background 0.2s;
+        }
+        .level-nav .prev { background: #eceff1; color: #546e7a; }
+        .level-nav .prev:hover { background: #cfd8dc; }
+        .level-nav .prev:disabled { opacity: 0.4; cursor: not-allowed; }
+        .level-nav .next { background: #3a7bd5; color: #fff; }
+        .level-nav .next:hover { background: #2a5298; }
+        .level-nav .next:disabled { background: #b0bec5; cursor: not-allowed; }
+        .level-nav .next-strong { background: linear-gradient(135deg,#27ae60,#2ecc71); }
+        .level-nav .next-strong:hover { filter: brightness(1.05); }
+        .card.level { display: block; }
+        .card.level.active-level { display: block; }
+        .quiz {
+            margin: 22px 0 4px; padding: 18px 20px; border-radius: 10px;
+            background: linear-gradient(135deg,#fff8e1,#fffdf5); border: 1px solid #ffe082;
+        }
+        .quiz .quiz-title { font-weight: 700; color: #b8860b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .quiz .q { margin: 12px 0 6px; font-weight: 600; color: #2c3e50; }
+        .quiz label.opt {
+            display: block; padding: 8px 12px; margin: 6px 0; border: 1px solid #e0e0e0;
+            border-radius: 8px; cursor: pointer; transition: background 0.2s; background: #fff;
+        }
+        .quiz label.opt:hover { background: #fffde7; }
+        .quiz label.opt.correct { background: #e8f5e9; border-color: #4caf50; }
+        .quiz label.opt.wrong { background: #ffebee; border-color: #e74c3c; }
+        .quiz input[type=radio] { margin-right: 8px; }
+        .quiz .submit-btn {
+            margin-top: 12px; background: #f39c12; color: white; border: none; padding: 8px 22px;
+            border-radius: 6px; cursor: pointer; font-size: 1em;
+        }
+        .quiz .submit-btn:hover { background: #d68910; }
+        .quiz .quiz-feedback {
+            margin-top: 12px; padding: 10px 14px; border-radius: 6px; font-weight: 600; display: none;
+        }
+        .quiz .quiz-feedback.ok { background: #e8f5e9; color: #1b5e20; border-left: 4px solid #4caf50; }
+        .quiz .quiz-feedback.no { background: #ffebee; color: #c0392b; border-left: 4px solid #e74c3c; }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px; padding: 18px;
+            margin: 16px 0; text-align: center;
+        }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0;
+                display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+        }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧲 双棒切割磁感线 · 自由学习</h1>
+    <p>高中物理 · 电磁感应 · 两导体棒在导轨上的相对切割 —— 动量守恒 · 共速 · 能量</p>
+    <div class="progress-wrap">
+        <div class="progress-label"><span>学习进度</span><span id="pTxt">0 / 6 节</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+    </div>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">知识框架</a>
+    <a href="#equiv">① 等效电源</a>
+    <a href="#models2">② 双棒模型分类</a>
+    <a href="#free">③ 无外力·动量守恒</a>
+    <a href="#forced">④ 有外力双棒</a>
+    <a href="#ce">⑤ 电荷量与能量</a>
+    <a href="#gaokao">⑥ 高考经典</a>
+</nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 知识框架 -->
+<div class="card level" id="overview">
+    <h2><span class="num">▶</span>知识框架</h2>
+    <p style="color:#7f8c8d;font-size:0.92em;margin-bottom:10px;">双棒模型：两根导体棒在同一对平行导轨上运动，各自切割磁感线产生电动势，二者在回路中<b>反向串联</b>。</p>
+    <div class="key-point">
+        <b>📌 核心特征：</b>
+        <ol style="padding-left:25px; margin:8px 0;">
+            <li><b>总电动势</b>取决于两棒<b>相对速度</b>：$E_\text{总}=BL|v_1-v_2|$；</li>
+            <li><b>两棒速度相等（共速）时，回路电动势为零、电流为零</b>——这是双棒模型最重要的临界；</li>
+            <li>无外力时，安培力是<b>系统內力</b>，两棒系统<b>动量守恒</b>，最终共速；</li>
+            <li>有外力拉动其中一棒时，系统有恒定加速度，稳定后两棒加速度相同、电流恒定。</li>
+        </ol>
+    </div>
+    <div class="anim-wrap">
+        <svg width="460" height="200" viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="双棒切割模型">
+            <defs><marker id="dv1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#34495e"/></marker></defs>
+            <line x1="40" y1="70" x2="430" y2="70" stroke="#607d8b" stroke-width="4"/>
+            <line x1="40" y1="130" x2="430" y2="130" stroke="#607d8b" stroke-width="4"/>
+            <g fill="#90caf9" font-size="12">
+                <text x="70" y="40">⊗ ⊗ ⊗</text><text x="170" y="40">⊗ ⊗ ⊗</text><text x="270" y="40">⊗ ⊗ ⊗</text><text x="350" y="40">⊗ ⊗ ⊗</text>
+                <text x="70" y="170">⊗ ⊗ ⊗</text><text x="170" y="170">⊗ ⊗ ⊗</text><text x="270" y="170">⊗ ⊗ ⊗</text><text x="350" y="170">⊗ ⊗ ⊗</text>
+            </g>
+            <text x="300" y="22" fill="#1565c0" font-size="12">B 垂直纸面向里</text>
+            <!-- 棒1 -->
+            <line x1="160" y1="70" x2="160" y2="130" stroke="#c0392b" stroke-width="6"/>
+            <text x="168" y="104" fill="#c0392b" font-size="13" font-weight="700">棒1</text>
+            <line x1="160" y1="100" x2="120" y2="100" stroke="#2e7d32" stroke-width="3" marker-end="url(#dv1)"/>
+            <text x="80" y="104" fill="#2e7d32" font-size="13" font-weight="700">v₁</text>
+            <!-- 棒2 -->
+            <line x1="300" y1="70" x2="300" y2="130" stroke="#8e44ad" stroke-width="6"/>
+            <text x="308" y="104" fill="#8e44ad" font-size="13" font-weight="700">棒2</text>
+            <line x1="300" y1="100" x2="340" y2="100" stroke="#2e7d32" stroke-width="3" marker-end="url(#dv1)"/>
+            <text x="344" y="104" fill="#2e7d32" font-size="13" font-weight="700">v₂</text>
+        </svg>
+    </div>
+    <p style="margin-top:10px;color:#7f8c8d;font-size:0.9em;">💡 本页为自由学习模式，所有小节都能直接查看；每节底部配小测验，仅作自我检测。</p>
+    <div class="level-nav">
+        <button class="prev" data-prev="overview" disabled>← 返回总览</button>
+        <button class="next" data-next="equiv">下一节 →</button>
+    </div>
+</div>
+
+<!-- ① 等效电源 -->
+<div class="card level" id="equiv">
+    <h2><span class="num">1</span>等效电源</h2>
+    <p>两棒切割电动势分别为 $E_1=BLv_1$、$E_2=BLv_2$。在闭合回路中两电源<b>反向串联</b>（取决于回路绕行方向），总电动势由相对速度决定：</p>
+    <div class="formula">$$E_\text{总} = B\,L\,|v_1 - v_2|$$</div>
+    <p>回路电流（总电阻 $R_\text{总}$，含两棒电阻与外电阻）：</p>
+    <div class="formula">$$I = \frac{E_\text{总}}{R_\text{总}} = \frac{B\,L\,|v_1 - v_2|}{R_\text{总}}$$</div>
+    <div class="key-point">
+        <b>📌 最关键结论：</b>当 $v_1 = v_2$（两棒共速）时，$|v_1-v_2|=0$，<b>回路电动势为零、电流为零</b>，安培力消失。因此双棒模型必然向"共速"演化。
+    </div>
+    <div class="warn">
+        <b>⚠️ 方向判断：</b>电流方向由"快的那根棒"决定——它的电动势更大，在回路中占主导；慢棒相当于被"反充电"。
+    </div>
+    <div class="quiz" data-quiz="1">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">1. 两棒在同一导轨上同向运动，速度分别为 $v_1$、$v_2$（$v_1>v_2$），磁场垂直。回路感应电流（　）</div>
+        <label class="opt"><input type="radio" name="q1" value="a"> 与 $v_1+v_2$ 成正比</label>
+        <label class="opt"><input type="radio" name="q1" value="b"> 与 $|v_1-v_2|$ 成正比</label>
+        <label class="opt"><input type="radio" name="q1" value="c"> 与较大速度 $v_1$ 成正比</label>
+        <label class="opt"><input type="radio" name="q1" value="d"> 永远为零</label>
+        <button class="submit-btn" onclick="checkQuiz(1, 'b', 'free')">提交答案</button>
+        <div class="quiz-feedback" id="fb-1"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="overview">← 返回总览</button>
+        <button class="next" data-next="models2">下一节 →</button>
+    </div>
+</div>
+
+<!-- ② 双棒模型分类 -->
+<div class="card level" id="models2">
+    <h2><span class="num">2</span>双棒模型分类</h2>
+    <p>双棒按"导轨间距（棒长）是否相等、是否有外力、初速度如何"可分成几类。先建立分类总览，再逐一突破。</p>
+    <table>
+        <tr><th>模型</th><th>关键条件</th><th>最终状态</th></tr>
+        <tr><td><b>等距 + 无外力 + 有初速度</b></td><td>$L_1=L_2$，系统无外力，至少一棒有初速</td><td>动量守恒 → 共速，电流为零</td></tr>
+        <tr><td><b>等距 + 有外力 + 无初速度</b></td><td>$L_1=L_2$，恒力拉一棒，从静止开始</td><td>整体匀加速，稳定后加速度相同、电流恒定</td></tr>
+        <tr><td><b>不等距双棒</b></td><td>$L_1\neq L_2$（或导轨间距不同）</td><td>共速时仍有电动势/电流，动量不守恒</td></tr>
+    </table>
+
+    <h3>1．等距双棒 + 无外力 + 有初速度</h3>
+    <p>两棒等长 $L$，水平光滑，系统不受外力；设棒1 有初速 $v_0$、棒2 静止（一般情形用各自初速）。两棒反向串联，总电动势</p>
+    <div class="formula">$$E_\text{总}=B\,L\,|v_1-v_2|$$</div>
+    <p>回路电流使<b>快棒受安培阻力、慢棒受安培动力</b>，两棒速度趋于接近；又因安培力是系统内力，系统动量守恒：</p>
+    <div class="formula">$$m_1 v_{10}+m_2 v_{20}=(m_1+m_2)\,v_\text{共}$$</div>
+    <p>当 $v_1=v_2=v_\text{共}$ 时相对速度为零，电流为零、安培力消失，演化停止。系统动能损失全部变为焦耳热：</p>
+    <div class="formula">$$Q=\left(\frac12 m_1 v_{10}^2+\frac12 m_2 v_{20}^2\right)-\frac12(m_1+m_2)v_\text{共}^2$$</div>
+    <div class="anim-wrap">
+        <svg width="460" height="190" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="等距双棒无外力有初速度">
+            <defs><marker id="m2a" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#34495e"/></marker></defs>
+            <line x1="40" y1="70" x2="430" y2="70" stroke="#607d8b" stroke-width="4"/>
+            <line x1="40" y1="130" x2="430" y2="130" stroke="#607d8b" stroke-width="4"/>
+            <g fill="#90caf9" font-size="12">
+                <text x="70" y="40">⊗ ⊗ ⊗</text><text x="180" y="40">⊗ ⊗ ⊗</text><text x="290" y="40">⊗ ⊗ ⊗</text><text x="370" y="40">⊗ ⊗ ⊗</text>
+                <text x="70" y="165">⊗ ⊗ ⊗</text><text x="180" y="165">⊗ ⊗ ⊗</text><text x="290" y="165">⊗ ⊗ ⊗</text><text x="370" y="165">⊗ ⊗ ⊗</text>
+            </g>
+            <text x="300" y="22" fill="#1565c0" font-size="12">B 垂直纸面向里</text>
+            <line x1="150" y1="70" x2="150" y2="130" stroke="#c0392b" stroke-width="6"/>
+            <text x="158" y="104" fill="#c0392b" font-size="13" font-weight="700">棒1</text>
+            <line x1="150" y1="100" x2="198" y2="100" stroke="#2e7d32" stroke-width="3" marker-end="url(#m2a)"/>
+            <text x="202" y="104" fill="#2e7d32" font-size="13" font-weight="700">v₁(快)</text>
+            <line x1="150" y1="118" x2="120" y2="118" stroke="#e67e22" stroke-width="3" marker-end="url(#m2a)"/>
+            <text x="56" y="122" fill="#e67e22" font-size="13" font-weight="700">F安(阻力)</text>
+            <line x1="300" y1="70" x2="300" y2="130" stroke="#8e44ad" stroke-width="6"/>
+            <text x="308" y="104" fill="#8e44ad" font-size="13" font-weight="700">棒2</text>
+            <line x1="300" y1="118" x2="332" y2="118" stroke="#e67e22" stroke-width="3" marker-end="url(#m2a)"/>
+            <text x="336" y="122" fill="#e67e22" font-size="13" font-weight="700">F安(动力)</text>
+            <text x="250" y="152" fill="#7f8c8d" font-size="12">无外力：两棒动量守恒 → 共速</text>
+        </svg>
+    </div>
+    <div class="key-point"><b>📌 特例：</b>$m_1=m_2=m$、$v_{20}=0$ 时，$v_\text{共}=\dfrac{v_0}{2}$，$Q=\dfrac14 m v_0^2$。</div>
+
+    <h3>2．等距双棒 + 有外力 + 无初速度</h3>
+    <p>对棒1 施恒定外力 $F$，两棒均从静止开始（无初速度）。整体合外力为 $F$，系统加速度</p>
+    <div class="formula">$$a_\text{系}=\frac{F}{m_1+m_2}$$</div>
+    <p>起始两棒同速（都为 0），无电流；棒1 被拉得快于棒2，出现速度差，产生电流：棒1 受安培阻力、棒2 受安培动力。经历短暂变加速后，两棒加速度均趋于 $a_\text{系}$，速度差 $\Delta v$ 恒定，电流恒定：</p>
+    <div class="formula">$$I=\frac{m_2\,F}{B\,L\,(m_1+m_2)}$$</div>
+    <div class="warn"><b>⚠️ 注意：</b>"无初速度"情形最终<b>不是共速</b>，而是两棒以相同加速度 $a_\text{系}$ 匀加速、电流恒定不为零——与"无外力有初速度"的共速结局正好相反。</div>
+    <div class="anim-wrap">
+        <svg width="460" height="190" viewBox="0 0 460 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="等距双棒有外力无初速度">
+            <defs><marker id="m2b" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#34495e"/></marker></defs>
+            <line x1="40" y1="70" x2="430" y2="70" stroke="#607d8b" stroke-width="4"/>
+            <line x1="40" y1="130" x2="430" y2="130" stroke="#607d8b" stroke-width="4"/>
+            <g fill="#90caf9" font-size="12">
+                <text x="70" y="40">⊗ ⊗ ⊗</text><text x="180" y="40">⊗ ⊗ ⊗</text><text x="290" y="40">⊗ ⊗ ⊗</text><text x="370" y="40">⊗ ⊗ ⊗</text>
+                <text x="70" y="165">⊗ ⊗ ⊗</text><text x="180" y="165">⊗ ⊗ ⊗</text><text x="290" y="165">⊗ ⊗ ⊗</text><text x="370" y="165">⊗ ⊗ ⊗</text>
+            </g>
+            <text x="300" y="22" fill="#1565c0" font-size="12">B 垂直纸面向里</text>
+            <line x1="150" y1="70" x2="150" y2="130" stroke="#c0392b" stroke-width="6"/>
+            <text x="158" y="104" fill="#c0392b" font-size="13" font-weight="700">棒1</text>
+            <line x1="112" y1="100" x2="150" y2="100" stroke="#1565c0" stroke-width="3" marker-end="url(#m2b)"/>
+            <text x="74" y="104" fill="#1565c0" font-size="13" font-weight="700">F</text>
+            <line x1="150" y1="84" x2="190" y2="84" stroke="#2e7d32" stroke-width="3" marker-end="url(#m2b)"/>
+            <text x="194" y="88" fill="#2e7d32" font-size="13" font-weight="700">v₁</text>
+            <line x1="150" y1="118" x2="126" y2="118" stroke="#e67e22" stroke-width="3" marker-end="url(#m2b)"/>
+            <text x="64" y="122" fill="#e67e22" font-size="13" font-weight="700">F安</text>
+            <line x1="300" y1="70" x2="300" y2="130" stroke="#8e44ad" stroke-width="6"/>
+            <text x="308" y="104" fill="#8e44ad" font-size="13" font-weight="700">棒2</text>
+            <line x1="300" y1="84" x2="338" y2="84" stroke="#2e7d32" stroke-width="3" marker-end="url(#m2b)"/>
+            <text x="342" y="88" fill="#2e7d32" font-size="13" font-weight="700">v₂</text>
+            <line x1="300" y1="118" x2="324" y2="118" stroke="#e67e22" stroke-width="3" marker-end="url(#m2b)"/>
+            <text x="328" y="122" fill="#e67e22" font-size="13" font-weight="700">F安</text>
+            <text x="250" y="152" fill="#7f8c8d" font-size="12">有外力：整体匀加速，最终 a 相同、电流恒定</text>
+        </svg>
+    </div>
+
+    <h3>3．不等距双棒</h3>
+    <p>两棒切割长度（或所在导轨间距）不同，$L_1\neq L_2$，电动势分别为 $E_1=BL_1v_1$、$E_2=BL_2v_2$，总电动势</p>
+    <div class="formula">$$E_\text{总}=|B\,L_1 v_1-B\,L_2 v_2|$$</div>
+    <p>两棒所受安培力 $F_1=BIL_1$、$F_2=BIL_2$ <b>大小不相等</b>，故安培力不是等大反向内力，<b>系统动量不守恒</b>。最本质的区别在于：</p>
+    <div class="key-point"><b>📌 核心区别：</b>等距双棒共速（$v_1=v_2$）时电流为零；而<b>不等距双棒即使共速，只要 $L_1\neq L_2$，仍有电动势 $E_\text{总}=B|L_1-L_2|\,v\neq0$，电流不为零</b>，不会停在共速状态。</div>
+    <div class="anim-wrap">
+        <svg width="460" height="200" viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="不等距双棒">
+            <defs><marker id="m2c" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#34495e"/></marker></defs>
+            <text x="330" y="34" fill="#1565c0" font-size="12">上段间距 L₁(宽)</text>
+            <line x1="40" y1="50" x2="430" y2="50" stroke="#607d8b" stroke-width="4"/>
+            <line x1="40" y1="100" x2="430" y2="100" stroke="#607d8b" stroke-width="4"/>
+            <line x1="150" y1="50" x2="150" y2="100" stroke="#c0392b" stroke-width="6"/>
+            <text x="158" y="78" fill="#c0392b" font-size="13" font-weight="700">棒1(L₁)</text>
+            <line x1="150" y1="76" x2="195" y2="76" stroke="#2e7d32" stroke-width="3" marker-end="url(#m2c)"/>
+            <text x="199" y="80" fill="#2e7d32" font-size="13" font-weight="700">v₁</text>
+            <text x="330" y="116" fill="#1565c0" font-size="12">下段间距 L₂(窄)</text>
+            <line x1="40" y1="120" x2="430" y2="120" stroke="#607d8b" stroke-width="4"/>
+            <line x1="40" y1="150" x2="430" y2="150" stroke="#607d8b" stroke-width="4"/>
+            <line x1="300" y1="120" x2="300" y2="150" stroke="#8e44ad" stroke-width="6"/>
+            <text x="308" y="140" fill="#8e44ad" font-size="13" font-weight="700">棒2(L₂)</text>
+            <line x1="300" y1="136" x2="340" y2="136" stroke="#2e7d32" stroke-width="3" marker-end="url(#m2c)"/>
+            <text x="344" y="140" fill="#2e7d32" font-size="13" font-weight="700">v₂</text>
+            <g fill="#90caf9" font-size="12">
+                <text x="70" y="42">⊗</text><text x="220" y="42">⊗</text><text x="380" y="42">⊗</text>
+                <text x="70" y="172">⊗</text><text x="220" y="172">⊗</text><text x="380" y="172">⊗</text>
+            </g>
+            <text x="50" y="192" fill="#7f8c8d" font-size="12">L₁≠L₂：共速时仍有 E=B|L₁−L₂|v，电流不为零</text>
+        </svg>
+    </div>
+    <p>处理不等距模型，一般对每根棒分别列牛顿第二定律/动量定理，再结合电流关系 $I=\dfrac{E_\text{总}}{R_\text{总}}$ 联立求解，不能套用等距的"动量守恒+共速"结论。</p>
+
+    <div class="quiz" data-quiz="m2">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">M2. 关于双棒模型，下列说法正确的是（　）</div>
+        <label class="opt"><input type="radio" name="qm2" value="a"> 等距双棒无外力最终共速、电流为零</label>
+        <label class="opt"><input type="radio" name="qm2" value="b"> 等距双棒有外力拉一棒，无初速时最终共速</label>
+        <label class="opt"><input type="radio" name="qm2" value="c"> 不等距双棒共速时电流一定为零</label>
+        <label class="opt"><input type="radio" name="qm2" value="d"> 不等距双棒系统动量守恒</label>
+        <button class="submit-btn" onclick="checkQuiz('m2', 'a', 'free')">提交答案</button>
+        <div class="quiz-feedback" id="fb-m2"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="equiv">← 上一节</button>
+        <button class="next" data-next="free">下一节 →</button>
+    </div>
+</div>
+
+<!-- ③ 无外力·动量守恒 -->
+<div class="card level" id="free">
+    <h2><span class="num">3</span>无外力双棒 · 动量守恒</h2>
+    <p>光滑水平导轨、系统<b>不受外力</b>时，两棒所受安培力等大反向，是<b>系统内力</b>，故两棒系统动量守恒。</p>
+    <div class="formula">$$m_1 v_{10} + m_2 v_{20} = (m_1 + m_2)\,v_\text{共}$$</div>
+    <p>较快的棒受安培阻力减速，较慢的棒受安培动力加速，直到<b>共速</b>$v_\text{共}$，此时电流为零、演化停止。</p>
+    <h3>能量与焦耳热</h3>
+    <p>系统动能损失全部转化为焦耳热：</p>
+    <div class="formula">$$Q = \left(\frac12 m_1 v_{10}^2 + \frac12 m_2 v_{20}^2\right) - \frac12 (m_1+m_2)v_\text{共}^2$$</div>
+    <div class="key-point">
+        <b>📌 特例（一棒初速为 0）：</b>若 $v_{20}=0$，则 $v_\text{共}=\dfrac{m_1 v_{10}}{m_1+m_2}$，$Q=\dfrac12 m_1 v_{10}^2-\dfrac12(m_1+m_2)v_\text{共}^2=\dfrac{m_1m_2}{2(m_1+m_2)}v_{10}^2$。
+    </div>
+    <div class="example">
+        <div class="q">例题：质量均为 $m$ 的两棒，棒1 初速 $v_0$、棒2 静止，导轨光滑、电阻不计（总阻 $R$）。求共速速度 $v_\text{共}$ 与产生的总焦耳热 $Q$。</div>
+        <p class="step">解：动量守恒 $mv_0 = 2m\,v_\text{共}\Rightarrow v_\text{共}=\dfrac{v_0}{2}$。</p>
+        <p class="step">$Q=\dfrac12 mv_0^2-\dfrac12(2m)\left(\dfrac{v_0}{2}\right)^2=\dfrac14 mv_0^2$。</p>
+    </div>
+    <div class="quiz" data-quiz="2">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">2. 无外力双棒系统最终达到共速，此时回路中（　）</div>
+        <label class="opt"><input type="radio" name="q2" value="a"> 电流最大</label>
+        <label class="opt"><input type="radio" name="q2" value="b"> 仍有安培力</label>
+        <label class="opt"><input type="radio" name="q2" value="c"> 电动势为零、电流为零</label>
+        <label class="opt"><input type="radio" name="q2" value="d"> 两棒加速度方向相反</label>
+        <button class="submit-btn" onclick="checkQuiz(2, 'c', 'forced')">提交答案</button>
+        <div class="quiz-feedback" id="fb-2"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="models2">← 上一节</button>
+        <button class="next" data-next="forced">下一节 →</button>
+    </div>
+</div>
+
+<!-- ③ 有外力双棒 -->
+<div class="card level" id="forced">
+    <h2><span class="num">4</span>有外力双棒</h2>
+    <p>若对棒1 施加恒定外力 $F$（棒2 无外力），两棒始终受等大反向安培力，整体受合外力 $F$。</p>
+    <h3>1．整体加速度</h3>
+    <div class="formula">$$a_\text{系} = \frac{F}{m_1 + m_2}$$</div>
+    <h3>2．稳定状态（加速度相同）</h3>
+    <p>经历短暂变加速后，两棒加速度趋于相同 $a=a_\text{系}$。对两棒分别列式：</p>
+    <div class="formula">$$F - B\,I\,L = m_1 a,\qquad B\,I\,L = m_2 a$$</div>
+    <p>消去 $a$ 得恒定电流：</p>
+    <div class="formula">$$I = \frac{m_2\,a}{B\,L} = \frac{m_2\,F}{B\,L\,(m_1+m_2)}$$</div>
+    <div class="key-point">
+        <b>📌 稳定时的重要性质：</b>两棒加速度相同 $\Rightarrow$ 速度差 $\Delta v=v_1-v_2$ 保持<b>恒定</b>，故电流 $I=\dfrac{BL\Delta v}{R_\text{总}}$ 恒定，安培力恒定。
+    </div>
+    <div class="warn">
+        <b>⚠️ 与"无外力"的区别：</b>无外力→最终共速、电流为零；有外力→最终两棒以相同加速度匀加速、电流恒定不为零。
+    </div>
+    <div class="quiz" data-quiz="3">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">3. 恒力 $F$ 拉棒1（棒2 自由），稳定后两棒（　）</div>
+        <label class="opt"><input type="radio" name="q3" value="a"> 共速且电流为零</label>
+        <label class="opt"><input type="radio" name="q3" value="b"> 加速度相同，电流恒定</label>
+        <label class="opt"><input type="radio" name="q3" value="c"> 棒1 加速度始终大于棒2</label>
+        <label class="opt"><input type="radio" name="q3" value="d"> 系统动量守恒</label>
+        <button class="submit-btn" onclick="checkQuiz(3, 'b', 'ce')">提交答案</button>
+        <div class="quiz-feedback" id="fb-3"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="free">← 上一节</button>
+        <button class="next" data-next="ce">下一节 →</button>
+    </div>
+</div>
+
+<!-- ④ 电荷量与能量 -->
+<div class="card level" id="ce">
+    <h2><span class="num">5</span>电荷量与能量</h2>
+    <h3>1．电荷量</h3>
+    <p>通过回路的电荷量只取决于磁通变化量与总电阻：</p>
+    <div class="formula">$$q = \frac{\Delta\Phi}{R_\text{总}} = \frac{B\,L\,\Delta x}{R_\text{总}}$$</div>
+    <p>$\Delta x$ 为两棒间距离的<b>变化量</b>。对单棒用动量定理 $B\,I\,L\,\Delta t=\Delta p$ 可得 $q=\dfrac{\Delta p}{B\,L}$（$\Delta p$ 为该棒动量变化量）。</p>
+    <h3>2．能量</h3>
+    <table>
+        <tr><th>情形</th><th>能量关系</th></tr>
+        <tr><td>无外力</td><td>初动能 $\to$ 共速动能 $+$ 焦耳热 $Q$</td></tr>
+        <tr><td>有外力拉棒1</td><td>拉力做功 $W_F = \Delta E_\text{k} + Q$</td></tr>
+    </table>
+    <div class="key-point">
+        <b>📌 解题套路：</b>① 先由动量守恒（无外力）或整体牛顿第二定律（有外力）求末速度/加速度；② 再求电荷量、焦耳热。
+    </div>
+    <div class="quiz" data-quiz="4">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">4. 无外力双棒，初态棒1 动量 $p_1$、棒2 动量 $p_2$，则通过回路的总电荷量（　）</div>
+        <label class="opt"><input type="radio" name="q4" value="a"> 等于 $(p_1-p_2)/(BL)$</label>
+        <label class="opt"><input type="radio" name="q4" value="b"> 等于 $(p_1+p_2)/(BL)$</label>
+        <label class="opt"><input type="radio" name="q4" value="c"> 与磁场 $B$ 无关</label>
+        <label class="opt"><input type="radio" name="q4" value="d"> 等于系统动能损失</label>
+        <button class="submit-btn" onclick="checkQuiz(4, 'a', 'gaokao')">提交答案</button>
+        <div class="quiz-feedback" id="fb-4"></div>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="forced">← 上一节</button>
+        <button class="next" data-next="gaokao">下一节 →</button>
+    </div>
+</div>
+
+<!-- ⑥ 高考经典 -->
+<section class="card level" id="gaokao">
+    <h2><span class="num">6</span>高考经典 · 双棒切割</h2>
+    <div class="example">
+        <div class="ex-title">【高考真题·例 1】双棒无外力·动量守恒（2021·全国甲·改编）</div>
+        <div class="ex-body">
+            <p>两根平行光滑金属导轨间距 $L$，电阻不计，固定在水平面内。两导体棒 a、b 质量均为 $m$，电阻均为 $R$，垂直跨放导轨上。初始 b 静止，a 以 $v_0$ 向右运动。求：(1) 最终共同速度 $v$；(2) 全过程中产生的总焦耳热 $Q$。</p>
+            <p class="step">解：(1) 系统水平方向不受外力，动量守恒：$mv_0 = 2mv \Rightarrow v = \dfrac{v_0}{2}$。</p>
+            <p class="step">(2) 由能量守恒：初动能 $\dfrac12 mv_0^2$，末动能 $\dfrac12(2m)v^2=\dfrac14mv_0^2$，故 $Q=\dfrac12mv_0^2-\dfrac14mv_0^2=\dfrac14mv_0^2$。</p>
+        </div>
+    </div>
+    <div class="example">
+        <div class="ex-title">【高考真题·例 2】双棒有外力·恒定加速度（2020·山东·改编）</div>
+        <div class="ex-body">
+            <p>两平行导轨，间距 $L$，电阻不计。导体棒 a、b 质量分别为 $m_a$、$m_b$，电阻不计。a 受恒定外力 $F$ 向右，b 受恒定外力 $2F$ 向右；初始均静止。求 $t$ 时刻两棒加速度及安培力。</p>
+            <p class="step">解：将两棒视为整体，合外力 $3F$，整体加速度 $a=\dfrac{3F}{m_a+m_b}$（即两棒共同加速度）。</p>
+            <p class="step">对 a 隔离：$F-F_A=m_a a$；对 b 隔离：$2F+F_A=m_b a$。联立得安培力 $F_A=\dfrac{(m_b-2m_a)F}{m_a+m_b}$。</p>
+            <p class="step">讨论：当 $m_b=2m_a$ 时 $F_A=0$，两棒无需电磁耦合即同步加速。</p>
+        </div>
+    </div>
+    <div class="quiz" data-correct="1,3">
+        <div class="quiz-title">📝 小节练习</div>
+        <div class="q">关于双棒系统，下列说法正确的是（多选）：</div>
+        <div class="opts">
+            <label><input type="checkbox" name="q5" value="1"> 无外力等距双棒系统动量守恒</label>
+            <label><input type="checkbox" name="q5" value="2"> 双棒共速时回路电流最大</label>
+            <label><input type="checkbox" name="q5" value="3"> 无外力系统最终共速，机械能转化为焦耳热</label>
+            <label><input type="checkbox" name="q5" value="4"> 有恒定外力时两棒加速度始终相等</label>
+        </div>
+        <button onclick="checkQuizMulti(this)">提交</button>
+    </div>
+    <div class="level-nav">
+        <button class="prev" data-prev="ce">← 上一节</button>
+        <button class="next" data-next="overview">🏠 返回知识框架</button>
+    </div>
+</section>
+
+<div class="footer">双棒切割磁感线 · 高中物理磁场专题 · 自由学习模式</div>
+
+</div>
+
+<script>
+    let currentLevel = 'overview';
+    function applyLockState() {
+        document.querySelectorAll('.card.level').forEach(card => card.classList.add('active-level'));
+    }
+    function showLevel(id) {
+        const target = document.getElementById(id);
+        if (!target) return false;
+        currentLevel = id;
+        document.querySelectorAll('.card.level').forEach(card => card.classList.add('active-level'));
+        window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+        return true;
+    }
+    function checkQuiz(level, correct) {
+        const name = 'q' + level;
+        const sel = document.querySelector('input[name="' + name + '"]:checked');
+        const fb = document.getElementById('fb-' + level);
+        if (!sel) { alert('请先选择一个答案'); return; }
+        const opts = document.querySelectorAll('input[name="' + name + '"]');
+        opts.forEach(o => o.parentElement.classList.remove('correct', 'wrong'));
+        if (sel.value === correct) {
+            sel.parentElement.classList.add('correct');
+            fb.className = 'quiz-feedback ok';
+            fb.innerHTML = '✅ 回答正确！';
+            fb.style.display = 'block';
+        } else {
+            sel.parentElement.classList.add('wrong');
+            fb.className = 'quiz-feedback no';
+            fb.innerHTML = '❌ 答案不对，再想想：' + quizHint(level);
+            fb.style.display = 'block';
+        }
+    }
+    function checkQuizMulti(btn) {
+        const quiz = btn.closest('.quiz');
+        if (!quiz) return;
+        const correct = (quiz.getAttribute('data-correct') || '').split(',').map(s => s.trim()).filter(Boolean);
+        const boxes = quiz.querySelectorAll('input[type=checkbox]');
+        let ok = true;
+        boxes.forEach(b => {
+            const shouldCheck = correct.includes(b.value);
+            const isChecked = b.checked;
+            b.parentElement.classList.remove('correct', 'wrong');
+            if (shouldCheck === isChecked) {
+                if (isChecked) b.parentElement.classList.add('correct');
+            } else {
+                b.parentElement.classList.add('wrong');
+                ok = false;
+            }
+        });
+        let fb = quiz.querySelector('.quiz-feedback');
+        if (!fb) { fb = document.createElement('div'); fb.className = 'quiz-feedback'; quiz.appendChild(fb); }
+        fb.style.display = 'block';
+        if (ok) { fb.className = 'quiz-feedback ok'; fb.innerHTML = '✅ 全部正确！'; }
+        else { fb.className = 'quiz-feedback no'; fb.innerHTML = '❌ 还有错误，仔细检查每一选项（提示：' + quizHint('5') + '）'; }
+    }
+    function quizHint(level) {
+        const hints = {
+            1: '两棒反向串联，总电动势 E=BL|v1-v2|，与相对速度成正比。',
+            2: '共速时相对速度为零，电动势与电流均为零。',
+            3: '有外力时整体匀加速，稳定后两棒加速度相同、电流恒定。',
+            4: '对单棒用动量定理 BILΔt=Δp，得 q=Δp/(BL)；电荷量与 B 有关。',
+            5: 'q=ΔΦ/R，与运动过程快慢无关，不是与时间有关。',
+            'm2': '等距无外力→共速电流零；等距有外力无初速→匀加速电流恒定；不等距共速仍有电流且动量不守恒。'
+        };
+        return hints[level] || '';
+    }
+    document.querySelectorAll('.nav a').forEach(a => {
+        a.addEventListener('click', e => {
+            const id = a.getAttribute('href');
+            if (id && id.startsWith('#')) { e.preventDefault(); showLevel(id.slice(1)); }
+        });
+    });
+    document.querySelectorAll('.level-nav .prev, .level-nav .next').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('next')) showLevel(btn.dataset.next);
+            else showLevel(btn.dataset.prev);
+        });
+    });
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll('.nav a'));
+        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        const total = sections.length;
+        const pFill = document.getElementById('pFill');
+        const pTxt = document.getElementById('pTxt');
+        function onScroll() {
+            const pos = window.scrollY + 160;
+            let current = sections[0], idx = 0;
+            sections.forEach((sec, i) => { if (sec.offsetTop <= pos) { current = sec; idx = i; } });
+            navLinks.forEach(a => { const href = a.getAttribute('href'); if (href) a.classList.toggle('active', href === '#' + current.id); });
+            const pct = Math.round(((idx + 1) / total) * 100);
+            if (pFill) pFill.style.width = pct + '%';
+            if (pTxt) pTxt.textContent = (idx + 1) + ' / ' + total + ' 节';
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+    applyLockState();
+    showLevel('overview');
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

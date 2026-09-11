@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 测量金属丝的电阻率</title>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:10px 0}
+.imgbox svg{max-width:100%;height:auto}
+.imgcap{color:var(--sub);font-size:12px;margin-top:4px}
+.formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:1px 8px;margin:0 2px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle .red{color:var(--danger)}
+.principle .warn{color:var(--warn)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../高考物理_电学实验闯关.html">← 电学实验闯关目录</a>
+    <span class="pos">第 10 关 · 共 11 关</span>
+  </div>
+  <h1>测量金属丝的电阻率</h1>
+  <div class="tag">螺旋测微器 · 读数</div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><div class="imgbox">
+<svg width="440" height="120" viewBox="0 0 440 120">
+  <rect x="40" y="35" width="250" height="34" rx="6" fill="#eef2f7" stroke="#2196f3" stroke-width="2"/>
+  <line x1="120" y1="35" x2="120" y2="69" stroke="#2196f3" stroke-width="2"/>
+  <line x1="126" y1="35" x2="126" y2="69" stroke="#2196f3" stroke-width="2"/>
+  <text x="215" y="56" text-anchor="middle" font-size="12" fill="#5a6b7b">固定刻度（主尺）</text>
+  <circle cx="350" cy="52" r="34" fill="none" stroke="#1f9d6b" stroke-width="2"/>
+  <line x1="350" y1="18" x2="350" y2="52" stroke="#1f9d6b" stroke-width="2"/>
+  <line x1="350" y1="52" x2="350" y2="86" stroke="#1f9d6b" stroke-width="2"/>
+  <text x="350" y="108" text-anchor="middle" font-size="11" fill="#1f9d6b">可动刻度（微分筒）</text>
+  <line x1="290" y1="52" x2="316" y2="52" stroke="#5a6b7b" stroke-width="2"/>
+  <text x="40" y="26" font-size="11" fill="#5a6b7b">测微螺杆</text>
+  <text x="20" y="90" font-size="11" fill="#e0922e">读数 = 主尺(mm) + 0.01×格数(mm)</text>
+</svg>
+<div class="imgcap">图 10-1：螺旋测微器（千分尺）示意</div>
+</div>
+<hr>
+<b>实验原理：</b>电阻定律 <b>R = ρ·L/S</b>，其中 S = π(d/2)²。测出长度 L（米尺）、直径 d（螺旋测微器）、电阻 R（伏安法），则 <div class="formula">ρ = R·S/L = R·πd²/(4L)</div>
+<hr>
+<b>螺旋测微器读数（精确到 0.01 mm，估读一位）：</b><br>
+① 读数 = <b>主尺示数</b> + <b>0.01 mm × 可动刻度格数</b>（末位为估读）；<br>
+② 注意主尺<b>半毫米刻度</b>是否露出（可动刻度已转过半圈时，主尺多 0.5 mm）；<br>
+③ 常见考法：读某状态数值，注意<b>估读位</b>，如 0.500 mm 不能写成 0.5 mm。
+<hr>
+<b>游标卡尺读数（不估读）：</b>读数 = 主尺读数 + 游标对齐格数 × 精度（0.1 / 0.05 / 0.02 mm），游标 10 分度精确到 0.1 mm、20 分度 0.05 mm、50 分度 0.02 mm。
+<hr>
+<span class="warn">⚠ 本实验电路注意：</span>金属丝电阻较小（几十 Ω 以下），用<b>外接法</b>测 R；滑动变阻器用<b>限流式</b>即可（无 0 起调要求）；金属丝与导线连接用大线径、短导线减小接触电阻。</div></div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（真题改编）用伏安法测一段金属丝的电阻率：测得金属丝长度 L = 50.00 cm，螺旋测微器测得直径 d = 0.500 mm，伏安法测得电阻 R = 3.5 Ω。</p>
+<p>(1) 求金属丝的横截面积 S；(2) 求电阻率 ρ；(3) 电流表应内接还是外接？</p>
+<p class='ans'>答案：(1) S = πd²/4 = 3.14×(0.500×10⁻³)²/4 ≈ 1.96×10⁻⁷ m²。<br>(2) ρ = R·S/L = 3.5×1.96×10⁻⁷ / 0.500 ≈ 1.37×10⁻⁶ Ω·m。<br>(3) 金属丝电阻较小，用<b>外接法</b>。</p></div>
+  <div class="nav">
+    <a class="prev" href="09_描绘小灯泡伏安特性曲线.html">← 描绘小灯泡伏安特性曲线</a>
+    <a class="mid" href="../高考物理_电学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="11_电桥测电阻.html">电桥法测电阻 →</a>
+  </div>
+  <div class="footer">电学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "螺旋测微器的读数精确到？", "o": ["0.1 mm", "0.01 mm", "0.001 mm", "1 mm"], "a": 1, "e": "螺旋测微器精度 0.01 mm，需估读到 0.001 mm（末位估读）。游标卡尺才不估读。"}, {"q": "测金属丝电阻率，直径 d、长度 L、电阻 R，则电阻率 ρ 为？", "o": ["ρ = R·L/(πd²/4)", "ρ = R·πd²/(4L)", "ρ = 4RL/(πd²)", "ρ = πRd²/(4L)"], "a": 1, "e": "R = ρL/S，S = π(d/2)² = πd²/4，故 ρ = R·S/L = R·πd²/(4L)。"}, {"q": "螺旋测微器读数 5.5 mm 主尺露出（半毫米刻度已露出），可动刻度对准 20.0 格，则读数为？", "o": ["5.200 mm", "5.700 mm", "5.500 mm", "6.200 mm"], "a": 1, "e": "主尺 5.5 mm（含半毫米刻度）+ 0.01×20.0 = 0.200 mm → 读数为 5.5 + 0.200 = 5.700 mm。注意主尺读数含 0.5 mm。"}, {"q": "本实验中金属丝的电阻测量应选用？", "o": ["电流表内接", "电流表外接", "两种均可", "必须用欧姆表"], "a": 1, "e": "金属丝电阻一般较小（远小于电压表内阻），外接法误差小。若金属丝很细电阻较大则需比较判断，通常选外接。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

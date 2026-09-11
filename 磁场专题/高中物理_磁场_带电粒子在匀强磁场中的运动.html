@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 带电粒子在匀强磁场中的运动</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #2c3e50; line-height: 1.8; }
+        .header { background: linear-gradient(135deg, #283048 0%, #1e3c72 50%, #3a7bd5 100%); color: white; padding: 50px 20px; text-align: center; box-shadow: 0 4px 20px rgba(30,60,114,0.3); }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 30px 20px 30px 195px; }
+        .card { background: white; border-radius: 14px; padding: 30px; margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); border-left: 5px solid #3a7bd5; }
+        .card h2 { color: #1e3c72; font-size: 1.6em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e8eef5; display: flex; align-items: center; gap: 10px; }
+        .card h2 .num { background: #3a7bd5; color: white; width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8em; flex-shrink: 0; }
+        .card h3 { color: #2a5298; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula { background: #f0f4f8; border: 1px solid #d6e2ef; border-radius: 8px; padding: 18px 20px; margin: 12px 0; font-size: 1.15em; color: #1a2a3a; text-align: center; overflow-x: auto; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point { background: linear-gradient(90deg, #e3f2fd, #f5f9ff); border-left: 4px solid #2196f3; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .warn { background: #fff3e0; border-left: 4px solid #ff9800; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        .danger { background: #ffebee; border-left: 4px solid #e74c3c; padding: 12px 18px; margin: 12px 0; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #e0e6ed; vertical-align: top; }
+        th { background: #f0f4f8; color: #1e3c72; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        td.rowname { font-weight: 600; color: #1e3c72; white-space: nowrap; background: #f8fafc; width: 90px; }
+        .figure { text-align: center; margin: 16px 0; }
+        .figure img { max-width: 100%; border: 1px solid #e3e8ee; border-radius: 10px; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+        .figure figcaption { color: #7f8c8d; font-size: 0.9em; margin-top: 8px; }
+        .fig-row { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; align-items: flex-start; }
+        .fig-row .figure { flex: 1 1 280px; max-width: 700px; margin: 0; }
+        .example { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px 20px; margin: 15px 0; border-radius: 6px; }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .nav { position: fixed; top: 120px; left: 18px; width: 150px; z-index: 100; background: rgba(30,60,114,0.96); backdrop-filter: blur(10px); border-radius: 12px; padding: 14px 10px; box-shadow: 0 4px 18px rgba(0,0,0,0.22); max-height: calc(100vh - 140px); overflow-y: auto; }
+        .nav .nav-title { color: rgba(255,255,255,0.65); font-size: 0.78em; letter-spacing: 1px; padding: 2px 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 8px; }
+        .nav a { display: block; color: white; text-decoration: none; margin: 2px 0; font-size: 0.9em; padding: 7px 10px; border-radius: 6px; transition: background 0.25s; border-left: 3px solid transparent; }
+        .nav a:hover { background: rgba(255,255,255,0.18); }
+        .nav a.active { background: rgba(58,123,213,0.55); border-left: 3px solid #7eb6ff; font-weight: 600; }
+        .interactive { background: #fafafa; border: 2px dashed #b0bec5; border-radius: 10px; padding: 20px; margin: 15px 0; }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input { width: 110px; padding: 6px 10px; border: 1px solid #b0bec5; border-radius: 5px; font-size: 1em; text-align: center; }
+        .interactive button { background: #3a7bd5; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 1em; margin-top: 10px; }
+        .interactive button:hover { background: #2a5298; }
+        .result { margin-top: 15px; padding: 12px 18px; background: #e3f2fd; border-radius: 6px; font-size: 1.1em; font-weight: 600; color: #1565c0; display: none; }
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+        .back-link { display: inline-block; margin-bottom: 15px; color: #3a7bd5; text-decoration: none; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+        .summary-box { background: linear-gradient(135deg, #fff3e0 0%, #fffde7 100%); border-left: 5px solid #ff9800; padding: 14px 20px; margin: 14px 0; border-radius: 8px; }
+        .summary-box b { color: #e65100; }
+        @media (max-width: 900px) {
+            .nav { position: static; width: auto; top: 0; left: 0; max-height: none; border-radius: 0; display: flex; flex-wrap: wrap; justify-content: center; padding: 10px; margin-bottom: 4px; }
+            .nav .nav-title { display: none; }
+            .nav a { display: inline-block; border-left: none; margin: 3px 4px; font-size: 0.82em; padding: 5px 10px; }
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 1.8em; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>\u🌀 带电粒子在匀强磁场中的运动</h1>
+    <p>高中物理 · 磁场模型 · 匀速直线与匀速圆周运动</p>
+</div>
+
+<nav class="nav">
+    <div class="nav-title">📑 目录导航</div>
+    <a href="#overview">模型定义</a>
+    <a href="#force">基本公式</a>
+    <a href="#derived">导出公式</a>
+    <a href="#keypoints">要点点拨</a>
+    <a href="#method">解题方法</a>
+    <a href="#example">典型例题</a>
+    <a href="#bounded">有界磁场</a>
+    <a href="#calc">互动计算</a>
+</nav>
+
+<div class="container">
+
+<a class="back-link" href="高中物理_磁场.html">← 返回磁场总览</a>
+
+<!-- 模型定义 -->
+<div class="card" id="overview">
+    <h2><span class="num">★</span>模型定义</h2>
+    <p>带电粒子（不计重力）以速度 $v$ 进入磁感应强度为 $B$ 的匀强磁场，所受洛伦兹力为 $f=qvB\sin\theta$（$\theta$ 为 $v$ 与 $B$ 的夹角）。根据初速度方向与磁场方向的关系，运动形式分为两种：</p>
+    <table>
+        <tr><th style="width:90px;">情形</th><th>条件</th><th>运动性质</th><th>原因</th></tr>
+        <tr>
+            <td class="rowname">直线运动</td>
+            <td>$v \parallel B$（$\theta=0\^\circ$ 或 $180\^\circ$）</td>
+            <td>以入射速度 $v$ 做<span class="highlight">匀速直线运动</span></td>
+            <td>洛伦兹力 $f=0$，粒子不受力</td>
+        </tr>
+        <tr>
+            <td class="rowname">圆周运动</td>
+            <td>$v \perp B$（$\theta=90\^\circ$）</td>
+            <td>在垂直于磁场的平面内做<span class="highlight">匀速圆周运动</span></td>
+            <td>洛伦兹力 $f=qvB$ 提供向心力，始终与速度垂直</td>
+        </tr>
+    </table>
+    <div class="summary-box">
+        <b>📌 模型核心：</b>当 $v \perp B$ 时，洛伦兹力充当向心力，只改变速度方向，不改变速度大小。半径、周期、运动时间等均可由 $q$、$m$、$v$、$B$ 及几何关系确定。
+    </div>
+</div>
+
+<!-- 基本公式 -->
+<div class="card" id="force">
+    <h2><span class="num">1</span>基本公式：洛伦兹力提供向心力</h2>
+    <p>带电粒子垂直进入匀强磁场时，洛伦兹力提供圆周运动所需的向心力：</p>
+    <div class="formula">$$qvB = m\frac{v^2}{r}$$</div>
+    <div class="key-point">
+        <b>📌 物理意义：</b>
+        <ul style="padding-left:24px; margin-top:6px;">
+            <li>左边 $qvB$：洛伦兹力大小；</li>
+            <li>右边 $m\dfrac{v^2}{r}$：匀速圆周运动所需向心力；</li>
+            <li>等式成立是粒子做匀速圆周运动的<b>动力学条件</b>。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 导出公式 -->
+<div class="card" id="derived">
+    <h2><span class="num">2</span>导出公式</h2>
+    <h3>① 轨道半径</h3>
+    <p>由 $qvB = m\dfrac{v^2}{r}$ 整理可得：</p>
+    <div class="formula">$$r = \frac{mv}{qB}$$</div>
+    <p>即轨道半径与粒子动量 $mv$ 成正比，与 $qB$ 成反比。</p>
+
+    <h3>② 周期与频率</h3>
+    <p>粒子绕行一周的时间：</p>
+    <div class="formula">$$T = \frac{2\pi r}{v} = \frac{2\pi m}{qB}$$</div>
+    <p>频率 $f$ 与角速度 $\omega$ 分别为：</p>
+    <div class="formula">$$f = \frac{1}{T} = \frac{qB}{2\pi m} \quad\quad \omega = \frac{2\pi}{T} = \frac{qB}{m}$$</div>
+
+    <div class="warn">
+        <b>⚠️ 重要结论：</b>
+        <ul style="padding-left:24px; margin-top:6px;">
+            <li>周期 $T$、频率 $f$、角速度 $\omega$ 的大小与轨道半径 $r$ 和运行速率 $v$ <span class="highlight">无关</span>；</li>
+            <li>它们只由磁场的磁感应强度 $B$ 和粒子的比荷 $\dfrac{q}{m}$ 决定。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- 要点点拨 -->
+<div class="card" id="keypoints">
+    <h2><span class="num">3</span>要点点拨</h2>
+
+    <h3>1．圆心的确定</h3>
+    <p>常用两种方法确定圆周运动圆心：</p>
+    <table>
+        <tr><th style="width:90px;">方法</th><th>操作</th></tr>
+        <tr>
+            <td class="rowname">方法 1</td>
+            <td>作粒子<b>进入磁场方向</b>的垂线和<b>离开磁场方向</b>的垂线，两条垂线的交点即为圆心。</td>
+        </tr>
+        <tr>
+            <td class="rowname">方法 2</td>
+            <td>作进入（或离开）磁场方向的垂线，再作轨迹中<b>两点连线的中垂线</b>，两条线的交点即为圆心。</td>
+        </tr>
+    </table>
+    <figure class="figure">
+        <img src="磁场_粒子运动_images/uniform_magnetic_field_motion.png" alt="图解1：带电粒子在匀强磁场中的圆周运动与圆心确定">
+        <figcaption>图解1：圆心确定与几何关系（甲：轨迹；乙：圆心作法）</figcaption>
+    </figure>
+
+    <h3>2．半径的确定和计算</h3>
+    <table>
+        <tr><th style="width:90px;">途径</th><th>方法</th></tr>
+        <tr>
+            <td class="rowname">几何途径</td>
+            <td>利用平面几何关系，一般是利用三角函数解直角三角形。</td>
+        </tr>
+        <tr>
+            <td class="rowname">物理途径</td>
+            <td>直接由半径公式 $r=\dfrac{mv}{qB}$ 求解。</td>
+        </tr>
+    </table>
+
+    <h3>3．运动时间的确定</h3>
+    <p>设 $\alpha$ 为粒子在匀强磁场中转过的圆心角（弧度制），则运动时间可通过以下两种途径求得：</p>
+    <div class="formula">$$t = \frac{\alpha}{2\pi}\,T \quad\text{或}\quad t = \frac{\alpha m}{qB}$$</div>
+    <p>也可由弧长 $s=r\alpha$ 得到：</p>
+    <div class="formula">$$t = \frac{s}{v} = \frac{r\alpha}{v}$$</div>
+    <div class="key-point">
+        <b>📌 关键提醒：</b>求时间时，通常先由几何关系求出圆心角 $\alpha$，再用 $t=\dfrac{\alpha}{2\pi}T$ 计算。圆心角越大，粒子在磁场中运动时间越长。
+    </div>
+</div>
+
+<!-- 解题方法 -->
+<div class="card" id="method">
+    <h2><span class="num">4</span>解题方法</h2>
+    <h3>洛伦兹力不做功</h3>
+    <p>洛伦兹力的方向总跟带电粒子运动的速度方向垂直，所以洛伦兹力对运动电荷<b>不做功</b>。它不会改变带电粒子速度的大小，只改变粒子运动的方向。</p>
+    <p>当带电粒子垂直进入匀强磁场，只受洛伦兹力作用时，它将做<b>匀速圆周运动</b>。</p>
+
+    <h3>解题注意事项</h3>
+    <div class="danger">
+        <b>注意：</b>
+        <ol style="padding-left:24px; margin-top:6px;">
+            <li>带电粒子在匀强磁场中做匀速圆周运动的半径跟它的质量和速度的乘积成正比，跟它所带电荷量和磁场的磁感应强度的乘积成反比。</li>
+            <li>带电粒子在匀强磁场中做匀速圆周运动的周期与它的运动半径、速度无关。</li>
+            <li>比荷相等的带电粒子在同一匀强磁场中做匀速圆周运动的周期相等。</li>
+        </ol>
+    </div>
+</div>
+
+<!-- 典型例题 -->
+<div class="card" id="example">
+    <h2><span class="num">5</span>典型例题</h2>
+    <div class="example">
+        <div class="q">【例】如图所示，一个质量为 $m$、电荷量为 $q$ 的带负电粒子，以初速度 $v_0$ 从 $P$ 点垂直进入方向垂直纸面向外的匀强磁场，经过 $M$ 点射出磁场。已知 $PO$ 与初速度方向垂直，$PM$ 间距离为 $L$，$O$ 为磁场边界上一点。求磁感应强度 $B$ 和粒子在磁场中运动的时间。</div>
+        <div class="a">
+            <div class="step">解：负电荷在垂直纸面向外的磁场中，由左手定则（四指指向 $v_0$ 反方向）可知粒子向上偏转。</div>
+            <div class="step">圆心位于过 $P$ 点垂直于 $v_0$ 的直线上，同时也在 $PM$ 的中垂线上，交点即为圆心 $O'$。</div>
+            <div class="step">由几何关系，弦 $PM=L$，圆心角为 $\alpha$，半径 $r=\dfrac{L}{2\sin(\alpha/2)}$。</div>
+            <div class="step">由 $r=\dfrac{mv_0}{qB}$，解得 $B=\dfrac{2mv_0\sin(\alpha/2)}{qL}$。</div>
+            <div class="step">运动时间 $t=\dfrac{\alpha m}{qB}=\dfrac{\alpha L}{2v_0\sin(\alpha/2)}$。</div>
+        </div>
+    </div>
+</div>
+
+<!-- 互动计算 -->
+<div class="card" id="calc">
+    <h2><span class="num">6</span>互动计算：半径、周期与运动时间</h2>
+    <div class="interactive">
+        <div>
+            <label>质量 m (kg)：<input type="number" id="mVal" value="1.67e-27" step="1e-27"></label>
+            <label>电荷 q (C)：<input type="number" id="qVal" value="1.6e-19" step="1e-19"></label>
+            <label>速度 v (m/s)：<input type="number" id="vVal" value="1e6" step="1e5"></label>
+            <label>磁场 B (T)：<input type="number" id="bVal" value="0.1" step="0.1"></label>
+            <label>圆心角 α (°)：<input type="number" id="aVal" value="90" step="1"></label>
+        </div>
+        <button onclick="calcAll()">计算 r、T、t</button>
+        <div class="result" id="calcRes"></div>
+    </div>
+</div>
+
+<!-- 有界匀强磁场中的运动 -->
+<div class="card" id="bounded">
+    <h2><span class="num">7</span>带电粒子在有界匀强磁场中的运动</h2>
+    <p>带电粒子在有界匀强磁场中运动时，可按以下流程进行分析。</p>
+
+    <h3>1．确定轨迹圆心</h3>
+    <p>首先应画出轨迹圆示意图，找出轨迹圆心。确定轨迹圆心的 3 个依据：</p>
+    <ol style="padding-left:24px;">
+        <li>圆心一定在垂直于速度的直线上；</li>
+        <li>圆心一定在弦的中垂线上；</li>
+        <li>圆心与轨迹圆上任一点的距离一定等于轨迹半径。</li>
+    </ol>
+    <figure class="figure">
+        <img src="images/有界磁场_圆心确定_甲乙丙.png" alt="确定轨迹圆心的常见情境">
+        <figcaption>图：确定轨迹圆心的常见情境（甲、乙、丙）</figcaption>
+    </figure>
+
+    <h3>2．轨迹半径的计算</h3>
+    <p><b>方法一（由动力学关系求）：</b>由于 $qvB = m\dfrac{v^2}{r}$，所以轨迹半径</p>
+    <div class="formula">$$r = \frac{mv}{qB}$$</div>
+    <p><b>方法二（由几何关系求）：</b>作辅助线构造出与轨迹半径相关的三角形（通常是直角三角形），根据勾股定理、三角函数求解，或根据正弦定理、余弦定理求解。</p>
+    <p>例如：如图所示，由 $R^2 = L^2 + (R-d)^2$ 可解得 $R$。</p>
+    <figure class="figure">
+        <img src="images/有界磁场_半径计算.png" alt="由几何关系求轨迹半径">
+        <figcaption>图：由几何关系 $R^2 = L^2 + (R-d)^2$ 求轨迹半径</figcaption>
+    </figure>
+
+    <h3>3．运动时间的计算</h3>
+    <p><b>方法一（由圆心角 $\alpha$、周期 $T$ 求）：</b></p>
+    <div class="formula">$$t = \frac{\alpha}{2\pi}\cdot T = \frac{\alpha m}{qB}$$</div>
+    <p><b>方法二（由弧长 $s$、线速度 $v$ 求）：</b></p>
+    <div class="formula">$$t = \frac{s}{v}$$</div>
+
+    <h3>4．作图及分析注意事项</h3>
+    <table>
+        <tr><th style="width:110px;">要素</th><th>内容</th></tr>
+        <tr><td class="rowname">四个点</td><td>入射点、出射点、轨迹圆心、入射速度所在直线与出射速度所在直线的交点。</td></tr>
+        <tr><td class="rowname">六条线</td><td>圆弧两端点所在的轨迹半径，入射速度所在直线和出射速度所在直线，入射点与出射点的连线，圆心与两条速度所在直线交点的连线。</td></tr>
+        <tr><td class="rowname">三个角</td><td>速度偏转角 $\varphi$、圆心角 $\alpha$、弦切角 $\theta$。粒子速度的偏转角等于轨迹所对圆心角，并等于弦切角的 2 倍，即 $\varphi = \alpha = 2\theta = \omega t$。</td></tr>
+    </table>
+    <figure class="figure">
+        <img src="images/有界磁场_圆心角_弦切角.png" alt="偏转角、圆心角与弦切角关系">
+        <figcaption>图：速度偏转角 $\varphi$、圆心角 $\alpha$、弦切角 $\theta$ 的关系：$\varphi=\alpha=2\theta$</figcaption>
+    </figure>
+
+    <h3>一、单直线边界匀强磁场</h3>
+    <p><b>【要点点拨】</b>等角进出：粒子进、出磁场时，速度与边界的夹角相等，即入射点的弦切角等于出射点的弦切角，如图所示。</p>
+    <figure class="figure">
+        <img src="images/有界磁场_单直线边界_abc.png" alt="单直线边界磁场中的等角进出">
+        <figcaption>图：单直线边界磁场（等角进出）</figcaption>
+    </figure>
+    <div class="key-point">
+        <b>📌 解题方法：</b>带电粒子穿过直线边界时，注意角的对称性。
+    </div>
+
+    <h3>二、平行边界匀强磁场</h3>
+    <p><b>【要点点拨】</b>运动轨迹存在临界条件，如图 f，轨迹与右边界相切时，该粒子恰好不从右边界射出（找出切点和交点是解题关键）。</p>
+    <figure class="figure">
+        <img src="images/有界磁场_平行边界_def.png" alt="平行边界磁场中的临界条件">
+        <figcaption>图：平行边界磁场中的临界条件（d、e、f）</figcaption>
+    </figure>
+
+    <h3>三、矩形边界匀强磁场</h3>
+    <p><b>【要点点拨】</b>常常涉及临界问题，运动轨迹刚好和边界相切是关键。</p>
+    <figure class="figure">
+        <img src="images/有界磁场_矩形与圆形边界.png" alt="矩形与圆形边界磁场">
+        <figcaption>图：矩形边界与圆形边界磁场中的典型轨迹</figcaption>
+    </figure>
+
+    <h3>四、圆形边界匀强磁场</h3>
+    <p><b>【要点点拨】</b></p>
+    <ol style="padding-left:24px;">
+        <li><b>径向进出：</b>若粒子沿着边界圆的某一半径方向进入磁场，则粒子离开磁场时速度的反向延长线一定过磁场区域的圆心（即沿着另一半径方向射出），如图甲所示。
+            <figure class="figure">
+                <img src="images/有界磁场_圆形边界_甲乙.png" alt="圆形边界磁场的径向进出与等角进出">
+                <figcaption>图：圆形边界磁场的径向进出（甲）与等角进出（乙）</figcaption>
+            </figure>
+        </li>
+        <li><b>等角进出：</b>若粒子射入磁场时速度方向与入射点对应半径夹角为 $\theta$，则粒子射出磁场时速度方向与出射点对应半径夹角也为 $\theta$，如图乙所示。</li>
+        <li><b>判断运动时间的技巧：</b>
+            <ul style="padding-left:24px; margin-top:6px;">
+                <li>速度大小相等时，轨迹（弧长）越长，运动时间越长；速度大小不相等时，要用 $t=\dfrac{s}{v}$ 分析，不可只看轨迹长短。</li>
+                <li>运动周期相等时，圆心角（偏转角）越大，运动时间越长；周期不相等时，要用 $t=\dfrac{\alpha}{2\pi}T$ 分析。</li>
+                <li>同一粒子进入同一磁场的速度大小变化后，可根据圆心角大小快速判断运动时间长短。</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h3>五、三角形边界匀强磁场</h3>
+    <p><b>【要点点拨】</b>遇到三角形边界时，注意区分运动轨迹与边界相切还是从角射出。</p>
+    <figure class="figure">
+        <img src="images/有界磁场_三角形边界.png" alt="三角形边界磁场">
+        <figcaption>图：三角形边界磁场</figcaption>
+    </figure>
+</div>
+
+<div class="footer">
+    © 高中物理 · 磁场专题 · 带电粒子在匀强磁场中的运动
+</div>
+
+</div>
+
+<script>
+function calcAll() {
+    const m = parseFloat(document.getElementById('mVal').value);
+    const q = parseFloat(document.getElementById('qVal').value);
+    const v = parseFloat(document.getElementById('vVal').value);
+    const B = parseFloat(document.getElementById('bVal').value);
+    const alphaDeg = parseFloat(document.getElementById('aVal').value);
+    const alpha = alphaDeg * Math.PI / 180;
+
+    const r = (m * v) / (q * B);
+    const T = (2 * Math.PI * m) / (q * B);
+    const t = (alpha / (2 * Math.PI)) * T;
+
+    const res = document.getElementById('calcRes');
+    res.style.display = 'block';
+    res.innerHTML = `半径 $r = \\dfrac{mv}{qB} = ${r.toExponential(3)}\\,\\text{m}$<br>`
+                  + `周期 $T = \\dfrac{2\\pi m}{qB} = ${T.toExponential(3)}\\,\\text{s}$<br>`
+                  + `圆心角 $\\alpha = ${alphaDeg}^\\circ$ 时，运动时间 $t = \\dfrac{\\alpha}{2\\pi}T = ${t.toExponential(3)}\\,\\text{s}$`;
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([res]);
+}
+
+/* 高亮当前目录项 */
+(function () {
+    var links = document.querySelectorAll('.nav a');
+    function update() {
+        var hash = location.hash || '#overview';
+        links.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === hash);
+        });
+    }
+    window.addEventListener('hashchange', update);
+    update();
+})();
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

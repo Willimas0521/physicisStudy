@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>库仑力作用下电荷的平衡及加速问题 · 静电场闯关</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        /* 概念型公式（纯文本/流程图，不走 MathJax） */
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    
+.level-nav a {
+  width: 100%; text-align: left; background: #f0f4f8; color: #34495e;
+  border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5; border-radius: 8px;
+  padding: 8px 12px; cursor: pointer; font-size: 0.86em; transition: all 0.25s;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; text-decoration: none;
+}
+.level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+.level-nav a.active { background: #fff3cd; color: #5d4037; border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25); }
+.level-nav a.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+.level-nav a.done.active { background: #fff3cd; }
+.btn.disabled { opacity: 0.4; pointer-events: none; }
+
+.method-card { background:#fff; border-radius:14px; padding:22px; margin:20px 0; box-shadow:0 3px 14px rgba(0,0,0,0.07); border-left:5px solid #3a7bd5; }
+.method-card h2 { color:#1e3c72; font-size:1.35em; margin-bottom:12px; }
+.method-card h3 { color:#2a5298; font-size:1.1em; margin:16px 0 8px; }
+.method-card p, .method-card li { color:#2c3e50; line-height:1.8; }
+.method-card ul { padding-left:22px; }
+.method-card li { margin-bottom:8px; }
+figure { margin:16px 0; text-align:center; }
+figure svg { max-width:100%; height:auto; border:1px solid #e0e6ed; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.06); background:#fff; }
+figcaption { color:#5a6b7c; font-size:0.9em; margin-top:8px; }
+.conclusion { background:#f0f6ff; border-left:4px solid #3a7bd5; padding:12px 16px; margin:12px 0; border-radius:0 10px 10px 0; }
+.conclusion strong { color:#1e3c72; }
+.rule { display:inline-block; background:#e8f0fe; color:#1e3c72; border-radius:6px; padding:2px 8px; margin:2px 0; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="header"><h1>🏆 高考物理 · 静电场闯关</h1><p>模型专题 · 库仑力作用下电荷的平衡及加速问题</p></div>
+<div class="side-nav"><div class="side-title">🗂 知识点导航</div><div class="level-nav">
+<a class="level-link" href="index.html">📑 目录</a>
+<a class="level-link" href="库仑定律.html">考点01 · 库仑定律</a>
+<a class="level-link" href="电场强度.html">考点02 · 电场强度</a>
+<a class="level-link" href="电场线与典型电场.html">考点03 · 电场线与典型电场</a>
+<a class="level-link" href="电势与电势能.html">考点04 · 电势与电势能</a>
+<a class="level-link" href="电场力做功与电势差.html">考点05 · 电场力做功与电势差</a>
+<a class="level-link" href="匀强电场 U = Ed.html">考点06 · 匀强电场 U = Ed</a>
+<a class="level-link" href="静电平衡与电容器.html">考点07 · 静电平衡与电容器</a>
+<a class="level-link" href="带电粒子在电场中的运动.html">考点08 · 带电粒子在电场中的运动</a>
+<a class="level-link" href="静电场中的图象问题.html">考点09 · 静电场中的图象问题</a>
+<a class="level-link" href="静电场综合与真题演练.html">考点10 · 静电场综合与真题演练</a>
+<a class="level-link" href="轨迹线电场线等势线三线问题.html">方法 · 轨迹线、电场线、等势线</a>
+<a class="level-link" href="等分法正交分解法巧解电场强度.html">方法 · 等分法、正交分解法</a>
+<a class="level-link" href="电场中常见的图像.html">方法 · 电场中常见的图像</a>
+<a class="level-link" href="非点电荷电场强度的计算.html">方法 · 非点电荷电场强度</a>
+<a class="level-link" href="带电粒子在电场中的类平抛运动.html">模型 · 类平抛运动</a>
+<a class="level-link active" href="库仑力作用下电荷的平衡及加速问题.html">模型 · 库仑力平衡与加速</a>
+<a class="level-link" href="两点电荷电场的特点.html">方法 · 两点电荷电场特点</a>
+</div></div>
+<div class="container" id="container">
+<div class="level active" id="lv-method">
+  <div class="level-head">
+    <span class="level-badge">模型专题 · 库仑力平衡与加速</span>
+    <h2>库仑力作用下电荷的平衡及加速问题</h2>
+  </div>
+  <p class="level-intro">当电荷在库仑力作用下处于平衡或沿直线加速时，常利用库仑定律、平衡条件或牛顿第二定律列式求解。本节重点分析同一直线上三个点电荷的平衡问题。</p>
+
+  <div class="formula-box">
+    <div class="ftitle">📘 核心工具</div>
+    <div class="formula-text">$$F=k\frac{Q_1Q_2}{r^2}$$</div>
+    <div class="formula-note">库仑力：同种电荷相斥，异种电荷相吸；方向沿两电荷连线。</div>
+  </div>
+
+  <div class="method-card">
+    <h2>一、同一直线上三个点电荷的平衡问题</h2>
+
+    <h3>例1：A、B 固定，求 C 的平衡位置</h3>
+    <p>如图所示，A、B 相距为 $r$，A 带 $+9Q$，B 带 $+4Q$。</p>
+    <figure>
+      <svg viewBox="0 0 520 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="70" x2="480" y2="70" stroke="#00a8e8" stroke-width="2" stroke-dasharray="8,6"/>
+  <circle cx="130" cy="70" r="22" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="118" y1="70" x2="142" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="130" y1="58" x2="130" y2="82" stroke="#333" stroke-width="2"/>
+  <text x="122" y="112" font-size="18" fill="#333">A</text>
+  <text x="118" y="132" font-size="16" fill="#333">9Q</text>
+  <circle cx="390" cy="70" r="22" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="378" y1="70" x2="402" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="390" y1="58" x2="390" y2="82" stroke="#333" stroke-width="2"/>
+  <text x="382" y="112" font-size="18" fill="#333">B</text>
+  <text x="378" y="132" font-size="16" fill="#333">4Q</text>
+  <text x="245" y="50" font-size="16" fill="#333">r</text>
+  <line x1="130" y1="40" x2="390" y2="40" stroke="#333" stroke-width="1" marker-end="url(#ar1)" marker-start="url(#ar1s)"/>
+  <defs>
+    <marker id="ar1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker>
+    <marker id="ar1s" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M9,0 L9,6 L0,3 z" fill="#333"/></marker>
+  </defs>
+</svg>
+      <figcaption>A 带 +9Q，B 带 +4Q，相距 r</figcaption>
+    </figure>
+    <ul>
+      <li><strong>问题(1)</strong>：若 A、B 固定，如何放置电荷量为 $q$ 的正点电荷 C，使其平衡？
+        <br>设 C 距 A 为 $x$，距 B 为 $r+x$（在 A 左侧），由 $k\dfrac{9Qq}{x^2}=k\dfrac{4Qq}{(r+x)^2}$ 得 $\dfrac{3}{x}=\dfrac{2}{r+x}$，解得 $x=3r$。
+        <br><strong>结论</strong>：C 应放在 A 左侧 $3r$ 处。若把 C 换成等量负电荷 $C'$，库仑力方向同时反向，平衡位置不变。
+      </li>
+      <li><strong>问题(2)</strong>：若 A、B 自由，如何放置第三个点电荷 D，使系统平衡？
+        <br>由“两同夹异、两大夹小、近小远大”可知，D 应放在 A、B 之间，且为负电荷，靠近电荷量较小的 B。设 D 距 B 为 $x$，距 A 为 $r-x$，对 D 列平衡方程可求出 $x$ 与电荷量大小。
+      </li>
+    </ul>
+
+    <h3>例2：A、B 带异种电荷，求 E 的平衡位置</h3>
+    <p>如图所示，A 带 $+9Q$，B 带 $-4Q$，相距为 $r$。</p>
+    <figure>
+      <svg viewBox="0 0 520 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="70" x2="480" y2="70" stroke="#555" stroke-width="2" stroke-dasharray="8,6"/>
+  <circle cx="130" cy="70" r="22" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="118" y1="70" x2="142" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="130" y1="58" x2="130" y2="82" stroke="#333" stroke-width="2"/>
+  <text x="122" y="112" font-size="18" fill="#333">A</text>
+  <text x="112" y="132" font-size="16" fill="#333">+9Q</text>
+  <circle cx="390" cy="70" r="22" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="378" y1="70" x2="402" y2="70" stroke="#333" stroke-width="2"/>
+  <text x="382" y="112" font-size="18" fill="#333">B</text>
+  <text x="374" y="132" font-size="16" fill="#333">-4Q</text>
+  <text x="245" y="50" font-size="16" fill="#333">r</text>
+  <line x1="130" y1="40" x2="390" y2="40" stroke="#333" stroke-width="1" marker-end="url(#ar2)" marker-start="url(#ar2s)"/>
+  <defs>
+    <marker id="ar2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker>
+    <marker id="ar2s" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M9,0 L9,6 L0,3 z" fill="#333"/></marker>
+  </defs>
+</svg>
+      <figcaption>A 带 +9Q，B 带 -4Q，相距 r</figcaption>
+    </figure>
+    <ul>
+      <li><strong>问题(3)</strong>：若 A、B 自由，放置第三个点电荷 E，使系统平衡。
+        <br>由“两同夹异”可知，E 应与 A 同号、与 B 异号，且放在 B 的外侧（因为 $|Q_A|>|Q_B|$）。设 E 在 B 右侧距 B 为 $x$，对 E 或 B 列平衡方程即可求出 $x$ 与 $E$ 的电荷量大小。
+      </li>
+    </ul>
+  </div>
+
+  <div class="method-card">
+    <h2>二、两类平衡问题对比</h2>
+    <h3>1. 两个电荷固定，第三个电荷平衡</h3>
+    <p>只需确定第三个电荷的<strong>位置</strong>即可，对其<strong>电性</strong>和<strong>电荷量</strong>没有要求。</p>
+    <h3>2. 三个自由电荷的平衡</h3>
+    <figure>
+      <svg viewBox="0 0 520 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="70" x2="480" y2="70" stroke="#00a8e8" stroke-width="2" stroke-dasharray="8,6"/>
+  <circle cx="100" cy="70" r="20" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="90" y1="70" x2="110" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="100" y1="60" x2="100" y2="80" stroke="#333" stroke-width="2"/>
+  <text x="90" y="110" font-size="16" fill="#333">+Q</text>
+  <circle cx="260" cy="70" r="16" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="252" y1="70" x2="268" y2="70" stroke="#333" stroke-width="2"/>
+  <text x="248" y="110" font-size="16" fill="#333">-q</text>
+  <circle cx="420" cy="70" r="20" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="410" y1="70" x2="430" y2="70" stroke="#333" stroke-width="2"/>
+  <line x1="420" y1="60" x2="420" y2="80" stroke="#333" stroke-width="2"/>
+  <text x="410" y="110" font-size="16" fill="#333">+Q</text>
+</svg>
+      <figcaption>三自由电荷平衡模型：两同夹异、两大夹小</figcaption>
+    </figure>
+    <p>由三个自由电荷组成的系统，仅靠彼此间静电作用处于平衡状态时，满足以下关系：</p>
+    <ul>
+      <li><span class="rule">三点共线</span>：三个点电荷分布在同一条直线上。</li>
+      <li><span class="rule">两同夹异</span>：正、负电荷相互间隔，两侧电荷同号，中间电荷异号。</li>
+      <li><span class="rule">两大夹小</span>：中间电荷的电荷量最小。</li>
+      <li><span class="rule">近小远大</span>：中间电荷靠近电荷量较小的电荷。</li>
+    </ul>
+  </div>
+
+  <div class="method-card">
+    <h2>三、三自由电荷平衡的列方程技巧</h2>
+    <div class="conclusion">
+      <strong>提示</strong>：对每个电荷列平衡方程 $\sum F=0$。由于三电荷整体满足平衡时，任选其中两个电荷列方程即可；但不同选取方式计算难度不同，通常优先对中间电荷或电量较小的电荷列式。
+    </div>
+  </div>
+
+  <div class="method-card" style="border-left-color:#27ae60;">
+    <h2>四、库仑力作用下的加速问题</h2>
+    <p>当电荷所受库仑力不为零且合力方向与初速度方向共线时，电荷做直线加速运动。由牛顿第二定律：</p>
+    <div class="formula-box">
+      <div class="formula-text">$$F=k\frac{Qq}{r^2}=ma$$</div>
+      <div class="formula-note">加速度大小：$a=k\dfrac{Qq}{mr^2}$，方向由库仑力方向决定。</div>
+    </div>
+    <ul>
+      <li>若合力方向与初速度方向相同，电荷做加速运动；</li>
+      <li>若合力方向与初速度方向相反，电荷做减速运动；</li>
+      <li>距离变化时，库仑力随之变化，加速度不是常量，需用能量或微积分处理。</li>
+    </ul>
+  </div>
+
+  <div class="method-card" style="border-left-color:#8e44ad;">
+    <h2>📝 解题步骤总结</h2>
+    <ul>
+      <li><strong>平衡问题</strong>：受力分析 → 用库仑定律写分力 → 列 $F_{合}=0$ → 解位置、电量。</li>
+      <li><strong>三自由电荷</strong>：先用“两同夹异、两大夹小、近小远大”定性判断电性与大概位置，再定量列方程。</li>
+      <li><strong>加速问题</strong>：确定合力方向 → 用 $F=ma$ 求瞬时加速度，或用动能定理求速度变化。</li>
+    </ul>
+  </div>
+
+  <div class="level-actions"><a class="btn" href="带电粒子在电场中的类平抛运动.html">← 上一关</a><span id="status15"></span><a class="btn btn-next" href="两点电荷电场的特点.html">下一关 →</a></div>
+</div>
+</div>
+<div class="footer">📚 高考物理静电场专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！</div>
+</body>
+</html>

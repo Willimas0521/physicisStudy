@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 验证动量守恒定律</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 8 关 · 共 9 关</span>
+  </div>
+  <h1>验证动量守恒定律</h1>
+  <div class="tag">碰撞 · 一维</div>
+  <div class="imgbox"><img src="../力学实验_images/momentum_collision.png" alt=""><div class="imgcap">验证动量守恒定律装置（一维碰撞）</div></div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>核心原理：</b>系统不受外力或合外力为零时，总动量守恒：<b>m₁v₁+m₂v₂ = m₁v₁′+m₂v₂′</b>。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>气垫导轨法：</b>用光电门测碰前碰后速度，验证 m₁v₁+m₂v₂=m₁v₁′+m₂v₂′。<br><hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>平抛法（传统）：</b>两小球从同一高度飞出做平抛，水平位移 x∝v，故用 <b>m₁x₁=m₁x₁′+m₂x₂′</b> 验证（无需测速度与时间）。<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>平抛法关键条件（常考点）：</b>① 斜槽末端<b>水平</b>（保证水平初速）；② 入射球 m<sub>a</sub> <b>&gt;</b> 被碰球 m<sub>b</sub>——保证碰后入射球仍向前运动（v<sub>a</sub> &gt; 0，<b>不反弹</b>），且被碰球速度更大（v<sub>b</sub> &gt; v<sub>a</sub>，<b>避免二次碰撞</b>）；③ 两球<b>半径相同</b>——保证碰后都在同一高度做平抛（时间 t 相同）才能用 x 代替 v。</div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <div class="imgbox"><img src="../力学实验_images/momentum_horizontal_2024.png" alt=""><div class="imgcap">图 8-2（2024·新疆河南真题）平抛法验证动量守恒：a 从 Q 静止释放，碰后 a、b 均做平抛落点为 M、N，未碰落点为 P</div></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（2024·甘肃）气垫导轨上两滑块质量 m₁、m₂，碰前速度 v₁、v₂（相向），碰后 v₁′、v₂′。请写出动量守恒验证式，并说明为何导轨需调水平。</p><p class='ans'>答案：m₁v₁+m₂v₂=m₁v₁′+m₂v₂′（注意方向取正负）；导轨调水平是为避免重力沿斜面分力作为外力，保证水平方向合外力近似为零，动量守恒成立。</p><p>（2024·新疆河南·高考真题）28．某同学用如图 8-2 所示装置验证动量守恒定律：将斜槽固定在水平桌面，末端水平，末端在木板上垂直投影 O；木板上叠放白纸+复写纸。先把 a 球从斜槽上 Q 处静止释放，从末端水平飞出落在木板，重复多次测落点平均位置 P 距 O 为 x<sub>P</sub>；再将半径与 a 相同的 b 球置于斜槽右端，将 a 球从 Q 释放，两球碰撞后均落在木板，重复多次测得 a、b 落点 M、N 距 O 分别为 x<sub>M</sub>、x<sub>N</sub>。请完成：</p>
+<p>（1）实验中须满足 m<sub>a</sub> ____ m<sub>b</sub>（填 "&gt;" 或 "&lt;"）；</p>
+<p>（2）若 x<sub>P</sub>、x<sub>M</sub>、x<sub>N</sub>、m<sub>a</sub>、m<sub>b</sub> 满足关系式 _______ 即验证动量守恒；用落点距离代替速度，依据是 _______。</p>
+<p class='ans'>答案：（1）<b>m<sub>a</sub> &gt; m<sub>b</sub></b>（保证碰后 a 不反弹、b 不追上 a 发生二次碰撞）；（2）关系式 <b>m<sub>a</sub>·x<sub>P</sub> = m<sub>a</sub>·x<sub>M</sub> + m<sub>b</sub>·x<sub>N</sub></b>；依据：两球离开斜槽后做平抛运动，下落高度相同→时间 t 相同，水平方向匀速运动，故水平位移与初速度成正比（x = v·t）。</p></div>
+  <div class="nav">
+    <a class="prev" href="07_探究动能定理.html">← 探究动能定理</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="09_用单摆测量重力加速度.html">用单摆测量重力加速度 →</a>
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "一维碰撞中动量守恒的条件是？", "o": ["机械能守恒", "系统所受合外力为零（或外力远小于内力）", "质量相等", "速度相反"], "a": 1, "e": "系统不受外力或合外力为零（如气垫导轨近似无摩擦、水平方向合外力为零）时总动量守恒。"}, {"q": "用平抛法验证动量守恒，用水平位移 x 代替速度的依据是？", "o": ["x 与 v 成反比", "平抛时间相同，x∝v", "x 与质量无关", "x 等于速度"], "a": 1, "e": "两球从同高度平抛，飞行时间 t 相同，故 x=vt ∝ v，可用 mx 代替 mv 验证。"}, {"q": "气垫导轨上用光电门测速，若挡光片宽 d、挡光时间 Δt，则速度 v≈？", "o": ["d·Δt", "d/Δt", "Δt/d", "2d/Δt"], "a": 1, "e": "极短时间内的平均速度近似瞬时速度：v≈d/Δt。"}, {"q": "平抛法验证动量守恒：入射球 a 与被碰球 b 半径相同，为保证碰后 a 球不反弹、且 b 球不追上 a 球再次碰撞，实验中须满足 m_a ____ m_b。", "o": [">", "<", "=", "不确定"], "a": 0, "e": "碰后 a 球必须仍向前运动（v<sub>a<\/sub> &gt; 0）→ 由动量守恒 m<sub>a<\/sub>v<sub>0<\/sub> = m<sub>a<\/sub>v<sub>a<\/sub> + m<sub>b<\/sub>v<sub>b<\/sub>，若 m<sub>a<\/sub> &lt; m<sub>b<\/sub> 可能使 v<sub>a<\/sub> ≤ 0（反弹）甚至被推回斜槽。同时 m<sub>a<\/sub> &gt; m<sub>b<\/sub> 时碰后 v<sub>b<\/sub> &gt; v<sub>a<\/sub>，保证被碰球在前、入射球在后，<b>不会发生二次碰撞<\/b>。故选 A（&gt;）。"}, {"q": "如图 8-2 装置，未碰时 a 球落点 P，碰后 a 球落点 M，b 球落点 N（球心落在木板上）；则在实验误差范围内验证动量守恒的关系式为？", "o": ["m_a·x_P = m_a·x_M + m_b·x_N", "m_a·x_P = m_a·x_N + m_b·x_M", "m_b·x_P = m_a·x_M + m_b·x_N", "m_a·x_P = (m_a + m_b)·x_M"], "a": 0, "e": "三球离开斜槽末端的高度相同，<b>下落时间 t 相同<\/b>，水平方向匀速：<br>· 未碰时 a：v<sub>0<\/sub> = x<sub>P<\/sub>/t<br>· 碰后 a：v<sub>a<\/sub> = x<sub>M<\/sub>/t<br>· 碰后 b：v<sub>b<\/sub> = x<sub>N<\/sub>/t<br>代入 m<sub>a<\/sub>v<sub>0<\/sub> = m<sub>a<\/sub>v<sub>a<\/sub> + m<sub>b<\/sub>v<sub>b<\/sub> 得 <b>m<sub>a<\/sub>·x<sub>P<\/sub> = m<sub>a<\/sub>·x<sub>M<\/sub> + m<sub>b<\/sub>·x<sub>N<\/sub><\/b>，选 A（注意：碰后 a 球落点 M 离 O 最近、未碰的 P 在中间、碰后 b 的 N 最远，<b>不是球心半径<\/b>而是<b>球落地点<\/b>距离）。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

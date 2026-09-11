@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动学闯关 · 斜面上的平抛运动</title>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\(', '\)']], displayMath: [['$$', '$$'], ['\[', '\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav a {
+            display: flex; align-items: center; gap: 8px;
+            width: 100%; text-align: left; text-decoration: none;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s;
+        }
+        .level-nav a::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav a:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav a.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav a.active::before { background: #ff6a00; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5;
+        }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .section-title { color: #1e3c72; font-size: 1.35em; margin: 28px 0 10px; font-weight: 700; }
+        .scene-svg { width: 100%; max-width: 420px; height: auto; display: block; margin: 12px auto; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav a { width: auto; flex: 1; min-width: 84px; white-space: nowrap; }
+            .level-nav a::before { display: none; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏃 高考物理 · 运动学闯关</h1>
+    <p>直线运动 &amp; 曲线运动 · 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 本关闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">1</span> &nbsp;|&nbsp; 已答 <b id="doneVal">0</b> 题</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 知识点导航</div>
+            <div class="level-nav">
+            <a class="level-link" href="运动的描述.html">运动的描述</a>
+            <a class="level-link" href="匀变速直线运动基本公式.html">匀变速直线运动基本公式</a>
+            <a class="level-link" href="自由落体与竖直上抛.html">自由落体与竖直上抛</a>
+            <a class="level-link" href="匀变速推论与图像.html">匀变速推论与图像</a>
+            <a class="level-link" href="追及与相遇.html">追及与相遇</a>
+            <a class="level-link" href="曲线运动基础.html">曲线运动基础</a>
+            <a class="level-link" href="平抛运动.html">平抛运动</a>
+            <a class="level-link" href="斜抛运动.html">斜抛运动</a>
+            <a class="level-link" href="圆周运动.html">圆周运动</a>
+            <a class="level-link" href="圆周运动临界问题.html">圆周运动临界问题</a>
+            <a class="level-link" href="关联速度分解.html">关联速度分解</a>
+            <a class="level-link" href="接触物类.html">接触物类</a>
+            <a class="level-link active" href="斜面上的平抛运动.html">斜面上的平抛运动</a>
+            <a class="level-link" href="弹簧与木块分离问题.html">弹簧与木块分离问题</a>
+            <a class="level-link" href="竖直平面内的圆周运动.html">竖直平面内的圆周运动</a>
+            <a class="level-link" href="水平面内圆周运动的临界问题.html">水平面内圆周运动的临界问题</a>
+            <a class="level-link" href="斜面内圆周运动的临界问题.html">斜面内圆周运动的临界问题</a>
+            <a class="level-link" href="变力做功.html">变力做功</a>
+        </div>
+</div>
+
+<div class="container" id="container">
+    <div class="level active" id="lvSlopeProj">
+        <div class="level-head">
+            <span class="level-badge">曲线运动 · 方法</span>
+            <h2>斜面上的平抛运动</h2>
+        </div>
+        <p class="level-intro">平抛与斜面结合的高考高频题型：关键看题目给的是速度条件还是位移条件，再决定分解谁。</p>
+
+        <div class="formula-box">
+            <div class="ftitle">📘 核心思想</div>
+            <div class="formula">速度条件 → 分解速度；位移条件 → 分解位移</div>
+            <div class="formula-note">无论哪种，都先把平抛运动拆成水平匀速 $x=v_0t$ 和竖直自由落体 $y=\frac12gt^2$，再利用斜面倾角建立几何关系。</div>
+        </div>
+
+        <div class="section-title">一、若已知平抛运动的速度</div>
+        <p class="level-intro">解题方法：<b>速度的合成与分解</b>。</p>
+
+        <div class="formula-box">
+            <div class="ftitle">1️⃣ 垂直打到斜面上</div>
+            <svg class="scene-svg" viewBox="0 0 360 220" aria-label="垂直打到斜面上的速度分解">
+                <defs>
+                    <marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                    <marker id="a2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#2e7d32"/>
+                    </marker>
+                </defs>
+                <polygon points="40,190 300,60 300,190" fill="#e3f2fd" stroke="none"/>
+                <line x1="40" y1="190" x2="300" y2="60" stroke="#1e3c72" stroke-width="2"/>
+                <line x1="40" y1="190" x2="300" y2="190" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <path d="M70,190 A30,30 0 0,0 95,169" fill="none" stroke="#e53935" stroke-width="2"/>
+                <text x="78" y="185" font-size="16" fill="#e53935">θ</text>
+                <circle cx="80" cy="95" r="5" fill="white" stroke="#1e3c72" stroke-width="2"/>
+                <path d="M80,95 Q160,95 210,109" fill="none" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="5,4"/>
+                <line x1="80" y1="95" x2="130" y2="95" stroke="#1e3c72" stroke-width="2" marker-end="url(#a1)"/>
+                <text x="100" y="85" font-size="14" fill="#1e3c72">v₀</text>
+                <line x1="210" y1="109" x2="253" y2="109" stroke="#1e3c72" stroke-width="2" stroke-dasharray="4,3"/>
+                <line x1="253" y1="109" x2="253" y2="180" stroke="#1e3c72" stroke-width="2" stroke-dasharray="4,3"/>
+                <line x1="210" y1="109" x2="253" y2="180" stroke="#1e3c72" stroke-width="2.5" marker-end="url(#a1)"/>
+                <text x="225" y="100" font-size="14" fill="#1e3c72">v_x</text>
+                <text x="262" y="150" font-size="14" fill="#1e3c72">v_y</text>
+                <text x="220" y="160" font-size="15" fill="#1e3c72" font-weight="700">v</text>
+                <path d="M210,109 A22,22 0 0,0 225,130" fill="none" stroke="#e53935" stroke-width="1.5"/>
+                <text x="218" y="125" font-size="13" fill="#e53935">θ</text>
+            </svg>
+            <div class="formula">$v_x = v_0,\quad v_y = gt$</div>
+            <div class="formula">合速度大小 $v = \sqrt{v_0^2+(gt)^2}$；方向：$\tan\theta = \dfrac{v_x}{v_y} = \dfrac{v_0}{gt}$</div>
+            <div class="formula-note">速度垂直斜面，因此合速度与竖直方向夹角为斜面倾角 θ。</div>
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">2️⃣ 无碰撞进入斜面轨道</div>
+            <svg class="scene-svg" viewBox="0 0 360 220" aria-label="无碰撞进入斜面轨道的速度分解">
+                <defs>
+                    <marker id="b1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#1e3c72"/>
+                    </marker>
+                </defs>
+                <polygon points="40,190 300,60 300,190" fill="#e3f2fd" stroke="none"/>
+                <line x1="40" y1="190" x2="300" y2="60" stroke="#1e3c72" stroke-width="2"/>
+                <line x1="40" y1="190" x2="300" y2="190" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <path d="M70,190 A30,30 0 0,0 95,169" fill="none" stroke="#e53935" stroke-width="2"/>
+                <text x="78" y="185" font-size="16" fill="#e53925">α</text>
+                <circle cx="85" cy="80" r="5" fill="white" stroke="#1e3c72" stroke-width="2"/>
+                <path d="M85,80 Q160,80 195,103" fill="none" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="5,4"/>
+                <line x1="85" y1="80" x2="135" y2="80" stroke="#1e3c72" stroke-width="2" marker-end="url(#b1)"/>
+                <text x="105" y="70" font-size="14" fill="#1e3c72">v₀</text>
+                <line x1="195" y1="103" x2="260" y2="103" stroke="#1e3c72" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#b1)"/>
+                <line x1="260" y1="103" x2="260" y2="155" stroke="#1e3c72" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#b1)"/>
+                <line x1="195" y1="103" x2="260" y2="155" stroke="#1e3c72" stroke-width="2.5" marker-end="url(#b1)"/>
+                <text x="220" y="95" font-size="14" fill="#1e3c72">v_x</text>
+                <text x="268" y="135" font-size="14" fill="#1e3c72">v_y</text>
+                <text x="220" y="145" font-size="15" fill="#1e3c72" font-weight="700">v</text>
+                <path d="M195,103 A22,22 0 0,0 212,116" fill="none" stroke="#e53935" stroke-width="1.5"/>
+                <text x="205" y="116" font-size="13" fill="#e53935">α</text>
+            </svg>
+            <div class="formula">$v_x = v_0,\quad v_y = gt$</div>
+            <div class="formula">合速度大小 $v = \sqrt{v_0^2+(gt)^2}$；方向：$\tan\alpha = \dfrac{v_y}{v_x} = \dfrac{gt}{v_0}$</div>
+            <div class="formula-note">速度方向沿斜面，因此合速度与水平方向夹角等于斜面倾角 α。</div>
+        </div>
+
+        <div class="section-title">二、若已知平抛运动的位移</div>
+        <p class="level-intro">解题方法：<b>位移的合成与分解</b>。</p>
+
+        <div class="formula-box">
+            <div class="ftitle">3️⃣ 从斜面抛出又落回斜面</div>
+            <svg class="scene-svg" viewBox="0 0 360 220" aria-label="从斜面抛出落回斜面的位移分解">
+                <defs>
+                    <marker id="c1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#2e7d32"/>
+                    </marker>
+                </defs>
+                <polygon points="40,190 300,60 300,190" fill="#e3f2fd" stroke="none"/>
+                <line x1="40" y1="190" x2="300" y2="60" stroke="#1e3c72" stroke-width="2"/>
+                <line x1="40" y1="190" x2="300" y2="190" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <path d="M70,190 A30,30 0 0,0 95,169" fill="none" stroke="#e53935" stroke-width="2"/>
+                <text x="78" y="185" font-size="16" fill="#e53935">θ</text>
+                <circle cx="300" cy="60" r="5" fill="white" stroke="#1e3c72" stroke-width="2"/>
+                <path d="M300,60 Q230,60 170,120" fill="none" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="5,4"/>
+                <line x1="300" y1="60" x2="170" y2="120" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#c1)"/>
+                <line x1="300" y1="60" x2="170" y2="60" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#c1)"/>
+                <line x1="170" y1="60" x2="170" y2="120" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#c1)"/>
+                <text x="225" y="52" font-size="14" fill="#2e7d32">x</text>
+                <text x="152" y="95" font-size="14" fill="#2e7d32">y</text>
+                <text x="210" y="100" font-size="15" fill="#2e7d32" font-weight="700">s</text>
+                <path d="M280,60 A20,20 0 0,1 270,77" fill="none" stroke="#e53935" stroke-width="1.5"/>
+                <text x="275" y="78" font-size="13" fill="#e53935">θ</text>
+            </svg>
+            <div class="formula">$x = v_0t,\quad y = \dfrac12gt^2$</div>
+            <div class="formula">合位移大小 $s = \sqrt{x^2+y^2}$；方向：$\tan\theta = \dfrac{y}{x} = \dfrac{gt}{2v_0}$</div>
+            <div class="formula-note">落点仍在斜面上，所以合位移方向沿斜面向下，与水平方向夹角为 θ。</div>
+        </div>
+
+        <div class="formula-box">
+            <div class="ftitle">4️⃣ 对着斜面水平抛出，落在斜面上位移最小</div>
+            <svg class="scene-svg" viewBox="0 0 360 220" aria-label="对着斜面抛出且位移最小的位移分解">
+                <defs>
+                    <marker id="d1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L7,3 z" fill="#2e7d32"/>
+                    </marker>
+                </defs>
+                <polygon points="180,190 300,70 300,190" fill="#e3f2fd" stroke="none"/>
+                <line x1="180" y1="190" x2="300" y2="70" stroke="#1e3c72" stroke-width="2"/>
+                <line x1="180" y1="190" x2="300" y2="190" stroke="#90a4ae" stroke-width="1" stroke-dasharray="4,3"/>
+                <path d="M210,190 A30,30 0 0,0 235,169" fill="none" stroke="#e53935" stroke-width="2"/>
+                <text x="218" y="185" font-size="16" fill="#e53935">θ</text>
+                <circle cx="60" cy="80" r="5" fill="white" stroke="#1e3c72" stroke-width="2"/>
+                <path d="M60,80 Q130,80 180,200" fill="none" stroke="#7f8c8d" stroke-width="1.5" stroke-dasharray="5,4"/>
+                <line x1="60" y1="80" x2="180" y2="200" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#d1)"/>
+                <line x1="60" y1="80" x2="180" y2="80" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#d1)"/>
+                <line x1="180" y1="80" x2="180" y2="200" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#d1)"/>
+                <text x="110" y="72" font-size="14" fill="#2e7d32">x</text>
+                <text x="190" y="145" font-size="14" fill="#2e7d32">y</text>
+                <text x="100" y="150" font-size="15" fill="#2e7d32" font-weight="700">s</text>
+                <line x1="180" y1="200" x2="200" y2="180" stroke="#e53925" stroke-width="1.5"/>
+                <line x1="180" y1="200" x2="192" y2="212" stroke="#e53925" stroke-width="1.5"/>
+                <path d="M170,200 A20,20 0 0,0 185,185" fill="none" stroke="#e53935" stroke-width="1.5"/>
+                <text x="158" y="195" font-size="13" fill="#e53935">θ</text>
+            </svg>
+            <div class="formula">$x = v_0t,\quad y = \dfrac12gt^2$</div>
+            <div class="formula">合位移大小 $s = \sqrt{x^2+y^2}$；方向：$\tan\theta = \dfrac{x}{y} = \dfrac{2v_0}{gt}$</div>
+            <div class="formula-note">位移方向垂直斜面，因此合位移与竖直方向夹角为 θ。注意此时 $\tan\theta$ 是水平位移与竖直位移之比。</div>
+        </div>
+
+        <div class="challenge">
+            <span class="ctag">🎮 闯关挑战</span>
+            <div class="cq">小球从斜面顶端水平抛出后落回同一斜面，斜面倾角为 θ，则 tanθ 等于？</div>
+            <div class="opts" id="optsSP_0">
+                <div class="opt" data-i="SP_0" data-j="0"><span class="key">A</span><span>$\dfrac{gt}{v_0}$</span></div>
+                <div class="opt" data-i="SP_0" data-j="1"><span class="key">B</span><span>$\dfrac{gt}{2v_0}$</span></div>
+                <div class="opt" data-i="SP_0" data-j="2"><span class="key">C</span><span>$\dfrac{2v_0}{gt}$</span></div>
+                <div class="opt" data-i="SP_0" data-j="3"><span class="key">D</span><span>$\dfrac{v_0}{gt}$</span></div>
+            </div>
+            <button class="cbtn" id="btnSP_0">提交答案</button>
+            <div class="cresult" id="resSP_0"></div>
+            <div class="cexplain" id="expSP_0"><b>📝 解析：</b>落回斜面时，位移方向沿斜面，$\tan\theta = \dfrac{y}{x} = \dfrac{\frac12gt^2}{v_0t} = \dfrac{gt}{2v_0}$，故选 B。</div>
+        </div>
+
+        <div class="keymemo">🔑 <b>本关记忆要点：</b>斜面上的平抛 — 给速度条件画速度三角形，给位移条件画位移三角形；两个直角边始终是 $v_0$（或 $v_0t$）与 $gt$（或 $\frac12gt^2$），斜面倾角是联系合量与分量的桥梁。</div>
+        <div class="level-actions">
+            <a class="btn" href="接触物类.html">← 上一关</a>
+            <a class="btn" href="index.html">📑 目录</a>
+            <a class="btn btn-next" href="index.html">🏠 回到目录</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理运动学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+<script>
+let score = 0, done = 0;
+const total = 1;
+const ANS = { "SP_0": 1 };
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+let answered = {};
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const correct = ANS[cid];
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65 + correct);
+    }
+    done++;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('progFill').style.width = (done / total * 100) + '%';
+}
+</script>
+
+</body>
+</html>

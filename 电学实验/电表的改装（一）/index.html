@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电表的改装（一）· 专题首页</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="../mathjax/tex-svg.js"></script>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--purple:#7c5cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:24px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+h1{font-size:26px;text-align:center;margin-bottom:4px}
+.sub{text-align:center;color:var(--sub);font-size:13px;margin-bottom:20px}
+.know{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:18px;font-size:13.5px}
+.know b{color:var(--accent2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-decoration:none;color:var(--txt);transition:.2s;display:block}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 18px rgba(0,0,0,.12)}
+.card .ttl{font-size:15px;font-weight:700;margin:4px 0 6px}
+.card .tag{display:inline-block;font-size:11px;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 8px}
+.card .meta{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:12px;color:var(--sub)}
+.card .stars{letter-spacing:1px;color:#e0922e}
+.card .time{color:var(--accent2);font-weight:600}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 0}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar"><a href="../index.html">← 电学实验专题</a><a href="../高考物理_电学实验闯关.html">闯关总页 →</a></div>
+  <h1>🔧 电表的改装（一）</h1>
+  <div class="sub">电流表 / 电压表的改装 · 双量程设计 · 校准与误差分析</div>
+  <div class="know">
+    <b>本专题脉络：</b>表头 G（满偏电流 $I_g$、内阻 $R_g$、满偏电压 $U_g=I_gR_g$）→ 并联小电阻<b>分流</b>得大量程电流表（$R=\dfrac{R_g}{n-1}$）→ 串联大电阻<b>分压</b>得大量程电压表（$R=(n-1)R_g$）→ 双量程设计与校准误差。<br>
+    建议顺序：先 <b>模型学习</b> 打基础，再做 <b>基础巩固</b>（10 题），最后挑战 <b>拔高练习</b>（9 题）。
+  </div>
+  <div class="grid">
+    <a class="card" href="../01_认识表头G改装基础.html"><div class="no">讲义</div><div class="ttl">模型学习</div><div class="tag">改装原理 · 例题精析</div><div class="meta"><span class="stars">⭐</span><span class="time">约 25 分钟</span></div></a>
+    <a class="card" href="基础巩固.html"><div class="no">练习 1</div><div class="ttl">基础巩固</div><div class="tag">10 题 · 选择/填空</div><div class="meta"><span class="stars">⭐⭐</span><span class="time">约 50 分钟</span></div></a>
+    <a class="card" href="拔高练习.html"><div class="no">练习 2</div><div class="ttl">拔高练习</div><div class="tag">9 题 · 综合提升</div><div class="meta"><span class="stars">⭐⭐⭐</span><span class="time">约 55 分钟</span></div></a>
+  </div>
+  <div class="footer">电学实验 · 电表的改装（一）子专题</div>
+</div>
+<script src="../nav.js"></script>
+</body>
+</html>

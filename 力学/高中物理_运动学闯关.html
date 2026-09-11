@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 运动学闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        /* 进度条 */
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        /* 左侧竖版悬浮导航 */
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 9px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .level-nav button::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037; font-weight: 700;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active::before { background: #ff6a00; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done::before { background: #4caf50; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        /* 关卡卡片 */
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        /* 公式区 */
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+
+        /* 例题 */
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        /* 闯关答题 */
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        /* 通关弹窗 */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 84px; white-space: nowrap; }
+            .level-nav button::before { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🏃 高考物理 · 运动学闯关</h1>
+    <p>直线运动 &amp; 曲线运动 · 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<!-- 左侧竖版悬浮导航 -->
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 知识点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部运动学关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理运动学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+/* lv: 所属关卡序号(0起)  module: 所属模块 */
+const KNOW = {
+    // 直线运动
+    "desc":   { name: "运动的描述", lv: 0, module: "直线运动", desc: "位移/速度/加速度的定义与矢量性" },
+    "vform":  { name: "速度公式 v=v₀+at", lv: 1, module: "直线运动", desc: "不涉及位移时求速度或加速度的首选公式" },
+    "xform":  { name: "位移公式 x=v₀t+½at²", lv: 1, module: "直线运动", desc: "不涉及末速度时求位移" },
+    "vsform": { name: "速度—位移关系 v²−v₀²=2ax", lv: 1, module: "直线运动", desc: "不涉及时间时求位移/速度，高频" },
+    "vavg":   { name: "平均速度公式", lv: 1, module: "直线运动", desc: "匀变速中 v̄=(v₀+v)/2=x/t" },
+    "free":   { name: "自由落体", lv: 2, module: "直线运动", desc: "初速0、a=g 的匀加速" },
+    "throw":  { name: "竖直上抛", lv: 2, module: "直线运动", desc: "上升减速、下降自由落体，具对称性" },
+    "delta":  { name: "逐差公式 Δx=aT²", lv: 3, module: "直线运动", desc: "纸带问题求加速度的核心" },
+    "vmid":   { name: "中间时刻/位置速度", lv: 3, module: "直线运动", desc: "v_{t/2}=v̄；v_{x/2}=√[(v₀²+v²)/2]" },
+    "vtimg":  { name: "v–t 图像", lv: 3, module: "直线运动", desc: "斜率=加速度，面积=位移" },
+    "meet":   { name: "追及与相遇", lv: 4, module: "直线运动", desc: "位置相同即相遇；速度相等为距离极值临界" },
+    // 曲线运动
+    "curv":   { name: "曲线运动基础", lv: 5, module: "曲线运动", desc: "速度沿切线，合力指向凹侧" },
+    "proj":   { name: "平抛运动", lv: 6, module: "曲线运动", desc: "水平匀速+竖直自由落体的合成" },
+    "obliq":  { name: "斜抛运动", lv: 7, module: "曲线运动", desc: "斜抛的射程/射高/飞行时间" },
+    "circ":   { name: "圆周运动", lv: 8, module: "曲线运动", desc: "线/角速度、向心加速度与向心力" },
+    "crit":   { name: "圆周临界问题", lv: 9, module: "曲线运动", desc: "轻绳/轻杆/凸桥的临界速度" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+    /* ---------- 直线运动 ---------- */
+    {
+        badge: "直线运动 · 考点01",
+        title: "运动的描述",
+        intro: "一切运动学分析的基础：位移、速度、加速度。先记住这三个核心物理量的定义与公式。",
+        formulas: [
+            { t: "📏 位移与路程", f: "$$\\Delta x = x_2 - x_1$$", note: "位移是矢量（有方向），路程是标量（路径长度）。单向直线运动中二者大小相等。" },
+            { t: "⚡ 平均速度", f: "$$\\bar v = \\dfrac{\\Delta x}{\\Delta t}$$", note: "对应位移与时间的比值，是矢量。" },
+            { t: "🚀 加速度", f: "$$a = \\dfrac{\\Delta v}{\\Delta t} = \\dfrac{v - v_0}{t}$$", note: "加速度描述速度变化的快慢，方向与速度变化量 Δv 相同。a 与 v 同向则加速，反向则减速。" }
+        ],
+        example: {
+            q: "一物体从静止开始做匀加速直线运动，5 s 内速度达到 10 m/s，求加速度大小。",
+            steps: [
+                "已知：v₀ = 0，v = 10 m/s，t = 5 s",
+                "由 $a = (v - v_0)/t$ 得：",
+                "$a = (10 - 0)/5 = 2\\ \\text{m/s}^2$"
+            ]
+        },
+        challenge: {
+            q: "关于加速度，下列说法正确的是？",
+            opts: [
+                "加速度大的物体，速度一定大",
+                "加速度为零时，速度一定为零",
+                "加速度方向与速度变化量 Δv 方向相同",
+                "速度增大，加速度一定也增大"
+            ],
+            answer: 2,
+            explain: "加速度描述速度变化的快慢，方向与 Δv 相同。加速度大只说明速度变化快，不代表速度大（如刚发射的火箭）；加速度为零时物体可能匀速运动（速度不为零）；速度增大只要求 a 与 v 同向，a 本身可大可小甚至减小。"
+        }
+    },
+    {
+        badge: "直线运动 · 考点02",
+        title: "匀变速直线运动基本公式",
+        intro: "高考最常考的核心公式组，必须熟记并能灵活选用。",
+        formulas: [
+            { t: "📐 速度公式", f: "$$v = v_0 + at$$", note: "不涉及位移时使用。" },
+            { t: "📐 位移公式", f: "$$x = v_0 t + \\dfrac{1}{2}at^2$$", note: "不涉及末速度时使用。" },
+            { t: "📐 速度—位移关系", f: "$$v^2 - v_0^2 = 2ax$$", note: "不涉及时间时使用，极为重要！" },
+            { t: "📐 平均速度（匀变速）", f: "$$\\bar v = \\dfrac{v_0 + v}{2} = \\dfrac{x}{t}$$", note: "匀变速直线运动才成立，可快速求位移 $x = \\bar v \\, t$。" }
+        ],
+        example: {
+            q: "汽车以 20 m/s 行驶，刹车后以 4 m/s² 的加速度匀减速，求刹车后 6 s 内的位移。",
+            steps: [
+                "先求停止时间：$t_{停} = v_0/a = 20/4 = 5\\ \\text{s}$（6 s 时已停止）",
+                "用速度—位移公式：$0^2 - 20^2 = 2(-4)x$",
+                "得 $x = 400/8 = 50\\ \\text{m}$",
+                "⚠ 注意：不能直接代 t=6 s，否则会得到负值（车已停下不会倒退）"
+            ]
+        },
+        challenges: [
+            {
+                q: "一物体做匀加速直线运动，初速 2 m/s，加速度 1 m/s²，第 4 s 末的速度是？",
+                opts: ["4 m/s", "5 m/s", "6 m/s", "8 m/s"],
+                answer: 2,
+                explain: "由 $v = v_0 + at = 2 + 1×4 = 6\\ \\text{m/s}$。"
+            },
+            {
+                exam: true,
+                q: "（2025·江苏·高考真题）新能源汽车在辅助驾驶系统测试时，感应到前方有障碍物立刻制动，做匀减速直线运动。2 s 内速度由 20 m/s 减至 0。该过程中加速度大小为（　　）",
+                opts: ["2 m/s²", "5 m/s²", "10 m/s²", "20 m/s²"],
+                answer: 2,
+                explain: "根据运动学公式 $a = (v - v_0)/t$，代入数值：$a = (0 - 20)/2 = -10\\ \\text{m/s}^2$，加速度大小为 $10\\ \\text{m/s}^2$。故选 C。",
+                points: [
+                    { step: "识别运动性质：制动过程为匀减速直线运动（加速度恒定、与速度反向）", k: "desc" },
+                    { step: "提取已知量：v₀ = 20 m/s，v = 0，t = 2 s", k: "desc" },
+                    { step: "选用速度公式 v = v₀ + at 求加速度", k: "vform" },
+                    { step: "计算 a = (0−20)/2 = −10，再取大小 10 m/s²", k: "vform" }
+                ]
+            }
+        ]
+    },
+    {
+        badge: "直线运动 · 考点03",
+        title: "自由落体与竖直上抛",
+        intro: "匀变速直线运动在重力场中的典型应用，取 g ≈ 9.8 m/s²（通常取 10 m/s²）。",
+        formulas: [
+            { t: "⬇ 自由落体", f: "$$v = gt,\\quad h = \\dfrac{1}{2}gt^2,\\quad v^2 = 2gh$$", note: "初速为 0，a = g 的匀加速运动。" },
+            { t: "⬆ 竖直上抛", f: "$$v = v_0 - gt,\\quad h = v_0 t - \\dfrac{1}{2}gt^2$$", note: "上升阶段 a = -g（减速），到最高点 v=0、t=v₀/g，下落阶段是自由落体。" },
+            { t: "🔁 对称性", f: "$$t_{上}=t_{下},\\quad v_{上}=-v_{下}$$", note: "同一高度处上升与下落速度大小相等、方向相反。" }
+        ],
+        example: {
+            q: "以 20 m/s 竖直上抛一球（g=10 m/s²），求上升的最大高度和回到抛出点的时间。",
+            steps: [
+                "最大高度：$h_{max} = v_0^2/(2g) = 400/20 = 20\\ \\text{m}$",
+                "上升时间：$t_{上} = v_0/g = 20/10 = 2\\ \\text{s}$",
+                "总往返时间：$t_{总} = 2t_{上} = 4\\ \\text{s}$"
+            ]
+        },
+        challenge: {
+            q: "从 45 m 高处自由落下的物体（g=10 m/s²），落地速度是？",
+            opts: ["20 m/s", "30 m/s", "40 m/s", "90 m/s"],
+            answer: 1,
+            explain: "由 $v^2 = 2gh = 2×10×45 = 900$，得 $v = 30\\ \\text{m/s}$。"
+        }
+    },
+    {
+        badge: "直线运动 · 考点04",
+        title: "匀变速推论与图像",
+        intro: "高考高频考点：连续相等时间内的位移差、中间时刻速度，以及 v–t 图像的面积含义。",
+        formulas: [
+            { t: "📊 逐差相等（ΔT 为时间间隔）", f: "$$\\Delta x = x_{n+1}-x_n = a\\Delta T^2$$", note: "打点计时器纸带问题的核心，常用来求加速度。" },
+            { t: "⏱ 中间时刻速度", f: "$$v_{\\frac{t}{2}} = \\dfrac{v_0+v}{2} = \\bar v$$", note: "匀变速中，中间时刻的瞬时速度等于整段时间的平均速度。" },
+            { t: "📈 中间位置速度", f: "$$v_{\\frac{x}{2}} = \\sqrt{\\dfrac{v_0^2+v^2}{2}}$$", note: "注意与中间时刻速度区分，且 $v_{x/2} > v_{t/2}$。" },
+            { t: "🖼 v–t 图像", f: "$$\\text{斜率}=a,\\quad \\text{面积}=x$$", note: "图像斜率表示加速度，图线与 t 轴围成面积表示位移（时间轴上方为正）。" }
+        ],
+        example: {
+            q: "纸带上相邻计数点时间间隔 T=0.1 s，测得 x₁=2.0 cm，x₂=2.6 cm，x₃=3.2 cm，求加速度。",
+            steps: [
+                "由逐差公式 $a = (x_3 - x_1)/(2T^2)$（隔项相减减小误差）",
+                "$a = (3.2 - 2.0)×10^{-2} / (2×0.1^2)$",
+                "$= 1.2×10^{-2}/0.02 = 0.6\\ \\text{m/s}^2$"
+            ]
+        },
+        challenge: {
+            q: "关于 v–t 图像，下列说法正确的是？",
+            opts: [
+                "图线斜率表示位移",
+                "图线与 t 轴围成的面积表示加速度",
+                "图线斜率表示加速度，面积表示位移",
+                "水平图线表示物体静止"
+            ],
+            answer: 2,
+            explain: "v–t 图像斜率 = 加速度，面积 = 位移。水平图线表示匀速（a=0）而非静止。"
+        }
+    },
+    {
+        badge: "直线运动 · 考点05",
+        title: "追及与相遇",
+        intro: "运动学的综合应用，关键是抓住『位置相同』这一条件，并用速度关系判断能否追上。",
+        formulas: [
+            { t: "🎯 相遇条件", f: "$$x_1(t) = x_2(t)$$", note: "两物体位置坐标相等时相遇。" },
+            { t: "🚦 追及临界", f: "$$v_{后}=v_{前}\\ \\text{时}\\ \\Delta x_{min/max}$$", note: "当后面物体速度小于前面时两者距离增大；相等时距离极值；之后后面更快则距离缩小。若临界时还未追上，则永远追不上。" },
+            { t: "⏳ 避撞条件", f: "$$v_{后}^2 \\le v_{前}^2 + 2a\\Delta x_0$$", note: "匀减速追匀速的临界：速度相等时恰好不相撞。" }
+        ],
+        example: {
+            q: "A 车以 10 m/s 匀速，B 车在 A 后 20 m 处以 2 m/s² 从静止加速追 A，能否追上？若能，何时？",
+            steps: [
+                "设 t 秒追上：$x_B = \\frac12·2·t^2 = t^2$，$x_A = 20 + 10t$",
+                "令 $t^2 = 20 + 10t$ → $t^2 - 10t - 20 = 0$",
+                "解得 $t = 5 + \\sqrt{45} ≈ 11.7\\ \\text{s}$（舍负根）",
+                "故能追上，约在 11.7 s 时。"
+            ]
+        },
+        challenge: {
+            q: "后车匀加速追前车（前车匀速），当两车速度相等时仍未追上，则之后会？",
+            opts: [
+                "一定能追上",
+                "永远追不上",
+                "立即相遇",
+                "前车会被反超"
+            ],
+            answer: 0,
+            explain: "后车加速追匀速前车：速度相等时是两车距离达到最大的临界点。此时若还没追上，之后后车速度更大，距离开始缩小，因此最终一定能追上。『永远追不上』的情形出现在匀减速追匀速（后车速度越来越小），本题是加速追，故一定能追上。"
+        }
+    },
+
+    /* ---------- 曲线运动 ---------- */
+    {
+        badge: "曲线运动 · 考点06",
+        title: "曲线运动基础",
+        intro: "曲线运动的速度方向沿轨迹切线，合力（加速度）指向曲线凹侧。",
+        formulas: [
+            { t: "🎯 速度方向", f: "\\text{速度沿轨迹的切线方向}", note: "曲线运动中速度方向时刻改变，所以曲线运动一定是变速运动（有加速度）。" },
+            { t: "➡ 受力条件", f: "F_{\\text{合}} \\text{ 与 } v \\text{ 不共线}", note: "当合力与速度不在同一直线时，物体做曲线运动，合力指向轨迹弯曲的凹侧。" },
+            { t: "🧩 运动分解", f: "x,y\\ \\text{方向独立},\\ v_x,v_y\\ \\text{合成}", note: "曲线运动常用『化曲为直』：分解为两个互相垂直的直线运动分别研究。" }
+        ],
+        example: {
+            q: "物体在光滑水平面上受一恒力作用，初速度方向与力方向垂直，物体做什么运动？轨迹如何弯曲？",
+            steps: [
+                "力恒定且与初速垂直 → 类似平抛，做匀变速曲线运动",
+                "合力方向恒定，轨迹向受力方向（凹侧）弯曲",
+                "轨迹为抛物线，类似平抛运动"
+            ]
+        },
+        challenge: {
+            q: "关于曲线运动，下列说法正确的是？",
+            opts: [
+                "曲线运动的加速度一定为零",
+                "曲线运动的速度大小一定变化",
+                "曲线运动中合力一定指向轨迹凹侧",
+                "曲线运动不可能是匀变速运动"
+            ],
+            answer: 2,
+            explain: "曲线运动速度方向变化，必有加速度（A错）；速度大小可以不变，如匀速圆周运动（B错）；曲线运动也可以是匀变速，如平抛（D错）。合力指向轨迹凹侧正确。"
+        }
+    },
+    {
+        badge: "曲线运动 · 考点07",
+        title: "平抛运动",
+        intro: "最常见的曲线运动模型：水平方向匀速、竖直方向自由落体。",
+        formulas: [
+            { t: "➡ 水平方向（匀速）", f: "$$x = v_0 t,\\quad v_x = v_0$$", note: "水平方向不受力，保持匀速。" },
+            { t: "⬇ 竖直方向（自由落体）", f: "$$y = \\dfrac{1}{2}gt^2,\\quad v_y = gt$$", note: "竖直方向初速为 0 的匀加速。" },
+            { t: "🎯 合速度与偏角", f: "$$v = \\sqrt{v_0^2+v_y^2},\\quad \\tan\\theta = \\dfrac{v_y}{v_0} = \\dfrac{gt}{v_0}$$", note: "θ 为速度与水平方向夹角。" },
+            { t: "⏱ 飞行时间", f: "$$t = \\sqrt{\\dfrac{2h}{g}}$$", note: "仅由高度 h 决定，与初速 v₀ 无关！" }
+        ],
+        example: {
+            q: "以 10 m/s 水平抛出一物，1 s 后（g=10）其速度大小和方向？",
+            steps: [
+                "$v_x = 10\\ \\text{m/s}$，$v_y = gt = 10\\ \\text{m/s}$",
+                "$v = \\sqrt{10^2+10^2} = 10\\sqrt2 ≈ 14.1\\ \\text{m/s}$",
+                "$\\tan\\theta = v_y/v_0 = 1$ → $\\theta = 45^\\circ$（与水平成 45°）"
+            ]
+        },
+        challenges: [
+            {
+                q: "两个小球从同一高度水平抛出，初速分别为 v 和 2v，落到地面的时间关系是？",
+                opts: [
+                    "初速大的先落地",
+                    "初速小的先落地",
+                    "同时落地",
+                    "无法确定"
+                ],
+                answer: 2,
+                explain: "平抛飞行时间 $t=\\sqrt{2h/g}$ 只由高度决定，与水平初速无关，故同时落地。"
+            },
+            {
+                exam: true,
+                q: "（复合考点·示例真题）从高度 h=20 m 处水平抛出一球，初速 v₀=10 m/s（g=10）。同时在球正下方地面有一小球 B 以 5 m/s 匀速向右运动。问抛出后多久 A 球追上（正上方经过）B 球？",
+                opts: ["1 s", "2 s", "4 s", "不会追上"],
+                answer: 1,
+                explain: "A 飞行时间 $t=\\sqrt{2h/g}=\\sqrt{40/10}=2\\ \\text{s}$；期间 A 水平位移 $x_A=v_0t=20\\ \\text{m}$，B 位移 $x_B=5×2=10\\ \\text{m}$。因初始 B 在 A 正下方，2 s 时 A 在 B 正上方 20 m 处经过，故选 2 s。",
+                points: [
+                    { step: "求 A 球落地（飞行）时间：用竖直自由落体 t=√(2h/g)", k: "free" },
+                    { step: "A 的水平位移靠平抛的水平匀速：x_A = v₀t", k: "proj" },
+                    { step: "B 球匀速位移：x_B = v_B t", k: "desc" },
+                    { step: "判断追上条件：A 水平位移是否覆盖 B 的位移（位置相同即相遇）", k: "meet" }
+                ]
+            }
+        ]
+    },
+    {
+        badge: "曲线运动 · 考点08",
+        title: "斜抛运动",
+        intro: "以一定仰角抛出，是平抛的推广。可分解为水平匀速与竖直上抛。",
+        formulas: [
+            { t: "📐 分解", f: "$$v_{0x}=v_0\\cos\\theta,\\quad v_{0y}=v_0\\sin\\theta$$", note: "斜抛 = 水平匀速 + 竖直上抛。" },
+            { t: "⏱ 飞行时间 & 射高", f: "$$t_{总}=\\dfrac{2v_0\\sin\\theta}{g},\\quad H=\\dfrac{v_0^2\\sin^2\\theta}{2g}$$", note: "射高为竖直上抛最大高度。" },
+            { t: "📏 射程", f: "$$R=\\dfrac{v_0^2\\sin2\\theta}{g}$$", note: "当 θ=45° 时射程最大，为 $v_0^2/g$。" }
+        ],
+        example: {
+            q: "以 20 m/s、仰角 37° 斜抛（sin37°≈0.6, cos37°≈0.8, g=10），求射程与最大高度。",
+            steps: [
+                "$R = v_0^2\\sin2\\theta/g = 400×\\sin74°/10 ≈ 400×0.96/10 ≈ 38.4\\ \\text{m}$",
+                "$H = v_0^2\\sin^2\\theta/(2g) = 400×0.36/20 = 7.2\\ \\text{m}$"
+            ]
+        },
+        challenge: {
+            q: "斜抛运动中，射程最大时的抛射角是？",
+            opts: ["30°", "45°", "60°", "90°"],
+            answer: 1,
+            explain: "射程 $R = v_0^2\\sin2\\theta/g$，当 $2\\theta = 90°$ 即 $\\theta=45°$ 时 $\\sin2\\theta$ 最大为 1，射程最大。"
+        }
+    },
+    {
+        badge: "曲线运动 · 考点09",
+        title: "圆周运动",
+        intro: "描述匀速圆周运动的线量、角量关系，以及向心力的来源。",
+        formulas: [
+            { t: "🔄 线速度 / 角速度", f: "$$v = \\dfrac{2\\pi r}{T} = \\omega r,\\quad \\omega = \\dfrac{2\\pi}{T}$$", note: "匀速圆周运动线速度大小不变、方向变，是变速运动。" },
+            { t: "💫 向心加速度", f: "$$a_n = \\dfrac{v^2}{r} = \\omega^2 r$$", note: "方向始终指向圆心，只改变速度方向。" },
+            { t: "🧲 向心力", f: "$$F_n = m\\dfrac{v^2}{r} = m\\omega^2 r$$", note: "向心力是效果力，由重力、弹力、摩擦力等实际力或其合力提供，不是额外新增的力。" }
+        ],
+        example: {
+            q: "质量为 0.5 kg 的物块在半径 0.2 m 的圆周上以 2 m/s 匀速转动，求所需向心力。",
+            steps: [
+                "$F_n = mv^2/r = 0.5×2^2/0.2$",
+                "$= 0.5×4/0.2 = 10\\ \\text{N}$"
+            ]
+        },
+        challenge: {
+            q: "关于匀速圆周运动，下列说法正确的是？",
+            opts: [
+                "速度不变",
+                "加速度为零",
+                "向心力时刻指向圆心",
+                "向心力是一种新的性质力"
+            ],
+            answer: 2,
+            explain: "匀速圆周运动速度方向变化（A错），有向心加速度（B错）；向心力是效果力，由实际力提供，不是新性质的力（D错）；只有向心力时刻指向圆心正确。"
+        }
+    },
+    {
+        badge: "曲线运动 · 考点10",
+        title: "圆周运动临界问题",
+        intro: "竖直平面内圆周运动的临界速度，是高考难点。",
+        formulas: [
+            { t: "🔁 轻绳模型（最高点）", f: "$$v_{\\min}=\\sqrt{gr}$$", note: "最高点重力恰好提供向心力，绳不松弛的最小速度。" },
+            { t: "🪢 轻杆模型（最高点）", f: "$$v_{\\min}=0$$", note: "杆可推可拉，最高点速度可为 0。" },
+            { t: "🛣 凸桥 / 路面", f: "$$mg - N = m\\dfrac{v^2}{r}$$", note: "最高点：$N = mg - mv^2/r$，当 $v=\\sqrt{gr}$ 时 N=0（恰好腾空）。" }
+        ],
+        example: {
+            q: "长为 1 m 的轻绳系小球在竖直面内做圆周运动（g=10），求最高点不松绳的最小速度。",
+            steps: [
+                "最高点临界：$mg = mv_{min}^2/r$",
+                "$v_{min} = \\sqrt{gr} = \\sqrt{10×1} = \\sqrt{10} ≈ 3.16\\ \\text{m/s}$"
+            ]
+        },
+        challenge: {
+            q: "汽车以速度 v 过半径为 r 的凸形桥顶，当 v 增大到何值时车对桥压力为零？",
+            opts: [
+                "v = gr",
+                "v = √(gr)",
+                "v = √(2gr)",
+                "v = g/r"
+            ],
+            answer: 1,
+            explain: "桥顶：$mg - N = mv^2/r$，当 N=0（压力为零）时 $v = \\sqrt{gr}$。"
+        }
+    }
+];
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+// 总题数 = 所有关卡 challenges 数量之和
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    // 导航按钮
+    const navBtn = document.createElement('button');
+    navBtn.textContent = lv.title;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    // 关卡卡片
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    // 公式区
+    lv.formulas.forEach(f => {
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            <div class="formula">${f.f}</div>
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    // 例题
+    html += `<div class="example">
+        <div class="q">💡 例题</div>`;
+    lv.example.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+    html += `</div>`;
+
+    // 闯关答题（支持多题）
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        const ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    // 真题知识点溯源（支持复合考点：跨关/跨模块引用全局知识点库）
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">知识点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    // 记忆要点
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    // 关卡切换按钮
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===total-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+// 选项点击
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        // 取消同组选中
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+
+// 为每道题绑定提交
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    // 找到该题所属关卡与挑战数据
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65+correct);
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+// 根据关卡内所有题的作答情况更新关卡状态
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => answered[li+'_'+k] && document.querySelector(`.opt[data-i="${li}_${k}"][data-j="${c.answer}"]`)?.classList.contains('correct'));
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= total) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 初始高亮导航
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

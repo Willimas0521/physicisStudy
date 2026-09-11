@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>力学实验 · 用单摆测量重力加速度</title>
+<style>
+:root{--bg:#0f1220;--card:#1a1f33;--card2:#222a45;--line:#2e3759;--txt:#e8ecf6;--sub:#9aa6c4;--accent:#4f8cff;--accent2:#36d399;--warn:#ffb454;--danger:#ff6b6b;--purple:#a78bfa;--pink:#f472b6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:12px 0}
+.imgbox img{max-width:100%;max-height:300px;border-radius:10px;border:1px solid var(--line);display:block;margin:0 auto;padding:8px;background:#fff}
+.imgcap{color:var(--sub);font-size:12px;margin-top:6px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../力学/高考物理_力学实验闯关.html">← 力学实验闯关目录</a>
+    <span class="pos">第 9 关 · 共 9 关</span>
+  </div>
+  <h1>用单摆测量重力加速度</h1>
+  <div class="tag">单摆 · 周期法</div>
+  <div class="imgbox"><img src="../力学实验_images/pendulum_photogate.png" alt=""><div class="imgcap">图 9-1：单摆测 g 装置（摆球最低点处光电门 + 数据采集器）</div></div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><b>核心原理：</b>单摆做简谐运动，周期 <b>T = 2π√(L/g)</b>，故测出摆长 L 与周期 T 即可求 <b>g = 4π²L/T²</b>。<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>摆长测量：</b>摆长是<b>悬点到球心</b>的距离：L = 摆线长 l + 小球半径 <b>d/2</b>（用刻度尺量 l，游标卡尺量球直径 d）。<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>周期测量：</b>为减小误差，测 n 次全振动的时间 t，<b>T = t/n</b>；计时从摆球通过<b>平衡位置（最低点）</b>开始，此时速度最大、误差最小。<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>光电门法（图 9-1）：</b>摆球每次经过最低点挡住光电门，相邻两次挡光间隔 = <b>半个周期 T/2</b>；记录 n 个挡光间隔求 T 更精确。<hr style="border:none;border-top:1px solid var(--line);margin:8px 0"><b>误差分析：</b>g ∝ L、g ∝ 1/T²。<br>· L 偏小（把摆线长当摆长）→ <b>g 偏小</b>；L 偏大 → g 偏大。<br>· 漏记全振动次数（n 偏小）→ T 偏大 → <b>g 偏小</b>；多记 → g 偏大。<br>· 圆锥摆（摆球画圆）→ T 偏小 → g 偏大；摆角过大 → T 偏大 → g 偏小。<br>· 图像法：作 <b>T²–L 图像</b>为过原点直线，斜率 k = 4π²/g → <b>g = 4π²/k</b>，可减小偶然误差。</div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（真题改编）某同学用单摆测量当地重力加速度：摆线长 l = 98.00 cm，游标卡尺测得摆球直径 d = 2.00 cm；将摆球拉起小角度（摆角 &lt; 5°）后释放，用秒表从摆球通过最低点开始计时，测得 50 次全振动用时 t = 100.0 s。</p><p>（1）求摆长 L 与周期 T；（2）求当地 g 值；（3）若该同学误将摆线长 l 当作摆长代入公式，测得的 g 偏大还是偏小？</p><p class='ans'>答案：(1) L = l + d/2 = 98.00 + 1.00 = 99.00 cm = 0.9900 m；T = t/50 = 100.0/50 = 2.00 s。<br>(2) g = 4π²L/T² = 4×3.14²×0.99/2.00² ≈ 9.77 m/s²。<br>(3) L 偏小（少了半径 d/2）→ g = 4π²L/T² 偏小。</p><p>（真题改编·光电门）同装置中改用光电门测周期：数据采集器记录到相邻两次挡光时间间隔 Δt = 1.00 s，摆长 L = 0.9900 m，求 g。</p><p class='ans'>答案：相邻两次挡光为半个周期 → T = 2Δt = 2.00 s；g = 4π²L/T² ≈ 9.77 m/s²。注意：Δt 是半周期而非整周期。</p></div>
+  <div class="nav">
+    <a class="prev" href="08_验证动量守恒定律.html">← 验证动量守恒定律</a>
+    <a class="mid" href="../力学/高考物理_力学实验闯关.html">📋 全部实验</a>
+    
+  </div>
+  <div class="footer">力学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "关于本实验（用单摆测重力加速度），下列说法正确的是？（多选）", "o": ["小钢球摆动平面应与光电门U形平面垂直", "应在小钢球自然下垂时测量摆线长度", "小钢球可以换成较轻的橡胶球", "应无初速度、小摆角释放小钢球"], "a": [0, 1, 3], "e": "A ✓：摆动平面与光电门 U 形平面<b>垂直<\/b>，摆球每次经过最低点才能穿过 U 形槽挡光计时；B ✓：自然下垂时摆线<b>竖直拉直<\/b>，此时量悬点到球顶距离 + 半径才是摆长；C ✗：应选<b>密度大、体积小<\/b>的钢球以减小空气阻力，换轻橡胶球会显著增大误差；D ✓：<b>无初速度<\/b>释放避免圆锥摆，<b>小摆角<\/b>（摆角≤5°）保证小角度近似、做简谐运动。"}, {"q": "用单摆测重力加速度，测得摆长 L、周期 T，则 g 为？", "o": ["g = 2π√(L/T)", "g = 4π²L/T²", "g = T²/(4π²L)", "g = 4π²T²/L"], "a": 1, "e": "由 T = 2π√(L/g) 两边平方：T² = 4π²L/g，解得 <b>g = 4π²L/T²<\/b>，选 B。"}, {"q": "摆线长 l = 98.00 cm，游标卡尺测得摆球直径 d = 2.00 cm，则摆长 L 为？", "o": ["98.00 cm", "99.00 cm", "100.00 cm", "97.00 cm"], "a": 1, "e": "摆长 = 悬点到球心的距离 = 摆线长 + 小球半径：L = l + d/2 = 98.00 + 1.00 = <b>99.00 cm<\/b>。选 B（易错点：误把直径当半径、或把摆线长当摆长）。"}, {"q": "单摆最低点装有光电门，摆球每次经过最低点挡光一次。测出连续 2 次挡光的间隔 Δt = 1.00 s，则周期 T 为？", "o": ["0.50 s", "1.00 s", "2.00 s", "4.00 s"], "a": 2, "e": "摆球往返经过最低点各一次才完成一个全振动，故<b>相邻两次经过最低点（挡光）的时间间隔 = 半个周期<\/b>：T/2 = Δt = 1.00 s → <b>T = 2.00 s<\/b>。选 C（易错点：误把 Δt 当周期）。"}, {"q": "测周期时，该同学将 49 次全振动误记为 50 次，则测得的 g 将？", "o": ["偏大", "偏小", "不变", "无法判断"], "a": 0, "e": "n 多记 → T = t/n 偏小；g = 4π²L/T²，T 偏小 → <b>g 偏大<\/b>。选 A。（若漏记则 T 偏大、g 偏小，正好相反）"}, {"q": "作 T²–L 图像（过原点直线），测得斜率 k，则重力加速度 g = ？", "o": ["g = k", "g = 4π²/k", "g = k/4π²", "g = 4π²k"], "a": 1, "e": "T² = (4π²/g)·L，即 T²–L 图斜率为 <b>k = 4π²/g<\/b>，所以 <b>g = 4π²/k<\/b>。选 B。图像法比单次测量更准确。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>

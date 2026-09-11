@@ -1,0 +1,358 @@
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中物理 · 光学基础知识</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #21d4fd 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(106,17,203,0.3);
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #2575fc;
+        }
+        .card h2 {
+            color: #4a00e0;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h2 .num {
+            background: #2575fc;
+            color: white;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+        .card h3 { color: #2575fc; margin: 18px 0 8px; font-size: 1.2em; }
+        .card p { margin-bottom: 10px; color: #34495e; }
+        .formula {
+            background: #f0f4f8;
+            border: 1px solid #d6e2ef;
+            border-radius: 8px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            font-size: 1.15em;
+            color: #1a2a3a;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .key-point {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .warn {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 18px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+        th { background: #f0f4f8; color: #4a00e0; font-weight: 600; }
+        tr:hover { background: #f8fafc; }
+        .example {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        .example .q { font-weight: 600; color: #2e7d32; margin-bottom: 8px; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+        .interactive {
+            background: #fafafa;
+            border: 2px dashed #b0bec5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .interactive label { display: inline-block; margin: 8px 12px 8px 0; font-weight: 500; }
+        .interactive input {
+            width: 90px; padding: 6px 10px;
+            border: 1px solid #b0bec5; border-radius: 5px;
+            font-size: 1em; text-align: center;
+        }
+        .interactive button {
+            background: #2575fc; color: white; border: none;
+            padding: 8px 20px; border-radius: 6px; cursor: pointer;
+            font-size: 1em; margin-top: 10px;
+        }
+        .interactive button:hover { background: #1a5fd0; }
+        .result {
+            margin-top: 15px; padding: 12px 18px;
+            background: #e3f2fd; border-radius: 6px;
+            font-size: 1.1em; font-weight: 600; color: #1565c0;
+            display: none;
+        }
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(74,0,224,0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .nav a {
+            color: white; text-decoration: none;
+            margin: 0 15px; font-size: 0.92em;
+            padding: 5px 10px; border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav a:hover { background: rgba(255,255,255,0.2); }
+        .mindmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .mindmap .node {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; padding: 18px; border-radius: 10px;
+            text-align: center; font-weight: 600; font-size: 1.05em;
+        }
+        .mindmap .node small { display: block; font-weight: 400; font-size: 0.82em; opacity: 0.9; margin-top: 5px; }
+        .mindmap .node.c2 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .mindmap .node.c3 { background: linear-gradient(135deg, #fc466b, #3f5efb); }
+        .exam-block { margin-bottom: 30px; }
+        .exam-block > h3 {
+            color: #c0392b; font-size: 1.3em; margin-bottom: 14px;
+            padding-left: 12px; border-left: 5px solid #e74c3c;
+        }
+        .question {
+            background: #fff; border: 1px solid #e3e8ee;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 14px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .question .q-title { font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+        .question .tag {
+            display: inline-block; font-size: 0.78em; color: white;
+            background: #8e44ad; padding: 2px 9px; border-radius: 10px; margin-right: 8px;
+            vertical-align: middle;
+        }
+        .question .analysis {
+            margin-top: 10px; padding: 12px 16px; background: #fdf6ec;
+            border-left: 4px solid #f39c12; border-radius: 6px; color: #7b4b00;
+            display: none;
+        }
+        .question .analysis.show { display: block; }
+        .question .answer-btn {
+            margin-top: 10px; background: #e74c3c; color: white; border: none;
+            padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 0.92em;
+        }
+        .question .answer-btn:hover { background: #c0392b; }
+        .question .answer {
+            margin-top: 10px; padding: 12px 16px; background: #e8f5e9;
+            border-left: 4px solid #4caf50; border-radius: 6px; color: #1b5e20;
+            display: none; font-size: 0.95em;
+        }
+        .question .answer.show { display: block; }
+        .question .q-img {
+            display: block; max-width: 280px; margin: 10px auto;
+            border: 1px solid #d6e2ef; border-radius: 8px; background: #fff;
+        }
+        .anim-wrap {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 18px; margin: 16px 0; text-align: center;
+        }
+        .anim-wrap canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .anim-controls { margin: 12px 0 6px; }
+        .anim-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .anim-controls button:hover { background: #1a5fd0; }
+        .anim-readout {
+            margin-top: 10px; font-size: 0.92em; color: #34495e;
+        }
+        .anim-readout b { color: #1e3c72; }
+        .fig {
+            background: #f7f9fc; border: 1px solid #dce4ee; border-radius: 12px;
+            padding: 16px; margin: 16px 0; text-align: center;
+        }
+        .fig canvas {
+            background: #fff; border-radius: 8px; border: 1px solid #e3e8ee;
+            max-width: 100%; display: block; margin: 0 auto;
+        }
+        .fig .cap { margin-top: 8px; font-size: 0.88em; color: #607d8b; }
+        .wave-controls { margin: 12px 0 6px; }
+        .wave-controls button {
+            background: #2575fc; color: white; border: none; padding: 7px 18px;
+            border-radius: 6px; cursor: pointer; font-size: 0.95em; margin: 0 6px;
+        }
+        .wave-controls button:hover { background: #1a5fd0; }
+        .wave-controls label { font-weight: 500; margin: 0 6px; }
+        .footer {
+            text-align: center; padding: 30px; color: #7f8c8d;
+            font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px;
+        }
+        .toc {
+            background: white; border-radius: 14px; padding: 25px 30px;
+            margin-bottom: 25px; box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .toc h2 { color: #4a00e0; margin-bottom: 15px; }
+        .toc ol { padding-left: 25px; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #2575fc; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .nav a { margin: 0 8px; font-size: 0.82em; }
+            .card { padding: 20px; }
+        }
+        /* ===== 左侧导航改造 ===== */
+        @media (min-width: 1101px) {
+            .nav {
+                position: fixed; top: 96px; left: 16px; width: 150px; z-index: 250;
+                background: rgba(74,0,224,0.96); backdrop-filter: blur(10px);
+                padding: 14px 12px; text-align: left;
+                box-shadow: 0 4px 20px rgba(74,0,224,0.35);
+                border-radius: 14px; max-height: calc(100vh - 120px); overflow-y: auto;
+            }
+            .nav a {
+                display: block; margin: 3px 0; padding: 7px 10px; font-size: 0.88em;
+                border-left: 3px solid transparent;
+            }
+            .nav a:hover { background: rgba(255,255,255,0.2); border-left-color: #ffd54f; }
+            .container { margin-left: max(210px, calc((100% - 1000px) / 2)); margin-right: calc((100% - 1000px) / 2); }
+        }
+        @media (max-width: 1100px) {
+            .nav {
+                position: sticky; top: 0; left: auto; width: auto;
+                padding: 10px 8px; text-align: center; border-radius: 0;
+                max-height: none; overflow: visible;
+                display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+            }
+            .nav a { display: inline-block; margin: 2px 4px; padding: 5px 10px; border-left: none; }
+            .container { margin-left: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🔆 光学 · ② 折射定律</h1>
+    <p>高中物理核心概念 · 公式 · 例题</p>
+</div>
+
+<nav class="nav">
+        <a href="高中物理_光学.html">📚 总览</a>
+        <a href="高中物理_光学_光的反射.html">① 光的反射</a>
+        <a href="高中物理_光学_折射.html" class="active">② 折射</a>
+        <a href="高中物理_光学_全反射.html">③ 全反射</a>
+        <a href="高中物理_光学_色散和干涉.html">④ 色散和干涉</a>
+        <a href="高中物理_光学_衍射.html">⑤ 衍射</a>
+        <a href="高中物理_光学_偏振.html">⑥ 偏振</a>
+        <a href="高中物理_光学_习题.html">📝 习题</a>
+</nav>
+
+<div class="container">
+
+<div class="card" id="topic">
+<h3>③ 光的折射定律（斯涅尔定律）</h3>
+    <p>折射光线、入射光线和法线在同一平面内，分居法线两侧；入射角正弦与折射角正弦之比为一常数。</p>
+    <div class="formula">$$n_1\sin\theta_1 = n_2\sin\theta_2$$</div>
+    <p>若光从真空（或空气，近似 $n\approx1$）射入介质：</p>
+    <div class="formula">$$n = \dfrac{\sin\theta_{\text{空}}}{\sin\theta_{\text{介}}} = \dfrac{c}{v} = \dfrac{\lambda_0}{\lambda}$$</div>
+    <div class="warn">
+        <b>⚠️ 折射率要点：</b>
+        <ul style="padding-left:20px;">
+            <li>折射率 $n$ 由<b>介质本身</b>和<b>光的频率（颜色）</b>决定，与入射角无关。</li>
+            <li>频率越高（波长越短，如紫光），$n$ 越大，偏折越厉害。</li>
+            <li>光从光疏介质（$n$ 小）进入光密介质（$n$ 大）时，折射角 < 入射角，向法线偏折。</li>
+        </ul>
+    </div>
+
+    <div class="warn" style="border-left-color:#e74c3c;">
+        <b>🔴 易错辨析（高频考点）：</b>同种介质中紫光折射率比红光大（$n_{\text{紫}} > n_{\text{红}}$）。若<b>入射角不变</b>，把入射光由红光换成紫光，由折射定律
+        $$n_2\sin\theta_2 = n_1\sin\theta_1 = \text{常数}$$
+        可知 $n_2$ 变大 ⇒ $\sin\theta_2$ <b>变小</b> ⇒ 折射角 $\theta_2$ <b>变小</b>（更靠近法线），而不是变大！
+        <br>✅ 正确结论：<b>紫光折射率大 → 折射角更小、偏折更厉害</b>；红光折射率小 → 折射角更大、偏折更弱。色散时紫光比红光更向棱镜底边偏折，正是此理。
+    </div>
+
+    <h3>⑥ 透镜成像（凸透镜）</h3>
+    <p>凸透镜对光起<b>会聚</b>作用，凹透镜起<b>发散</b>作用。</p>
+    <div class="formula">$$\dfrac{1}{u} + \dfrac{1}{v} = \dfrac{1}{f}$$</div>
+    <div class="key-point">
+        <b>📌 符号与放大率：</b>
+        <ul style="padding-left:20px;">
+            <li>$u$：物距（实物为正），$v$：像距（实像为正、虚像为负），$f$：焦距（凸透镜 $f>0$）。</li>
+            <li>放大率 $m = \dfrac{|v|}{u} = \dfrac{h_{\text{像}}}{h_{\text{物}}}$。</li>
+            <li>二倍焦距拐点：当 $u=2f$ 时 $v=2f$，成等大实像；当 $f<u<2f$ 时 $v>2f$，成放大实像（投影仪）；当 $u<f$ 时成正立放大虚像（放大镜）。</li>
+        </ul>
+    </div>
+
+    <div class="example">
+        <div class="q">例2：物体距凸透镜 $u=30\ \text{cm}$，焦距 $f=10\ \text{cm}$，求像距 $v$ 和放大率。</div>
+        <div class="a">
+            <div class="step">解：$\dfrac{1}{v} = \dfrac{1}{f} - \dfrac{1}{u} = \dfrac{1}{10} - \dfrac{1}{30} = \dfrac{3-1}{30} = \dfrac{2}{30}$</div>
+            <div class="step">$v = 15\ \text{cm} > 0$，成<b>倒立放大实像</b></div>
+            <div class="step">放大率 $m = v/u = 15/30 = \mathbf{0.5}$ —— 此处为缩小实像（因 $2f=20\text{ cm} < u=30\text{ cm}$）。注意：要放大需 $f<u<2f$，本例 $u>2f$ 故缩小的实像。</div>
+        
+</div>
+
+<div class="footer">
+    <p>📖 高中物理 · 光学 · ② 折射定律</p>
+    <p>建议结合教材例题练习，理解公式的物理意义而非死记硬背</p>
+</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>

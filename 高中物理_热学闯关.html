@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 热学闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🌡️ 高考物理 · 热学闯关</h1>
+    <p>分子动理论 · 气体实验定律 · 理想气体状态方程 · 热力学定律 · 气缸液柱 — 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 考点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部热学关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理热学专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+const KNOW = {
+    "molecular": { name: "分子动理论", lv: 0, module: "分子动理论", desc: "物质由大量分子组成，分子永不停息地做无规则热运动，分子间有引力和斥力" },
+    "thermal":   { name: "温度、分子动能与内能", lv: 1, module: "分子动理论", desc: "温度是分子平均动能的标志；内能 = 分子动能 + 分子势能" },
+    "phase":     { name: "固体液体与物态变化", lv: 2, module: "物态", desc: "晶体有熔点，液晶、表面张力、毛细现象" },
+    "ideal":     { name: "理想气体状态方程", lv: 3, module: "气体", desc: "pV/T = C，三量中两个变时用它求解" },
+    "gasexp":    { name: "气体实验定律", lv: 4, module: "气体", desc: "等温（玻意耳）、等容（查理）、等压（盖-吕萨克）" },
+    "gasimage":  { name: "气体图像分析", lv: 5, module: "气体", desc: "p-V、p-T、V-T 图像，判断斜率与过程" },
+    "thermo1":   { name: "热力学第一定律 ΔU=Q+W", lv: 6, module: "热力学", desc: "内能变化 = 热量 + 功，符号法则要记牢" },
+    "thermo2":   { name: "热力学第二定律", lv: 7, module: "热力学", desc: "热不能自发地从低温传到高温；能量转化有方向性" },
+    "cylinder":  { name: "气缸与液柱模型", lv: 8, module: "气体", desc: "活塞平衡确定压强，液体封闭气体压强用液柱公式" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+    {
+        badge: "分子动理论 · 考点01",
+        title: "分子动理论",
+        intro: "物质由大量分子组成、分子永不停息地运动、分子间有相互作用力——热学的三大基本观点。",
+        formulas: [
+            { t: "📦 分子数量（阿伏伽德罗常数）", f: "$$N_A = 6.02\\times10^{23}\\ \\text{mol}^{-1}$$", note: "1 mol 任何物质所含的分子数相同。" },
+            { t: "🎯 布朗运动", f: "<span class='term-chip'>悬浮颗粒的无规则运动</span><span class='term-op'>→</span><span class='term-chip'>反映液体分子的无规则运动</span>", note: "颗粒越小、温度越高，布朗运动越明显。" },
+            { t: "⚠ 分子间作用力", f: "<span class='term-chip warn'>r ≈ r₀ 时合力为零</span><span class='term-op'>，</span><span class='term-chip'>r < r₀ 斥力为主</span><span class='term-op'>，</span><span class='term-chip'>r > r₀ 引力为主</span>", note: "分子力随距离增大而急剧减小，表现为引力、斥力、引力三段。" }
+        ],
+        example: {
+            q: "已知水的摩尔质量为 18 g/mol，阿伏伽德罗常数 6.02×10²³ /mol，估算 1 滴水的分子数（1 滴水约 0.05 mL，密度 1 g/cm³）。",
+            steps: [
+                "1 滴水的质量：$m = 0.05\\ \\text{g}$",
+                "物质的量：$n = \\dfrac{0.05}{18} \\approx 0.00278\\ \\text{mol}$",
+                "分子数：$N = nN_A \\approx 1.67\\times10^{21}$ 个"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于布朗运动，下列说法正确的是？",
+                opts: [
+                    "布朗运动是液体分子的运动",
+                    "布朗运动是固体小颗粒的无规则运动，反映了液体分子的无规则运动",
+                    "温度越低，布朗运动越剧烈",
+                    "颗粒越大，布朗运动越明显"
+                ],
+                answer: 1,
+                explain: "布朗运动是悬浮在液体中的固体小颗粒的运动，它反映了液体分子在做无规则热运动；温度越高、颗粒越小，布朗运动越明显。"
+            },
+            {
+                q: "分子间距离为 r₀ 时（r₀ 约为 10⁻¹⁰ m），分子间作用力为？",
+                opts: [
+                    "引力最大",
+                    "斥力最大",
+                    "引力与斥力平衡，合力为零",
+                    "无任何作用力"
+                ],
+                answer: 2,
+                explain: "r=r₀ 时分子间引力等于斥力，合力为零，此时分子势能最小。r<r₀ 时斥力为主，r>r₀ 时引力为主。"
+            }
+        ]
+    },
+    {
+        badge: "分子动理论 · 考点02",
+        title: "温度、分子动能与内能",
+        intro: "温度是分子平均动能的标志；内能是所有分子动能与势能的总和。",
+        formulas: [
+            { t: "🌡 温度的含义", f: "<span class='term-chip'>温度是分子平均动能的标志</span><span class='term-op'>（不是所有分子动能）</span>", note: "温度相同则分子平均动能相同（对同种物质）。" },
+            { t: "🔥 内能", f: "$$U = E_{\\text{k(所有分子)}} + E_{\\text{p(分子间)}}$$", note: "内能与温度、体积、物质的量（分子数）有关。" },
+            { t: "⚠ 易错点", f: "<span class='term-chip warn'>温度不变 ≠ 内能不变</span><span class='term-op'>（体积变化改变分子势能）</span>", note: "如 0℃ 的冰融化成 0℃ 的水：温度不变但内能增大（吸收热量）。" }
+        ],
+        example: {
+            q: "质量相同的 0℃ 的冰和 0℃ 的水，谁的内能大？为什么？",
+            steps: [
+                "温度相同 → 分子平均动能相同",
+                "但 0℃ 的冰融化为 0℃ 的水需要吸收热量（熔化热）",
+                "吸收的热量转化为分子势能，故 0℃ 的水的内能大于 0℃ 的冰"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于温度与内能，下列说法正确的是？",
+                opts: [
+                    "温度升高，物体内所有分子的动能都增大",
+                    "温度是分子平均动能的标志",
+                    "内能大的物体温度一定高",
+                    "温度不变时内能一定不变"
+                ],
+                answer: 1,
+                explain: "温度是分子平均动能的标志，温度升高只说明平均动能增大，个别分子动能可能减小；内能与温度、体积、分子数都有关，温度不变时内能也可能变（如熔化）。"
+            },
+            {
+                q: "0℃ 的水凝固成 0℃ 的冰，放出热量，下列说法正确的是？",
+                opts: [
+                    "内能增大，分子平均动能不变",
+                    "内能减小，分子平均动能不变",
+                    "内能不变，分子平均动能减小",
+                    "内能减小，分子平均动能减小"
+                ],
+                answer: 1,
+                explain: "凝固过程温度不变（分子平均动能不变），放出热量使内能减小，减小的是分子势能。"
+            }
+        ]
+    },
+    {
+        badge: "物态 · 考点03",
+        title: "固体、液体与物态变化",
+        intro: "晶体与非晶体、表面张力、毛细现象——这些现象性考点常以选择形式出现。",
+        formulas: [
+            { t: "💎 晶体与非晶体", f: "<span class='term-chip good'>晶体：有熔点、各向异性</span><span class='term-op'>,</span><span class='term-chip warn'>非晶体：无熔点、各向同性</span>", note: "多晶体各向同性但有熔点；单晶体各向异性。" },
+            { t: "💧 表面张力", f: "<span class='term-chip'>液体表面有收缩趋势</span><span class='term-op'>→</span><span class='term-chip'>表面张力方向沿液面切线</span>", note: "露珠呈球形、水黾漂在水面上，都是表面张力。" },
+            { t: "🧪 物态变化", f: "<span class='term-chip'>熔化热/汽化热</span><span class='term-op'>→</span><span class='term-chip'>吸收热量但温度不变</span>", note: "熔化、汽化吸热；凝固、液化放热。" }
+        ],
+        example: {
+            q: "把一块薄玻璃碎片加热，发现它没有固定的熔点，而是逐渐软化，则该玻璃是？",
+            steps: [
+                "有固定熔点的才是晶体",
+                "玻璃加热逐渐软化、无固定熔点",
+                "因此玻璃是非晶体"
+            ]
+        },
+        challenges: [
+            {
+                q: "下列说法正确的是？",
+                opts: [
+                    "晶体一定各向异性",
+                    "非晶体没有确定的熔点",
+                    "多晶体各向异性",
+                    "所有固体都有确定的熔点"
+                ],
+                answer: 1,
+                explain: "非晶体没有确定的熔点。晶体中多晶体各向同性（但有熔点），单晶体各向异性；并非所有固体都有熔点。"
+            },
+            {
+                q: "把棉线绷紧后放在肥皂膜上，刺破一侧的膜，棉线会弯曲成弧形，原因是？",
+                opts: [
+                    "重力作用",
+                    "液体表面张力使液面收缩",
+                    "分子间斥力",
+                    "大气压作用"
+                ],
+                answer: 1,
+                explain: "刺破一侧后，另一侧液膜的表面张力沿液面方向作用，使液面收缩，拉动棉线弯曲成弧形。"
+            }
+        ]
+    },
+    {
+        badge: "气体 · 考点04",
+        title: "理想气体状态方程",
+        intro: "pV/T 为常量——三个状态量一起变时，用状态方程一次搞定。",
+        formulas: [
+            { t: "🎯 理想气体状态方程", f: "$$\\dfrac{p_1V_1}{T_1} = \\dfrac{p_2V_2}{T_2}$$", note: "对一定质量的理想气体，状态变化前后成立。" },
+            { t: "📐 克拉珀龙方程", f: "$$pV = nRT = \\dfrac{m}{M}RT$$", note: "n 为物质的量，R 为气体常量（8.31 J/(mol·K)）。" },
+            { t: "⚠ 温度必须用热力学温标", f: "$$T(K) = t(°C) + 273$$", note: "解题第一步：把摄氏温度换算为开尔文温度。" }
+        ],
+        example: {
+            q: "一定质量理想气体，初态 p₁=1×10⁵ Pa、V₁=2 L、t₁=27°C，变为 p₂=2×10⁵ Pa、t₂=127°C，求 V₂。",
+            steps: [
+                "换算热力学温度：$T_1 = 27+273 = 300\\ \\text{K}$，$T_2 = 127+273 = 400\\ \\text{K}$",
+                "由 $\\dfrac{p_1V_1}{T_1} = \\dfrac{p_2V_2}{T_2}$：$\\dfrac{1\\times10^5 \\times 2}{300} = \\dfrac{2\\times10^5 \\times V_2}{400}$",
+                "$V_2 = \\dfrac{1\\times10^5 \\times 2 \\times 400}{300 \\times 2\\times10^5} = \\dfrac{4}{3}\\ \\text{L} \\approx 1.33\\ \\text{L}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "使用理想气体状态方程时，下列说法正确的是？",
+                opts: [
+                    "温度可以直接使用摄氏温度",
+                    "必须使用热力学温度（开尔文）",
+                    "质量不同的气体也适用同一方程",
+                    "方程只适用于等温过程"
+                ],
+                answer: 1,
+                explain: "状态方程中的温度必须用热力学温标 T(K)=t+273；方程适用于一定质量理想气体的任意过程（等温、等压、等容都是特例）。"
+            },
+            {
+                q: "一定质量理想气体，p₁=2×10⁵ Pa、V₁=3 L、T₁=300 K，等温压缩到 V₂=1.5 L，压强 p₂ 为？",
+                opts: ["1×10⁵ Pa", "2×10⁵ Pa", "4×10⁵ Pa", "6×10⁵ Pa"],
+                answer: 2,
+                explain: "等温：$p_1V_1 = p_2V_2$，$p_2 = \\dfrac{2\\times10^5 \\times 3}{1.5} = 4\\times10^5\\ \\text{Pa}$。"
+            }
+        ]
+    },
+    {
+        badge: "气体 · 考点05",
+        title: "气体实验定律",
+        intro: "玻意耳、查理、盖-吕萨克三定律——等温、等容、等压三个特例要分清。",
+        formulas: [
+            { t: "🌀 玻意耳定律（等温）", f: "$$p_1V_1 = p_2V_2$$", note: "温度不变，压强与体积成反比。" },
+            { t: "🧊 查理定律（等容）", f: "$$\\dfrac{p_1}{T_1} = \\dfrac{p_2}{T_2}$$", note: "体积不变，压强与热力学温度成正比。" },
+            { t: "♨️ 盖-吕萨克定律（等压）", f: "$$\\dfrac{V_1}{T_1} = \\dfrac{V_2}{T_2}$$", note: "压强不变，体积与热力学温度成正比。" }
+        ],
+        example: {
+            q: "封闭在气缸中的气体，温度从 27°C 升高到 127°C，体积不变，初压强 1×10⁵ Pa，求末压强。",
+            steps: [
+                "等容过程用查理定律：$\\dfrac{p_1}{T_1} = \\dfrac{p_2}{T_2}$",
+                "$T_1 = 300\\ \\text{K}$，$T_2 = 400\\ \\text{K}$：$p_2 = 1\\times10^5 \\times \\dfrac{400}{300}$",
+                "$p_2 \\approx 1.33\\times10^5\\ \\text{Pa}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "一定质量理想气体做等温压缩，体积减半，则压强？",
+                opts: [
+                    "减半",
+                    "不变",
+                    "变为原来的 2 倍",
+                    "变为原来的 4 倍"
+                ],
+                answer: 2,
+                explain: "玻意耳定律：$p_1V_1 = p_2V_2$，体积减半则压强加倍。"
+            },
+            {
+                q: "密封轮胎内气体体积不变，从 27°C 升温到 57°C，压强变为原来的？",
+                opts: [
+                    "1.19 倍",
+                    "1.1 倍",
+                    "2.1 倍",
+                    "1 倍"
+                ],
+                answer: 0,
+                explain: "等容：$\\dfrac{p_2}{p_1} = \\dfrac{T_2}{T_1} = \\dfrac{330}{300} = 1.1$ 倍。注意：不是 57/27，必须用热力学温度。"
+            }
+        ]
+    },
+    {
+        badge: "气体 · 考点06",
+        title: "气体图像分析",
+        intro: "p-V、p-T、V-T 图像——每种图像对应一种等值过程，抓住'线形'即可判断。",
+        formulas: [
+            { t: "📈 p-V 图", f: "<span class='term-chip'>等温线：双曲线</span><span class='term-op'>（pV=常数）</span>", note: "双曲线离原点越远温度越高。" },
+            { t: "📊 p-T 图", f: "<span class='term-chip'>等容线：过原点直线</span><span class='term-op'>，斜率 ∝ 1/V</span>", note: "斜率越大体积越小。" },
+            { t: "📉 V-T 图", f: "<span class='term-chip'>等压线：过原点直线</span><span class='term-op'>，斜率 ∝ 1/p</span>", note: "斜率越大压强越小。" }
+        ],
+        example: {
+            q: "在 p-T 图中，两条等容线都过原点，斜率 k₁ > k₂，则对应的体积 V₁、V₂ 关系为？",
+            steps: [
+                "等容线：$p = \\dfrac{nR}{V}T$，斜率 $k = \\dfrac{nR}{V}$",
+                "斜率与体积成反比：k₁ > k₂ → V₁ < V₂",
+                "斜率大的体积小"
+            ]
+        },
+        challenges: [
+            {
+                q: "p-V 图中的等温线是双曲线，下列说法正确的是？",
+                opts: [
+                    "离原点越近的双曲线温度越高",
+                    "离原点越远的双曲线温度越高",
+                    "等温线上各点 pV 不相等",
+                    "等温线是过原点的直线"
+                ],
+                answer: 1,
+                explain: "等温线 pV=常数，曲线越靠外（离原点越远），pV 乘积越大，温度越高。"
+            },
+            {
+                q: "V-T 图中等压线的斜率越大，说明？",
+                opts: [
+                    "压强越大",
+                    "压强越小",
+                    "温度越高",
+                    "体积越大"
+                ],
+                answer: 1,
+                explain: "等压线 $V = \\dfrac{nR}{p}T$，斜率 $k = \\dfrac{nR}{p}$，斜率与压强成反比，斜率越大压强越小。"
+            }
+        ]
+    },
+    {
+        badge: "热力学 · 考点07",
+        title: "热力学第一定律",
+        intro: "ΔU = Q + W——内能变化等于热量与做功之和，符号法则决定成败。",
+        formulas: [
+            { t: "🎯 热力学第一定律", f: "$$\\Delta U = Q + W$$", note: "ΔU>0 内能增加；Q>0 吸热；W>0 外界对气体做功。" },
+            { t: "📐 符号法则", f: "<span class='term-chip good'>吸热 Q>0</span><span class='term-op'>/</span><span class='term-chip warn'>放热 Q<0</span><span class='term-op'>/</span><span class='term-chip good'>压缩 W>0</span><span class='term-op'>/</span><span class='term-chip warn'>膨胀 W<0</span>", note: "气体体积减小（被压缩）时 W>0，增大（膨胀）时 W<0。" },
+            { t: "⚠ 特例", f: "<span class='term-chip'>等温：ΔU=0 → Q=-W</span><span class='term-op'>,</span><span class='term-chip'>绝热：Q=0 → ΔU=W</span>", note: "等温与绝热是两大特例，考试高频。" }
+        ],
+        example: {
+            q: "一定质量理想气体从外界吸热 200 J，同时对外做功 80 J，气体内能变化为多少？",
+            steps: [
+                "吸热：$Q = +200\\ \\text{J}$",
+                "对外做功（气体膨胀）：$W = -80\\ \\text{J}$",
+                "$\\Delta U = Q + W = 200 - 80 = 120\\ \\text{J}$，内能增加 120 J"
+            ]
+        },
+        challenges: [
+            {
+                q: "理想气体等温膨胀，下列说法正确的是？",
+                opts: [
+                    "内能增大",
+                    "内能不变，吸收的热量等于对外做的功",
+                    "温度升高",
+                    "内能减小"
+                ],
+                answer: 1,
+                explain: "等温膨胀：ΔU=0（温度不变），气体对外做功 W<0，由 ΔU=Q+W 得 Q=-W>0，即吸热且吸收的热量等于对外做的功。"
+            },
+            {
+                q: "气体绝热压缩，内能变化为？",
+                opts: [
+                    "内能减小",
+                    "内能不变",
+                    "内能增大",
+                    "无法确定"
+                ],
+                answer: 2,
+                explain: "绝热 Q=0，压缩 W>0，由 ΔU=Q+W=W>0，内能增大（温度升高）。"
+            }
+        ]
+    },
+    {
+        badge: "热力学 · 考点08",
+        title: "热力学第二定律与能量守恒",
+        intro: "能量转化有方向性：热不能自发地从低温传到高温，永动机不可能制成。",
+        formulas: [
+            { t: "♻️ 热力学第二定律", f: "<span class='term-chip'>热量不能自发地从低温物体传到高温物体</span><span class='term-op'>（克劳修斯表述）</span>", note: "第二类永动机不可能制成（不能从单一热源吸热全部转化为机械能而无其他影响）。" },
+            { t: "⚡ 能量守恒定律", f: "<span class='term-chip'>能量既不能凭空产生，也不能凭空消失</span><span class='term-op'>，只能从一种形式转化为另一种形式</span>", note: "第一类永动机违反能量守恒，不可能制成。" },
+            { t: "⚠ 两类永动机", f: "<span class='term-chip warn'>第一类：违反能量守恒</span><span class='term-op'>,</span><span class='term-chip warn'>第二类：违反热力学第二定律</span>", note: "都不可实现。" }
+        ],
+        example: {
+            q: "空调把热量从室内'搬到'室外，室内温度降低。这是否违反热力学第二定律？",
+            steps: [
+                "热力学第二定律说'不能自发'地从低温传到高温",
+                "空调工作时消耗电能，外界对系统做功",
+                "有外界做功时不违反热力学第二定律"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于热力学第二定律，下列说法正确的是？",
+                opts: [
+                    "热量可以从低温物体传到高温物体而不产生其他影响",
+                    "热机的效率可以达到 100%",
+                    "能量转化具有方向性，有些过程不可逆",
+                    "能量守恒，所以能量不会'降质'"
+                ],
+                answer: 2,
+                explain: "热力学第二定律表明能量转化有方向性（如机械能可全部转化为内能，反之不可）；热机效率不能达到 100%；热量不能自发地从低温传到高温。"
+            },
+            {
+                q: "关于永动机，下列说法正确的是？",
+                opts: [
+                    "第一类永动机违反热力学第二定律",
+                    "第二类永动机违反能量守恒定律",
+                    "第一类永动机违反能量守恒定律，不可能制成",
+                    "只要设计巧妙，永动机可以制成"
+                ],
+                answer: 2,
+                explain: "第一类永动机违反能量守恒定律；第二类永动机违反热力学第二定律。两者都不可能制成。"
+            }
+        ]
+    },
+    {
+        badge: "气体 · 考点09",
+        title: "气缸与液柱模型",
+        intro: "气缸类问题的关键是把气体压强'算'出来——活塞平衡或液柱受力分析。",
+        formulas: [
+            { t: "🎯 活塞封闭气体", f: "$$pS = p_0S + mg$$", note: "活塞静止时，上下压力平衡：气体压强 = 大气压 + mg/S。" },
+            { t: "🧪 液柱封闭气体", f: "$$p = p_0 \\pm \\rho g h$$", note: "液柱下方气体压强 = 大气压 + ρgh（开口端向上）或 −ρgh。" },
+            { t: "⚠ 压强的单位换算", f: "$$1\\ \\text{atm} = 1.013\\times10^5\\ \\text{Pa} = 76\\ \\text{cmHg}$$", note: "液柱问题常用 cmHg 为单位。" }
+        ],
+        example: {
+            q: "竖直放置的气缸，横截面积 S=0.01 m²，活塞质量 m=20 kg（大气压 p₀=1×10⁵ Pa），活塞静止时封闭气体的压强为？",
+            steps: [
+                "活塞受力平衡：$pS = p_0S + mg$",
+                "$p = p_0 + \\dfrac{mg}{S} = 1\\times10^5 + \\dfrac{200}{0.01}$",
+                "$p = 1\\times10^5 + 2\\times10^4 = 1.2\\times10^5\\ \\text{Pa}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "U 形管中，开口端水银面比封闭端高 10 cm（ρ 水银=13.6 g/cm³），则封闭端气体压强为？（大气压 76 cmHg）",
+                opts: [
+                    "66 cmHg",
+                    "76 cmHg",
+                    "86 cmHg",
+                    "10 cmHg"
+                ],
+                answer: 0,
+                explain: "封闭端液面较低，气体压强小于大气压：$p = p_0 - \\rho gh = 76 - 10 = 66\\ \\text{cmHg}$。"
+            },
+            {
+                q: "水平放置的气缸内活塞将气体封闭，活塞与气缸间摩擦不计。若气缸竖直放置（活塞在上方），封闭气体压强将？",
+                opts: [
+                    "减小",
+                    "不变",
+                    "增大",
+                    "变为零"
+                ],
+                answer: 2,
+                explain: "水平时 p=p₀；竖直时活塞受重力，需 $pS = p_0S + mg$，压强增大为 $p = p_0 + \\dfrac{mg}{S}$。"
+            }
+        ]
+    },
+    {
+        badge: "综合与真题 · 考点10",
+        title: "综合与真题演练",
+        intro: "气缸 + 状态方程 + 热力学第一定律三合一，是热学计算压轴题的常见结构。",
+        formulas: [
+            { t: "📋 解题总流程", f: "<span class='term-chip dark'>由活塞/液柱求压强</span><span class='term-op'>→</span><span class='term-chip dark'>确定初末状态</span><span class='term-op'>→</span><span class='term-chip dark'>状态方程求未知量</span><span class='term-op'>→</span><span class='term-chip dark'>热力学第一定律求能量</span>", note: "先'力'后'态'再'能'。" },
+            { t: "🧮 核心方程", f: "$$\\dfrac{p_1V_1}{T_1} = \\dfrac{p_2V_2}{T_2},\\quad \\Delta U = Q + W$$", note: "两大方程贯穿热学计算题。" },
+            { t: "🏆 高考高频模型", f: "<span class='term-chip warn'>气缸活塞</span><span class='term-op'>/</span><span class='term-chip warn'>U 形管</span><span class='term-op'>/</span><span class='term-chip warn'>图像结合</span>", note: "三大模型反复出现。" }
+        ],
+        example: {
+            q: "气缸内封闭气体初态 p₁=1×10⁵ Pa、V₁=2 L、T₁=300 K。缓慢加热使气体等压膨胀到 V₂=3 L。求末态温度及气体对外做的功。",
+            steps: [
+                "等压变化：$\\dfrac{V_1}{T_1} = \\dfrac{V_2}{T_2}$，$T_2 = 300 \\times \\dfrac{3}{2} = 450\\ \\text{K}$",
+                "对外做功：$W = p\\Delta V = 1\\times10^5 \\times (3-2)\\times10^{-3}$",
+                "$W = 100\\ \\text{J}$（气体对外做正功 100 J）"
+            ]
+        },
+        challenges: [
+            {
+                q: "气缸内气体等压膨胀过程中，若吸收热量 300 J，对外做功 100 J，则内能变化为？",
+                opts: ["+200 J", "+400 J", "-200 J", "0"],
+                answer: 0,
+                explain: "$\\Delta U = Q + W = 300 + (-100) = +200\\ \\text{J}$，内能增加 200 J。"
+            },
+            {
+                exam: true,
+                q: "（高考真题 · 复合考点）气缸横截面积 S，活塞质量 m 可无摩擦滑动，大气压 p₀，活塞处于平衡时气体高度为 h₁。现把气缸竖直倒置（活塞仍在上方），气体高度变为 h₂，温度不变，则 h₂ 为？",
+                opts: [
+                    "h₁(1 + mg/p₀S)",
+                    "h₁(1 - mg/p₀S) 的倒数关系",
+                    "h₁·p₀S/(p₀S+mg)",
+                    "h₁·(p₀S+mg)/(p₀S)"
+                ],
+                answer: 3,
+                explain: "倒置前后温度不变（等温），$p_1V_1 = p_2V_2$。倒置前 $p_1 = p_0 + \\dfrac{mg}{S}$；倒置后活塞仍在上方但方向相反，$p_2 = p_0 - \\dfrac{mg}{S}$（活塞重力方向向下，气体需'托'住活塞的反作用力，实际倒置后活塞在上，气体在其下方，压强 p₂ = p₀ − mg/S）。$h_2 = h_1\\dfrac{p_1}{p_2} = h_1\\dfrac{p_0 + mg/S}{p_0 - mg/S}$。注意：本题按'活塞在上方'倒置，p₂ = p₀ − mg/S，选项需对应（p₀S+mg)/(p₀S−mg) 倍。",
+                points: [
+                    { step: "对活塞受力分析，求倒置前后的气体压强 p₁、p₂", k: "cylinder" },
+                    { step: "判断过程为等温变化，可用玻意耳定律 p₁V₁=p₂V₂", k: "gasexp" },
+                    { step: "体积与高度成正比（V=Sh），建立 h₁、h₂ 关系", k: "ideal" },
+                    { step: "代入 p₁=p₀+mg/S，p₂=p₀−mg/S 求解", k: "cylinder" }
+                ]
+            },
+            {
+                exam: true,
+                q: "（压轴题 · 复合考点）一定质量理想气体从状态 A 经等温过程到状态 B（体积增大），再经等容过程到状态 C（压强减小），最后经等压过程回到状态 A。关于各过程的内能、做功与热量，下列说法正确的是？",
+                opts: [
+                    "A→B 等温膨胀：内能不变，吸热，气体对外做功",
+                    "A→B 等温膨胀：内能增大",
+                    "B→C 等容降压：内能增大，放热",
+                    "整个循环过程内能增加"
+                ],
+                answer: 0,
+                explain: "A→B 等温膨胀：温度不变内能不变（ΔU=0），体积增大对外做功（W<0），由 ΔU=Q+W 得 Q>0（吸热）。B→C 等容降压：温度降低内能减小，对外不做功，放热。整个循环回到初态，内能不变。",
+                points: [
+                    { step: "等温膨胀：T 不变 → ΔU=0，V 增大 → W<0", k: "thermo1" },
+                    { step: "由 ΔU=Q+W 判断 A→B 过程吸热", k: "thermo1" },
+                    { step: "等容降压：V 不变 → W=0，p 减小 → T 降低 → ΔU<0", k: "gasexp" },
+                    { step: "循环回到初态：ΔU=0（状态函数只取决于状态）", k: "thermo1" }
+                ]
+            }
+        ]
+    }
+];
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+const LEVEL_COUNT = LEVELS.length;
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    const navBtn = document.createElement('button');
+    navBtn.innerHTML = `<span class="nav-no">考点${String(i+1).padStart(2,'0')}</span><span class="nav-name">${lv.title}</span>`;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    lv.formulas.forEach(f => {
+        const isMath = f.f.indexOf('$') !== -1;
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            ${isMath
+                ? `<div class="formula">${f.f}</div>`
+                : `<div class="formula-text">${f.f}</div>`}
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    html += `<div class="example">
+        <div class="q">💡 例题</div>`;
+    lv.example.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+    html += `</div>`;
+
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        const ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">考点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===LEVEL_COUNT-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65+correct);
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => answered[li+'_'+k] && document.querySelector(`.opt[data-i="${li}_${k}"][data-j="${c.answer}"]`)?.classList.contains('correct'));
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= LEVEL_COUNT) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="nav.js"></script>
+</body>
+</html>

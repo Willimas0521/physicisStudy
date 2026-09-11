@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考物理 · 牛顿运动定律闯关</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3a7bd5 100%);
+            color: white;
+            padding: 45px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.3);
+        }
+        .header h1 { font-size: 2.4em; margin-bottom: 10px; letter-spacing: 2px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .container { max-width: 1040px; margin: 0 auto; padding: 30px 20px; }
+        @media (min-width: 1101px) {
+            .container { margin-left: max(210px, calc((100% - 1040px) / 2)); margin-right: calc((100% - 1040px) / 2); }
+        }
+
+        .progress-wrap {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(30,60,114,0.96);
+            backdrop-filter: blur(10px);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            color: white;
+        }
+        .progress-info { display: flex; justify-content: space-between; align-items: center; max-width: 1040px; margin: 0 auto 8px; flex-wrap: wrap; gap: 8px; }
+        .progress-info .title { font-size: 1.05em; font-weight: 600; }
+        .progress-info .score { font-size: 1em; }
+        .progress-info .score b { color: #ffd54f; font-size: 1.2em; }
+        .progress-bar-bg { max-width: 1040px; margin: 0 auto; height: 12px; background: rgba(255,255,255,0.18); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #4caf50, #8bc34a); transition: width 0.5s ease; border-radius: 6px; }
+
+        .side-nav {
+            position: fixed; top: 96px; left: 16px; z-index: 250;
+            width: 150px;
+            background: rgba(255,255,255,0.97);
+            border: 1px solid #e0e6ed; border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(30,60,114,0.15);
+            padding: 14px 12px; max-height: calc(100vh - 120px); overflow-y: auto;
+        }
+        .side-nav .side-title {
+            font-size: 0.85em; font-weight: 700; color: #1e3c72;
+            text-align: center; margin-bottom: 12px; padding-bottom: 8px;
+            border-bottom: 2px solid #e8eef5; letter-spacing: 1px;
+        }
+        .level-nav { display: flex; flex-direction: column; gap: 8px; }
+        .level-nav button {
+            width: 100%; text-align: left;
+            background: #f0f4f8; color: #34495e;
+            border: 1px solid #d6e2ef; border-left: 4px solid #b0bec5;
+            border-radius: 8px; padding: 8px 12px; cursor: pointer;
+            font-size: 0.86em; transition: all 0.25s; position: relative;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+        }
+        .level-nav button .nav-no {
+            font-weight: 700; font-size: 0.95em; color: inherit;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .level-nav button .nav-no::before {
+            content: ''; width: 9px; height: 9px; border-radius: 50%;
+            background: #b0bec5; flex-shrink: 0; transition: all 0.25s;
+        }
+        .level-nav button .nav-name {
+            font-size: 0.84em; line-height: 1.35; color: #5a6b7b;
+        }
+        .level-nav button:hover { background: #e3ecf7; border-left-color: #3a7bd5; }
+        .level-nav button.active {
+            background: #fff3cd; color: #5d4037;
+            border-left-color: #ff6a00; box-shadow: 0 2px 8px rgba(255,106,0,0.25);
+        }
+        .level-nav button.active .nav-no::before { background: #ff6a00; }
+        .level-nav button.active .nav-name { color: #a0653a; }
+        .level-nav button.done { background: #e8f5e9; border-left-color: #4caf50; color: #2e7d32; }
+        .level-nav button.done .nav-no::before { background: #4caf50; }
+        .level-nav button.done .nav-name { color: #558b2f; }
+        .level-nav button.done.active { background: #fff3cd; }
+
+        .level {
+            background: white; border-radius: 16px; padding: 32px;
+            margin-bottom: 25px; box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            border-top: 5px solid #3a7bd5; display: none;
+        }
+        .level.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .level-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; }
+        .level-badge {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            color: white; font-weight: 700; font-size: 0.9em;
+            padding: 6px 14px; border-radius: 20px; white-space: nowrap;
+        }
+        .level h2 { color: #1e3c72; font-size: 1.7em; }
+        .level-intro { color: #5a6b7b; margin-bottom: 18px; font-size: 1.02em; }
+
+        .formula-box {
+            background: linear-gradient(135deg, #f0f4f8, #e8f0fa);
+            border: 1px solid #d6e2ef; border-left: 5px solid #3a7bd5;
+            border-radius: 10px; padding: 18px 22px; margin: 16px 0;
+        }
+        .formula-box .ftitle { font-weight: 700; color: #1e3c72; font-size: 1.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .formula {
+            background: #fff; border: 1px solid #e0e6ed;
+            border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+            font-size: 1.18em; color: #1a2a3a; text-align: center; overflow-x: auto;
+        }
+        .formula-note { font-size: 0.9em; color: #5a6b7b; margin-top: 4px; padding-left: 4px; }
+        .formula-text {
+            background: #fff; border: 1px solid #e0e6ed; border-radius: 8px;
+            padding: 16px; margin: 10px 0; font-size: 1.05em; color: #1a2a3a;
+            text-align: center; display: flex; align-items: center;
+            justify-content: center; gap: 10px; flex-wrap: wrap; line-height: 2.2;
+        }
+        .term-chip {
+            display: inline-block;
+            background: linear-gradient(135deg, #e3f2fd, #dbe9ff);
+            color: #0d47a1; border: 1px solid #90caf9; border-radius: 8px;
+            padding: 4px 16px; font-weight: 700; font-size: 1.02em;
+            box-shadow: 0 1px 3px rgba(13,71,161,0.12);
+        }
+        .term-chip.warn {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            color: #e65100; border-color: #ffb74d;
+            box-shadow: 0 1px 3px rgba(230,81,0,0.12);
+        }
+        .term-chip.good {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            color: #1b5e20; border-color: #81c784;
+            box-shadow: 0 1px 3px rgba(27,94,32,0.12);
+        }
+        .term-chip.dark {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            color: #6a1b9a; border-color: #ba68c8;
+            box-shadow: 0 1px 3px rgba(106,27,154,0.12);
+        }
+        .term-op {
+            color: #e65100; font-weight: 800; font-size: 1.15em; margin: 0 2px;
+        }
+
+        .example {
+            background: #e8f5e9; border-left: 4px solid #4caf50;
+            padding: 16px 20px; margin: 16px 0; border-radius: 8px;
+        }
+        .example .q { font-weight: 700; color: #2e7d32; margin-bottom: 8px; font-size: 1.05em; }
+        .example .a { color: #1b5e20; }
+        .example .step { margin: 6px 0; padding-left: 12px; border-left: 2px solid #a5d6a7; }
+
+        .challenge {
+            background: #fff8e1; border: 2px solid #ffd54f;
+            border-radius: 12px; padding: 22px; margin: 22px 0 6px;
+        }
+        .challenge .ctag {
+            display: inline-block; background: #ff6a00; color: white;
+            font-size: 0.78em; padding: 3px 12px; border-radius: 12px; margin-bottom: 10px; font-weight: 600;
+        }
+        .challenge .cq { font-weight: 700; color: #5d4037; font-size: 1.08em; margin-bottom: 14px; }
+        .opts { display: grid; gap: 10px; margin-bottom: 12px; }
+        .opt {
+            background: #fff; border: 2px solid #e0e0e0; border-radius: 8px;
+            padding: 11px 16px; cursor: pointer; font-size: 1em; transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .opt:hover { border-color: #ffb300; background: #fffdf5; }
+        .opt .key {
+            width: 26px; height: 26px; border-radius: 50%; background: #eceff1;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #546e7a; flex-shrink: 0; font-size: 0.9em;
+        }
+        .opt.correct { border-color: #4caf50; background: #e8f5e9; }
+        .opt.correct .key { background: #4caf50; color: white; }
+        .opt.wrong { border-color: #e53935; background: #ffebee; }
+        .opt.wrong .key { background: #e53935; color: white; }
+        .opt.disabled { pointer-events: none; }
+        .challenge .cbtn {
+            background: #ff6a00; color: white; border: none; padding: 8px 22px;
+            border-radius: 8px; cursor: pointer; font-size: 0.98em; font-weight: 600;
+        }
+        .challenge .cbtn:hover { background: #e65100; }
+        .challenge .cexplain {
+            margin-top: 14px; padding: 14px 18px; background: #e3f2fd;
+            border-left: 4px solid #2196f3; border-radius: 6px; color: #0d47a1;
+            display: none; font-size: 0.97em;
+        }
+        .challenge .cexplain.show { display: block; }
+        .trace-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.9em; }
+        .trace-table th { background: #f3e5f5; color: #6a1b9a; padding: 8px 12px; text-align: left; border-bottom: 2px solid #ce93d8; }
+        .trace-table td { padding: 8px 12px; border-bottom: 1px solid #e1bee7; vertical-align: top; color: #4a235a; }
+        .trace-table tr:hover { background: #faf0fb; }
+        .lvlink { color: #8e44ad; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .challenge .cresult { margin-top: 12px; font-weight: 700; font-size: 1.05em; display: none; }
+        .challenge .cresult.ok { color: #2e7d32; display: block; }
+        .challenge .cresult.no { color: #e53935; display: block; }
+
+        .keymemo {
+            background: linear-gradient(90deg, #e3f2fd, #f5f9ff);
+            border-left: 4px solid #2196f3; padding: 12px 18px; margin: 16px 0; border-radius: 6px;
+        }
+        .keymemo b { color: #1565c0; }
+
+        .level-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+        .btn {
+            background: #3a7bd5; color: white; border: none; padding: 11px 26px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: 0.2s;
+        }
+        .btn:hover { background: #2a5298; }
+        .btn:disabled { background: #b0bec5; cursor: not-allowed; }
+        .btn-next { background: linear-gradient(135deg, #ff6a00, #ee0979); }
+        .btn-next:hover { opacity: 0.9; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(30,60,114,0.85);
+            display: none; align-items: center; justify-content: center; z-index: 999; padding: 20px;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background: white; border-radius: 18px; padding: 40px 36px; max-width: 460px; width: 100%;
+            text-align: center; box-shadow: 0 10px 50px rgba(0,0,0,0.4); animation: pop 0.4s ease;
+        }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal .big { font-size: 3.4em; margin-bottom: 10px; }
+        .modal h2 { color: #1e3c72; font-size: 1.7em; margin-bottom: 12px; }
+        .modal p { color: #5a6b7b; margin-bottom: 8px; }
+        .modal .stars { font-size: 1.8em; margin: 14px 0; letter-spacing: 4px; }
+        .modal .btn { margin-top: 18px; }
+
+        .footer { text-align: center; padding: 30px; color: #7f8c8d; font-size: 0.9em; border-top: 1px solid #e0e6ed; margin-top: 20px; }
+
+        @media (max-width: 1100px) {
+            .container { margin-left: auto !important; }
+            .side-nav {
+                position: sticky; top: 96px; left: auto; right: auto;
+                width: auto; max-width: 1040px; margin: 0 auto 20px;
+                max-height: none; overflow: visible;
+                display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+            }
+            .side-nav .side-title { margin: 0 6px 0 0; padding: 0; border: none; }
+            .level-nav { flex-direction: row; flex-wrap: wrap; flex: 1; }
+            .level-nav button { width: auto; flex: 1; min-width: 108px; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .level { padding: 22px; }
+            .level h2 { font-size: 1.35em; }
+            .side-nav { top: 88px; padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🚀 高考物理 · 牛顿运动定律闯关</h1>
+    <p>三大定律 · 动力学两类问题 · 超重失重 · 连接体 · 传送带 — 公式 → 例题 → 闯关答题</p>
+</div>
+
+<div class="progress-wrap">
+    <div class="progress-info">
+        <span class="title">📊 闯关进度</span>
+        <span class="score">得分：<b id="scoreVal">0</b> / <span id="totalVal">0</span> &nbsp;|&nbsp; 已通关 <b id="doneVal">0</b> 关</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+</div>
+
+<div class="side-nav" id="sideNav">
+    <div class="side-title">🗂 考点导航</div>
+    <div class="level-nav" id="levelNav"></div>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="overlay" id="overlay">
+    <div class="modal">
+        <div class="big">🏆</div>
+        <h2>恭喜通关！</h2>
+        <p>你已完成全部牛顿运动定律关卡</p>
+        <div class="stars" id="modalStars">⭐⭐⭐</div>
+        <p id="modalScore"></p>
+        <button class="btn" onclick="document.getElementById('overlay').classList.remove('show')">关闭</button>
+    </div>
+</div>
+
+<div class="footer">
+    📚 高考物理牛顿运动定律专题 · 公式 + 例题 + 闯关自测 · 祝你金榜题名！
+</div>
+
+<script>
+/* ============ 全局知识点库（支持复合考点跨关引用） ============ */
+const KNOW = {
+    "firstlaw":   { name: "牛顿第一定律与惯性", lv: 0, module: "三大定律", desc: "不受力时保持静止或匀速直线运动；惯性是保持原状态的性质，只与质量有关" },
+    "secondlaw":  { name: "牛顿第二定律 F=ma", lv: 1, module: "三大定律", desc: "加速度与合外力成正比、与质量成反比，a 的方向与合力相同" },
+    "thirdlaw":   { name: "牛顿第三定律", lv: 2, module: "三大定律", desc: "作用力与反作用力等大反向、同一直线、同时产生消失" },
+    "twoquestion": { name: "动力学两类问题", lv: 3, module: "动力学应用", desc: "由力求运动或由运动求力，桥梁是加速度" },
+    "weight":     { name: "超重与失重", lv: 4, module: "动力学应用", desc: "加速度向上超重、向下失重，判断看加速度方向不看运动方向" },
+    "conn":       { name: "连接体问题", lv: 5, module: "动力学应用", desc: "整体法求加速度，隔离法求内力" },
+    "instant":    { name: "瞬时性问题", lv: 6, module: "动力学应用", desc: "剪绳/撤力瞬间，弹簧力不能突变、绳的拉力可以突变" },
+    "critical":   { name: "临界与板块问题", lv: 7, module: "动力学应用", desc: "恰好相对滑动、恰好脱离等临界状态" },
+    "conveyor":   { name: "传送带模型", lv: 8, module: "动力学应用", desc: "先判断摩擦方向与滑动/共速，分段分析运动" }
+};
+
+/* ============ 关卡数据 ============ */
+const LEVELS = [
+    {
+        badge: "三大定律 · 考点01",
+        title: "牛顿第一定律与惯性",
+        intro: "一切物体都有保持原来运动状态的性质——这是理解力和运动关系的第一块基石。",
+        formulas: [
+            { t: "🎯 牛顿第一定律", f: "$$F = 0 \\Rightarrow v \\text{ 保持不变}$$", note: "一切物体总保持匀速直线运动状态或静止状态，直到外力迫使它改变。" },
+            { t: "📦 惯性", f: "<span class='term-chip'>惯性是物体的固有属性</span><span class='term-op'>→</span><span class='term-chip good'>只与质量有关</span>", note: "惯性大小只看质量，与速度、受力无关；惯性不是力。" },
+            { t: "⚠ 力和运动的关系", f: "<span class='term-chip warn'>力不是维持运动的原因</span><span class='term-op'>,</span><span class='term-chip good'>力是改变运动状态的原因</span>", note: "物体不受力时也能匀速运动；力产生的是加速度。" }
+        ],
+        example: {
+            q: "水平公路上匀速行驶的汽车突然刹车，乘客身体为什么向前倾？",
+            steps: [
+                "刹车时，汽车减速，但乘客脚底与车一起减速（摩擦力）",
+                "乘客上半身因惯性保持原来的向前运动状态",
+                "因此乘客身体向前倾——这是惯性的表现"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于惯性，下列说法正确的是？",
+                opts: [
+                    "速度越大的物体惯性越大",
+                    "静止的物体没有惯性",
+                    "惯性大小只与物体的质量有关",
+                    "只有受力物体才有惯性"
+                ],
+                answer: 2,
+                explain: "惯性是物体的固有属性，大小只取决于质量，与速度、运动状态、是否受力无关。"
+            },
+            {
+                q: "伽利略理想斜面实验说明（斜面光滑、忽略空气阻力）？",
+                opts: [
+                    "物体运动需要力来维持",
+                    "物体不受力时也能保持匀速运动",
+                    "力越大物体运动越快",
+                    "物体受的力消失后立即停下"
+                ],
+                answer: 1,
+                explain: "理想斜面实验揭示：物体运动不需要力维持，力是改变运动状态的原因——这正是牛顿第一定律的思想基础。"
+            }
+        ]
+    },
+    {
+        badge: "三大定律 · 考点02",
+        title: "牛顿第二定律",
+        intro: "F=ma 是动力学的心脏：加速度与合外力瞬时对应，方向一致。",
+        formulas: [
+            { t: "⚡ 牛顿第二定律", f: "$$F_{\\text{合}} = ma$$", note: "F合 是物体所受合外力，a 与 F合 同向、同变、同时（瞬时性）。" },
+            { t: "📐 分量式", f: "$$F_x = ma_x,\\quad F_y = ma_y$$", note: "加速度方向上有合力，垂直加速度方向合力为零。" },
+            { t: "⚠ 三性", f: "<span class='term-chip'>同向性</span><span class='term-chip'>瞬时性</span><span class='term-chip'>独立性</span>", note: "a 的方向与 F合 相同；F 变则 a 立刻变；各力独立产生加速度，再合成。" }
+        ],
+        example: {
+            q: "质量 2 kg 的物体在水平面上受水平力 F=10 N 作用，μ=0.2，求加速度。",
+            steps: [
+                "摩擦力：$f = \\mu mg = 0.2 \\times 2 \\times 10 = 4\\ \\text{N}$",
+                "合外力：$F_{\\text{合}} = 10 - 4 = 6\\ \\text{N}$",
+                "加速度：$a = \\dfrac{F_{\\text{合}}}{m} = \\dfrac{6}{2} = 3\\ \\text{m/s}^2$，方向与 F 相同"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于牛顿第二定律 F=ma，下列说法正确的是？",
+                opts: [
+                    "物体所受合外力越大，速度越大",
+                    "加速度方向与合外力方向一定相同",
+                    "质量越大，加速度一定越小",
+                    "F、m、a 三者的单位可以不同"
+                ],
+                answer: 1,
+                explain: "F合 与 a 同向（同向性）。合力大只说明加速度大，与速度大小无关；a=F/m 还与 F 有关。"
+            },
+            {
+                q: "质量 4 kg 的物体受 12 N 水平恒力作用从静止开始运动（光滑水平面），2 s 末的速度为？",
+                opts: ["3 m/s", "6 m/s", "9 m/s", "12 m/s"],
+                answer: 1,
+                explain: "$a = \\dfrac{F}{m} = \\dfrac{12}{4} = 3\\ \\text{m/s}^2$，$v = at = 3 \\times 2 = 6\\ \\text{m/s}$。"
+            }
+        ]
+    },
+    {
+        badge: "三大定律 · 考点03",
+        title: "牛顿第三定律",
+        intro: "作用力与反作用力永远等大反向、成对出现——注意与'平衡力'的区别。",
+        formulas: [
+            { t: "🔄 牛顿第三定律", f: "$$F = -F'$$", note: "作用力与反作用力大小相等、方向相反、作用在一条直线上。" },
+            { t: "🧐 与平衡力的区别", f: "<span class='term-chip warn'>作用力/反作用力</span><span class='term-op'>→</span><span class='term-chip'>两个物体</span><span class='term-op'>,</span><span class='term-chip good'>平衡力</span><span class='term-op'>→</span><span class='term-chip'>同一物体</span>", note: "作用力反作用力作用在不同物体上，不能合成、不会抵消。" },
+            { t: "⚠ 等大同时", f: "<span class='term-chip'>同时产生</span><span class='term-op'>/</span><span class='term-chip'>同时消失</span><span class='term-op'>/</span><span class='term-chip'>同时变化</span>", note: "无论物体是否运动、是否接触，牛顿第三定律都成立。" }
+        ],
+        example: {
+            q: "火箭升空时，燃料喷出气体对火箭产生向上推力。这个力的反作用力是什么？",
+            steps: [
+                "火箭对喷出的气体施加向下的作用力",
+                "由牛顿第三定律，气体对火箭施加等大向上的反作用力（推力）",
+                "这就是火箭推进的原理——靠向后喷气获得向前的力"
+            ]
+        },
+        challenges: [
+            {
+                q: "关于作用力和反作用力，下列说法正确的是？",
+                opts: [
+                    "它们可以相互抵消",
+                    "它们大小相等、方向相反、作用在同一条直线上",
+                    "它们一定是性质不同的力",
+                    "只有两个物体接触时才存在"
+                ],
+                answer: 1,
+                explain: "作用力与反作用力等大反向同线，作用在不同物体上（不能抵消）；性质一定相同；不接触也能产生（如万有引力）。"
+            },
+            {
+                q: "人站在地面上，'人对地面的压力'和'地面对人的支持力'是？",
+                opts: [
+                    "一对平衡力",
+                    "一对作用力与反作用力",
+                    "性质不同的力",
+                    "大小可能不相等"
+                ],
+                answer: 1,
+                explain: "人对地面的压力和地面对人的支持力是一对作用力与反作用力：大小相等、方向相反、作用在两个物体上。"
+            }
+        ]
+    },
+    {
+        badge: "动力学应用 · 考点04",
+        title: "动力学两类问题",
+        intro: "已知力求运动（求a→求v、x）或已知运动求力（由运动求a→求F），加速度是桥梁。",
+        formulas: [
+            { t: "🎯 第一类：已知力求运动", f: "$$F_{\\text{合}} \\xrightarrow{F=ma} a \\xrightarrow{\\text{运动学}} v,\\, x$$", note: "先求加速度，再用运动学公式。" },
+            { t: "🎯 第二类：已知运动求力", f: "$$v,\\, x \\xrightarrow{\\text{运动学}} a \\xrightarrow{F=ma} F_{\\text{合}}$$", note: "先由运动学求加速度，再由牛顿第二定律求力。" },
+            { t: "📐 常用运动学公式", f: "$$v = v_0 + at,\\quad x = v_0t + \\tfrac{1}{2}at^2,\\quad v^2 - v_0^2 = 2ax$$", note: "匀变速直线运动的三个基本公式。" }
+        ],
+        example: {
+            q: "质量 2 kg 的物体在光滑水平面上受 6 N 水平恒力，从静止开始运动，求 3 s 内的位移。",
+            steps: [
+                "加速度：$a = \\dfrac{F}{m} = \\dfrac{6}{2} = 3\\ \\text{m/s}^2$",
+                "位移：$x = \\dfrac{1}{2}at^2 = \\dfrac{1}{2} \\times 3 \\times 9 = 13.5\\ \\text{m}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "光滑水平面上物体受恒力 F 作用从静止开始运动，若拉力加倍，其他条件不变，则相同时间内物体通过的位移变为原来的？",
+                opts: [
+                    "不变",
+                    "2 倍",
+                    "4 倍",
+                    "√2 倍"
+                ],
+                answer: 1,
+                explain: "$x = \\tfrac{1}{2}at^2$，$a = F/m$ 加倍，故 $x' = \\tfrac{1}{2} \\cdot 2a \\cdot t^2 = 2x$，即相同时间内位移变为原来的 2 倍。"
+            },
+            {
+                q: "质量 5 kg 的物体在粗糙水平面上以 4 m/s² 减速，μ=0.4，则它所受水平阻力大小为？（g=10 m/s²）",
+                opts: ["20 N", "30 N", "40 N", "50 N"],
+                answer: 0,
+                explain: "物体减速说明合力方向与运动相反，水平方向只受摩擦力：$f = ma = 5 \\times 4 = 20\\ \\text{N}$（也可以验证 $\\mu mg = 20\\ \\text{N}$ 吻合）。"
+            }
+        ]
+    },
+    {
+        badge: "动力学应用 · 考点05",
+        title: "超重与失重",
+        intro: "电梯加速上升、减速下降……判断超重失重只看加速度方向，与运动方向无关。",
+        formulas: [
+            { t: "🎯 判断标准", f: "<span class='term-chip warn'>加速度向上 → 超重</span><span class='term-op'>,</span><span class='term-chip good'>加速度向下 → 失重</span>", note: "与物体向上还是向下运动无关。" },
+            { t: "📐 支持力公式", f: "$$N = m(g \\pm a)$$", note: "超重：N = m(g+a)；失重：N = m(g−a)。" },
+            { t: "⚠ 完全失重", f: "$$a = g \\Rightarrow N = 0$$", note: "如自由落体、绕地球运行的卫星内部，物体对支持物压力为零。" }
+        ],
+        example: {
+            q: "体重 60 kg 的人站在电梯里的体重计上，电梯以 2 m/s² 的加速度加速上升，体重计示数为多少？",
+            steps: [
+                "加速上升：加速度向上，超重",
+                "$N = m(g + a) = 60 \\times (10 + 2) = 720\\ \\text{N}$",
+                "体重计示数为 720 N（约相当于 72 kg）"
+            ]
+        },
+        challenges: [
+            {
+                q: "电梯从一楼加速上升的过程中，人对体重计的压力将？",
+                opts: [
+                    "大于重力（超重）",
+                    "小于重力（失重）",
+                    "等于重力",
+                    "先小于后大于重力"
+                ],
+                answer: 0,
+                explain: "电梯加速上升，加速度向上，人对体重计压力 N = m(g+a) > mg，属于超重。"
+            },
+            {
+                q: "在绕地球做匀速圆周运动的飞船中，宇航员处于完全失重状态，此时？",
+                opts: [
+                    "宇航员不受重力",
+                    "宇航员受到的重力全部提供向心力，对舱壁无压力",
+                    "宇航员的惯性消失了",
+                    "宇航员的质量变为零"
+                ],
+                answer: 1,
+                explain: "飞船及宇航员以 a=g 的加速度运动（向心加速度），支持力为零，这就是完全失重。重力仍然存在（提供向心力），质量也不变。"
+            }
+        ]
+    },
+    {
+        badge: "动力学应用 · 考点06",
+        title: "连接体问题",
+        intro: "多个物体一起加速运动：整体求加速度，隔离求内力，是高考常考的基本功。",
+        formulas: [
+            { t: "🧑‍🤝‍🧑 整体法", f: "$$F = (m_1 + m_2)a$$", note: "系统有相同的加速度时才可用整体法（只分析外力）。" },
+            { t: "🔍 隔离法求内力", f: "$$T = m_2 a$$", note: "隔离研究对象，由牛顿第二定律求系统内力（如绳中拉力）。" },
+            { t: "📐 典型结论（光滑水平面，力拉两物块）", f: "$$a = \\dfrac{F}{m_1 + m_2},\\quad T = \\dfrac{m_2}{m_1+m_2}F$$", note: "绳中拉力与'被拉物体'的质量成正比。" }
+        ],
+        example: {
+            q: "光滑水平面上，质量 2 kg 的 A 和质量 3 kg 的 B 用轻绳相连，用 10 N 的水平力拉 B，求系统的加速度和绳中张力。",
+            steps: [
+                "整体法：$a = \\dfrac{F}{m_A + m_B} = \\dfrac{10}{5} = 2\\ \\text{m/s}^2$",
+                "隔离 A：$T = m_A a = 2 \\times 2 = 4\\ \\text{N}$",
+                "绳中张力为 4 N（不是 10 N）"
+            ]
+        },
+        challenges: [
+            {
+                q: "质量 1 kg 和 2 kg 的两物体叠放在光滑水平面上，用 6 N 的水平力拉下面的 2 kg 物体（无相对滑动），则两物体间摩擦力大小为？",
+                opts: ["2 N", "4 N", "6 N", "无法确定"],
+                answer: 0,
+                explain: "整体加速度 $a = \\dfrac{6}{3} = 2\\ \\text{m/s}^2$。隔离上面 1 kg 物体：$f = ma = 1 \\times 2 = 2\\ \\text{N}$。"
+            },
+            {
+                q: "光滑斜面上质量 m 的物块在沿斜面向上的恒力 F 作用下与斜面一起沿水平面加速运动（斜面倾角 θ），为使物块与斜面保持相对静止，F 至少为（斜面质量 M）？",
+                opts: [
+                    "(M+m)gtanθ",
+                    "(M+m)gcotθ",
+                    "(M+m)g",
+                    "(M+m)gsinθ"
+                ],
+                answer: 0,
+                explain: "整体法：水平方向 $F = (M+m)a$。物块平衡需 $mg\\tan\\theta = ma$，即 $a = g\\tan\\theta$。故 $F = (M+m)g\\tan\\theta$。"
+            }
+        ]
+    },
+    {
+        badge: "动力学应用 · 考点07",
+        title: "瞬时性问题",
+        intro: "剪断绳或撤去某力的一瞬间，哪些力会突变、哪些力不能突变——这是瞬时加速度问题的核心。",
+        formulas: [
+            { t: "🔗 弹簧/弹性绳", f: "$$F = kx \\Rightarrow \\text{不能突变}$$", note: "弹簧形变需要时间，剪断瞬间弹力保持不变。" },
+            { t: "🧵 轻绳/轻杆/接触面", f: "$$F \\text{ 可以突变}$$", note: "轻绳、轻杆、接触面支持力的改变不需要时间，可以瞬间变化。" },
+            { t: "🎯 解题流程", f: "<span class='term-chip dark'>先求剪断前受力</span><span class='term-op'>→</span><span class='term-chip dark'>判断哪些力突变</span><span class='term-op'>→</span><span class='term-chip dark'>求瞬间合力</span><span class='term-op'>→</span><span class='term-chip dark'>F=ma</span>", note: "关键：剪断瞬间，弹簧弹力不变、绳拉力突变为零（或按需调整）。" }
+        ],
+        example: {
+            q: "质量为 m 的小球用轻绳悬挂，另一根轻弹簧沿水平方向拉住小球，小球静止时绳与竖直方向成 37°。求剪断弹簧瞬间小球的加速度。",
+            steps: [
+                "剪断前：水平方向弹簧拉力 $F = mg\\tan 37° = \\dfrac{3}{4}mg$，绳中拉力 $T = \\dfrac{mg}{\\cos 37°} = \\dfrac{5}{4}mg$",
+                "剪断弹簧瞬间：弹簧力消失，绳的拉力瞬时变为 $T'$，小球沿绳方向无加速度（绳不可伸长）",
+                "沿垂直绳方向合力产生加速度：$a = g\\sin 37° = 6\\ \\text{m/s}^2$，方向沿垂直绳斜向下"
+            ]
+        },
+        challenges: [
+            {
+                q: "用轻弹簧悬挂的小球静止，现将弹簧上端剪断，剪断瞬间小球的加速度为？",
+                opts: [
+                    "0",
+                    "g，方向向下",
+                    "g，方向向上",
+                    "无法确定"
+                ],
+                answer: 1,
+                explain: "剪断瞬间弹簧形变来不及恢复，弹力突变为零，小球只受重力，加速度为 g 向下。"
+            },
+            {
+                q: "用轻绳悬挂的小球静止，剪断绳的瞬间，小球的加速度为？",
+                opts: [
+                    "0",
+                    "g，方向向下",
+                    "g，方向向上",
+                    "大于 g"
+                ],
+                answer: 1,
+                explain: "轻绳拉力随剪断瞬间消失（可以突变），小球只受重力，加速度为 g 向下。注意区分：绳可以突变，弹簧不能突变。"
+            }
+        ]
+    },
+    {
+        badge: "动力学应用 · 考点08",
+        title: "临界问题与板块模型",
+        intro: "'恰好相对滑动''恰好脱离'是受力分析的延伸——临界状态往往决定答案的分界。",
+        formulas: [
+            { t: "⚠ 临界判据", f: "<span class='term-chip warn'>恰好相对滑动</span><span class='term-op'>→</span><span class='term-chip'>f = μN（静摩擦最大）</span>", note: "两物体相对静止的临界条件是摩擦力达到最大静摩擦力。" },
+            { t: "📐 板块模型核心", f: "$$f = \\mu mg \\Rightarrow a = \\mu g$$", note: "上面的物体由摩擦力提供加速度，最大加速度为 μg（接触面给它的）。" },
+            { t: "🎯 判断流程", f: "<span class='term-chip dark'>假设一起运动</span><span class='term-op'>→</span><span class='term-chip dark'>求所需摩擦力</span><span class='term-op'>→</span><span class='term-chip dark'>与 μmg 比较</span>", note: "所需摩擦力超过最大静摩擦则发生相对滑动。" }
+        ],
+        example: {
+            q: "质量 M=2 kg 的木板放在光滑水平面上，上面放质量 m=1 kg 的物块，物块与木板间 μ=0.4。用多大水平力拉木板，物块恰好与木板相对滑动？（g=10）",
+            steps: [
+                "物块的最大加速度：$a_{\\max} = \\mu g = 4\\ \\text{m/s}^2$",
+                "恰好相对滑动时整体一起运动：$F = (M+m)a_{\\max} = 3 \\times 4 = 12\\ \\text{N}$",
+                "F > 12 N 时物块相对木板向后滑动"
+            ]
+        },
+        challenges: [
+            {
+                q: "物块放在粗糙木板上（μ=0.2），木板以 a=3 m/s² 的加速度启动（g=10），物块将？",
+                opts: [
+                    "与木板一起运动",
+                    "相对木板向后滑动",
+                    "相对木板向前滑动",
+                    "无法确定"
+                ],
+                answer: 1,
+                explain: "物块最大加速度 $a_{\\max} = \\mu g = 2\\ \\text{m/s}^2 < 3$，物块跟不上木板，相对木板向后滑。"
+            },
+            {
+                q: "倾角 30° 的光滑斜面上，物块 m 与斜面一起水平向左加速运动，为使物块相对斜面静止，加速度应为？",
+                opts: [
+                    "g",
+                    "g/√3",
+                    "√3g",
+                    "g/2"
+                ],
+                answer: 1,
+                explain: "物块水平方向只受支持力分力 $N\\sin 30° = ma$，竖直方向 $N\\cos 30° = mg$，联立得 $a = g\\tan 30° = \\dfrac{g}{\\sqrt{3}}$。"
+            }
+        ]
+    },
+    {
+        badge: "动力学应用 · 考点09",
+        title: "传送带模型",
+        intro: "传送带上的'先滑后共速'是高频考点：先判断摩擦力方向，再分段分析运动。",
+        formulas: [
+            { t: "🎯 物块与传送带共速前", f: "$$f = \\mu mg \\Rightarrow a = \\mu g$$", note: "相对滑动阶段，摩擦力为滑动摩擦力，方向与相对运动方向相反。" },
+            { t: "🎯 共速后", f: "<span class='term-chip good'>摩擦力突变为静摩擦（或为零）</span>", note: "水平传送带共速后一起匀速（f=0）；倾斜传送带共速后需重判静摩擦方向。" },
+            { t: "📐 相对位移与摩擦热", f: "$$Q = f \\cdot s_{\\text{相对}}$$", note: "相对滑动阶段产生的热量等于滑动摩擦力乘相对位移。" }
+        ],
+        example: {
+            q: "水平传送带以 v=4 m/s 匀速运动，物块以 v₀=0 放上传送带，μ=0.4。物块加速到与传送带共速需要多长时间？",
+            steps: [
+                "加速阶段：$a = \\mu g = 4\\ \\text{m/s}^2$",
+                "$t = \\dfrac{v - v_0}{a} = \\dfrac{4}{4} = 1\\ \\text{s}$",
+                "加速位移 $x = \\tfrac{1}{2}at^2 = 2\\ \\text{m}$，之后与传送带一起匀速"
+            ]
+        },
+        challenges: [
+            {
+                q: "物块以 2 m/s 的初速度滑上以 5 m/s 向右运动的水平传送带（μ=0.5），物块将？",
+                opts: [
+                    "立即减速",
+                    "先加速后与传送带一起匀速",
+                    "一直匀速",
+                    "先减速后匀速"
+                ],
+                answer: 1,
+                explain: "物块速度（2）小于传送带速度（5），受向右滑动摩擦力，做匀加速；加速到 5 m/s 后与传送带共速，一起匀速运动。"
+            },
+            {
+                q: "倾斜传送带向上运送物体，物体与传送带共速后（μtanθ > 1，θ 为倾角），物体将？",
+                opts: [
+                    "相对传送带向下滑",
+                    "与传送带保持相对静止一起匀速",
+                    "相对传送带向上滑",
+                    "做匀加速运动"
+                ],
+                answer: 1,
+                explain: "共速后若 $\\mu mg\\cos\\theta > mg\\sin\\theta$，静摩擦力足以平衡重力沿斜面分力，物体与传送带相对静止一起匀速运动。"
+            }
+        ]
+    },
+    {
+        badge: "综合与真题 · 考点10",
+        title: "综合与真题演练",
+        intro: "牛顿定律与运动学、受力分析的综合，是高考压轴题最常见的载体。",
+        formulas: [
+            { t: "📋 解题总流程", f: "<span class='term-chip dark'>受力分析</span><span class='term-op'>→</span><span class='term-chip dark'>求合力</span><span class='term-op'>→</span><span class='term-chip dark'>F=ma 求加速度</span><span class='term-op'>→</span><span class='term-chip dark'>运动学求解</span>", note: "加速度是联系力与运动的唯一桥梁。" },
+            { t: "🧮 分段与多过程", f: "<span class='term-chip'>不同阶段</span><span class='term-op'>→</span><span class='term-chip'>不同受力</span><span class='term-op'>→</span><span class='term-chip'>分别列式</span>", note: "连接点速度是各阶段共用的桥梁量。" },
+            { t: "🏆 高考高频模型", f: "<span class='term-chip warn'>传送带</span><span class='term-op'>/</span><span class='term-chip warn'>板块</span><span class='term-op'>/</span><span class='term-chip warn'>连接体</span><span class='term-op'>/</span><span class='term-chip warn'>弹簧瞬时</span>", note: "四大经典模型要烂熟于心。" }
+        ],
+        example: {
+            q: "质量 1 kg 的物块从倾角 30°、高 5 m 的光滑斜面顶端由静止滑下，到达底端时的速度为多少？",
+            steps: [
+                "受力分析：重力沿斜面分力 $mg\\sin 30° = 5\\ \\text{N}$",
+                "加速度：$a = g\\sin 30° = 5\\ \\text{m/s}^2$",
+                "斜面长 $L = \\dfrac{h}{\\sin 30°} = 10\\ \\text{m}$，由 $v^2 = 2aL$ 得 $v = \\sqrt{2 \\times 5 \\times 10} = 10\\ \\text{m/s}$"
+            ]
+        },
+        challenges: [
+            {
+                q: "物块从倾角 30° 的光滑斜面顶端由静止滑下，到斜面底端速度 10 m/s，斜面高为？",
+                opts: ["2.5 m", "5 m", "7.5 m", "10 m"],
+                answer: 1,
+                explain: "$a = g\\sin 30° = 5\\ \\text{m/s}^2$，$L = \\dfrac{v^2}{2a} = \\dfrac{100}{10} = 10\\ \\text{m}$，$h = L\\sin 30° = 5\\ \\text{m}$。"
+            },
+            {
+                exam: true,
+                q: "（高考真题 · 复合考点）质量 m 的物块放在质量 M 的木板上，木板放在光滑水平面上，物块与木板间 μ。现对木板施加水平恒力 F，为使物块与木板不发生相对滑动，F 最大为？",
+                opts: [
+                    "μmg",
+                    "μmg(1 + m/M)",
+                    "μmg(1 + M/m)",
+                    "(M+m)μg"
+                ],
+                answer: 1,
+                explain: "物块的最大加速度 $a_{\\max} = \\mu g$。整体一起运动时 $F_{\\max} = (M+m)a_{\\max} = (M+m)\\mu g = \\mu mg(1 + m/M)$。",
+                points: [
+                    { step: "判断临界：物块恰好相对滑动时 f=μmg，a物块max=μg", k: "critical" },
+                    { step: "整体法：F = (M+m)a（相对静止时整体有共同加速度）", k: "conn" },
+                    { step: "物块加速度由摩擦力提供：a物块 = f/m ≤ μg", k: "secondlaw" },
+                    { step: "代入求 Fmax = (M+m)μg，即 μmg(1+m/M)", k: "critical" }
+                ]
+            },
+            {
+                exam: true,
+                q: "（压轴题 · 复合考点）轻绳一端固定，另一端悬挂质量 m 的小球，用水平力 F 将小球缓慢拉至绳与竖直方向夹角为 θ 处静止。突然撤去水平力 F 的瞬间，小球的加速度大小为？",
+                opts: [
+                    "0",
+                    "g",
+                    "gsinθ",
+                    "gtanθ"
+                ],
+                answer: 2,
+                explain: "撤去 F 前：绳中拉力 $T = \\dfrac{mg}{\\cos\\theta}$，$F = mg\\tan\\theta$。撤去 F 瞬间，轻绳的拉力可以突变，突变为 $T' = mg\\cos\\theta$（其竖直分量恰好平衡重力），此时合力为 $mg\\sin\\theta$，方向沿垂直于绳（圆弧切线方向），故 $a = g\\sin\\theta$。",
+                points: [
+                    { step: "撤去前对小球受力分析：重力、拉力 T、水平力 F 三力平衡", k: "analysis" },
+                    { step: "由平衡条件求 T=mg/cosθ，F=mgtanθ", k: "analysis" },
+                    { step: "撤去 F 瞬间，轻绳拉力可以突变，竖直分量平衡重力", k: "instant" },
+                    { step: "合力为 mgsinθ 沿切线方向，由 F=ma 得 a = gsinθ", k: "secondlaw" }
+                ]
+            }
+        ]
+    }
+];
+
+/* ============ 渲染与交互 ============ */
+const container = document.getElementById('container');
+const levelNav = document.getElementById('levelNav');
+const LEVEL_COUNT = LEVELS.length;
+let total = 0;
+LEVELS.forEach(lv => { total += (lv.challenges || [lv.challenge]).length; });
+let score = 0;
+let done = 0;
+let current = 0;
+let answered = {};
+
+document.getElementById('totalVal').textContent = total;
+
+LEVELS.forEach((lv, i) => {
+    const navBtn = document.createElement('button');
+    navBtn.innerHTML = `<span class="nav-no">考点${String(i+1).padStart(2,'0')}</span><span class="nav-name">${lv.title}</span>`;
+    navBtn.onclick = () => goTo(i);
+    levelNav.appendChild(navBtn);
+
+    const sec = document.createElement('div');
+    sec.className = 'level' + (i === 0 ? ' active' : '');
+    sec.id = 'lv' + i;
+
+    let html = `
+        <div class="level-head">
+            <span class="level-badge">${lv.badge}</span>
+            <h2>${lv.title}</h2>
+        </div>
+        <p class="level-intro">${lv.intro}</p>
+    `;
+
+    lv.formulas.forEach(f => {
+        const isMath = f.f.indexOf('$') !== -1;
+        html += `
+        <div class="formula-box">
+            <div class="ftitle">📘 ${f.t}</div>
+            ${isMath
+                ? `<div class="formula">${f.f}</div>`
+                : `<div class="formula-text">${f.f}</div>`}
+            <div class="formula-note">${f.note}</div>
+        </div>`;
+    });
+
+    html += `<div class="example">
+        <div class="q">💡 例题</div>`;
+    lv.example.steps.forEach(s => { html += `<div class="step">${s}</div>`; });
+    html += `</div>`;
+
+    const chs = lv.challenges || [lv.challenge];
+    chs.forEach((c, k) => {
+        const cid = i + '_' + k;
+        const ctag = c.exam ? `<span class="ctag" style="background:#8e44ad;">🏆 高考真题</span>` : `<span class="ctag">🎮 闯关挑战</span>`;
+        html += `
+        <div class="challenge">
+            ${ctag}
+            <div class="cq">${c.q}</div>
+            <div class="opts" id="opts${cid}">`;
+        c.opts.forEach((o, j) => {
+            html += `<div class="opt" data-i="${cid}" data-j="${j}"><span class="key">${String.fromCharCode(65+j)}</span><span>${o}</span></div>`;
+        });
+        html += `</div>
+            <button class="cbtn" id="btn${cid}">提交答案</button>
+            <div class="cresult" id="res${cid}"></div>
+            <div class="cexplain" id="exp${cid}"><b>📝 解析：</b>${c.explain}</div>
+        </div>
+        `;
+    if (c.exam && c.points) {
+        const ids = c.points.map(p => p.k);
+        const mods = new Set(ids.map(id => KNOW[id] && KNOW[id].module));
+        const lvs = new Set(ids.map(id => KNOW[id] && KNOW[id].lv));
+        const isCompound = mods.size > 1 || lvs.size > 1;
+        const badge = isCompound
+            ? `<span style="background:#e67e22;color:#fff;font-size:0.78em;padding:2px 10px;border-radius:10px;margin-left:8px;">⚡ 复合考点（跨 ${mods.size} 模块 / ${lvs.size} 考点）</span>`
+            : '';
+        html += `
+        <div class="cexplain" id="trace${cid}" style="background:#f3e5f5; border-left:4px solid #8e44ad;">
+            <b>🔍 知识点溯源${badge}（哪一步用到了哪个知识点）：</b>
+            <table class="trace-table">
+                <tr><th>解题步骤</th><th>用到的知识点</th><th>所属模块·关卡</th><th>若这步卡住 → 去哪复习</th></tr>`;
+        c.points.forEach(p => {
+            const k = KNOW[p.k];
+            if (k) {
+                html += `<tr>
+                    <td>${p.step}</td>
+                    <td><b>${k.name}</b><br><span style="color:#7b4b9e;font-size:0.85em;">${k.desc}</span></td>
+                    <td>${k.module} · <a href="javascript:void(0)" onclick="goTo(${k.lv})" class="lvlink">考点${String(k.lv+1).padStart(2,'0')}</a></td>
+                    <td style="color:#c0392b;">回到「${k.name}」</td>
+                </tr>`;
+            } else {
+                html += `<tr><td>${p.step}</td><td colspan="3" style="color:#c0392b;">⚠ 知识点 id「${p.k}」未在库中定义</td></tr>`;
+            }
+        });
+        html += `</table>
+            <p style="margin-top:8px; color:#6a1b9a; font-size:0.92em;">💡 复合考点做错时，对照上表找到第一个没想通的环节，点击「第X关」直接跳去复习对应知识点，精准补缺。</p>
+        </div>`;
+    }
+    });
+
+    html += `<div class="keymemo">🔑 <b>本关记忆要点：</b>${lv.title} — 熟记上方公式，理解例题思路，再做题巩固。</div>`;
+
+    html += `<div class="level-actions">
+        <button class="btn" id="prev${i}" ${i===0?'disabled':''} onclick="goTo(${i-1})">← 上一关</button>
+        <span id="status${i}"></span>
+        <button class="btn btn-next" id="next${i}" ${i===LEVEL_COUNT-1?'disabled':''} onclick="goTo(${i+1})">下一关 →</button>
+    </div>`;
+
+    sec.innerHTML = html;
+    container.appendChild(sec);
+});
+
+document.querySelectorAll('.opt').forEach(opt => {
+    opt.addEventListener('click', function() {
+        const cid = this.dataset.i;
+        if (answered[cid]) return;
+        document.querySelectorAll(`.opt[data-i="${cid}"]`).forEach(o => { o.classList.remove('selected'); o.style.borderColor=''; o.style.background=''; });
+        this.classList.add('selected');
+        this.style.borderColor = '#3a7bd5';
+        this.style.background = '#eef4ff';
+    });
+});
+
+document.querySelectorAll('.cbtn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const cid = this.id.replace('btn', '');
+        submitAnswer(cid);
+    });
+});
+
+function submitAnswer(cid) {
+    if (answered[cid]) return;
+    const sel = document.querySelector(`.opt[data-i="${cid}"].selected`);
+    if (!sel) { alert('请先选择一个答案！'); return; }
+    const j = +sel.dataset.j;
+    answered[cid] = true;
+    const opts = document.querySelectorAll(`.opt[data-i="${cid}"]`);
+    opts.forEach(o => { o.classList.add('disabled'); o.style.borderColor=''; o.style.background=''; });
+    const [li, lk] = cid.split('_').map(Number);
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const correct = chs[lk].answer;
+    opts[correct].classList.add('correct');
+    const res = document.getElementById('res' + cid);
+    const exp = document.getElementById('exp' + cid);
+    exp.classList.add('show');
+    const trace = document.getElementById('trace' + cid);
+    if (trace) trace.classList.add('show');
+
+    if (j === correct) {
+        score++;
+        res.className = 'cresult ok';
+        res.textContent = '✅ 回答正确！+1 分';
+    } else {
+        opts[j].classList.add('wrong');
+        res.className = 'cresult no';
+        res.textContent = '❌ 回答错误，正确答案：' + String.fromCharCode(65+correct);
+    }
+    done++;
+    updateLevelStatus(li);
+    updateProgress();
+}
+
+function updateLevelStatus(li) {
+    const chs = LEVELS[li].challenges || [LEVELS[li].challenge];
+    const allAnswered = chs.every((_, k) => answered[li + '_' + k]);
+    if (allAnswered) {
+        levelNav.children[li].classList.add('done');
+        const allRight = chs.every((c, k) => answered[li+'_'+k] && document.querySelector(`.opt[data-i="${li}_${k}"][data-j="${c.answer}"]`)?.classList.contains('correct'));
+        document.getElementById('status' + li).textContent = allRight ? '✅ 已通关' : '❌ 本关未通过';
+    }
+}
+
+function updateProgress() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('doneVal').textContent = done;
+    document.getElementById('progFill').style.width = (done/total*100) + '%';
+    if (done === total) {
+        setTimeout(showModal, 400);
+    }
+}
+
+function goTo(i) {
+    if (i < 0 || i >= LEVEL_COUNT) return;
+    document.getElementById('lv' + current).classList.remove('active');
+    levelNav.children[current].classList.remove('active');
+    current = i;
+    document.getElementById('lv' + i).classList.add('active');
+    levelNav.children[i].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+levelNav.children[0].classList.add('active');
+
+function showModal() {
+    const stars = score >= total*0.9 ? '⭐⭐⭐' : (score >= total*0.6 ? '⭐⭐' : '⭐');
+    document.getElementById('modalStars').textContent = stars;
+    document.getElementById('modalScore').textContent = `最终得分：${score} / ${total}`;
+    document.getElementById('overlay').classList.add('show');
+}
+</script>
+
+<script src="../nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="../theme.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电学实验 · 测定电源电动势和内阻</title>
+<style>
+:root{--bg:#f5f7fa;--card:#ffffff;--card2:#eef2f7;--line:#e2e8f0;--txt:#1f2a3d;--sub:#5a6b7b;--accent:#2196f3;--accent2:#1f9d6b;--warn:#e0922e;--danger:#e5484d;--purple:#7c5cff;--pink:#e0568f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.7;padding:20px}
+.main{max-width:860px;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.topbar a{color:var(--accent);text-decoration:none;font-size:14px}
+.topbar a:hover{text-decoration:underline}
+.pos{color:var(--sub);font-size:13px}
+h1{font-size:26px;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{display:inline-block;color:var(--accent2);background:rgba(54,211,153,.12);border:1px solid rgba(54,211,153,.35);border-radius:20px;padding:1px 10px;font-size:12px;margin-bottom:12px}
+h2{font-size:17px;margin:22px 0 10px;color:var(--txt)}
+.imgbox{text-align:center;margin:10px 0}
+.imgbox svg{max-width:100%;height:auto}
+.imgcap{color:var(--sub);font-size:12px;margin-top:4px}
+.formula{display:inline-block;background:rgba(79,140,255,.12);border:1px solid rgba(79,140,255,.4);border-radius:6px;padding:1px 8px;margin:0 2px}
+.principle{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14px}
+.principle b{color:var(--accent2)}
+.principle .red{color:var(--danger)}
+.principle .warn{color:var(--warn)}
+.principle hr{border:none;border-top:1px solid var(--line);margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:10px;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer;transition:.15s;font-size:13.5px}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt.correct{background:rgba(54,211,153,.18);border-color:var(--accent2)}
+.opt.wrong{background:rgba(255,107,107,.16);border-color:var(--danger)}
+.opt.sel{background:rgba(99,102,241,.22);border-color:var(--accent)}
+.opt.disabled{cursor:default;pointer-events:none}
+.submit{margin-top:10px;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:6px 16px;font-size:13px;cursor:pointer}
+.submit:hover{filter:brightness(1.1)}
+.exp{margin-top:10px;padding:10px 12px;background:var(--card2);border-left:4px solid var(--warn);border-radius:8px;font-size:13px;display:none}
+.exp.show{display:block}
+.exp .good{color:var(--accent2);font-weight:700}
+.exp .bad{color:var(--danger);font-weight:700}
+.exam{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;font-size:14px}
+.exam p{margin-bottom:8px}
+.exam .ans{color:var(--accent2);font-weight:700}
+.exam img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin:6px 0}
+.exam summary{color:var(--accent);cursor:pointer}
+.exam details>div{background:var(--card2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:13px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.nav a{display:inline-block;background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;border-radius:10px;padding:9px 16px;font-size:13.5px;transition:.2s}
+.nav a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.nav .prev,.nav .next{color:var(--accent)}
+.nav .mid{color:var(--accent2)}
+.footer{text-align:center;color:var(--sub);font-size:12px;margin:24px 0 10px}
+</style>
+</head>
+<body>
+<div class="main">
+  <div class="topbar">
+    <a href="../高考物理_电学实验闯关.html">← 电学实验闯关目录</a>
+    <span class="pos">第 8 关 · 共 11 关</span>
+  </div>
+  <h1>测定电源电动势和内阻</h1>
+  <div class="tag">U−I 图像</div>
+  <h2><span class="bar">📖</span> 实验原理</h2>
+  <div class="principle"><div class="imgbox">
+<svg width="420" height="160" viewBox="0 0 420 160">
+  <line x1="45" y1="45" x2="92" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="112" cy="45" r="15" fill="none" stroke="#2196f3" stroke-width="2"/>
+  <text x="112" y="50" text-anchor="middle" font-size="14" font-weight="bold" fill="#2196f3">A</text>
+  <line x1="127" y1="45" x2="355" y2="45" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="355" y1="45" x2="355" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="45" y1="130" x2="80" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="88" cy="130" r="3" fill="#1f2a3d"/>
+  <line x1="91" y1="130" x2="125" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="91" y1="130" x2="120" y2="117" stroke="#e5484d" stroke-width="2"/>
+  <text x="88" y="152" text-anchor="middle" font-size="10" fill="#e5484d">S</text>
+  <line x1="125" y1="130" x2="160" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <polyline points="160,130 168,120 176,140 184,120 192,140 200,120 208,140 216,130" fill="none" stroke="#1f9d6b" stroke-width="2"/>
+  <line x1="216" y1="130" x2="355" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <text x="188" y="112" text-anchor="middle" font-size="10" fill="#1f9d6b">R（滑动变阻器）</text>
+  <line x1="45" y1="45" x2="45" y2="62" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="39" y1="70" x2="51" y2="70" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="39" y1="82" x2="51" y2="82" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="45" y1="62" x2="45" y2="70" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="45" y1="82" x2="45" y2="130" stroke="#5a6b7b" stroke-width="2"/>
+  <text x="28" y="62" font-size="12" fill="#5a6b7b">E</text>
+  <line x1="45" y1="68" x2="26" y2="68" stroke="#5a6b7b" stroke-width="2"/>
+  <line x1="26" y1="84" x2="45" y2="84" stroke="#5a6b7b" stroke-width="2"/>
+  <circle cx="19" cy="76" r="14" fill="none" stroke="#7c5cff" stroke-width="2"/>
+  <text x="19" y="81" text-anchor="middle" font-size="13" font-weight="bold" fill="#7c5cff">V</text>
+  <text x="10" y="110" font-size="10" fill="#5a6b7b">V 并联电源两端</text>
+</svg>
+<div class="imgcap">图 8-1：伏安法测电源电动势和内阻（V 直接并电源两端）</div>
+</div>
+<hr>
+<b>原理：</b>闭合电路欧姆定律 <b>U = E − Ir</b>（U 为路端电压，I 为干路电流）。
+<hr>
+<b>数据处理（图像法）：</b>作 <b>U–I 图像</b>（I 为横轴、U 为纵轴），是一条直线：<br>
+· <b>纵轴截距 = 电动势 E</b>（I=0 时 U=E）；<br>
+· <b>斜率绝对值 = 内阻 r</b>（U = −r·I + E，斜率 k = −r）。
+<hr>
+<span class="warn">⚠ 误差分析（电压表直接并电源两端，即"电流表外接于电源"）：</span><br>
+电压表有分流，电流表读数 <b>I<sub>测</sub> &lt; I<sub>真</sub></b>（少了流过 V 的电流）。等效电源内阻 R<sub>等</sub> = r∥R<sub>V</sub> &lt; r，E<sub>等</sub> &lt; E。<br>
+→ 结论：<span class="red">测得的 r 偏小、E 也略偏小</span>。R<sub>V</sub> 越大误差越小。
+<hr>
+<b>伏阻法（补充）：</b>电阻箱 + 电压表，由 U = E − U·r/R 变形得 <b>1/U = 1/E + (r/E)·(1/R)</b>，作 <b>1/U–1/R</b> 图像：截距 = 1/E，斜率 = r/E。</div></div>
+  <h2><span class="bar">🎯</span> 闯关练习</h2>
+  <div id="qs"></div>
+  <h2><span class="bar">📜</span> 高考真题</h2>
+  <div class="exam"><p>（真题改编）用伏安法测一节干电池的电动势和内阻，测得多组 (U, I) 数据，作 U–I 图像为一条直线，延长交纵轴于 1.50 V，交横轴于 3.00 A。</p>
+<p>(1) 求 E 和 r；(2) 若电压表内阻 R<sub>V</sub> 为 1000 Ω，分析本实验 E、r 测量值偏大还是偏小。</p>
+<p class='ans'>答案：(1) E = 纵截距 = 1.50 V；r = |斜率| = 1.50/3.00 = 0.50 Ω。<br>(2) V 直接并联电源两端，V 分流使 I<sub>测</sub> < I<sub>真</sub>，等效 r∥R<sub>V</sub> < r、E<sub>等</sub> < E，故 E、r 测量值均<b>偏小</b>。</p></div>
+  <div class="nav">
+    <a class="prev" href="07_多用电表欧姆表.html">← 多用电表（欧姆表）</a>
+    <a class="mid" href="../高考物理_电学实验闯关.html">📋 全部实验</a>
+    <a class="next" href="09_描绘小灯泡伏安特性曲线.html">描绘小灯泡伏安特性曲线 →</a>
+  </div>
+  <div class="footer">电学实验专题 · 点击选项即时判分，多选请先点选选项再点「提交答案」</div>
+</div>
+<script>
+const QS = [{"q": "用 U–I 图像测电源电动势和内阻，纵轴截距与斜率绝对值分别表示？", "o": ["E 和 r", "r 和 E", "E 和 1/r", "1/E 和 r"], "a": 0, "e": "U = E − Ir，图像 U = −r·I + E：纵截距为电动势 E，斜率 −r 的绝对值为内阻 r。"}, {"q": "用教材电路（电压表直接并联电源两端）测 E、r，测得值与真实值相比？", "o": ["E 偏大、r 偏大", "E 偏小、r 偏小", "E 准确、r 偏大", "E 偏小、r 偏大"], "a": 1, "e": "电压表分流使 I_测 < I_真，等效电源为 r 与 R_V 并联 → r_测 = r∥R_V < r，E_测 < E。均<b>偏小<\/b>。"}, {"q": "某次测得两组数据（U₁=1.5 V，I₁=0.2 A）、（U₂=1.2 V，I₂=0.5 A），则 E 和 r 分别为？", "o": ["E=1.5 V，r=0.6 Ω", "E=1.7 V，r=1.0 Ω", "E=1.6 V，r=0.8 Ω", "E=1.8 V，r=0.4 Ω"], "a": 1, "e": "E = U₁+I₁r = U₂+I₂r → 1.5+0.2r = 1.2+0.5r → r = 1.0 Ω；E = 1.5+0.2×1.0 = 1.7 V。"}, {"q": "用伏阻法（电阻箱 R + 电压表）测 E、r，作 1/U–1/R 图像，则图像的纵截距和斜率分别为？", "o": ["1/E 和 r/E", "E 和 r", "1/E 和 E/r", "r 和 1/E"], "a": 0, "e": "由 U = E − U·r/R 得 1/U = 1/E + (r/E)·(1/R)。纵截距 = 1/E，斜率 = r/E。"}, {"q": "（2024·天津）测定电源的电动势和内阻，可供选用的器材：A．电压表（量程 0~3 V，内阻约 3 kΩ）；B．电流表（量程 0~0.6 A，内阻约 1 Ω）；C．滑动变阻器（最大阻值 20 Ω，额定电流 1 A）；D．滑动变阻器（最大阻值 1000 Ω，额定电流 0.5 A）；E．待测电源（电动势约 3 V，内阻约 1 Ω）；F．开关、导线若干。实验中所用的滑动变阻器应选？（填器材前字母代号）", "o": ["C", "D", "C 或 D 均可", "还需另配其他变阻器"], "a": 0, "e": "选 <b>C<\/b>。测量电源电动势和内阻时，滑动变阻器应选<b>阻值较小<\/b>的（C，20 Ω）：①其阻值与电源内阻 r（约 1 Ω）同数量级，滑片移动时电流、电压变化<b>明显<\/b>，U–I 图像数据点分布均匀，测量更精确、便于调节；②D（1000 Ω）阻值太大，接入后回路电流过小（仅几 mA），电流表指针偏转不明显、读数误差大，且滑片移动几乎不改变电流，调节不便。"}, {"q": "（2024·天津）某同学研究闭合电路的规律。根据闭合电路欧姆定律得出了电源输出功率 P 与外电路电阻 R 的关系图像，则 P 的峰值对应的外电路电阻值 R 应______电源内阻 r（填“大于”、“小于”或“等于”）。提示：P = E²R/(R+r)² = E²/[(R−r)²/R + 4r]。", "o": ["大于", "小于", "等于", "无法确定"], "a": 2, "e": "填<b>等于<\/b>。由 P = E²R/(R+r)² 变形得 P = E²/[(R−r)²/R + 4r]。当 <b>R = r<\/b> 时，(R−r)²/R = 0，分母取最小值 4r，输出功率最大 P<sub>max<\/sub> = E²/4r。P–R 图像先增大后减小，峰值恰好对应 R = r。"}, {"q": "（2024·北京）某兴趣小组利用铜片、锌片和橘子制作了水果电池，用数字电压表（可视为理想电压表）和电阻箱测量电池的电动势 E 和内阻 r。多次调节电阻箱 R，记录电压表读数 U，作 U–U/R 图像如图 2 所示。求 E 和 r（结果保留两位有效数字）。", "o": ["E = 1.0 V，r = 3.3 kΩ", "E = 1.1 V，r = 2.0 kΩ", "E = 0.9 V，r = 5.0 kΩ", "E = 1.0 V，r = 0.33 kΩ"], "a": 0, "e": "由闭合电路欧姆定律 E = U + I·r，而 I = U/R，故 <b>E = U + (U/R)·r<\/b>，即 <b>U = −r·(U/R) + E<\/b>。作 U–(U/R) 图像：纵截距 = E，斜率绝对值 = r。<br>由图 2 读数：U 轴截距 ≈ <b>1.0 V<\/b>，故 E = 1.0 V；取另一点（如 U/R ≈ 200×10⁻⁶ A 时 U ≈ 0.4 V），得 r = (1.0−0.4)/(200×10⁻⁶) ≈ 3.0 kΩ，保留两位有效数字为 <b>3.3 kΩ<\/b>。"}];
+(function(){
+  const box = document.getElementById('qs');
+  QS.forEach(function(q, qi){
+    const multi = Array.isArray(q.a);
+    const card = document.createElement('div');
+    card.className = 'q';
+    card.innerHTML =
+      '<div class="qt">' + (qi+1) + '. ' + q.q + '</div>' +
+      '<div class="opts">' + q.o.map(function(o, oi){
+        return '<div class="opt" data-i="' + oi + '">' + String.fromCharCode(65 + oi) + '. ' + o + '</div>';
+      }).join('') + '</div>' +
+      (multi ? '<button class="submit">提交答案</button>' : '') +
+      '<div class="exp"></div>';
+    box.appendChild(card);
+    const opts = card.querySelectorAll('.opt');
+    const exp = card.querySelector('.exp');
+    const submit = card.querySelector('.submit');
+    function judge(){
+      const sel = [].slice.call(opts).filter(function(o){ return o.classList.contains('sel'); }).map(function(o){ return +o.dataset.i; });
+      const ans = multi ? q.a.slice().sort() : [q.a];
+      const ss = sel.slice().sort();
+      const ok = multi ? (ss.length === ans.length && ans.every(function(v, i){ return v === ss[i]; })) : (ss.length === 1 && ss[0] === ans[0]);
+      opts.forEach(function(o){
+        o.classList.add('disabled');
+        if (ans.indexOf(+o.dataset.i) >= 0) o.classList.add('correct');
+        else if (o.classList.contains('sel')) o.classList.add('wrong');
+      });
+      exp.innerHTML = (ok ? '<span class="good">✅ 回答正确！</span>' : '<span class="bad">❌ 回答错误</span>') + '<br>' + q.e;
+      exp.classList.add('show');
+      if (submit) submit.style.display = 'none';
+    }
+    if (multi) {
+      opts.forEach(function(o){ o.addEventListener('click', function(){ o.classList.toggle('sel'); }); });
+      submit.addEventListener('click', judge);
+    } else {
+      opts.forEach(function(o){ o.addEventListener('click', function(){
+        opts.forEach(function(x){ x.classList.remove('sel'); });
+        o.classList.add('sel'); judge();
+      }); });
+    }
+  });
+})();
+</script>
+<script src="../nav.js"></script>
+</body>
+</html>
