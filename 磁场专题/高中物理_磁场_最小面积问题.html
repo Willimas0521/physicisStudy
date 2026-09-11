@@ -73,6 +73,7 @@
     <a href="#rect">矩形磁场最小面积</a>
     <a href="#leaf">树叶形磁场（旋转圆）</a>
     <a href="#triangle">三角形磁场最小面积</a>
+    <a href="#examples">例题精讲</a>
 </nav>
 
 <div class="container">
@@ -212,6 +213,123 @@
     <div class="key-point">
         <b>📌 口诀：</b>轨迹圆内切三角，三边相切面积小。（通常是轨迹圆与三角形的两边相切，第三边限制出射。）
     </div>
+</div>
+
+<!-- 五、例题精讲 -->
+<div class="card" id="examples">
+    <h2><span class="num">5</span>例题精讲</h2>
+    <p style="color:#7f8c8d;font-size:0.92em;margin-bottom:10px;">下面两题综合考查"圆形／矩形最小面积"与"圆形（单边）磁场的特点"，均取自高考真题。</p>
+
+    <!-- 例1 -->
+    <h3>例 1（圆形 / 矩形最小面积）</h3>
+    <p>一质量为 $m$、电荷量为 $q$（$q<0$）的带电粒子以速度 $v_0$ 从 $y$ 轴上的 $A$ 点垂直 $y$ 轴射入第一象限。第一象限某区域有磁感应强度大小为 $B$ 的匀强磁场，方向垂直于纸面向里。粒子离开第一象限时速度方向与 $x$ 轴正方向夹角 $\theta=60^\circ$。粒子仅受洛伦兹力，下列说法正确的是（　）</p>
+    <div style="background:#f7f9fc;border:1px solid #e3e8ee;border-radius:8px;padding:12px 18px;margin:12px 0;">
+        <p>A．若磁场区域是圆形，则该磁场的最小面积为 $\dfrac{\pi m^2 v_0^2}{2B^2 q^2}$</p>
+        <p>B．若磁场区域是圆形，则该磁场的最小面积为 $\dfrac{\pi m^2 v_0^2}{B^2 q^2}$</p>
+        <p>C．若磁场区域是矩形，则该磁场的最小面积为 $\dfrac{(2-\sqrt3)\,m^2 v_0^2}{2B^2 q^2}$</p>
+        <p>D．若磁场区域是矩形，则该磁场的最小面积为 $\dfrac{3m^2 v_0^2}{4B^2 q^2}$</p>
+    </div>
+
+    <figure class="figure">
+        <svg width="420" height="290" viewBox="0 0 420 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="例1：圆形与矩形最小面积">
+            <defs>
+                <marker id="ax1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#333"/></marker>
+                <marker id="ag1" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2e7d32"/></marker>
+            </defs>
+            <!-- 坐标轴 -->
+            <line x1="50" y1="250" x2="400" y2="250" stroke="#333" stroke-width="1.6" marker-end="url(#ax1)"/>
+            <line x1="50" y1="250" x2="50" y2="20" stroke="#333" stroke-width="1.6" marker-end="url(#ax1)"/>
+            <text x="402" y="266" font-size="14">x</text>
+            <text x="34" y="26" font-size="14">y</text>
+            <text x="30" y="264" font-size="13">O</text>
+            <!-- A 点与初速度 -->
+            <circle cx="50" cy="95" r="3.5" fill="#1e3c72"/>
+            <text x="30" y="92" font-size="13">A</text>
+            <line x1="50" y1="95" x2="140" y2="95" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#ag1)"/>
+            <text x="122" y="88" font-size="13" fill="#2e7d32">v₀</text>
+            <!-- 轨迹弧 C→D -->
+            <path d="M 200 95 C 250 95, 270 120, 300 172" fill="none" stroke="#e53935" stroke-width="3"/>
+            <circle cx="200" cy="95" r="3.5" fill="#e53935"/><text x="190" y="86" font-size="13" fill="#e53935">C</text>
+            <circle cx="300" cy="172" r="3.5" fill="#e53935"/><text x="306" y="178" font-size="13" fill="#e53935">D</text>
+            <!-- 弦 CD -->
+            <line x1="200" y1="95" x2="300" y2="172" stroke="#2196f3" stroke-width="1.6" stroke-dasharray="6 4"/>
+            <text x="222" y="142" font-size="12" fill="#2196f3">弦 CD</text>
+            <!-- h -->
+            <line x1="250" y1="133" x2="250" y2="114" stroke="#ff9800" stroke-width="1.8" stroke-dasharray="4 3"/>
+            <text x="254" y="128" font-size="12" fill="#ff9800">h</text>
+            <!-- 出射速度 -->
+            <line x1="300" y1="172" x2="345" y2="250" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#ag1)"/>
+            <text x="312" y="215" font-size="13" fill="#2e7d32">v</text>
+            <!-- θ -->
+            <text x="322" y="243" font-size="12" fill="#7b1fa2">θ=60°</text>
+        </svg>
+        <figcaption>图：粒子从 C 进入磁场、由 D 射出；CD 为弦，h 为弦到弧顶的距离。圆形取 CD 为直径最小；矩形取长 CD、宽 h 最小。</figcaption>
+    </figure>
+
+    <div class="key-point"><b>✅ 答案：C</b>（难度 0.4）</div>
+
+    <h3>详解</h3>
+    <p><b>AB．</b>洛伦兹力提供向心力 $qv_0B=\dfrac{mv_0^2}{r}$，得轨迹半径 $r=\dfrac{mv_0}{qB}$。</p>
+    <p>粒子速度偏转角等于轨迹圆弧所对的圆心角，$\theta=60^\circ$，故弦长
+        $$CD=2r\sin\dfrac{\theta}{2}=2r\sin30^\circ=r.$$</p>
+    <p>圆形磁场区域以弦 $CD$ 为直径时面积最小：
+        $$S_{\min}=\pi\left(\dfrac{CD}{2}\right)^2=\pi\left(\dfrac{r}{2}\right)^2=\dfrac{\pi m^2 v_0^2}{4q^2B^2}.$$
+        与 A、B 选项均不符，故 AB 错误。</p>
+    <p><b>CD．</b>矩形磁场区域以弦 $CD$ 为长、以圆弧最高点到弦 $CD$ 的距离 $h$ 为宽时面积最小，其中
+        $$h=r-r\cos\dfrac{\theta}{2}=r\left(1-\dfrac{\sqrt3}{2}\right).$$
+        故矩形最小面积
+        $$S_{\min}=CD\cdot h=r\cdot r\left(1-\dfrac{\sqrt3}{2}\right)=\dfrac{(2-\sqrt3)\,m^2 v_0^2}{2q^2B^2}.$$
+        故 C 正确，D 错误。</p>
+    <div class="key-point"><b>📌 母题回顾：</b>圆形——「弦即直径，面积最小」；矩形——「宽看相切，长看出射」。本题矩形宽度取的是弦到弧顶的距离 $h$，本质仍是"让边界贴住轨迹"。</div>
+
+    <!-- 例2 -->
+    <h3>例 2（圆形／单边磁场的特点）</h3>
+    <p>如图所示，半径 $R=1\,\text{cm}$ 的圆形区域内有垂直纸面向外的匀强磁场（图中未画出），磁感应强度 $B=2\,\text{T}$。一比荷 $\dfrac{q}{m}=2\times10^{6}\,\text{C/kg}$ 的带正电粒子从圆形磁场边界上的 $A$ 点以 $v_0=4\times10^{4}\,\text{m/s}$ 的速度垂直直径 $MN$ 射入磁场，恰好从 $N$ 点射出，且 $\angle AON=120^\circ$。下列选项正确的是（　）</p>
+    <div style="background:#f7f9fc;border:1px solid #e3e8ee;border-radius:8px;padding:12px 18px;margin:12px 0;">
+        <p>A．粒子在磁场中运动的轨迹半径为 $0.5\,\text{cm}$</p>
+        <p>B．粒子从 $N$ 点射出时方向竖直向下</p>
+        <p>C．若粒子改为从圆形磁场边界上的 $C$ 点以相同的速度入射，一定从 $N$ 点射出</p>
+        <p>D．若要实现带电粒子从 $A$ 点入射、从 $N$ 点出射，则所加圆形磁场的最小面积可调整为 $\dfrac{3}{2}\pi\times10^{-4}\,\text{m}^2$</p>
+    </div>
+
+    <figure class="figure">
+        <svg width="360" height="340" viewBox="0 0 360 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="例2：圆形磁场中的单边磁场特点">
+            <defs><marker id="ag2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2e7d32"/></marker></defs>
+            <!-- 磁场边界圆 -->
+            <circle cx="170" cy="170" r="120" fill="none" stroke="#2196f3" stroke-width="2" stroke-dasharray="7 5"/>
+            <circle cx="170" cy="170" r="3.5" fill="#1e3c72"/><text x="177" y="167" font-size="14">O</text>
+            <!-- M 上、N 下 -->
+            <circle cx="170" cy="50" r="3.5" fill="#1e3c72"/><text x="166" y="42" font-size="14">M</text>
+            <circle cx="170" cy="290" r="3.5" fill="#1e3c72"/><text x="166" y="308" font-size="14">N</text>
+            <!-- A、C -->
+            <circle cx="66" cy="110" r="3.5" fill="#e53935"/><text x="46" y="106" font-size="14" fill="#e53935">A</text>
+            <circle cx="66" cy="230" r="3.5" fill="#e53935"/><text x="46" y="234" font-size="14" fill="#e53935">C</text>
+            <!-- 初速度 -->
+            <line x1="66" y1="110" x2="140" y2="110" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#ag2)"/>
+            <text x="122" y="103" font-size="13" fill="#2e7d32">v</text>
+            <!-- 半径虚线 -->
+            <line x1="170" y1="170" x2="66" y2="110" stroke="#9e9e9e" stroke-width="1.4" stroke-dasharray="5 4"/>
+            <line x1="170" y1="170" x2="66" y2="230" stroke="#9e9e9e" stroke-width="1.4" stroke-dasharray="5 4"/>
+            <line x1="170" y1="170" x2="170" y2="290" stroke="#9e9e9e" stroke-width="1.4" stroke-dasharray="5 4"/>
+            <line x1="170" y1="170" x2="170" y2="50" stroke="#9e9e9e" stroke-width="1.4" stroke-dasharray="5 4"/>
+            <!-- 弦 AN -->
+            <line x1="66" y1="110" x2="170" y2="290" stroke="#e53935" stroke-width="1.8" stroke-dasharray="6 4"/>
+            <text x="108" y="205" font-size="12" fill="#7b1fa2">∠AON=120°</text>
+        </svg>
+        <figcaption>图：粒子由 A 垂直 MN 射入、恰从 N 射出；连接 AN（弦），由圆形磁场"单边"特点求解。</figcaption>
+    </figure>
+
+    <div class="key-point"><b>✅ 答案：C</b>（难度 0.65）</div>
+
+    <h3>详解</h3>
+    <p><b>A．</b>由 $Bqv_0=\dfrac{mv_0^2}{r}$ 得
+        $$r=\dfrac{mv_0}{qB}=\dfrac{v_0}{(q/m)\,B}=\dfrac{4\times10^{4}}{2\times10^{6}\times2}\,\text{m}=0.01\,\text{m}=1\,\text{cm}.$$
+        故 A 错误。</p>
+    <p><b>BD．</b>连接 $AN$。由圆形（单边）磁场的特点：<span class="highlight">入射方向与 $AN$ 的夹角等于出射方向与 $AN$ 的夹角</span>，故粒子从 $N$ 点射出时方向并非竖直向下。若要实现从 $A$ 入射、从 $N$ 出射，圆形磁场以 $AN$ 为直径时面积最小：$AN=2R\sin60^\circ$，则
+        $$S_{\min}=\pi\left(\dfrac{AN}{2}\right)^2=\pi\left(R\sin60^\circ\right)^2=\pi\left(1\times\dfrac{\sqrt3}{2}\,\text{cm}\right)^2=\dfrac{3\pi}{4}\times10^{-4}\,\text{m}^2.$$
+        故 B、D 均错误。</p>
+    <p><b>C．</b>若粒子从 $C$ 点以相同速度入射（入射方向与 $MN$ 垂直），由几何关系知四边形 $ONO'C$ 为菱形，对边互相平行，$O'C$ 竖直向下，故粒子一定从 $N$ 点射出。C 正确。</p>
+    <div class="key-point"><b>📌 关键结论：</b>圆形磁场中，"入射方向与弦的夹角 = 出射方向与弦的夹角"；当出、入射点确定时，<span class="highlight">以这两点连线为直径</span>的圆形磁场面积最小。</div>
 </div>
 
 <div class="footer">
