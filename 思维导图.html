@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思维导图 · 高中物理知识库</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body { overflow: hidden; }
+        .wrap { height: 100vh; display: flex; align-items: center; justify-content: center; }
+        #map { position: relative; width: 1600px; height: 950px; transform-origin: center center; }
+        #map svg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        #map .node { position: absolute; z-index: 2; }
+
+        /* 中心节点 */
+        .center-node {
+            width: 196px; height: 196px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 25%, #3a7bd5 0%, #2a5298 55%, #1e3c72 100%);
+            box-shadow: 0 0 0 8px rgba(58,123,213,.14), 0 0 60px rgba(58,123,213,.4), inset 0 0 30px rgba(255,255,255,.08);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            color: #fff; text-align: center; border: 2px solid rgba(255,255,255,.25);
+            transition: box-shadow .3s ease, transform .3s ease;
+        }
+        .center-node:hover { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(58,123,213,.2), 0 0 80px rgba(58,123,213,.55), inset 0 0 30px rgba(255,255,255,.1); }
+        .center-node .ce { font-size: 34px; }
+        .center-node .cn { font-size: 22px; font-weight: 800; letter-spacing: 2px; }
+        .center-node .cs { font-size: 12px; opacity: .9; margin-top: 3px; }
+        .center-node .cs b { color: #ffd54f; font-size: 14px; }
+
+        /* 分类标题（一级，可折叠） */
+        .chip {
+            height: 40px; width: 150px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            color: #fff; font-weight: 700; font-size: 15px; letter-spacing: 1px;
+            box-shadow: 0 4px 14px rgba(30,60,114,.22), inset 0 1px 0 rgba(255,255,255,.25);
+            white-space: nowrap; cursor: pointer; user-select: none; transition: filter .15s, transform .15s;
+        }
+        .chip:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .chip .n { font-size: 11px; font-weight: 600; background: rgba(255,255,255,.28); border-radius: 999px; padding: 1px 9px; }
+
+        /* 分组节点（二级分类） */
+        .group-node {
+            height: 36px; width: 150px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            background: #fff; border: 1.5px dashed #cfd9e6;
+            font-size: 13.5px; font-weight: 700; color: #1f2d3d;
+            white-space: nowrap; cursor: pointer; user-select: none; transition: background .15s;
+            box-shadow: 0 2px 8px rgba(30,60,114,.08);
+        }
+        .group-node:hover { background: #eef4fb; }
+        .expander { font-size: 10px; opacity: .7; margin-right: 2px; }
+        .group-node .n { font-size: 10px; background: currentColor; color: #fff; border-radius: 999px; padding: 0 7px; font-weight: 800;
+            -webkit-text-fill-color: #fff; }
+
+        /* 专题子节点 */
+        .item {
+            width: 190px; height: 42px; border-radius: 11px;
+            background: #fff; border: 1px solid #e3ebf4;
+            display: flex; align-items: center; gap: 9px; padding: 0 12px;
+            color: #1f2d3d !important; text-decoration: none; font-size: 13px;
+            box-shadow: 0 2px 8px rgba(30,60,114,.06);
+            transition: background .18s, border-color .18s, transform .18s, box-shadow .18s;
+        }
+        .item:hover { background: #eef4fb; transform: translateX(5px); box-shadow: 0 8px 20px rgba(30,60,114,.16); }
+        .item[data-side="L"]:hover { transform: translateX(-5px); }
+        .item .ic { font-size: 16px; flex-shrink: 0; }
+        .item .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1f2d3d !important; }
+
+        /* 连线 */
+        path.line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        path.line.anim { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .8s cubic-bezier(.6,.05,.25,1) forwards; }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+        circle.dot { r: 4px; transform-box: fill-box; transform-origin: center; opacity: 0; animation: dot 2.8s ease-in-out infinite; }
+        @keyframes dot { 0%,100% { transform: scale(0); opacity: 0; } 45% { transform: scale(1); opacity: .95; } }
+
+        .hint { position: fixed; left: 18px; bottom: 14px; z-index: 9; font-size: 12px; color: #8896a8; letter-spacing: 1px; }
+        .nav-link {
+            position: fixed; top: 20px; right: 24px; z-index: 99;
+            padding: 8px 18px; border-radius: 999px;
+            background: #fff !important; border: 1px solid #d6e2ef;
+            color: #1e3c72 !important; text-decoration: none; font-size: 14px;
+            box-shadow: 0 4px 14px rgba(30,60,114,.12); transition: all .2s;
+        }
+        .nav-link:hover { background: #eef4fb !important; transform: translateY(-1px); }
+        .nav-link .arr { color: #e67e22; font-weight: 700; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div id="map">
+        <svg id="lines" viewBox="0 0 1600 950" preserveAspectRatio="none"></svg>
+    </div>
+</div>
+<a class="nav-link" href="index.html"><span class="arr">←</span> 返回首页</a>
+<div class="hint">高中物理知识库 · 点击分类节点可折叠 / 展开 · 点击专题节点进入</div>
+
+<script>
+const CX = 800; let CY = 475;
+
+const DATA = [
+    { name: '力学', icon: '💪', color: '#ff6b6b', side: 'L', children: [
+        { icon: '🏃', name: '运动学闯关', href: '力学/运动学闯关/index.html', d: '匀变速 · 图像 · 平抛 · 圆周' },
+        { icon: '⚖️', name: '受力分析与平衡', href: '力学/受力分析/index.html', d: '三种性质力 · 动态平衡' },
+        { icon: '🪨', name: '静摩擦·圆盘临界', href: '力学/受力分析/高中物理_静摩擦力与圆盘临界问题.html', d: '静摩擦力 · 临界角速度' },
+        { icon: '🚀', name: '牛顿运动定律', href: '力学/高中物理_牛顿运动定律闯关.html', d: '牛顿三定律 · 传送带 · 板块' },
+        { icon: '⚡', name: '功和能 · 基础', href: '力学/高中物理_功和能.html', d: '动能定理 · 机械能守恒' },
+        { icon: '💥', name: '动量与碰撞', href: '力学/功和能/index.html', d: '动量定理 · 守恒 · 碰撞' },
+        { icon: '🎯', name: '传送带模型', href: '力学/传送带模型/index.html', d: '模型 · 基础 · 拔高 三阶' },
+        { icon: '🌊', name: '机械振动与机械波', href: '力学/机械振动与机械波/index.html', d: '简谐运动 · 波动 · 干涉衍射' },
+        { icon: '🛰️', name: '万有引力与航天', href: '力学/万有引力/高中物理_万有引力与航天闯关.html', d: '开普勒 · 卫星 · 变轨' },
+    ]},
+    { name: '电磁学', icon: '🔌', color: '#54a0ff', side: 'L', children: [
+        { icon: '⚡', name: '静电场闯关', href: '高中物理_静电场闯关.html', d: '电场力 · 电势 · 电容器' },
+        { icon: '📘', name: '静电场·考点详解', href: '电学/index.html', d: '16 个考点 / 方法专题' },
+        { icon: '🔌', name: '恒定电流闯关', href: '高中物理_恒定电流闯关.html', d: '闭合电路 · 动态电路' },
+        { icon: '🔄', name: '交变电流闯关', href: '高中物理_交变电流闯关.html', d: '交流电 · 变压器 · 输电' },
+        { icon: '🧲', name: '电磁感应闯关', href: '磁场专题/高中物理_电磁感应闯关.html', d: '楞次定律 · 法拉第定律' },
+    ]},
+    { name: '磁场专题', icon: '🧲', color: '#b06ef8', side: 'L', children: [
+        { icon: '🧲', name: '磁场基础', href: '磁场专题/高中物理_磁场.html', d: '磁感应强度 · 安培力' },
+        { icon: '🌀', name: '粒子在磁场中运动', href: '磁场专题/高中物理_磁场_带电粒子在磁场中的运动.html', d: '匀速圆周运动' },
+        { icon: '🔵', name: '粒子在匀强磁场中', href: '磁场专题/高中物理_磁场_带电粒子在匀强磁场中的运动.html', d: '半径 · 周期' },
+        { icon: '⚛️', name: '粒子在复合场中', href: '磁场专题/高中物理_磁场_带电粒子在复合场中的运动.html', d: '电磁组合场' },
+        { icon: '⭕', name: '磁场中的圆', href: '磁场专题/高中物理_磁场_磁场中的圆.html', d: '轨迹几何关系' },
+        { icon: '🧭', name: '磁场圆圆心确定', href: '磁场专题/高中物理_磁场_磁场圆圆心确定.html', d: '双速度垂线 · 托卡马克' },
+        { icon: '🎇', name: '磁聚焦与磁发散', href: '磁场专题/高中物理_磁场_磁聚焦与磁发散.html', d: '平行束聚焦' },
+        { icon: '📉', name: '最小面积问题', href: '磁场专题/高中物理_磁场_最小面积问题.html', d: '最小边界面积' },
+        { icon: '🔁', name: '楞次定律与安培力', href: '磁场专题/高中物理_磁场_楞次定律与安培力.html', d: '感应电流方向' },
+        { icon: '⚔️', name: '单棒切割', href: '磁场专题/高中物理_磁场_单棒切割.html', d: '单棒切割综合' },
+        { icon: '🛡️', name: '双棒切割', href: '磁场专题/高中物理_磁场_双棒切割.html', d: '双棒模型分类' },
+    ]},
+    { name: '初中物理', icon: '🎒', color: '#27ae60', side: 'R', children: [
+        { icon: '🎒', name: '初中物理总览', href: '初中物理/index.html', d: '力学 · 电学 · 光学' },
+        { icon: '🎈', name: '浮力基础知识', href: '初中物理/初中物理_浮力基础知识.html', d: '阿基米德原理' },
+        { icon: '📐', name: '压强选择题', href: '初中物理/初中物理_压强选择题.html', d: '固体液体压强' },
+        { icon: '💡', name: '电学压轴题', href: '初中物理/初中物理_电学压轴题.html', d: '电路综合' },
+        { icon: '🔧', name: '电路故障诊断', href: '初中物理/初中物理_电路故障诊断.html', d: '断路短路' },
+        { icon: '🔦', name: '光学基础知识', href: '初中物理/初中物理_光学基础知识.html', d: '反射折射透镜' },
+    ]},
+    { name: '热·光·近代', icon: '🌡️', color: '#ffa94d', side: 'R', children: [
+        { group: true, name: '热学', icon: '🌡️', children: [
+            { icon: '🌡️', name: '热学闯关', href: '高中物理_热学闯关.html', d: '气体定律 · 热力学' }
+        ]},
+        { group: true, name: '光学', icon: '🔆', children: [
+            { icon: '🔆', name: '光学总览', href: '光学/高中物理_光学.html', d: '折射 · 干涉 · 衍射' },
+            { icon: '🔦', name: '全反射与衍射', href: '光学/高中物理_光学_全反射.html', d: '临界角 · 衍射' },
+            { icon: '📝', name: '光学 · 习题', href: '光学/高中物理_光学_习题.html', d: '综合练习' }
+        ]},
+        { group: true, name: '近代物理', icon: '⚛️', children: [
+            { icon: '⚛️', name: '原子与近代物理', href: '原子物理/physics_atomic_summary.html', d: '原子 · 原子核 · 波粒二象性' }
+        ]},
+    ]},
+    { name: '物理实验', icon: '🔬', color: '#2ee6a8', side: 'R', children: [
+        { group: true, name: '力学实验', icon: '🧪', children: [
+            { icon: '🧪', name: '力学实验（目录）', href: '力学实验/index.html', d: '9 个实验' },
+            { icon: '📈', name: '研究匀变速直线运动', href: '力学实验/01_研究匀变速直线运动.html', d: '纸带 · 逐差法' },
+            { icon: '🪢', name: '探究弹力与弹簧伸长', href: '力学实验/02_探究弹力和弹簧伸长关系.html', d: '胡克定律' },
+            { icon: '🚗', name: '探究加速度与力质量', href: '力学实验/04_探究加速度与力质量关系.html', d: '控制变量法' },
+            { icon: '⚖️', name: '验证机械能守恒', href: '力学实验/06_验证机械能守恒定律.html', d: '自由落体' },
+            { icon: '💥', name: '验证动量守恒', href: '力学实验/08_验证动量守恒定律.html', d: '碰撞 · 一维' },
+            { icon: '🕰️', name: '单摆测重力加速度', href: '力学实验/09_用单摆测量重力加速度.html', d: '周期法' },
+        ]},
+        { group: true, name: '电学实验', icon: '⚗️', children: [
+            { icon: '⚗️', name: '电学实验（目录）', href: '电学实验/index.html', d: '12 个实验' },
+            { icon: '🎛️', name: '认识表头 G', href: '电学实验/01_认识表头G改装基础.html', d: 'Ig · Rg · Ug' },
+            { icon: '🔗', name: '改装成电压表', href: '电学实验/02_改装成电压表.html', d: '串联分压' },
+            { icon: '🔀', name: '改装大量程电流表', href: '电学实验/03_改装成大量程电流表.html', d: '并联分流' },
+            { icon: '🎯', name: '半偏法测表头内阻', href: '电学实验/04_半偏法测表头内阻.html', d: '误差分析' },
+            { icon: '📏', name: '伏安法测电阻', href: '电学实验/05_伏安法测电阻.html', d: '内接 / 外接' },
+            { icon: '🕹️', name: '多用电表（欧姆表）', href: '电学实验/07_多用电表欧姆表.html', d: '调零 · 中值电阻' },
+            { icon: '🔋', name: '测电源电动势内阻', href: '电学实验/08_测定电源电动势和内阻.html', d: 'U-I 图像' },
+            { icon: '🌉', name: '电桥法测电阻', href: '电学实验/11_电桥测电阻.html', d: '惠斯通电桥' },
+        ]},
+    ]},
+];
+
+/* 默认全部展开 */
+DATA.forEach(g => {
+    g.collapsed = false;
+    g.children.forEach(function mark(c){ if(c.group){ c.collapsed=false; c.children.forEach(mark);} });
+});
+
+let LEAF_TOTAL = 0;
+DATA.forEach(g => g.children.forEach(function cnt(c){ LEAF_TOTAL += c.group ? c.children.length : 1; }));
+
+const map = document.getElementById('map');
+const NS = 'http://www.w3.org/2000/svg';
+let svg, defs, delay;
+
+const ROW_H = 50;
+const L_ITEM_X = 70, R_ITEM_X = 1350;
+const L_TITLE_X = 520, R_TITLE_X = 940;
+const GROUP_X = { L: 350, R: 1150 };
+const GROUP_W = 150, GROUP_H = 36;
+const CHIP_W = 150, CHIP_H = 40;
+const ITEM_W = 190, ITEM_H = 42;
+const GROUP_GAP = 26;
+
+function nodeH(child) {
+    if (child.group) return child.collapsed ? GROUP_H : child.children.length * ROW_H;
+    return ROW_H;
+}
+function groupH(g) {
+    if (g.collapsed) return CHIP_H;
+    let h = 0, prevGroup = false;
+    g.children.forEach(child => {
+        if (prevGroup) h += GROUP_GAP;
+        h += nodeH(child);
+        prevGroup = child.group;
+    });
+    return Math.max(0, h - (ROW_H - ITEM_H));
+}
+const colH = gs => gs.reduce((s, g) => s + groupH(g) + GROUP_GAP, 0) - GROUP_GAP;
+
+let LH, RH, VIEW_H;
+
+function computeLayout() {
+    const Lgroups = DATA.filter(g => g.side === 'L');
+    const Rgroups = DATA.filter(g => g.side === 'R');
+    LH = colH(Lgroups); RH = colH(Rgroups);
+    VIEW_H = Math.max(LH, RH, 780);
+    const TOP_PAD = 60;
+    CY = TOP_PAD + VIEW_H / 2;
+    let ly = CY - LH / 2;
+    Lgroups.forEach(g => { g.top = ly; ly += groupH(g) + GROUP_GAP; });
+    let ry = CY - RH / 2;
+    Rgroups.forEach(g => { g.top = ry; ry += groupH(g) + GROUP_GAP; });
+}
+
+function makeLine(x1, y1, x2, y2, color, ctrl, opt = {}) {
+    const w = opt.w || 2.5;
+    const d = ctrl
+        ? `M${x1} ${y1} C ${ctrl[0]} ${ctrl[1]}, ${ctrl[2]} ${ctrl[3]}, ${x2} ${y2}`
+        : `M${x1} ${y1} L${x2} ${y2}`;
+    const p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('class', 'line anim');
+    p.setAttribute('pathLength', '1');
+    p.setAttribute('stroke', color);
+    p.setAttribute('stroke-width', w);
+    p.style.opacity = opt.fade ? .32 : .55;
+    p.style.animationDelay = (delay / 18) + 's';
+    svg.appendChild(p);
+    if (opt.dot) {
+        const c = document.createElementNS(NS, 'circle');
+        c.setAttribute('class', 'dot');
+        c.setAttribute('cx', x2); c.setAttribute('cy', y2);
+        c.setAttribute('fill', color);
+        c.style.animationDelay = (delay / 18 + .5) + 's';
+        svg.appendChild(c);
+    }
+}
+
+function render() {
+    map.innerHTML = `<svg id="lines" viewBox="0 0 1600 ${VIEW_H}" preserveAspectRatio="none"></svg>`;
+    svg = document.getElementById('lines');
+    defs = document.createElementNS(NS, 'defs');
+    svg.appendChild(defs);
+    delay = 0;
+    computeLayout();
+
+    const cen = document.createElement('div');
+    cen.className = 'node center-node';
+    cen.style.left = (CX - 98) + 'px';
+    cen.style.top = (CY - 98) + 'px';
+    cen.innerHTML = '<div class="ce">🚀</div><div class="cn">高中物理知识库</div><div class="cs">共 <b>' + LEAF_TOTAL + '</b> 个专题 · 点击直达</div>';
+    map.appendChild(cen);
+
+    DATA.forEach(g => {
+        const side = g.side;
+        const x = side === 'L' ? L_ITEM_X : R_ITEM_X;
+        const gx = side === 'L' ? GROUP_X.L : GROUP_X.R;
+        const tx = side === 'L' ? L_TITLE_X : R_TITLE_X;
+        const centerY = g.top + groupH(g) / 2;
+        const leafCount = g.children.reduce((s, c) => s + (c.group ? c.children.length : 1), 0);
+        const collapsed = g.collapsed;
+
+        const chip = document.createElement('div');
+        chip.className = 'node chip';
+        chip.style.cssText = `left:${tx}px;top:${centerY - CHIP_H / 2}px;background:linear-gradient(135deg,${g.color},${g.color}cc)`;
+        chip.innerHTML = `<span class="expander">${collapsed ? '▶' : '▼'}</span>${g.icon}${g.name}<span class="n">${leafCount}</span>`;
+        chip.title = collapsed ? '点击展开' : '点击折叠';
+        chip.addEventListener('click', () => { g.collapsed = !g.collapsed; render(); });
+        map.appendChild(chip);
+
+        const edgeX = side === 'L' ? CX - 98 : CX + 98;
+        const txEdge = side === 'L' ? tx : tx + CHIP_W;
+        makeLine(edgeX, CY, txEdge, centerY, g.color,
+            side === 'L' ? [edgeX - 46, CY, txEdge + 40, centerY]
+                         : [edgeX + 46, CY, txEdge - 40, centerY],
+            { w: 3.4, dot: true });
+        delay += 2;
+
+        if (collapsed) return;
+
+        let yy = g.top;
+        let prevGroup = false;
+        const leaves = [], groups = [];
+        function place(child) {
+            if (child.group) {
+                if (prevGroup) yy += GROUP_GAP;
+                if (child.collapsed) {
+                    groups.push({ group: child, top: yy, centerY: yy + GROUP_H / 2, collapsed: true });
+                    yy += GROUP_H;
+                } else {
+                    const rows = child.children.length;
+                    const top = yy, cY = top + rows * ROW_H / 2;
+                    groups.push({ group: child, top: top, centerY: cY, collapsed: false });
+                    child.children.forEach((leaf, j) => leaves.push({ leaf: leaf, y: top + j * ROW_H, group: child, gY: cY }));
+                    child.gY = cY;
+                    yy += rows * ROW_H;
+                }
+                prevGroup = true;
+            } else {
+                if (prevGroup) yy += GROUP_GAP;
+                leaves.push({ leaf: child, y: yy, group: null });
+                yy += ROW_H;
+                prevGroup = false;
+            }
+        }
+        g.children.forEach(place);
+
+        leaves.forEach(({ leaf, y, group }) => {
+            const item = document.createElement('a');
+            item.className = 'item node';
+            item.href = leaf.href;
+            item.title = leaf.d;
+            item.dataset.side = side;
+            item.style.cssText = `left:${x}px;top:${y}px;border-left:4px solid ${g.color}`;
+            item.innerHTML = `<span class="ic">${leaf.icon}</span><span class="tx">${leaf.name}</span>`;
+            map.appendChild(item);
+
+            const iy = y + ITEM_H / 2;
+            const iex = side === 'L' ? x + ITEM_W : x;
+            if (group) {
+                const gcx = gx + GROUP_W / 2;
+                makeLine(iex, iy, gcx, group.gY, g.color,
+                    side === 'L' ? [iex + 40, iy, gcx - 34, group.gY]
+                                 : [iex - 40, iy, gcx + 34, group.gY],
+                    { w: 2, fade: true });
+                delay += 1;
+            } else {
+                const cex = side === 'L' ? tx : tx + CHIP_W;
+                makeLine(iex, iy, cex, centerY, g.color,
+                    side === 'L' ? [iex + 44, iy, tx - 34, centerY]
+                                 : [iex - 44, iy, tx + CHIP_W + 34, centerY],
+                    { w: 2, fade: true });
+                delay += 1;
+            }
+        });
+
+        groups.forEach(({ group, centerY: cY, collapsed }) => {
+            const gp = document.createElement('div');
+            gp.className = 'node group-node';
+            gp.style.cssText = `left:${gx}px;top:${cY - GROUP_H / 2}px;color:${g.color};border-color:${g.color}`;
+            gp.innerHTML = `<span class="expander">${collapsed ? '▶' : '▼'}</span>${group.icon}${group.name}<span class="n">${group.children.length}</span>`;
+            gp.title = collapsed ? '点击展开' : '点击折叠';
+            gp.addEventListener('click', () => { group.collapsed = !group.collapsed; render(); });
+            map.appendChild(gp);
+
+            const gcx = gx + GROUP_W / 2;
+            const tEdge = side === 'L' ? tx : tx + CHIP_W;
+            makeLine(tEdge, centerY, gcx, cY, g.color,
+                side === 'L' ? [tx - 15, centerY, gcx + 30, cY]
+                             : [tx + CHIP_W + 15, centerY, gcx - 30, cY],
+                { w: 3, dot: true });
+            delay += 2;
+        });
+    });
+
+    fit();
+}
+
+function fit() {
+    map.style.height = VIEW_H + 'px';
+    svg.setAttribute('viewBox', `0 0 1600 ${VIEW_H}`);
+    const s = Math.min(window.innerWidth / 1660, window.innerHeight / (VIEW_H + 40), 1);
+    map.style.transform = `scale(${s})`;
+}
+window.addEventListener('resize', fit);
+render();
+</script>
+<script src="nav.js"></script>
+</body>
+</html>

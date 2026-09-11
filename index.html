@@ -4,462 +4,395 @@
     <link rel="stylesheet" href="theme.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高中物理知识库 · 思维导图导航</title>
+    <title>高中物理知识库 · 首页</title>
+    <meta name="description" content="高中物理交互式专题学习站：力学、电磁学、磁场、光学、热学、近代物理、物理实验，全部专题一站直达。">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: radial-gradient(1200px 800px at 50% 38%, #1e2a45 0%, #141b2d 55%, #0e1322 100%);
-            color: #e8edf5;
-            overflow: hidden;
-        }
-        .wrap { height: 100vh; display: flex; align-items: center; justify-content: center; }
-        #map { position: relative; width: 1600px; height: 900px; transform-origin: center center; }
-        #map svg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-        #map .node { position: absolute; z-index: 2; }
-
-        /* 中心节点 */
-        .center-node {
-            width: 196px; height: 196px; border-radius: 50%;
-            background: radial-gradient(circle at 30% 25%, #3a7bd5 0%, #2a5298 55%, #1e3c72 100%);
-            box-shadow: 0 0 0 8px rgba(58,123,213,.14), 0 0 70px rgba(58,123,213,.45), inset 0 0 30px rgba(255,255,255,.08);
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            color: #fff; text-align: center;
-            border: 2px solid rgba(255,255,255,.25);
-            transition: box-shadow .3s ease, transform .3s ease;
-        }
-        .center-node:hover { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(58,123,213,.2), 0 0 90px rgba(58,123,213,.6), inset 0 0 30px rgba(255,255,255,.1); }
-        .center-node .ce { font-size: 34px; }
-        .center-node .cn { font-size: 23px; font-weight: 800; letter-spacing: 3px; }
-        .center-node .cs { font-size: 12px; opacity: .88; margin-top: 3px; }
-        .center-node .cs b { color: #ffd54f; font-size: 14px; }
-
-        /* 分类标题（一级，可折叠） */
-        .chip {
-            height: 40px; width: 150px; border-radius: 20px;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            color: #fff; font-weight: 700; font-size: 15px; letter-spacing: 1px;
-            box-shadow: 0 4px 14px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
-            white-space: nowrap;
-            cursor: pointer; user-select: none;
-            transition: filter .15s, transform .15s;
-        }
-        .chip:hover { filter: brightness(1.12); transform: translateY(-1px); }
-        .chip .n {
-            font-size: 11px; font-weight: 600; background: rgba(255,255,255,.24);
-            border-radius: 999px; padding: 1px 9px;
+            background: #f5f9fe; color: #1f2d3d; line-height: 1.9;
         }
 
-        /* 分组节点（二级分类） */
-        .group-node {
-            height: 36px; width: 150px; border-radius: 18px;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-            background: rgba(255,255,255,.09); border: 1.5px dashed;
-            font-size: 13.5px; font-weight: 700; opacity: .92;
-            white-space: nowrap;
-            cursor: pointer; user-select: none;
-            transition: background .15s;
+        /* ===== 顶部 Hero ===== */
+        .hero {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 55%, #3a7bd5 100%);
+            color: #fff; padding: 54px 20px 58px; text-align: center;
         }
-        .group-node:hover { background: rgba(255,255,255,.14); }
-        .expander { font-size: 10px; opacity: .8; margin-right: 2px; }
-        .group-node .n {
-            font-size: 10px; background: currentColor; color: #141b2d;
-            border-radius: 999px; padding: 0 7px; font-weight: 800;
+        .hero::before {
+            content: ''; position: absolute; inset: -40% -10% auto -10%; height: 160%;
+            background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.16), transparent 45%),
+                        radial-gradient(circle at 82% 30%, rgba(126,232,164,.18), transparent 42%);
+            pointer-events: none;
         }
+        .hero-inner { position: relative; max-width: 980px; margin: 0 auto; }
+        .kicker {
+            display: inline-block; font-size: .82em; letter-spacing: 3px; font-weight: 600;
+            color: #cfe1ff; border: 1px solid rgba(255,255,255,.35);
+            padding: 5px 16px; border-radius: 999px; margin-bottom: 18px;
+            background: rgba(255,255,255,.08);
+        }
+        .hero h1 { font-size: 2.7em; letter-spacing: 2px; margin-bottom: 14px; color: #fff; }
+        .hero .sub { font-size: 1.06em; color: #dbe8ff; max-width: 760px; margin: 0 auto 22px; }
+        .stats { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
+        .stats span {
+            background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+            padding: 7px 18px; border-radius: 999px; font-size: .92em; color: #eaf1ff;
+        }
+        .stats b { color: #ffd54f; font-size: 1.15em; margin-right: 3px; }
 
-        /* 专题子节点 */
-        .item {
-            width: 190px; height: 42px; border-radius: 11px;
-            background: rgba(255,255,255,.07);
-            border: 1px solid rgba(255,255,255,.13);
-            display: flex; align-items: center; gap: 9px; padding: 0 12px;
-            color: #e8edf5; text-decoration: none; font-size: 13.5px;
-            transition: background .18s, border-color .18s, transform .18s, box-shadow .18s;
-            backdrop-filter: blur(4px);
+        .search-wrap { max-width: 560px; margin: 0 auto 22px; }
+        .search-wrap input {
+            width: 100%; padding: 14px 20px; border-radius: 999px; font-size: 1em;
+            border: 1px solid rgba(255,255,255,.5) !important;
+            background: rgba(255,255,255,.96) !important; color: #1f2d3d !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,.18); outline: none;
         }
-        .item:hover {
-            background: rgba(255,255,255,.16);
-            transform: translateX(5px);
-            box-shadow: 0 8px 22px rgba(0,0,0,.4);
-        }
-        .item[data-side="L"]:hover { transform: translateX(-5px); }
-        .item .ic { font-size: 17px; flex-shrink: 0; }
-        .item .tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .search-wrap input::placeholder { color: #7b8aa0; }
 
-        /* 连线：渐变描边 + 生长动画 + 流光 + 端点光点 */
-        path.line {
-            fill: none; stroke-linecap: round; stroke-linejoin: round;
+        .quick { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        .quick a {
+            display: inline-block; padding: 10px 22px; border-radius: 999px; font-size: .95em; font-weight: 600;
+            text-decoration: none; color: #fff !important;
+            background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.35);
+            transition: .2s; backdrop-filter: blur(4px);
         }
-        path.line.anim {
-            stroke-dasharray: 1; stroke-dashoffset: 1;
-            animation: draw .8s cubic-bezier(.6,.05,.25,1) forwards;
-        }
-        @keyframes draw { to { stroke-dashoffset: 0; } }
-        path.flow {
-            fill: none; stroke-linecap: round;
-            opacity: 0;
-            stroke-dasharray: 2 240;
-            animation: flow 3.6s linear infinite;
-        }
-        @keyframes flow {
-            0%   { stroke-dashoffset: 0;    opacity: 0; }
-            5%   { opacity: .95; }
-            95%  { opacity: .95; }
-            100% { stroke-dashoffset: -242; opacity: 0; }
-        }
-        circle.dot {
-            r: 4px;
-            transform-box: fill-box; transform-origin: center;
-            opacity: 0;
-            animation: dot 2.8s ease-in-out infinite;
-        }
-        @keyframes dot {
-            0%, 100% { transform: scale(0); opacity: 0; }
-            45%      { transform: scale(1); opacity: .95; }
-        }
+        .quick a:hover { background: rgba(255,255,255,.28); transform: translateY(-2px); }
 
-        .hint {
-            position: fixed; left: 18px; bottom: 14px; z-index: 9;
-            font-size: 12px; color: rgba(232,237,245,.35); letter-spacing: 1px;
+        /* ===== 主体 ===== */
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 40px 22px 10px; }
+        .sec { margin-bottom: 40px; }
+        .sec h2 {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 1.5em; color: #1e3c72; margin-bottom: 18px;
+            padding-bottom: 10px; border-bottom: 2px solid #e8eef5;
         }
-        .nav-link {
-            position: fixed; top: 20px; right: 24px; z-index: 99;
-            padding: 8px 18px; border-radius: 999px;
-            background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
-            color: #e8edf5; text-decoration: none; font-size: 14px;
-            transition: all .2s; backdrop-filter: blur(4px);
+        .sec h2 .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--c, #3a7bd5);
+            box-shadow: 0 0 0 5px color-mix(in srgb, var(--c, #3a7bd5) 18%, transparent); }
+        .sec h2 .cnt { margin-left: auto; font-size: .6em; font-weight: 600; color: #7b8aa0; letter-spacing: 1px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 14px; }
+        .tile {
+            position: relative; display: flex; flex-direction: column; gap: 4px;
+            background: #fff; border: 1px solid #e6edf6; border-left: 5px solid var(--c, #3a7bd5);
+            border-radius: 13px; padding: 15px 17px; text-decoration: none;
+            box-shadow: 0 2px 12px rgba(30,60,114,.06); transition: .2s; overflow: hidden;
         }
-        .nav-link:hover { background: rgba(255,255,255,.16); transform: translateY(-1px); }
-        .nav-link .arr { color: #ffd54f; font-weight: 700; }
+        .tile:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(30,60,114,.16); border-color: var(--c, #3a7bd5); }
+        .tile .ic { font-size: 1.5em; line-height: 1.2; }
+        .tile .t { font-size: 1.08em; font-weight: 700; color: #1e3c72 !important; }
+        .tile .d { font-size: .8em; color: #586a7d !important; line-height: 1.6; }
+        .tile .n {
+            position: absolute; top: 12px; right: 13px; font-size: .68em; font-weight: 700;
+            color: var(--c, #3a7bd5) !important; background: color-mix(in srgb, var(--c, #3a7bd5) 12%, #fff);
+            border: 1px solid color-mix(in srgb, var(--c, #3a7bd5) 35%, #fff);
+            padding: 1px 9px; border-radius: 999px;
+        }
+        .hide { display: none !important; }
+
+        .empty { text-align: center; color: #8896a8; padding: 30px; display: none; }
+
+        .foot { text-align: center; color: #8896a8; font-size: .85em; padding: 34px 20px 46px; border-top: 1px solid #e6edf6; margin-top: 24px; }
+        .foot a { color: #3a7bd5 !important; text-decoration: none; }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2em; }
+            .hero .sub { font-size: .98em; }
+            .wrap { padding: 26px 15px 6px; }
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-<div class="wrap">
-    <div id="map">
-        <svg id="lines" viewBox="0 0 1600 900" preserveAspectRatio="none"></svg>
+
+<div class="hero">
+    <div class="hero-inner">
+        <div class="kicker">PHYSICS · 高中物理知识库</div>
+        <h1>物理专题学习站</h1>
+        <p class="sub">力学 · 电磁学 · 磁场 · 光学 · 热学 · 近代物理 · 物理实验 —— 全部交互式专题，公式推导、例题精讲、闯关自测一站直达。</p>
+        <div class="stats">
+            <span><b>8</b> 大板块</span>
+            <span><b>140+</b> 学习页</span>
+            <span><b>21</b> 个物理实验</span>
+            <span><b>全程</b>免费开放</span>
+        </div>
+        <div class="search-wrap">
+            <input id="q" type="search" autocomplete="off" placeholder="🔍 搜索专题或知识点，例如：动量、洛伦兹力、浮力、变压器…">
+        </div>
+        <div class="quick">
+            <a href="导航.html">🗂 完整导航</a>
+            <a href="思维导图.html">🕸 思维导图</a>
+            <a href="初中物理/index.html">🎒 初中物理</a>
+        </div>
     </div>
 </div>
-<a class="nav-link" href="初中物理/index.html">初中物理 <span class="arr">→</span></a>
-<div class="hint">高中物理知识库 · 点击分组节点可折叠 / 展开 · 点击专题节点进入</div>
+
+<main class="wrap">
+
+    <!-- 初中物理 -->
+    <section class="sec" data-g="初中">
+        <h2 style="--c:#27ae60"><span class="dot"></span>初中物理 <span class="cnt">7 个专题</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#27ae60" href="初中物理/index.html" data-k="初中 总览 导航 力学 电学 光学">
+                <span class="ic">🎒</span><span class="n">总览</span>
+                <span class="t">初中物理总览</span>
+                <span class="d">浮力 · 压强 · 电学 · 光学的全部初中专题入口</span></a>
+            <a class="tile" style="--c:#27ae60" href="初中物理/初中物理_浮力基础知识.html" data-k="初中 浮力 阿基米德 浮沉条件">
+                <span class="ic">🎈</span>
+                <span class="t">浮力基础知识</span>
+                <span class="d">阿基米德原理 · 浮沉条件</span></a>
+            <a class="tile" style="--c:#27ae60" href="初中物理/初中物理_压强选择题.html" data-k="初中 压强 固体 液体">
+                <span class="ic">📐</span>
+                <span class="t">压强选择题</span>
+                <span class="d">固体液体压强综合</span></a>
+            <a class="tile" style="--c:#27ae60" href="初中物理/初中物理_电学压轴题.html" data-k="初中 电学 电路 压轴">
+                <span class="ic">💡</span>
+                <span class="t">电学压轴题</span>
+                <span class="d">电路综合突破</span></a>
+            <a class="tile" style="--c:#27ae60" href="初中物理/初中物理_电路故障诊断.html" data-k="初中 电路 故障 断路 短路">
+                <span class="ic">🔧</span>
+                <span class="t">电路故障诊断</span>
+                <span class="d">断路 / 短路分析</span></a>
+            <a class="tile" style="--c:#27ae60" href="初中物理/初中物理_光学基础知识.html" data-k="初中 光学 反射 折射 透镜">
+                <span class="ic">🔦</span>
+                <span class="t">光学基础知识</span>
+                <span class="d">反射 · 折射 · 透镜</span></a>
+        </div>
+    </section>
+
+    <!-- 力学 -->
+    <section class="sec" data-g="力学">
+        <h2 style="--c:#ff6b6b"><span class="dot"></span>力学 <span class="cnt">9 个专题</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#ff6b6b" href="力学/运动学闯关/index.html" data-k="运动学 匀变速 自由落体 平抛 圆周 追及">
+                <span class="ic">🏃</span><span class="n">18 讲</span>
+                <span class="t">运动学闯关</span>
+                <span class="d">匀变速 · 图像 · 追及相遇 · 圆周运动</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/受力分析/index.html" data-k="受力分析 重力 弹力 摩擦力 平衡 隔离法">
+                <span class="ic">⚖️</span><span class="n">12 讲</span>
+                <span class="t">受力分析与平衡</span>
+                <span class="d">三种性质力 · 动态平衡 · 整体隔离法</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/高中物理_牛顿运动定律闯关.html" data-k="牛顿 运动定律 传送带 板块 临界">
+                <span class="ic">🚀</span>
+                <span class="t">牛顿运动定律</span>
+                <span class="d">牛顿三定律 · 传送带 · 板块模型</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/高中物理_功和能.html" data-k="功和能 动能定理 机械能守恒">
+                <span class="ic">⚡</span>
+                <span class="t">功和能 · 基础</span>
+                <span class="d">动能定理 · 机械能守恒</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/功和能/index.html" data-k="动量 冲量 守恒 碰撞 反冲 人船 子弹打木块">
+                <span class="ic">💥</span><span class="n">12 讲</span>
+                <span class="t">动量与碰撞</span>
+                <span class="d">动量定理 · 守恒 · 各类碰撞模型</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/传送带模型/index.html" data-k="传送带 模型 摩擦力">
+                <span class="ic">🎯</span>
+                <span class="t">传送带模型</span>
+                <span class="d">模型学习 · 基础巩固 · 拔高练习</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/机械振动与机械波/index.html" data-k="机械振动 机械波 简谐 单摆 共振 干涉 衍射 多普勒">
+                <span class="ic">🌊</span><span class="n">12 讲</span>
+                <span class="t">机械振动与机械波</span>
+                <span class="d">简谐运动 · 波图象 · 干涉衍射 · 多普勒</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/万有引力/高中物理_万有引力与航天闯关.html" data-k="万有引力 航天 开普勒 卫星 变轨">
+                <span class="ic">🛰️</span>
+                <span class="t">万有引力与航天</span>
+                <span class="d">开普勒定律 · 卫星 · 变轨</span></a>
+            <a class="tile" style="--c:#ff6b6b" href="力学/高考物理_力学实验闯关.html" data-k="力学实验 闯关 综合">
+                <span class="ic">🔬</span>
+                <span class="t">力学实验综合闯关</span>
+                <span class="d">9 大力学实验综合测验</span></a>
+        </div>
+    </section>
+
+    <!-- 电磁学 -->
+    <section class="sec" data-g="电磁学">
+        <h2 style="--c:#54a0ff"><span class="dot"></span>电磁学 <span class="cnt">6 个专题</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#54a0ff" href="高中物理_静电场闯关.html" data-k="静电场 电场 电势 电容 闯关">
+                <span class="ic">⚡</span>
+                <span class="t">静电场闯关</span>
+                <span class="d">电场力 · 电势 · 电容器综合自测</span></a>
+            <a class="tile" style="--c:#54a0ff" href="电学/index.html" data-k="静电场 考点 库仑 电场强度 电场线 电势 图象">
+                <span class="ic">📘</span><span class="n">16 讲</span>
+                <span class="t">静电场 · 考点详解</span>
+                <span class="d">库仑定律 · 电场强度 · 电势能 · 图象问题</span></a>
+            <a class="tile" style="--c:#54a0ff" href="高中物理_恒定电流闯关.html" data-k="恒定电流 闭合电路 欧姆 动态电路">
+                <span class="ic">🔌</span>
+                <span class="t">恒定电流闯关</span>
+                <span class="d">闭合电路欧姆定律 · 动态电路</span></a>
+            <a class="tile" style="--c:#54a0ff" href="高中物理_交变电流闯关.html" data-k="交变电流 交流电 变压器 输电">
+                <span class="ic">🔄</span>
+                <span class="t">交变电流闯关</span>
+                <span class="d">交流电 · 变压器 · 远距离输电</span></a>
+            <a class="tile" style="--c:#54a0ff" href="磁场专题/高中物理_电磁感应闯关.html" data-k="电磁感应 楞次 法拉第 感应电流">
+                <span class="ic">🧲</span>
+                <span class="t">电磁感应闯关</span>
+                <span class="d">楞次定律 · 法拉第电磁感应定律</span></a>
+            <a class="tile" style="--c:#54a0ff" href="高中物理_热学闯关.html" data-k="热学 气体定律 热力学 分子动理论">
+                <span class="ic">🌡️</span>
+                <span class="t">热学闯关</span>
+                <span class="d">气体定律 · 热力学 · 分子动理论</span></a>
+        </div>
+    </section>
+
+    <!-- 磁场专题 -->
+    <section class="sec" data-g="磁场">
+        <h2 style="--c:#b06ef8"><span class="dot"></span>磁场专题 <span class="cnt">12 个专题</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场.html" data-k="磁场 磁感应强度 安培力 磁感线">
+                <span class="ic">🧲</span>
+                <span class="t">磁场基础</span>
+                <span class="d">磁感应强度 · 安培力 · 磁通量</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_带电粒子在磁场中的运动.html" data-k="带电粒子 磁场 圆周运动 洛伦兹力">
+                <span class="ic">🌀</span>
+                <span class="t">粒子在磁场中的运动</span>
+                <span class="d">洛伦兹力 · 匀速圆周运动</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_带电粒子在匀强磁场中的运动.html" data-k="匀强磁场 带电粒子 半径 周期">
+                <span class="ic">🔵</span>
+                <span class="t">粒子在匀强磁场中</span>
+                <span class="d">半径公式 · 周期 · 基本模型</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_带电粒子在复合场中的运动.html" data-k="复合场 电磁 重力 平衡">
+                <span class="ic">⚛️</span>
+                <span class="t">粒子在复合场中</span>
+                <span class="d">电场磁场重力场组合</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_磁场中的圆.html" data-k="磁场 圆 几何 轨迹">
+                <span class="ic">⭕</span>
+                <span class="t">磁场中的圆</span>
+                <span class="d">轨迹几何关系综合</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_磁场圆圆心确定.html" data-k="磁场圆 圆心 双速度垂线 弦中垂线 托卡马克">
+                <span class="ic">🧭</span>
+                <span class="t">磁场圆圆心确定</span>
+                <span class="d">双速度垂线法 · 弦中垂线法 · 托卡马克磁笼</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_磁聚焦与磁发散.html" data-k="磁聚焦 磁发散 平行 会聚">
+                <span class="ic">🎇</span>
+                <span class="t">磁聚焦与磁发散</span>
+                <span class="d">平行束聚焦 · 发散规律</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_最小面积问题.html" data-k="最小面积 磁场 边界">
+                <span class="ic">📉</span>
+                <span class="t">最小面积问题</span>
+                <span class="d">磁场区域最小边界面积</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_洛伦兹力作用下带电体的运动.html" data-k="洛伦兹力 带电体 运动">
+                <span class="ic">➡️</span>
+                <span class="t">洛伦兹力下的运动</span>
+                <span class="d">带电体受洛伦兹力的运动分析</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_楞次定律与安培力.html" data-k="楞次定律 安培力 感应电流 方向">
+                <span class="ic">🔁</span>
+                <span class="t">楞次定律与安培力</span>
+                <span class="d">感应电流方向 · 安培力</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_单棒切割.html" data-k="单棒 切割 电磁感应 安培力">
+                <span class="ic">⚔️</span>
+                <span class="t">单棒切割</span>
+                <span class="d">单棒切割磁感线综合</span></a>
+            <a class="tile" style="--c:#b06ef8" href="磁场专题/高中物理_磁场_双棒切割.html" data-k="双棒 切割 动量 电磁感应">
+                <span class="ic">🛡️</span>
+                <span class="t">双棒切割</span>
+                <span class="d">双棒模型分类 · 动量与能量</span></a>
+        </div>
+    </section>
+
+    <!-- 光学 -->
+    <section class="sec" data-g="光学">
+        <h2 style="--c:#ffa94d"><span class="dot"></span>光学 <span class="cnt">8 个专题</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学.html" data-k="光学 总览 折射 干涉 衍射 偏振">
+                <span class="ic">🔆</span><span class="n">总览</span>
+                <span class="t">光学总览</span>
+                <span class="d">光学专题导航入口</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_光的反射.html" data-k="光的反射 镜面 漫反射">
+                <span class="ic">🪞</span>
+                <span class="t">光的反射</span>
+                <span class="d">反射定律 · 镜面与漫反射</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_折射.html" data-k="光的折射 折射率 斯涅尔">
+                <span class="ic">💧</span>
+                <span class="t">光的折射</span>
+                <span class="d">折射定律 · 折射率</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_全反射.html" data-k="全反射 临界角 光导纤维">
+                <span class="ic">🔦</span>
+                <span class="t">全反射</span>
+                <span class="d">临界角 · 光导纤维</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_色散和干涉.html" data-k="色散 干涉 双缝">
+                <span class="ic">🌈</span>
+                <span class="t">色散和干涉</span>
+                <span class="d">色散 · 双缝干涉</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_衍射.html" data-k="衍射 单缝 圆孔">
+                <span class="ic">〰️</span>
+                <span class="t">衍射</span>
+                <span class="d">单缝 · 圆孔衍射</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_偏振.html" data-k="偏振 横波 马吕斯">
+                <span class="ic">🎚️</span>
+                <span class="t">偏振</span>
+                <span class="d">光的偏振 · 横波特性</span></a>
+            <a class="tile" style="--c:#ffa94d" href="光学/高中物理_光学_习题.html" data-k="光学 习题 综合">
+                <span class="ic">📝</span>
+                <span class="t">光学 · 习题</span>
+                <span class="d">光学综合练习</span></a>
+        </div>
+    </section>
+
+    <!-- 近代物理 -->
+    <section class="sec" data-g="近代">
+        <h2 style="--c:#e056fd"><span class="dot"></span>近代物理 <span class="cnt">1 个专题</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#e056fd" href="原子物理/physics_atomic_summary.html" data-k="原子 原子核 波粒二象性 光电效应 近代物理">
+                <span class="ic">⚛️</span>
+                <span class="t">原子与近代物理</span>
+                <span class="d">光电效应 · 原子结构 · 原子核 · 波粒二象性</span></a>
+        </div>
+    </section>
+
+    <!-- 物理实验 -->
+    <section class="sec" data-g="实验">
+        <h2 style="--c:#2ee6a8"><span class="dot"></span>物理实验 <span class="cnt">21 个实验</span></h2>
+        <div class="grid">
+            <a class="tile" style="--c:#2ee6a8" href="力学实验/index.html" data-k="力学实验 纸带 胡克 平行四边形 平抛 机械能 动量 单摆">
+                <span class="ic">🧪</span><span class="n">9 实验</span>
+                <span class="t">力学实验专题</span>
+                <span class="d">纸带 · 胡克定律 · 平行四边形 · 单摆…</span></a>
+            <a class="tile" style="--c:#2ee6a8" href="电学实验/index.html" data-k="电学实验 电表改装 伏安 多用电表 电动势 电桥">
+                <span class="ic">⚗️</span><span class="n">12 实验</span>
+                <span class="t">电学实验专题</span>
+                <span class="d">电表改装 · 伏安法 · 多用电表 · 电桥…</span></a>
+            <a class="tile" style="--c:#2ee6a8" href="电学实验/电表的改装（一）/index.html" data-k="电表改装 一 表头 电压表 电流表">
+                <span class="ic">🎛️</span>
+                <span class="t">电表的改装（一）</span>
+                <span class="d">表头改装基础 · 基础巩固 · 拔高练习</span></a>
+            <a class="tile" style="--c:#2ee6a8" href="电学实验/电表的改装（二）/index.html" data-k="电表改装 二 模型">
+                <span class="ic">🔀</span>
+                <span class="t">电表的改装（二）</span>
+                <span class="d">模型学习 · 巩固 · 拔高</span></a>
+        </div>
+    </section>
+
+    <div class="empty" id="empty">没有找到匹配的专题，换个关键词试试～</div>
+
+</main>
+
+<div class="foot">
+    高中物理知识库 · 静态站点（GitHub Pages） · <a href="导航.html">完整导航</a> · <a href="思维导图.html">思维导图</a> · 共 140+ 个学习页面
+</div>
 
 <script>
-const CX = 800; let CY = 450;
+    var q = document.getElementById('q');
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('.tile'));
+    var secs = Array.prototype.slice.call(document.querySelectorAll('.sec'));
+    var empty = document.getElementById('empty');
 
-const DATA = [
-    { name: '力学', icon: '💪', color: '#ff6b6b', side: 'L', children: [
-        { icon: '🏃', name: '运动学闯关', href: '力学/高中物理_运动学闯关.html', d: '匀变速直线运动 · 图像 · 追及相遇' },
-        { icon: '⚖️', name: '受力分析与平衡', href: '力学/受力分析/index.html', d: '三种性质力 · 动态平衡' },
-        { icon: '🪨', name: '静摩擦·圆盘临界', href: '力学/高中物理_静摩擦力与圆盘临界问题.html', d: '静摩擦力 · 临界角速度 · 绳连多体' },
-        { icon: '🚀', name: '牛顿运动定律', href: '力学/高中物理_牛顿运动定律闯关.html', d: '牛顿三定律 · 传送带 · 板块' },
-        { icon: '💥', name: '动量守恒', href: '力学/高中物理_动量闯关.html', d: '动量定理 · 动量守恒 · 碰撞' },
-        { icon: '🛰️', name: '万有引力与航天', href: '力学/高中物理_万有引力与航天闯关.html', d: '开普勒 · 卫星 · 变轨' },
-        { icon: '⚡', name: '功和能 · 基础', href: '力学/高中物理_功和能.html', d: '动能定理 · 机械能守恒' },
-        { icon: '🎯', name: '传送带模型', href: '力学/传送带模型/index.html', d: '模型学习 · 基础巩固 · 拔高练习 三阶闯关' },
-        { icon: '🌊', name: '机械振动与机械波', href: '力学/高中物理_机械振动与机械波.html', d: '简谐运动 · 波动 · 干涉衍射' },
-    ]},
-    { name: '电磁学', icon: '🔌', color: '#54a0ff', side: 'L', children: [
-        { icon: '⚡', name: '静电场', href: '高中物理_静电场闯关.html', d: '电场力 · 电势 · 电容器' },
-        { icon: '🔌', name: '恒定电流', href: '高中物理_恒定电流闯关.html', d: '闭合电路 · 动态电路' },
-        { icon: '🔄', name: '交变电流', href: '高中物理_交变电流闯关.html', d: '交流电 · 变压器 · 输电' },
-        { icon: '🧲', name: '电磁感应', href: '高中物理_电磁感应闯关.html', d: '楞次定律 · 法拉第定律' },
-    ]},
-    { name: '磁场专题', icon: '🧲', color: '#b06ef8', side: 'L', children: [
-        { icon: '🧲', name: '磁场基础', href: '磁场专题/高中物理_磁场.html', d: '磁感应强度 · 安培力' },
-        { icon: '🌀', name: '粒子在磁场中运动', href: '磁场专题/高中物理_磁场_带电粒子在磁场中的运动.html', d: '匀速圆周运动' },
-        { icon: '⚡', name: '粒子在复合场中', href: '磁场专题/高中物理_磁场_带电粒子在复合场中的运动.html', d: '电磁组合场' },
-        { icon: '🧲', name: '楞次定律与安培力', href: '磁场专题/高中物理_磁场_楞次定律与安培力.html', d: '感应电流方向' },
-    ]},
-    { name: '热·光·近代', icon: '🌡️', color: '#ffa94d', side: 'R', children: [
-        { group: true, name: '热学', icon: '🌡️', children: [
-            { icon: '🌡️', name: '热学', href: '高中物理_热学闯关.html', d: '气体定律 · 热力学' }
-        ]},
-        { group: true, name: '光学', icon: '🔆', children: [
-            { icon: '🔆', name: '光学', href: 'optics/高中物理_光学.html', d: '折射 · 干涉 · 衍射' }
-        ]},
-        { group: true, name: '近代物理', icon: '⚛️', children: [
-            { icon: '⚛️', name: '近代物理', href: 'atomic_physics/physics_atomic_summary.html', d: '原子 · 原子核 · 波粒二象性' }
-        ]},
-    ]},
-    { name: '物理实验', icon: '🔬', color: '#2ee6a8', side: 'R', children: [
-        { group: true, name: '力学实验', icon: '🧪', children: [
-            { icon: '📈', name: '研究匀变速直线运动', href: '力学实验/01_研究匀变速直线运动.html', d: '纸带 · 逐差法' },
-            { icon: '🪢', name: '探究弹力与弹簧伸长', href: '力学实验/02_探究弹力和弹簧伸长关系.html', d: '胡克定律' },
-            { icon: '📐', name: '验证力的平行四边形', href: '力学实验/03_验证力的平行四边形定则.html', d: '力的合成' },
-            { icon: '🚗', name: '探究加速度与力质量', href: '力学实验/04_探究加速度与力质量关系.html', d: '控制变量法' },
-            { icon: '🎯', name: '探究平抛运动规律', href: '力学实验/05_探究平抛运动规律.html', d: '平抛 · 描迹' },
-            { icon: '⚖️', name: '验证机械能守恒', href: '力学实验/06_验证机械能守恒定律.html', d: '自由落体' },
-            { icon: '🔨', name: '探究动能定理', href: '力学实验/07_探究动能定理.html', d: '合力做功' },
-            { icon: '💥', name: '验证动量守恒', href: '力学实验/08_验证动量守恒定律.html', d: '碰撞 · 一维' },
-            { icon: '🕰️', name: '单摆测重力加速度', href: '力学实验/09_用单摆测量重力加速度.html', d: '周期法' },
-        ]},
-        { group: true, name: '电学实验', icon: '⚗️', children: [
-            { icon: '🎛️', name: '认识表头 G', href: '电学实验/01_认识表头G改装基础.html', d: 'Ig · Rg · Ug' },
-            { icon: '🔗', name: '改装成电压表', href: '电学实验/02_改装成电压表.html', d: '串联分压' },
-            { icon: '🔀', name: '改装大量程电流表', href: '电学实验/03_改装成大量程电流表.html', d: '并联分流' },
-            { icon: '🎯', name: '半偏法测表头内阻', href: '电学实验/04_半偏法测表头内阻.html', d: '误差分析' },
-            { icon: '📏', name: '伏安法测电阻', href: '电学实验/05_伏安法测电阻.html', d: '内接 / 外接' },
-            { icon: '🛤️', name: '滑动变阻器限流分压', href: '电学实验/06_滑动变阻器限流分压.html', d: '电路设计' },
-            { icon: '🕹️', name: '多用电表（欧姆表）', href: '电学实验/07_多用电表欧姆表.html', d: '调零 · 中值电阻' },
-            { icon: '🔋', name: '测定电源电动势内阻', href: '电学实验/08_测定电源电动势和内阻.html', d: 'U-I 图像' },
-            { icon: '💡', name: '描绘小灯泡伏安特性', href: '电学实验/09_描绘小灯泡伏安特性曲线.html', d: '分压 + 外接' },
-            { icon: '🧵', name: '测量金属丝电阻率', href: '电学实验/10_测量金属丝电阻率.html', d: '螺旋测微器' },
-            { icon: '🌉', name: '电桥法测电阻', href: '电学实验/11_电桥测电阻.html', d: '惠斯通电桥' },
-        ]},
-    ]},
-];
-
-/* 默认全部展开 */
-DATA.forEach(g => {
-    g.collapsed = false;
-    g.children.forEach(function mark(c){ if(c.group){ c.collapsed=false; c.children.forEach(mark);} });
-});
-
-const map = document.getElementById('map');
-const NS = 'http://www.w3.org/2000/svg';
-let svg, defs, lgN, delay;
-
-/* 布局参数 */
-const ROW_H = 50;
-const L_ITEM_X = 70, R_ITEM_X = 1350;
-const L_TITLE_X = 520, R_TITLE_X = 940;
-const GROUP_X = { L: 350, R: 1150 };
-const GROUP_W = 150, GROUP_H = 36;
-const CHIP_W = 150, CHIP_H = 40;
-const ITEM_W = 190, ITEM_H = 42;
-const GROUP_GAP = 26;
-
-function nodeH(child) {
-    if (child.group) return child.collapsed ? GROUP_H : child.children.length * ROW_H;
-    return ROW_H;
-}
-function groupH(g) {
-    if (g.collapsed) return CHIP_H;
-    let h = 0, prevGroup = false;
-    g.children.forEach(child => {
-        if (prevGroup) h += GROUP_GAP;
-        h += nodeH(child);
-        prevGroup = child.group;
-    });
-    return Math.max(0, h - (ROW_H - ITEM_H));
-}
-const colH = gs => gs.reduce((s, g) => s + groupH(g) + GROUP_GAP, 0) - GROUP_GAP;
-
-let LH, RH, VIEW_H;
-
-function computeLayout() {
-    const Lgroups = DATA.filter(g => g.side === 'L');
-    const Rgroups = DATA.filter(g => g.side === 'R');
-    LH = colH(Lgroups); RH = colH(Rgroups);
-    VIEW_H = Math.max(LH, RH, 720);
-    const TOP_PAD = 60;
-    CY = TOP_PAD + VIEW_H / 2;
-    let ly = CY - LH / 2;
-    Lgroups.forEach(g => { g.top = ly; ly += groupH(g) + GROUP_GAP; });
-    let ry = CY - RH / 2;
-    Rgroups.forEach(g => { g.top = ry; ry += groupH(g) + GROUP_GAP; });
-}
-
-function makeLine(x1, y1, x2, y2, color, ctrl, opt = {}) {
-    const w = opt.w || 2.5;
-    const d = ctrl
-        ? `M${x1} ${y1} C ${ctrl[0]} ${ctrl[1]}, ${ctrl[2]} ${ctrl[3]}, ${x2} ${y2}`
-        : `M${x1} ${y1} L${x2} ${y2}`;
-
-    /* 每条线独立渐变：起点泛白 → 终点主题色，模拟能量从中心流出 */
-    const gid = 'lg' + (++lgN);
-    const grad = document.createElementNS(NS, 'linearGradient');
-    grad.id = gid;
-    grad.setAttribute('gradientUnits', 'userSpaceOnUse');
-    grad.setAttribute('x1', x1); grad.setAttribute('y1', y1);
-    grad.setAttribute('x2', x2); grad.setAttribute('y2', y2);
-    const s1 = document.createElementNS(NS, 'stop');
-    s1.setAttribute('offset', '0'); s1.setAttribute('stop-color', '#ffffff'); s1.setAttribute('stop-opacity', '.9');
-    const s2 = document.createElementNS(NS, 'stop');
-    s2.setAttribute('offset', '1'); s2.setAttribute('stop-color', color); s2.setAttribute('stop-opacity', opt.fade ? '.35' : '1');
-    grad.append(s1, s2);
-    defs.appendChild(grad);
-
-    /* 主线：渐变 + 辉光 */
-    const p = document.createElementNS(NS, 'path');
-    p.setAttribute('d', d);
-    p.setAttribute('class', 'line anim');
-    p.setAttribute('pathLength', '1');
-    p.setAttribute('stroke', `url(#${gid})`);
-    p.setAttribute('stroke-width', w);
-    p.style.opacity = opt.fade ? .6 : .9;
-    p.style.filter = `drop-shadow(0 0 ${2 + w}px ${color}66)`;
-    p.style.animationDelay = (delay / 18) + 's';
-    svg.appendChild(p);
-
-    /* 流光：白色光点沿曲线滑过 */
-    if (opt.flow !== false) {
-        const f = document.createElementNS(NS, 'path');
-        f.setAttribute('d', d);
-        f.setAttribute('class', 'line flow');
-        f.setAttribute('stroke', '#fff');
-        f.setAttribute('stroke-width', Math.max(1.5, w * .55));
-        f.style.animationDelay = (delay / 18 + .9) + 's';
-        svg.appendChild(f);
+    function applyFilter() {
+        var kw = (q.value || '').trim().toLowerCase();
+        var visible = 0;
+        tiles.forEach(function (t) {
+            var text = (t.textContent + ' ' + (t.getAttribute('data-k') || '')).toLowerCase();
+            var hit = !kw || text.indexOf(kw) > -1;
+            t.classList.toggle('hide', !hit);
+        });
+        secs.forEach(function (s) {
+            var any = s.querySelector('.tile:not(.hide)');
+            s.classList.toggle('hide', !any);
+            if (any) visible++;
+        });
+        empty.style.display = visible ? 'none' : 'block';
     }
-
-    /* 端点光点：脉动连接点 */
-    if (opt.dot) {
-        const c = document.createElementNS(NS, 'circle');
-        c.setAttribute('class', 'dot');
-        c.setAttribute('cx', x2); c.setAttribute('cy', y2);
-        c.setAttribute('fill', color);
-        c.style.animationDelay = (delay / 18 + .5) + 's';
-        svg.appendChild(c);
-    }
-}
-
-function render() {
-    map.innerHTML = `<svg id="lines" viewBox="0 0 1600 ${VIEW_H}" preserveAspectRatio="none"></svg>`;
-    svg = document.getElementById('lines');
-    defs = document.createElementNS(NS, 'defs');
-    svg.appendChild(defs);
-    lgN = 0;
-    delay = 0;
-
-    computeLayout();
-
-    /* 中心节点 */
-    const cen = document.createElement('div');
-    cen.className = 'node center-node';
-    cen.style.left = (CX - 98) + 'px';
-    cen.style.top = (CY - 98) + 'px';
-    cen.innerHTML = '<div class="ce">🚀</div><div class="cn">高中物理知识库</div><div class="cs">共 <b>39</b> 个专题 · 点击直达</div>';
-    map.appendChild(cen);
-
-    DATA.forEach(g => {
-        const side = g.side;
-        const x = side === 'L' ? L_ITEM_X : R_ITEM_X;
-        const gx = side === 'L' ? GROUP_X.L : GROUP_X.R;
-        const tx = side === 'L' ? L_TITLE_X : R_TITLE_X;
-        const centerY = g.top + groupH(g) / 2;
-        const leafCount = g.children.reduce((s, c) => s + (c.group ? c.children.length : 1), 0);
-
-        /* 分类标题（可折叠） */
-        const collapsed = g.collapsed;
-        const chip = document.createElement('div');
-        chip.className = 'node chip';
-        chip.style.cssText = `left:${tx}px;top:${centerY - CHIP_H / 2}px;background:linear-gradient(135deg,${g.color},${g.color}cc)`;
-        chip.innerHTML = `<span class="expander">${collapsed ? '▶' : '▼'}</span>${g.icon}${g.name}<span class="n">${leafCount}</span>`;
-        chip.title = collapsed ? '点击展开' : '点击折叠';
-        chip.addEventListener('click', () => {
-            g.collapsed = !g.collapsed;
-            render();
-        });
-        map.appendChild(chip);
-
-        /* 中心 -> 标题 */
-        const edgeX = side === 'L' ? CX - 98 : CX + 98;
-        const txEdge = side === 'L' ? tx : tx + CHIP_W;
-        makeLine(edgeX, CY, txEdge, centerY, g.color,
-            side === 'L' ? [edgeX - 46, CY, txEdge + 40, centerY]
-                         : [edgeX + 46, CY, txEdge - 40, centerY],
-            { w: 3.6, dot: true });
-        delay += 2;
-
-        if (collapsed) return; /* 折叠分类：不渲染子节点与连线 */
-
-        /* 布局：叶子与分组 */
-        let yy = g.top;
-        let prevGroup = false;
-        const leaves = [], groups = [];
-        function place(child) {
-            if (child.group) {
-                if (prevGroup) yy += GROUP_GAP;
-                if (child.collapsed) {
-                    const cY = yy + GROUP_H / 2;
-                    groups.push({ group: child, top: yy, centerY: cY, collapsed: true });
-                    yy += GROUP_H;
-                } else {
-                    const rows = child.children.length;
-                    const top = yy, cY = top + rows * ROW_H / 2;
-                    groups.push({ group: child, top: top, centerY: cY, collapsed: false });
-                    child.children.forEach((leaf, j) => {
-                        leaves.push({ leaf: leaf, y: top + j * ROW_H, group: child, gY: cY });
-                    });
-                    child.gY = cY;
-                    yy += rows * ROW_H;
-                }
-                prevGroup = true;
-            } else {
-                if (prevGroup) yy += GROUP_GAP;
-                leaves.push({ leaf: child, y: yy, group: null });
-                yy += ROW_H;
-                prevGroup = false;
-            }
-        }
-        g.children.forEach(place);
-
-        /* 叶子节点 */
-        leaves.forEach(({ leaf, y, group }) => {
-            const item = document.createElement('a');
-            item.className = 'item node';
-            item.href = leaf.href;
-            item.title = leaf.d;
-            item.dataset.side = side;
-            item.style.cssText = `left:${x}px;top:${y}px;border-left:4px solid ${g.color}`;
-            item.innerHTML = `<span class="ic">${leaf.icon}</span><span class="tx">${leaf.name}</span>`;
-            map.appendChild(item);
-
-            const iy = y + ITEM_H / 2;
-            const iex = side === 'L' ? x + ITEM_W : x;
-            if (group) {
-                const gcx = gx + GROUP_W / 2;
-                makeLine(iex, iy, gcx, group.gY, g.color,
-                    side === 'L' ? [iex + 40, iy, gcx - 34, group.gY]
-                                 : [iex - 40, iy, gcx + 34, group.gY],
-                    { w: 2.3, fade: true, flow: false });
-                delay += 1;
-            } else {
-                const cex = side === 'L' ? tx : tx + CHIP_W;
-                makeLine(iex, iy, cex, centerY, g.color,
-                    side === 'L' ? [iex + 44, iy, tx - 34, centerY]
-                                 : [iex - 44, iy, tx + CHIP_W + 34, centerY],
-                    { w: 2.3, fade: true, flow: false });
-                delay += 1;
-            }
-        });
-
-        /* 分组节点 + 标题 -> 组 */
-        groups.forEach(({ group, centerY: cY, collapsed }) => {
-            const gp = document.createElement('div');
-            gp.className = 'node group-node';
-            gp.style.cssText = `left:${gx}px;top:${cY - GROUP_H / 2}px;color:${g.color};border-color:${g.color}`;
-            gp.innerHTML = `<span class="expander">${collapsed ? '▶' : '▼'}</span>${group.icon}${group.name}<span class="n">${group.children.length}</span>`;
-            gp.title = collapsed ? '点击展开' : '点击折叠';
-            gp.addEventListener('click', () => {
-                group.collapsed = !group.collapsed;
-                render();
-            });
-            map.appendChild(gp);
-
-            const gcx = gx + GROUP_W / 2;
-            const tEdge = side === 'L' ? tx : tx + CHIP_W;
-            makeLine(tEdge, centerY, gcx, cY, g.color,
-                side === 'L' ? [tx - 15, centerY, gcx + 30, cY]
-                             : [tx + CHIP_W + 15, centerY, gcx - 30, cY],
-                { w: 3, dot: true });
-            delay += 2;
-        });
-    });
-
-    fit();
-}
-
-function fit() {
-    map.style.height = VIEW_H + 'px';
-    svg.setAttribute('viewBox', `0 0 1600 ${VIEW_H}`);
-    const s = Math.min(window.innerWidth / 1620, window.innerHeight / VIEW_H, 1);
-    map.style.transform = `scale(${s})`;
-}
-
-window.addEventListener('resize', fit);
-render();
+    q.addEventListener('input', applyFilter);
+    q.addEventListener('keydown', function (e) { if (e.key === 'Escape') { q.value = ''; applyFilter(); } });
 </script>
 </body>
 </html>

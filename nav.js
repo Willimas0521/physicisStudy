@@ -12,16 +12,16 @@
     /* 全库页面顺序（f:文件名  n:显示名  h:相对根路径  b:返回目录路径） */
     var LIST = [
         { f: '高中物理_运动学闯关.html',              n: '运动学闯关',                h: '力学/高中物理_运动学闯关.html',            b: 'index.html' },
-        { f: '高中物理_受力分析与平衡闯关.html',       n: '受力分析与平衡',            h: '力学/高中物理_受力分析与平衡闯关.html',     b: 'index.html' },
+        { f: '高中物理_受力分析与平衡闯关.html',       n: '受力分析与平衡',            h: '力学/受力分析/高中物理_受力分析与平衡闯关.html', b: 'index.html' },
         { f: '高中物理_牛顿运动定律闯关.html',         n: '牛顿运动定律',              h: '力学/高中物理_牛顿运动定律闯关.html',       b: 'index.html' },
-        { f: '高中物理_动量闯关.html',                 n: '动量守恒',                  h: '力学/高中物理_动量闯关.html',               b: 'index.html' },
-        { f: '高中物理_万有引力与航天闯关.html',       n: '万有引力与航天',            h: '力学/高中物理_万有引力与航天闯关.html',     b: 'index.html' },
+        { f: '动量守恒定律.html',                      n: '动量守恒定律',              h: '力学/功和能/动量守恒定律.html',             b: 'index.html' },
+        { f: '高中物理_万有引力与航天闯关.html',       n: '万有引力与航天',            h: '力学/万有引力/高中物理_万有引力与航天闯关.html', b: 'index.html' },
         { f: '高中物理_功和能.html',                   n: '功和能 · 基础',             h: '力学/高中物理_功和能.html',                 b: 'index.html' },
-        { f: '高中物理_机械振动与机械波.html',         n: '机械振动与机械波',          h: '力学/高中物理_机械振动与机械波.html',       b: 'index.html' },
+        { f: '01_简谐运动.html',                       n: '简谐运动',                  h: '力学/机械振动与机械波/01_简谐运动.html',    b: 'index.html' },
         { f: '高中物理_静电场闯关.html',               n: '静电场',                    h: '高中物理_静电场闯关.html',                 b: 'index.html' },
         { f: '高中物理_恒定电流闯关.html',             n: '恒定电流',                  h: '高中物理_恒定电流闯关.html',               b: 'index.html' },
         { f: '高中物理_交变电流闯关.html',             n: '交变电流',                  h: '高中物理_交变电流闯关.html',               b: 'index.html' },
-        { f: '高中物理_电磁感应闯关.html',             n: '电磁感应',                  h: '高中物理_电磁感应闯关.html',               b: 'index.html' },
+        { f: '高中物理_电磁感应闯关.html',             n: '电磁感应',                  h: '磁场专题/高中物理_电磁感应闯关.html',       b: 'index.html' },
         { f: '高中物理_磁场.html',                     n: '磁场基础',                  h: '磁场专题/高中物理_磁场.html',              b: 'index.html' },
         { f: '高中物理_磁场_带电粒子在磁场中的运动.html', n: '粒子在磁场中运动',        h: '磁场专题/高中物理_磁场_带电粒子在磁场中的运动.html', b: 'index.html' },
         { f: '高中物理_磁场_磁场中的圆.html',          n: '磁场中的圆',                h: '磁场专题/高中物理_磁场_磁场中的圆.html',    b: 'index.html' },
@@ -31,8 +31,8 @@
         { f: '高中物理_磁场_单棒切割.html',            n: '单棒切割',                  h: '磁场专题/高中物理_磁场_单棒切割.html',          b: 'index.html' },
         { f: '高中物理_磁场_双棒切割.html',            n: '双棒切割',                  h: '磁场专题/高中物理_磁场_双棒切割.html',          b: 'index.html' },
         { f: '高中物理_热学闯关.html',                 n: '热学',                      h: '高中物理_热学闯关.html',                   b: 'index.html' },
-        { f: '高中物理_光学.html',                     n: '光学',                      h: 'optics/高中物理_光学.html',                 b: 'index.html' },
-        { f: 'physics_atomic_summary.html',            n: '近代物理',                  h: 'atomic_physics/physics_atomic_summary.html', b: 'index.html' },
+        { f: '高中物理_光学.html',                     n: '光学',                      h: '光学/高中物理_光学.html',                   b: 'index.html' },
+        { f: 'physics_atomic_summary.html',            n: '近代物理',                  h: '原子物理/physics_atomic_summary.html',      b: 'index.html' },
         { f: '01_研究匀变速直线运动.html',             n: '研究匀变速直线运动',        h: '力学实验/01_研究匀变速直线运动.html',      b: 'index.html' },
         { f: '02_探究弹力和弹簧伸长关系.html',         n: '探究弹力与弹簧伸长',        h: '力学实验/02_探究弹力和弹簧伸长关系.html',  b: 'index.html' },
         { f: '03_验证力的平行四边形定则.html',         n: '验证力的平行四边形',        h: '力学实验/03_验证力的平行四边形定则.html',  b: 'index.html' },
@@ -55,7 +55,6 @@
         { f: '10_测量金属丝电阻率.html',               n: '测量金属丝电阻率',          h: '电学实验/10_测量金属丝电阻率.html',        b: 'index.html' },
         { f: '11_电桥测电阻.html',                      n: '电桥法测电阻',              h: '电学实验/11_电桥测电阻.html',              b: 'index.html' },
         { f: '12_安安法与伏伏法测电阻.html',            n: '安安法伏伏法测电阻',        h: '电学实验/12_安安法与伏伏法测电阻.html',    b: 'index.html' },
-        { f: '高考物理_电学实验闯关.html',             n: '电学实验综合闯关',          h: '高考物理_电学实验闯关.html',               b: 'index.html' },
         { f: '初中物理_浮力基础知识.html',             n: '浮力基础',                  h: '初中物理/初中物理_浮力基础知识.html',      b: '初中物理/index.html' },
         { f: '初中物理_浮力交互模型.html',             n: '浮力交互模型',              h: '初中物理/初中物理_浮力交互模型.html',      b: '初中物理/index.html' },
         { f: '初中物理_压强选择题.html',               n: '压强选择题',                h: '初中物理/初中物理_压强选择题.html',        b: '初中物理/index.html' },
@@ -93,7 +92,7 @@
     bar.id = 'kb-nav';
     bar.innerHTML =
         '<a class="kb-side" href="' + ROOT + prev.h + '" title="上一篇：' + prev.n + '">← <span class="kb-name">' + prev.n + '</span></a>'
-        + '<a class="kb-home" href="' + ROOT + 'index.html" title="返回思维导图">🗺 思维导图</a>'
+        + '<a class="kb-home" href="' + ROOT + 'index.html" title="返回首页">🏠 首页</a>'
         + '<a class="kb-side" href="' + ROOT + next.h + '" title="下一篇：' + next.n + '"><span class="kb-name">' + next.n + '</span> →</a>';
     document.body.appendChild(bar);
 })();

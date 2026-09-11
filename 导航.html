@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="theme.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整导航 · 高中物理知识库</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #f5f9fe; color: #1f2d3d; line-height: 1.9;
+        }
+        .top {
+            position: sticky; top: 0; z-index: 50;
+            background: linear-gradient(135deg, #1e3c72, #2a5298 60%, #3a7bd5);
+            color: #fff; padding: 18px 22px 16px; box-shadow: 0 4px 20px rgba(30,60,114,.28);
+        }
+        .top-inner { max-width: 1200px; margin: 0 auto; }
+        .top-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .top-row h1 { font-size: 1.4em; letter-spacing: 1px; color: #fff; }
+        .top-row .home {
+            margin-left: auto; text-decoration: none; color: #fff !important; font-size: .9em; font-weight: 600;
+            padding: 7px 18px; border-radius: 999px; background: rgba(255,255,255,.15);
+            border: 1px solid rgba(255,255,255,.32); transition: .2s;
+        }
+        .top-row .home:hover { background: rgba(255,255,255,.28); }
+        .search { margin-top: 14px; }
+        .search input {
+            width: 100%; padding: 13px 20px; border-radius: 999px; font-size: 1em; outline: none;
+            border: 1px solid rgba(255,255,255,.5) !important; background: #fff !important;
+            color: #1f2d3d !important; box-shadow: 0 8px 24px rgba(0,0,0,.15);
+        }
+        .search input::placeholder { color: #8a99ad; }
+        .count { font-size: .85em; color: #d5e3ff; margin-top: 8px; }
+        .count b { color: #ffd54f; }
+
+        .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 22px 60px; }
+        .group { margin-bottom: 30px; }
+        .group h2 {
+            display: flex; align-items: center; gap: 10px; font-size: 1.28em; color: #1e3c72;
+            margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e8eef5;
+        }
+        .group h2 .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--c, #3a7bd5);
+            box-shadow: 0 0 0 5px color-mix(in srgb, var(--c, #3a7bd5) 18%, transparent); }
+        .group h2 .n { margin-left: auto; font-size: .62em; font-weight: 600; color: #7b8aa0; letter-spacing: 1px; }
+        .sub { color: #586a7d; font-size: .92em; margin: -6px 0 12px 22px; }
+
+        .links { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 9px; }
+        .lk {
+            display: flex; align-items: center; gap: 9px; text-decoration: none;
+            background: #fff; border: 1px solid #e6edf6; border-left: 4px solid var(--c, #3a7bd5);
+            border-radius: 10px; padding: 10px 14px; transition: .18s;
+            box-shadow: 0 1px 6px rgba(30,60,114,.05);
+        }
+        .lk:hover { transform: translateX(4px); border-color: var(--c, #3a7bd5);
+            box-shadow: 0 8px 20px rgba(30,60,114,.14); }
+        .lk .nm { font-size: .98em; font-weight: 600; color: #1e3c72 !important; }
+        .lk .ds { font-size: .76em; color: #7b8aa0 !important; margin-left: auto; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis; max-width: 45%; }
+        .lk .ic { font-size: 1.05em; flex-shrink: 0; }
+        .hide { display: none !important; }
+        .empty { text-align: center; color: #8896a8; padding: 40px; display: none; }
+        .foot { text-align: center; color: #8896a8; font-size: .85em; padding: 24px; }
+        .foot a { color: #3a7bd5 !important; text-decoration: none; }
+
+        @media (max-width: 640px) {
+            .top-row h1 { font-size: 1.15em; }
+            .links { grid-template-columns: 1fr; }
+            .lk .ds { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top">
+    <div class="top-inner">
+        <div class="top-row">
+            <h1>🗂 完整导航 · 高中物理知识库</h1>
+            <a class="home" href="index.html">🏠 返回首页</a>
+        </div>
+        <div class="search">
+            <input id="q" type="search" autocomplete="off" placeholder="🔍 输入关键词筛选，例如：动量、磁场、变压器、伏安法、单摆…">
+        </div>
+        <div class="count">共 <b id="total">0</b> 个页面 · 输入关键词可实时筛选</div>
+    </div>
+</div>
+
+<main class="wrap" id="app"></main>
+<div class="empty" id="empty">没有匹配的页面，换个关键词试试～</div>
+<div class="foot">高中物理知识库 · <a href="index.html">首页</a> · <a href="思维导图.html">思维导图</a></div>
+
+<script>
+/* ========== 全站页面数据（相对根目录） ========== */
+var GROUPS = [
+    { g: '初中物理', c: '#27ae60', items: [
+        { n: '初中物理总览', h: '初中物理/index.html', d: '总目录', i: '🎒' },
+        { n: '浮力基础知识', h: '初中物理/初中物理_浮力基础知识.html', d: '阿基米德原理', i: '🎈' },
+        { n: '浮力交互模型', h: '初中物理/初中物理_浮力交互模型.html', d: '动态模型', i: '🧮' },
+        { n: '压强选择题', h: '初中物理/初中物理_压强选择题.html', d: '固液压强', i: '📐' },
+        { n: '电学压轴题', h: '初中物理/初中物理_电学压轴题.html', d: '电路综合', i: '💡' },
+        { n: '电路故障诊断', h: '初中物理/初中物理_电路故障诊断.html', d: '断路短路', i: '🔧' },
+        { n: '光学基础知识', h: '初中物理/初中物理_光学基础知识.html', d: '反射折射', i: '🔦' }
+    ]},
+    { g: '力学 · 运动学', c: '#ff6b6b', items: [
+        { n: '运动学闯关（目录）', h: '力学/运动学闯关/index.html', d: '目录', i: '🏃' },
+        { n: '运动的描述', h: '力学/运动学闯关/运动的描述.html', i: '📌' },
+        { n: '匀变速直线运动基本公式', h: '力学/运动学闯关/匀变速直线运动基本公式.html', i: '📌' },
+        { n: '匀变速推论与图像', h: '力学/运动学闯关/匀变速推论与图像.html', i: '📈' },
+        { n: '自由落体与竖直上抛', h: '力学/运动学闯关/自由落体与竖直上抛.html', i: '🪂' },
+        { n: '平抛运动', h: '力学/运动学闯关/平抛运动.html', i: '🎯' },
+        { n: '斜抛运动', h: '力学/运动学闯关/斜抛运动.html', i: '⛳' },
+        { n: '斜面上的平抛运动', h: '力学/运动学闯关/斜面上的平抛运动.html', i: '📐' },
+        { n: '圆周运动', h: '力学/运动学闯关/圆周运动.html', i: '⭕' },
+        { n: '圆周运动临界问题', h: '力学/运动学闯关/圆周运动临界问题.html', i: '🎢' },
+        { n: '水平面内圆周运动临界', h: '力学/运动学闯关/水平面内圆周运动的临界问题.html', i: '🔄' },
+        { n: '竖直平面内的圆周运动', h: '力学/运动学闯关/竖直平面内的圆周运动.html', i: '🎡' },
+        { n: '斜面内圆周运动临界', h: '力学/运动学闯关/斜面内圆周运动的临界问题.html', i: '⛰️' },
+        { n: '曲线运动基础', h: '力学/运动学闯关/曲线运动基础.html', i: '〰️' },
+        { n: '关联速度分解', h: '力学/运动学闯关/关联速度分解.html', i: '🔗' },
+        { n: '接触物类', h: '力学/运动学闯关/接触物类.html', i: '🧱' },
+        { n: '弹簧与木块分离问题', h: '力学/运动学闯关/弹簧与木块分离问题.html', i: '🌀' },
+        { n: '变力做功', h: '力学/运动学闯关/变力做功.html', i: '⚡' },
+        { n: '追及与相遇', h: '力学/运动学闯关/追及与相遇.html', i: '🚗' }
+    ]},
+    { g: '力学 · 受力分析与平衡', c: '#ff6b6b', items: [
+        { n: '受力分析与平衡（目录）', h: '力学/受力分析/index.html', d: '目录', i: '⚖️' },
+        { n: '重力与弹力', h: '力学/受力分析/重力与弹力.html', i: '⬇️' },
+        { n: '摩擦力', h: '力学/受力分析/摩擦力.html', i: '🧊' },
+        { n: '力的合成与分解', h: '力学/受力分析/力的合成与分解.html', i: '➕' },
+        { n: '共点力平衡', h: '力学/受力分析/共点力平衡.html', i: '🎯' },
+        { n: '动态平衡图解法', h: '力学/受力分析/动态平衡图解法.html', i: '📉' },
+        { n: '整体法与隔离法', h: '力学/受力分析/整体法与隔离法.html', i: '🧩' },
+        { n: '正交分解法', h: '力学/受力分析/正交分解法.html', i: '📐' },
+        { n: '临界与极值问题', h: '力学/受力分析/临界与极值问题.html', i: '⚠️' },
+        { n: '受力分析', h: '力学/受力分析/受力分析.html', i: '🔍' },
+        { n: '综合与真题演练', h: '力学/受力分析/综合与真题演练.html', i: '📝' },
+        { n: '受力分析与平衡闯关', h: '力学/受力分析/高中物理_受力分析与平衡闯关.html', d: '闯关', i: '🎮' },
+        { n: '静摩擦力与圆盘临界', h: '力学/受力分析/高中物理_静摩擦力与圆盘临界问题.html', i: '💿' }
+    ]},
+    { g: '力学 · 牛顿运动定律', c: '#ff6b6b', items: [
+        { n: '牛顿运动定律闯关', h: '力学/高中物理_牛顿运动定律闯关.html', d: '传送带·板块', i: '🚀' }
+    ]},
+    { g: '力学 · 功和能（基础）', c: '#ff6b6b', items: [
+        { n: '功和能 · 动能定理与机械能', h: '力学/高中物理_功和能.html', d: '动能定理', i: '⚡' }
+    ]},
+    { g: '力学 · 动量与碰撞', c: '#ff6b6b', items: [
+        { n: '动量与碰撞（目录）', h: '力学/功和能/index.html', d: '目录', i: '💥' },
+        { n: '动量与冲量', h: '力学/功和能/动量与冲量.html', i: '📌' },
+        { n: '动量定理', h: '力学/功和能/动量定理.html', i: '📌' },
+        { n: '动量守恒定律', h: '力学/功和能/动量守恒定律.html', i: '🔒' },
+        { n: '弹性碰撞', h: '力学/功和能/弹性碰撞.html', i: '🎱' },
+        { n: '非弹性碰撞与完全非弹性碰撞', h: '力学/功和能/非弹性碰撞与完全非弹性碰撞.html', i: '🎱' },
+        { n: '碰撞综合与真题演练', h: '力学/功和能/碰撞综合与真题演练.html', i: '📝' },
+        { n: '反冲与爆炸', h: '力学/功和能/反冲与爆炸.html', i: '🚀' },
+        { n: '人船模型', h: '力学/功和能/人船模型.html', i: '🚣' },
+        { n: '子弹打木块', h: '力学/功和能/子弹打木块.html', i: '🔫' },
+        { n: '滑块—木板模型', h: '力学/功和能/滑块—木板模型.html', i: '🪵' },
+        { n: '弹簧连接体', h: '力学/功和能/弹簧连接体.html', i: '🌀' },
+        { n: '小球—曲面模型', h: '力学/功和能/小球—曲面模型.html', i: '⛰️' }
+    ]},
+    { g: '力学 · 传送带模型', c: '#ff6b6b', items: [
+        { n: '传送带模型（目录）', h: '力学/传送带模型/index.html', d: '目录', i: '🎯' },
+        { n: '模型学习', h: '力学/传送带模型/模型学习.html', i: '📘' },
+        { n: '基础巩固', h: '力学/传送带模型/基础巩固.html', i: '🧱' },
+        { n: '拔高练习', h: '力学/传送带模型/拔高练习.html', i: '🚀' }
+    ]},
+    { g: '力学 · 机械振动与机械波', c: '#ff6b6b', items: [
+        { n: '机械振动与机械波（目录）', h: '力学/机械振动与机械波/index.html', d: '目录', i: '🌊' },
+        { n: '简谐运动', h: '力学/机械振动与机械波/01_简谐运动.html', i: '1️⃣' },
+        { n: '单摆', h: '力学/机械振动与机械波/02_单摆.html', i: '2️⃣' },
+        { n: '受迫振动与共振', h: '力学/机械振动与机械波/03_受迫振动与共振.html', i: '3️⃣' },
+        { n: '机械波的描述', h: '力学/机械振动与机械波/04_机械波的描述.html', i: '4️⃣' },
+        { n: '波的图象', h: '力学/机械振动与机械波/05_波的图象.html', i: '5️⃣' },
+        { n: '波的多解性', h: '力学/机械振动与机械波/06_波的多解性.html', i: '6️⃣' },
+        { n: '波的干涉与衍射', h: '力学/机械振动与机械波/07_波的干涉与衍射.html', i: '7️⃣' },
+        { n: '多普勒效应', h: '力学/机械振动与机械波/08_多普勒效应.html', i: '8️⃣' },
+        { n: '互动计算练习', h: '力学/机械振动与机械波/09_互动计算练习.html', i: '9️⃣' },
+        { n: '核心公式总结', h: '力学/机械振动与机械波/10_核心公式总结.html', i: '🔟' },
+        { n: '高考刷题', h: '力学/机械振动与机械波/11_高考刷题.html', i: '📝' },
+        { n: '动画演示', h: '力学/机械振动与机械波/12_动画演示.html', i: '🎬' }
+    ]},
+    { g: '力学 · 万有引力与航天', c: '#ff6b6b', items: [
+        { n: '万有引力与航天闯关', h: '力学/万有引力/高中物理_万有引力与航天闯关.html', d: '开普勒·卫星', i: '🛰️' }
+    ]},
+    { g: '力学 · 实验闯关', c: '#ff6b6b', items: [
+        { n: '力学实验综合闯关', h: '力学/高考物理_力学实验闯关.html', i: '🔬' }
+    ]},
+    { g: '电磁学 · 静电场', c: '#54a0ff', items: [
+        { n: '静电场闯关', h: '高中物理_静电场闯关.html', d: '综合自测', i: '⚡' },
+        { n: '静电场 · 考点详解（目录）', h: '电学/index.html', d: '目录', i: '📘' },
+        { n: '库仑定律', h: '电学/库仑定律.html', i: '📌' },
+        { n: '电场强度', h: '电学/电场强度.html', i: '📌' },
+        { n: '电场线与典型电场', h: '电学/电场线与典型电场.html', i: '📌' },
+        { n: '电势与电势能', h: '电学/电势与电势能.html', i: '📌' },
+        { n: '电场力做功与电势差', h: '电学/电场力做功与电势差.html', i: '📌' },
+        { n: '匀强电场 U = Ed', h: '电学/匀强电场 U = Ed.html', i: '📐' },
+        { n: '静电平衡与电容器', h: '电学/静电平衡与电容器.html', i: '🔋' },
+        { n: '带电粒子在电场中的运动', h: '电学/带电粒子在电场中的运动.html', i: '➡️' },
+        { n: '静电场中的图象问题', h: '电学/静电场中的图象问题.html', i: '📈' },
+        { n: '静电场综合与真题演练', h: '电学/静电场综合与真题演练.html', i: '📝' },
+        { n: '轨迹线·电场线·等势线', h: '电学/轨迹线电场线等势线三线问题.html', i: '🔍' },
+        { n: '等分法·正交分解法', h: '电学/等分法正交分解法巧解电场强度.html', i: '📐' },
+        { n: '电场中常见的图像', h: '电学/电场中常见的图像.html', i: '📈' },
+        { n: '非点电荷电场强度', h: '电学/非点电荷电场强度的计算.html', i: '🧮' },
+        { n: '带电粒子类平抛运动', h: '电学/带电粒子在电场中的类平抛运动.html', i: '🎯' },
+        { n: '库仑力平衡与加速', h: '电学/库仑力作用下电荷的平衡及加速问题.html', i: '⚙️' },
+        { n: '两点电荷电场特点', h: '电学/两点电荷电场的特点.html', i: '🔵' }
+    ]},
+    { g: '电磁学 · 恒定电流', c: '#54a0ff', items: [
+        { n: '恒定电流闯关', h: '高中物理_恒定电流闯关.html', d: '闭合电路', i: '🔌' }
+    ]},
+    { g: '电磁学 · 交变电流', c: '#54a0ff', items: [
+        { n: '交变电流闯关', h: '高中物理_交变电流闯关.html', d: '变压器·输电', i: '🔄' }
+    ]},
+    { g: '磁场专题', c: '#b06ef8', items: [
+        { n: '磁场基础', h: '磁场专题/高中物理_磁场.html', d: '磁感应强度', i: '🧲' },
+        { n: '带电粒子在磁场中的运动', h: '磁场专题/高中物理_磁场_带电粒子在磁场中的运动.html', i: '🌀' },
+        { n: '带电粒子在匀强磁场中', h: '磁场专题/高中物理_磁场_带电粒子在匀强磁场中的运动.html', i: '🔵' },
+        { n: '带电粒子在复合场中', h: '磁场专题/高中物理_磁场_带电粒子在复合场中的运动.html', i: '⚛️' },
+        { n: '磁场中的圆', h: '磁场专题/高中物理_磁场_磁场中的圆.html', i: '⭕' },
+        { n: '磁场圆圆心确定', h: '磁场专题/高中物理_磁场_磁场圆圆心确定.html', d: '托卡马克磁笼', i: '🧭' },
+        { n: '磁聚焦与磁发散', h: '磁场专题/高中物理_磁场_磁聚焦与磁发散.html', i: '🎇' },
+        { n: '最小面积问题', h: '磁场专题/高中物理_磁场_最小面积问题.html', i: '📉' },
+        { n: '洛伦兹力下的运动', h: '磁场专题/高中物理_磁场_洛伦兹力作用下带电体的运动.html', i: '➡️' },
+        { n: '楞次定律与安培力', h: '磁场专题/高中物理_磁场_楞次定律与安培力.html', i: '🔁' },
+        { n: '单棒切割', h: '磁场专题/高中物理_磁场_单棒切割.html', i: '⚔️' },
+        { n: '双棒切割', h: '磁场专题/高中物理_磁场_双棒切割.html', i: '🛡️' },
+        { n: '电磁感应闯关', h: '磁场专题/高中物理_电磁感应闯关.html', d: '楞次·法拉第', i: '🧲' }
+    ]},
+    { g: '光学', c: '#ffa94d', items: [
+        { n: '光学总览', h: '光学/高中物理_光学.html', d: '目录', i: '🔆' },
+        { n: '光的反射', h: '光学/高中物理_光学_光的反射.html', i: '🪞' },
+        { n: '光的折射', h: '光学/高中物理_光学_折射.html', i: '💧' },
+        { n: '全反射', h: '光学/高中物理_光学_全反射.html', i: '🔦' },
+        { n: '色散和干涉', h: '光学/高中物理_光学_色散和干涉.html', i: '🌈' },
+        { n: '衍射', h: '光学/高中物理_光学_衍射.html', i: '〰️' },
+        { n: '偏振', h: '光学/高中物理_光学_偏振.html', i: '🎚️' },
+        { n: '光学 · 习题', h: '光学/高中物理_光学_习题.html', i: '📝' }
+    ]},
+    { g: '热学', c: '#ff9f43', items: [
+        { n: '热学闯关', h: '高中物理_热学闯关.html', d: '气体定律·热力学', i: '🌡️' }
+    ]},
+    { g: '近代物理', c: '#e056fd', items: [
+        { n: '原子与近代物理', h: '原子物理/physics_atomic_summary.html', d: '原子·原子核', i: '⚛️' }
+    ]},
+    { g: '物理实验 · 力学实验', c: '#2ee6a8', items: [
+        { n: '力学实验（目录）', h: '力学实验/index.html', d: '目录', i: '🧪' },
+        { n: '研究匀变速直线运动', h: '力学实验/01_研究匀变速直线运动.html', i: '📈' },
+        { n: '探究弹力和弹簧伸长关系', h: '力学实验/02_探究弹力和弹簧伸长关系.html', i: '🪢' },
+        { n: '验证力的平行四边形定则', h: '力学实验/03_验证力的平行四边形定则.html', i: '📐' },
+        { n: '探究加速度与力、质量关系', h: '力学实验/04_探究加速度与力质量关系.html', i: '🚗' },
+        { n: '探究平抛运动规律', h: '力学实验/05_探究平抛运动规律.html', i: '🎯' },
+        { n: '验证机械能守恒定律', h: '力学实验/06_验证机械能守恒定律.html', i: '⚖️' },
+        { n: '探究动能定理', h: '力学实验/07_探究动能定理.html', i: '🔨' },
+        { n: '验证动量守恒定律', h: '力学实验/08_验证动量守恒定律.html', i: '💥' },
+        { n: '用单摆测量重力加速度', h: '力学实验/09_用单摆测量重力加速度.html', i: '🕰️' }
+    ]},
+    { g: '物理实验 · 电学实验', c: '#2ee6a8', items: [
+        { n: '电学实验（目录）', h: '电学实验/index.html', d: '目录', i: '⚗️' },
+        { n: '认识表头G改装基础', h: '电学实验/01_认识表头G改装基础.html', i: '🎛️' },
+        { n: '改装成电压表', h: '电学实验/02_改装成电压表.html', i: '🔗' },
+        { n: '改装成大量程电流表', h: '电学实验/03_改装成大量程电流表.html', i: '🔀' },
+        { n: '半偏法测表头内阻', h: '电学实验/04_半偏法测表头内阻.html', i: '🎯' },
+        { n: '伏安法测电阻', h: '电学实验/05_伏安法测电阻.html', i: '📏' },
+        { n: '滑动变阻器限流分压', h: '电学实验/06_滑动变阻器限流分压.html', i: '🛤️' },
+        { n: '多用电表（欧姆表）', h: '电学实验/07_多用电表欧姆表.html', i: '🕹️' },
+        { n: '测定电源电动势和内阻', h: '电学实验/08_测定电源电动势和内阻.html', i: '🔋' },
+        { n: '描绘小灯泡伏安特性曲线', h: '电学实验/09_描绘小灯泡伏安特性曲线.html', i: '💡' },
+        { n: '测量金属丝电阻率', h: '电学实验/10_测量金属丝电阻率.html', i: '🧵' },
+        { n: '电桥法测电阻', h: '电学实验/11_电桥测电阻.html', i: '🌉' },
+        { n: '安安法·伏伏法测电阻', h: '电学实验/12_安安法与伏伏法测电阻.html', i: '⚡' },
+        { n: '电表的改装（一）', h: '电学实验/电表的改装（一）/index.html', d: '专题', i: '🎛️' },
+        { n: '改装（一）· 基础巩固', h: '电学实验/电表的改装（一）/基础巩固.html', i: '🧱' },
+        { n: '改装（一）· 拔高练习', h: '电学实验/电表的改装（一）/拔高练习.html', i: '🚀' },
+        { n: '电表的改装（二）', h: '电学实验/电表的改装（二）/index.html', d: '专题', i: '🔀' },
+        { n: '改装（二）· 模型学习', h: '电学实验/电表的改装（二）/模型学习.html', i: '📘' },
+        { n: '改装（二）· 基础巩固', h: '电学实验/电表的改装（二）/基础巩固.html', i: '🧱' },
+        { n: '改装（二）· 拔高练习', h: '电学实验/电表的改装（二）/拔高练习.html', i: '🚀' }
+    ]}
+];
+
+/* ========== 渲染 ========== */
+var app = document.getElementById('app');
+var html = '';
+GROUPS.forEach(function (grp) {
+    html += '<section class="group" style="--c:' + grp.c + '">';
+    html += '<h2><span class="dot"></span>' + grp.g + '<span class="n">' + grp.items.length + ' 页</span></h2>';
+    html += '<div class="links">';
+    grp.items.forEach(function (it) {
+        html += '<a class="lk" style="--c:' + grp.c + '" href="' + encodeURI(it.h) + '"'
+              + ' data-k="' + (grp.g + ' ' + it.n + ' ' + (it.d || '')).toLowerCase() + '">'
+              + '<span class="ic">' + (it.i || '📄') + '</span>'
+              + '<span class="nm">' + it.n + '</span>'
+              + (it.d ? '<span class="ds">' + it.d + '</span>' : '')
+              + '</a>';
+    });
+    html += '</div></section>';
+});
+app.innerHTML = html;
+
+var total = GROUPS.reduce(function (s, g) { return s + g.items.length; }, 0);
+document.getElementById('total').textContent = total;
+
+/* ========== 搜索过滤 ========== */
+var q = document.getElementById('q');
+var empty = document.getElementById('empty');
+var links = Array.prototype.slice.call(document.querySelectorAll('.lk'));
+var groups = Array.prototype.slice.call(document.querySelectorAll('.group'));
+function filter() {
+    var kw = (q.value || '').trim().toLowerCase();
+    var shown = 0;
+    links.forEach(function (a) {
+        var hit = !kw || a.getAttribute('data-k').indexOf(kw) > -1;
+        a.classList.toggle('hide', !hit);
+    });
+    groups.forEach(function (s) {
+        var any = s.querySelector('.lk:not(.hide)');
+        s.classList.toggle('hide', !any);
+        if (any) shown++;
+    });
+    empty.style.display = shown ? 'none' : 'block';
+}
+q.addEventListener('input', filter);
+q.addEventListener('keydown', function (e) { if (e.key === 'Escape') { q.value = ''; filter(); } });
+</script>
+</body>
+</html>
